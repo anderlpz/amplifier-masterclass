@@ -1,0 +1,229 @@
+---
+/*
+ * TopNav.astro — Compact sticky top bar with section label, mobile TOC, scroll visibility.
+ *
+ * Hidden initially (data-hidden="true"); revealed after scrolling past the hero.
+ * The sidebar handles TOC on desktop; this component owns mobile navigation.
+ */
+import { sections } from '../../data/sections';
+---
+
+<header class="topnav" data-hidden="true">
+  <div class="topnav__inner">
+    <!-- Left: Logo/wordmark -->
+    <a href="https://withamplifier.com" class="topnav__logo" target="_blank" rel="noopener">
+      Amplifier
+    </a>
+
+    <!-- Center: Current section name -->
+    <span class="topnav__section-label"></span>
+
+    <!-- Right: Controls -->
+    <div class="topnav__controls">
+      <span class="topnav__present-label">Presentation Mode · 72 slides</span>
+      <button class="topnav__contents-btn" aria-expanded="false" aria-controls="mobile-toc">
+        Contents
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile TOC dropdown -->
+  <nav class="topnav__mobile-toc" id="mobile-toc" aria-label="Table of Contents" hidden>
+    <ul class="topnav__mobile-list">
+      {sections.map(section => (
+        <li class="topnav__mobile-item" data-section-id={section.id}>
+          <a href={`#${section.id}`} class="topnav__mobile-link">
+            {section.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--z-topnav); /* 30 */
+    padding: var(--space-2) var(--space-4); /* 16px 32px */
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--divider);
+    transition: transform var(--duration-slow) var(--ease-default),
+                opacity var(--duration-slow) var(--ease-default);
+  }
+
+  /* Hidden state — at the top of the page / hero area */
+  .topnav[data-hidden="true"] {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .topnav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--content-full); /* 1200px */
+    margin: 0 auto;
+  }
+
+  .topnav__logo {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-small);
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .topnav__section-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .topnav__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .topnav__present-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .topnav__present-label:hover {
+    color: var(--accent);
+  }
+
+  .topnav__contents-btn {
+    display: none; /* Hidden on desktop — sidebar handles TOC */
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+  }
+
+  .topnav__contents-btn:hover {
+    color: var(--text-body);
+    border-color: var(--text-muted);
+  }
+
+  /* Mobile TOC dropdown */
+  .topnav__mobile-toc {
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--divider);
+  }
+
+  .topnav__mobile-toc[hidden] {
+    display: none;
+  }
+
+  .topnav__mobile-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .topnav__mobile-item {
+    padding: var(--space-1) 0;
+  }
+
+  .topnav__mobile-link {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .topnav__mobile-link:hover {
+    color: var(--text-body);
+  }
+
+  /* Active state for mobile TOC items */
+  .topnav__mobile-item.is-active > .topnav__mobile-link {
+    color: var(--accent);
+  }
+
+  /* Responsive: show Contents button on mobile */
+  @media (max-width: 1024px) {
+    .topnav__contents-btn {
+      display: inline-flex;
+    }
+    .topnav__present-label {
+      display: none; /* Hide on mobile to save space */
+    }
+  }
+</style>
+
+<script>
+  const topnav = document.querySelector('.topnav');
+  const sectionLabel = document.querySelector('.topnav__section-label');
+  const contentsBtn = document.querySelector('.topnav__contents-btn');
+  const mobileToc = document.querySelector('.topnav__mobile-toc');
+  const mobileItems = document.querySelectorAll('.topnav__mobile-item');
+  const sections = document.querySelectorAll('[data-section]');
+
+  if (topnav && sections.length > 0) {
+    // Section tracking — update label and mobile active state
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const label = entry.target.getAttribute('data-label') || '';
+            if (sectionLabel) sectionLabel.textContent = label;
+            // Update mobile TOC active state
+            const sectionId = entry.target.getAttribute('data-section');
+            mobileItems.forEach((item) => {
+              item.classList.toggle('is-active',
+                item.getAttribute('data-section-id') === sectionId);
+            });
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' }
+    );
+    sections.forEach((s) => observer.observe(s));
+
+    // Hide/show based on scroll (show after scrolling past first section)
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        topnav.setAttribute('data-hidden', entry.isIntersecting ? 'true' : 'false');
+      },
+      { threshold: 0.5 }
+    );
+    const firstSection = document.querySelector('[data-section="s1"]');
+    if (firstSection) heroObserver.observe(firstSection);
+  }
+
+  // Mobile TOC toggle
+  if (contentsBtn && mobileToc) {
+    contentsBtn.addEventListener('click', () => {
+      const isOpen = !mobileToc.hidden;
+      mobileToc.hidden = isOpen;
+      contentsBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Close on link click
+    mobileToc.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileToc.hidden = true;
+        contentsBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>
