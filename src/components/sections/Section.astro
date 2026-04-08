@@ -1,0 +1,68 @@
+---
+/*
+ * Section.astro — Base section wrapper component
+ *
+ * All 13 masterclass sections use this as their outer shell.
+ * Handles: background variants, data attributes for IntersectionObserver,
+ * accessibility label, and the sidebar-offset inner layout.
+ */
+interface Props {
+  id: string;
+  label: string;
+  background?: 'primary-dark' | 'secondary-dark' | 'palette-break';
+}
+
+const { id, label, background = 'primary-dark' } = Astro.props;
+---
+
+<section
+  id={id}
+  class={`mc-section ${background}`}
+  data-section={id}
+  data-label={label}
+  aria-label={label}
+>
+  <div class="mc-section__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .mc-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: var(--space-16) var(--space-4); /* 128px top/bottom, 32px left/right */
+  }
+
+  .mc-section__inner {
+    max-width: var(--content-max); /* 720px from tokens */
+    margin: 0 auto;
+    /* Left offset to account for sidebar TOC on desktop */
+    margin-left: calc(var(--sidebar-width) + var(--space-8)); /* 280px + 64px */
+  }
+
+  /* Background variants */
+  .mc-section.primary-dark {
+    background-color: var(--bg-primary);
+    color: var(--text-body);
+  }
+  .mc-section.secondary-dark {
+    background-color: var(--bg-secondary);
+    color: var(--text-body);
+  }
+  .mc-section.palette-break {
+    background-color: var(--bg-break);
+    color: var(--text-on-break);
+  }
+
+  /* Responsive: remove sidebar offset on mobile */
+  @media (max-width: 1024px) {
+    .mc-section__inner {
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--space-3);
+      padding-right: var(--space-3);
+    }
+  }
+</style>

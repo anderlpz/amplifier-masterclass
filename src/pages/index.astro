@@ -1,14 +1,28 @@
 ---
-// Amplifier Masterclass - Placeholder
+import Section from '../components/sections/Section.astro';
+import '../styles/global.css';
 ---
-<!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Amplifier Masterclass</title>
-  </head>
-  <body>
-    <h1>Amplifier Masterclass — scaffolding works</h1>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Amplifier Masterclass</title>
+</head>
+<body>
+  <Section id="s1" label="Introduction" background="primary-dark">
+    <h1>Welcome to Amplifier</h1>
+    <p>This is the Introduction section on primary dark background.</p>
+  </Section>
+
+  <Section id="s3" label="Design Philosophy" background="palette-break">
+    <h2>Design Philosophy</h2>
+    <p>This section uses the pearl-grey palette break background.</p>
+  </Section>
+
+  <Section id="s4" label="The Kernel" background="secondary-dark">
+    <h2>The Kernel</h2>
+    <p>This section uses the secondary dark background for rhythm.</p>
+  </Section>
+</body>
 </html>
