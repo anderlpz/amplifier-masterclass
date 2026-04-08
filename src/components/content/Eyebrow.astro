@@ -1,0 +1,28 @@
+---
+/*
+ * Eyebrow.astro — IYO-style eyebrow label
+ *
+ * Small, dimmer text with a bullet prefix. Used to label sections
+ * and subsections with their module name (e.g. "THE KERNEL").
+ */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="eyebrow">• {label}</span>
+
+<style>
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-3);
+  }
+</style>

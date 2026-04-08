@@ -1,0 +1,56 @@
+---
+/*
+ * NumberedRow.astro — Numbered content row with hairline divider
+ *
+ * Used for tech specs, feature lists, and structured content.
+ * Each row has a monospace number in accent color, a label, and
+ * an optional explanatory description.
+ */
+interface Props {
+  number: string;
+  label: string;
+  description?: string;
+}
+
+const { number, label, description } = Astro.props;
+---
+
+<div class="numbered-row">
+  <span class="numbered-row__number">{number}</span>
+  <div class="numbered-row__content">
+    <span class="numbered-row__label">{label}</span>
+    {description && <p class="numbered-row__desc">{description}</p>}
+  </div>
+</div>
+
+<style>
+  .numbered-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .numbered-row__number {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--accent);
+    flex-shrink: 0;
+    min-width: 2ch;
+  }
+
+  .numbered-row__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .numbered-row__desc {
+    font-size: var(--text-small);
+    color: var(--text-body);
+    margin-top: var(--space-1);
+    max-width: 55ch;
+  }
+</style>

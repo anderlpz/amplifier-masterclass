@@ -1,0 +1,41 @@
+---
+/*
+ * FloatingVisual.astro — Image or diagram floating on the dark background
+ *
+ * Renders an image without a container box — the visual sits directly
+ * on the section background. Includes optional caption.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="floating-visual">
+  <img src={src} alt={alt} loading="lazy" />
+  {caption && <figcaption class="floating-visual__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .floating-visual {
+    margin: var(--space-8) 0;
+    text-align: center;
+  }
+
+  .floating-visual img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .floating-visual__caption {
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>
