@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import ScrollProvider from '../components/scroll/ScrollProvider';
+import SidebarTOC from '../components/navigation/SidebarTOC.astro';
+import ProgressBar from '../components/navigation/ProgressBar.astro';
+import TopNav from '../components/navigation/TopNav.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Amplifier Masterclass' } = Astro.props;
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="An educational walkthrough of the Amplifier AI agent framework." />
+  <title>{title}</title>
+</head>
+<body>
+  <ProgressBar />
+  <TopNav />
+  <SidebarTOC />
+  <ScrollProvider client:only="react">
+    <main class="mc-main">
+      <slot />
+    </main>
+  </ScrollProvider>
+</body>
+</html>
+
+<style>
+  .mc-main {
+    /* Offset for sidebar on desktop */
+    padding-left: calc(var(--sidebar-width) + var(--space-8) + var(--space-8));
+    /* sidebar-width(280) + left-gap(64) + content-gap(64) = 408px offset */
+    min-height: 100vh;
+  }
+
+  @media (max-width: 1024px) {
+    .mc-main {
+      padding-left: 0;
+    }
+  }
+</style>
