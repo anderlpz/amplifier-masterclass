@@ -1,21 +1,39 @@
 ---
 import MasterclassLayout from '../layouts/MasterclassLayout.astro';
+import S01Introduction from '../sections/S01Introduction.astro';
 import Section from '../components/sections/Section.astro';
+import { sections } from '../data/sections';
+
+// Background mapping per design doc:
+// s3, s12 = palette-break; s5, s7, s9, s11 = secondary-dark; rest = primary-dark
+const bgMap: Record<string, string> = {
+  s3: 'palette-break',
+  s12: 'palette-break',
+  s5: 'secondary-dark',
+  s7: 'secondary-dark',
+  s9: 'secondary-dark',
+  s11: 'secondary-dark',
+};
+
+const placeholderSections = sections
+  .filter((s) => s.id !== 's1')
+  .map((s) => ({
+    ...s,
+    background: bgMap[s.id] ?? 'primary-dark',
+  }));
 ---
 
-<MasterclassLayout>
-  <Section id="s1" label="Introduction" background="primary-dark">
-    <h1>Welcome to Amplifier</h1>
-    <p>This is the Introduction section on primary dark background.</p>
-  </Section>
+<MasterclassLayout title="Amplifier Masterclass">
+  <!-- Real content: Introduction -->
+  <S01Introduction />
 
-  <Section id="s3" label="Design Philosophy" background="palette-break">
-    <h2>Design Philosophy</h2>
-    <p>This section uses the pearl-grey palette break background.</p>
-  </Section>
-
-  <Section id="s4" label="The Kernel" background="secondary-dark">
-    <h2>The Kernel</h2>
-    <p>This section uses the secondary dark background for rhythm.</p>
-  </Section>
+  <!-- Placeholder sections for s2-s13 so TOC tracking works -->
+  {placeholderSections.map((section) => (
+    <Section id={section.id} label={section.label} background={section.background}>
+      <h2>{section.label}</h2>
+      <p style="color: var(--text-muted); font-style: italic;">
+        Content coming in Phase 2.
+      </p>
+    </Section>
+  ))}
 </MasterclassLayout>
