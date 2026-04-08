@@ -1,0 +1,133 @@
+/*
+ * Design Token System
+ * amplifier-masterclass → withamplifier.com bridge
+ *
+ * All values are CSS custom properties on :root.
+ * Import this file first; reference tokens everywhere else.
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────
+   * Backgrounds
+   * ───────────────────────────────────────────── */
+  --bg-primary:   #242426;  /* Default canvas — most sections */
+  --bg-secondary: #3d3d40;  /* Rhythm variation — alternating technical sections */
+  --bg-break:     #e0e1e6;  /* Pearl-grey — used sparingly for conceptual sections */
+
+  /* ─────────────────────────────────────────────
+   * Text Colors
+   * ───────────────────────────────────────────── */
+  --text-primary:  #FAFAF8; /* Headlines, bright white */
+  --text-body:     #E8E6DC; /* Body text, warm cream */
+  --text-muted:    #87867F; /* TOC inactive items, secondary text */
+  --text-on-break: #242426; /* Text color when on pearl-grey background */
+
+  /* ─────────────────────────────────────────────
+   * Accent
+   * ───────────────────────────────────────────── */
+  --accent:       #0082EB; /* Azure — TOC indicator, interactive affordances */
+  --accent-hover: #0092F3; /* Slightly lighter for hover states */
+
+  /* ─────────────────────────────────────────────
+   * Glass Treatment (card collections)
+   * ───────────────────────────────────────────── */
+  --glass-bg:     rgba(33, 33, 33, 0.35);
+  --glass-border: rgba(169, 194, 242, 0.1);
+  --glass-blur:   15px;
+  --glass-radius: 28.8px; /* ~1.8rem */
+
+  /* ─────────────────────────────────────────────
+   * Hairline Dividers
+   * ───────────────────────────────────────────── */
+  --divider:          rgba(255, 255, 255, 0.1);
+  --divider-on-break: rgba(0, 0, 0, 0.1);
+
+  /* ─────────────────────────────────────────────
+   * Typography Families
+   * ───────────────────────────────────────────── */
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:  'Space Grotesk', 'SF Mono', monospace;
+
+  /* ─────────────────────────────────────────────
+   * Typography Scale (viewport-fluid with clamp)
+   * ───────────────────────────────────────────── */
+  --text-hero:  clamp(3rem, 8vw, 7rem);              /* Hero / page title */
+  --text-h1:    clamp(2.25rem, 4.9vw, 4.5rem);       /* Section headlines */
+  --text-h2:    clamp(1.5rem, 2.5vw, 2.25rem);       /* Sub-section headlines */
+  --text-h3:    clamp(1.125rem, 1.5vw, 1.5rem);      /* Component titles */
+  --text-body:  clamp(0.9375rem, 1vw, 1.0625rem);   /* Body text (15–17px) */
+  --text-small: clamp(0.8125rem, 0.85vw, 0.875rem); /* Eyebrow labels, captions */
+  --text-xs:    0.75rem;                              /* TOC items, micro labels */
+
+  /* ─────────────────────────────────────────────
+   * Line Heights
+   * ───────────────────────────────────────────── */
+  --leading-tight:   1.15; /* Headlines */
+  --leading-normal:  1.6;  /* Body text */
+  --leading-relaxed: 1.8;  /* Generous for conceptual sections */
+
+  /* ─────────────────────────────────────────────
+   * Letter Spacing
+   * ───────────────────────────────────────────── */
+  --tracking-tight:  -0.02em; /* Display headlines */
+  --tracking-normal: 0;       /* Body text */
+  --tracking-wide:   0.08em;  /* Eyebrow labels, uppercase text */
+
+  /* ─────────────────────────────────────────────
+   * Spacing (8px base grid)
+   * ───────────────────────────────────────────── */
+  --space-1:  0.5rem;  /*   8px */
+  --space-2:  1rem;    /*  16px */
+  --space-3:  1.5rem;  /*  24px */
+  --space-4:  2rem;    /*  32px */
+  --space-6:  3rem;    /*  48px */
+  --space-8:  4rem;    /*  64px */
+  --space-12: 6rem;    /*  96px */
+  --space-16: 8rem;    /* 128px */
+  --space-24: 12rem;   /* 192px */
+
+  /* ─────────────────────────────────────────────
+   * Content Widths
+   * ───────────────────────────────────────────── */
+  --content-max:   720px;  /* Main content column */
+  --content-wide:  960px;  /* Wide content (diagrams, cards) */
+  --content-full: 1200px;  /* Full section including sidebar */
+  --sidebar-width: 280px;  /* TOC sidebar */
+
+  /* ─────────────────────────────────────────────
+   * Motion / Easing
+   * ───────────────────────────────────────────── */
+  --ease-spring:  cubic-bezier(0.625, 0.05, 0, 1);  /* IYO spring — subtle overshoot */
+  --ease-settle:  cubic-bezier(0.22, 1, 0.36, 1);   /* Settle/land — from Glasswing */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);     /* Standard ease-out */
+
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   500ms;
+  --duration-reveal: 800ms; /* Section entry animations */
+
+  /* ─────────────────────────────────────────────
+   * Z-Index Scale
+   * ───────────────────────────────────────────── */
+  --z-content:  1;
+  --z-sticky:  10; /* Sticky-stack elements */
+  --z-sidebar: 20; /* TOC sidebar */
+  --z-topnav:  30; /* Top navigation */
+  --z-progress: 40; /* Progress bar (topmost) */
+  --z-modal:   50; /* Fullscreen graph, presentation mode */
+
+}
+
+/* ─────────────────────────────────────────────
+ * Reduced Motion Overrides
+ * ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:   0ms;
+    --duration-normal: 0ms;
+    --duration-slow:   0ms;
+    --duration-reveal: 0ms;
+  }
+}
