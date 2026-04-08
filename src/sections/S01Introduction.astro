@@ -1,0 +1,119 @@
+---
+/*
+ * S01Introduction.astro — Introduction section
+ *
+ * Conceptual mode: generous spacing, editorial density, serif headline.
+ * Primary dark background.
+ * Pattern: Eyebrow → Headline → Lead → Body → UpNextTeaser
+ *
+ * Content sourced from: .design/sections/01-introduction.md
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s1" label="Introduction" background="primary-dark">
+  <div class="intro">
+    <Eyebrow label="INTRODUCTION" />
+
+    <h1 class="intro__headline">
+      Amplifier is a framework for building AI agents.
+    </h1>
+
+    <div class="intro__lead">
+      <p>
+        The project calls itself an <em>agentic harness</em>. The word harness
+        is precise. A climbing harness channels gravity into controlled movement.
+        An electrical harness routes power where it needs to go. Amplifier does
+        the same for an AI model: it wraps around the model and gives it a
+        controlled way to interact with the world.
+      </p>
+    </div>
+
+    <div class="intro__body">
+      <p>
+        An AI agent is a program that reasons about a task, takes actions,
+        observes results, and decides what to do next. The model — Claude, GPT,
+        Gemini, whatever ships next month — handles reasoning. Everything else,
+        from tools and memory to rules and connections to the outside world,
+        needs structure. Amplifier provides that structure.
+      </p>
+
+      <p>
+        You already know how this works, because you've used a computer. Your
+        operating system has a kernel, tiny relative to everything else. The
+        kernel handles fundamentals: memory management, task scheduling,
+        hardware communication. Everything else runs on top through well-defined
+        interfaces.
+      </p>
+
+      <p>
+        Amplifier applies this same architecture to AI agents. A small,
+        unchanging core at the center handles fundamentals: loading modules,
+        dispatching events, managing sessions. Everything else — which AI model
+        to use, what tools the agent can access, how conversations are stored,
+        what rules the agent follows — plugs in as a module from the outside.
+      </p>
+
+      <p>
+        New AI model? Write a provider module. Safety rules? Add a hook module.
+        Different reasoning strategy? Swap the orchestrator. The kernel stays
+        unchanged. It provides infrastructure; modules provide behavior.
+      </p>
+
+      <p>
+        This walkthrough covers the full architecture front-to-back. It starts
+        with a map of the system, then works through each major piece. Sections
+        build on each other, but each one also stands alone.
+      </p>
+    </div>
+
+    <UpNextTeaser
+      nextSection="Architecture Map"
+      teaser="A bird's-eye view of the entire system."
+    />
+  </div>
+</Section>
+
+<style>
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6); /* Generous conceptual spacing */
+  }
+
+  .intro__headline {
+    font-family: var(--font-serif);
+    font-size: var(--text-h1);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    max-width: 20ch; /* Short headline wrapping for impact */
+  }
+
+  .intro__lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem); /* Slightly larger than body */
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+    max-width: 55ch;
+  }
+
+  .intro__lead em {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  .intro__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    color: var(--text-body);
+    max-width: 60ch;
+  }
+
+  .intro__body p {
+    line-height: var(--leading-normal);
+  }
+</style>
