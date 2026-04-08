@@ -1,5 +1,6 @@
 ---
 import Section from '../components/sections/Section.astro';
+import SidebarTOC from '../components/navigation/SidebarTOC.astro';
 import '../styles/global.css';
 ---
 
@@ -10,6 +11,8 @@ import '../styles/global.css';
   <title>Amplifier Masterclass</title>
 </head>
 <body>
+  <SidebarTOC />
+
   <Section id="s1" label="Introduction" background="primary-dark">
     <h1>Welcome to Amplifier</h1>
     <p>This is the Introduction section on primary dark background.</p>

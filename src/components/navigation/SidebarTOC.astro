@@ -1,0 +1,174 @@
+---
+/*
+ * SidebarTOC.astro — Persistent left sidebar table of contents
+ *
+ * Scroll-synced via IntersectionObserver. Inspired by Glasswing's
+ * structurally invisible TOC pattern. Hidden on mobile; TopNav handles
+ * mobile navigation.
+ */
+import { sections } from '../../data/sections';
+---
+
+<nav class="sidebar-toc" aria-label="Table of Contents">
+  <ul class="sidebar-toc__list">
+    {sections.map(section => (
+      <li class="sidebar-toc__item" data-section-id={section.id}>
+        <a href={`#${section.id}`} class="sidebar-toc__link">
+          <span class="sidebar-toc__dot"></span>
+          <span class="sidebar-toc__label">{section.label}</span>
+        </a>
+        {section.children && (
+          <ul class="sidebar-toc__children">
+            {section.children.map(child => (
+              <li class="sidebar-toc__child">
+                <a href={`#${child.id}`} class="sidebar-toc__child-link">
+                  {child.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .sidebar-toc {
+    position: fixed;
+    left: var(--space-8); /* 64px from left edge */
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--sidebar-width); /* 280px from tokens */
+    z-index: var(--z-sidebar); /* 20 */
+    transition: opacity var(--duration-slow) var(--ease-default);
+  }
+
+  /* Hidden state — when hero is in view */
+  .sidebar-toc[data-hidden="true"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar-toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-toc__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1); /* 8px */
+    padding: 4px 0;
+    text-decoration: none;
+    color: var(--text-muted); /* #87867F — inactive */
+    font-family: var(--font-sans);
+    font-size: var(--text-xs); /* 0.75rem */
+    line-height: 1.4;
+    transition: color var(--duration-normal) var(--ease-default);
+  }
+
+  /* Active state */
+  .sidebar-toc__item.is-active > .sidebar-toc__link {
+    color: var(--text-primary); /* #FAFAF8 — bright */
+  }
+
+  /* The dot indicator */
+  .sidebar-toc__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 1px; /* Glasswing uses a square, not circle */
+    background-color: var(--accent); /* Azure */
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity var(--duration-normal) var(--ease-default),
+                transform var(--duration-normal) var(--ease-default);
+    flex-shrink: 0;
+  }
+
+  .sidebar-toc__item.is-active > .sidebar-toc__link > .sidebar-toc__dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Children (sub-items) — hidden by default, shown when parent is active */
+  .sidebar-toc__children {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: calc(8px + var(--space-1)); /* indent past dot */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height var(--duration-slow) var(--ease-default),
+                opacity var(--duration-normal) var(--ease-default);
+  }
+
+  .sidebar-toc__item.is-active > .sidebar-toc__children {
+    max-height: 300px; /* enough for any child list */
+    opacity: 1;
+  }
+
+  .sidebar-toc__child-link {
+    display: block;
+    padding: 2px 0;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    transition: color var(--duration-normal) var(--ease-default);
+  }
+
+  .sidebar-toc__child-link:hover {
+    color: var(--text-body);
+  }
+
+  /* Hide sidebar on mobile — TopNav handles mobile TOC */
+  @media (max-width: 1024px) {
+    .sidebar-toc {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const tocNav = document.querySelector('.sidebar-toc');
+  const items = document.querySelectorAll('.sidebar-toc__item');
+  const sections = document.querySelectorAll('[data-section]');
+
+  if (tocNav && sections.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute('data-section');
+            items.forEach((item) => {
+              item.classList.toggle(
+                'is-active',
+                item.getAttribute('data-section-id') === sectionId
+              );
+            });
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Hide/show based on scroll position (hero detection)
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (tocNav) {
+          tocNav.setAttribute('data-hidden', entry.isIntersecting ? 'true' : 'false');
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    // Observe the first section as the "hero" proxy
+    const firstSection = document.querySelector('[data-section="s1"]');
+    if (firstSection) heroObserver.observe(firstSection);
+  }
+</script>
