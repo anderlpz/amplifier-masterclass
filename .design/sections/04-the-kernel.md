@@ -1,136 +1,117 @@
 # Section 4: The Kernel
 
-The kernel (`amplifier-core`) contains exactly five things. Not approximately five. Not "five core concepts." Five concrete subsystems. Everything else exists outside it, in modules.
+## Five things live in the kernel. Nothing else.
 
-## 1. The Hook and Event system
+The kernel (`amplifier-core`) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.
 
-When a message is sent, a tool is called, or a session starts, the system fires an event. There are 41 of these events, organized by category: session, tool, provider, prompt, context.
+## 1. Session Lifecycle
 
-Hooks respond to events. A module registers a hook for a specific event; when that event fires, the hook runs. The kernel checks registrations, dispatches, and collects results.
+A session is the container around a particular instance of the system running. Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order. Orchestrator and Context Manager are required. Everything else is optional. Cleanup runs in a `finally` block. Always.
 
-Events and hooks are the same system: one dispatch mechanism, not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.
-
-## 2. The Module Loader
-
-The Loader discovers modules and gives each one a chance to mount. Discovery uses two primary channels: Python entry points (installed packages advertising they contain Amplifier modules) and filesystem scanning (directories following the `amplifier-module-*` naming convention). Additional channels exist for WebAssembly and remote gRPC modules, but the first two cover most cases.
-
-When the Loader finds a module, it calls that module's `mount` function, the universal contract covered in the next section.
-
-## 3. Contracts (Protocols)
-
-Six module types, each defined as a Python Protocol. A Protocol specifies what methods a module must have. If a class has the right methods, it satisfies the Protocol. No base class required, no explicit registration. This is structural subtyping: the shape of the code determines its type.
-
-The six contracts define the module ecosystem's shape. They're small (each specifying just a few methods), and they almost never change. When they do, every module of that type is affected, which is why stability matters here more than anywhere else.
-
-## 4. The Coordinator
-
-Misleading name. The Coordinator doesn't coordinate anything. It's a registry: a shelf with labeled slots. Slot for the orchestrator, slot for the context manager, slots for providers, tools, hooks. When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator.
-
-Three operations: `mount` (put a module in a slot), `get` (retrieve from a slot), `unmount` (remove from a slot). No decisions. No message routing. No behavior.
-
-The actual coordination (deciding what to do, when, in what order) belongs to the Orchestrator, which is a module. Swappable. The kernel just holds pieces; the Orchestrator module decides how to use them.
-
-Under the hood: a Rust struct exposed to Python through PyO3, part of a broader pattern where users see Python but performance-critical internals are compiled Rust.
-
-## 5. Session Lifecycle
-
-A session is one conversation. Four phases:
-
-**Creation.** Configuration goes in. Coordinator and Loader are created. Nothing loaded yet.
+**Creation.** Configuration goes in. Coordinator and Loader are created. Nothing loaded yet. The system knows what it needs, but hasn't started yet.
 
 **Initialization.** Modules load in fixed order: Orchestrator, Context Manager, Providers, Tools, Hooks. Orchestrator and Context Manager are required; failure to load either stops the session. The rest are optional (warn and continue).
 
-**Execution.** A prompt arrives, passes to the Orchestrator, and a response comes back. This phase is repeatable. Each `execute` call is one conversation turn.
+**Execution.** A prompt arrives, passes to the Orchestrator, and a response comes back. This phase is repeatable. Each `execute` call is one conversation turn. Between turns, all state is maintained.
 
-**Cleanup.** A `session:end` event fires (hooks get a final chance to process). Then Coordinator tears down modules. Then Loader cleans up. This last step runs in a `finally` block, so cleanup happens even if the session crashed.
+**Cleanup.** A `session:end` event fires first (hooks get a final chance to process). Then Coordinator tears down modules. Then Loader cleans up. In a `finally` block. Always runs, even after errors.
 
-## The Rust/Python boundary
+## 2. Contracts
 
-Amplifier uses two languages by design. Python is the API surface: what module authors write, what configuration references, what methods you call. Rust is the kernel's runtime. Coordinator, HookRegistry, CancellationToken, Session are all Rust structs compiled to native code, exposed through PyO3. The Python files in `amplifier-core` are thin wrappers.
+Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.
 
-When you call `coordinator.get("provider")`, you're reaching into a compiled Rust data structure through a Python wrapper. Module authors never need to know Rust exists. But the performance characteristics (microseconds for event dispatch, compiled speed for module lookup) reflect it.
+The six contracts define the module ecosystem's shape. They're small (each specifying just a few methods). When they do change, every module of that type is affected, which is why stability matters here more than anywhere else.
+
+## 3. Module Loader
+
+Discovers available modules, loads them, and gives each one a chance to set itself up. The loader does not need to know what type of module it is loading. It calls `mount`, and the module takes care of the rest.
+
+Discovery uses two primary channels: Python entry points (installed packages advertising they contain Amplifier modules) and filesystem scanning (directories following the `amplifier-module-*` naming convention).
+
+## 4. The Coordinator
+
+A passive registry: a structured shelf where modules are stored after loading. Three operations: `mount`, `get`, `unmount`. Despite the name, it does not coordinate anything. Think of it as a phone book. The Orchestrator module does the actual work.
+
+When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator. No decisions. No message routing. No behavior.
+
+## 5. Hooks
+
+Hooks let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens (a tool is called, a session starts, a file is written) hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.
+
+There are 41 canonical events, organized by category: session, tool, provider, prompt, context. Events and hooks are the same system: one dispatch mechanism (`HookRegistry.emit()`), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.
 
 ## Zero file I/O
 
-The kernel writes nothing to disk. No log files. No transcripts. No checkpoints. Grep `amplifier-core` for file-writing operations: zero matches.
+The kernel writes zero bytes to disk. No log files, no transcripts, no configuration files. Search the entire `amplifier-core` codebase for file writes: zero matches. Mechanism, not policy, made tangible.
 
 Logging happens through hook modules that subscribe to events. Persistence happens through context managers or hooks that save conversation history. Configuration loading happens in the Foundation layer, entirely outside the kernel.
-
-Want different logging? Swap the hook module. The kernel doesn't change.
 
 ---
 
 ## Presentation Slides
 
-### Slide 1: The kernel
-- `amplifier-core`, the small, unchanging center
-- In an operating system: always running, everything depends on it
-- Contains exactly five things
+### Slide 1: 5 (big number)
+things inside the kernel
+amplifier-core. Everything else is a module.
 
-### Slide 2: Hook and Event system
-- 41 events by category (session, tool, provider, prompt, context)
-- When something happens, an event fires. Hooks respond.
-- One unified dispatch mechanism, not two separate systems
-- Implemented in Rust (hottest code path)
+### Slide 2: The five kernel components (icon-grid)
+- **Session Lifecycle** — Create, Initialize, Execute, Cleanup
+- **Contracts** — 6 module types, structural matching, rarely change
+- **Module Loader** — Discovers and mounts all modules at session start
+- **The Coordinator** — A registry. A labeled shelf for mounted modules.
+- **Hooks** — 41 events, unified dispatch, high performance
 
-### Slide 3: Module Loader
-- Discovers via entry points and filesystem scan
-- Calls each module's `mount` function (universal contract)
-- Supports Python, WebAssembly, remote gRPC
+### Slide 3: The hook system (hflow)
+1. Something happens (tool called, message sent, session starts)
+2. Kernel fires a named event: namespace:action — *kernel*
+3. Registered hooks for that event are called — *dispatch*
+4. Hook results resolved by priority cascade — *cascade*
+5. System continues (or halts if deny returned)
 
-### Slide 4: Contracts (Protocols)
-- Six module types, each with a formal Protocol
-- "If you have these methods, you qualify"
-- Structural subtyping: no base class, no registration
-- Small contracts that almost never change
+### Slide 4: "Despite its name, the Coordinator does not coordinate. It is a registry." (statement)
+mount(), get(), unmount(). Three operations, nothing more.
 
-### Slide 5: The Coordinator
-- A registry, not a coordinator. A shelf with labeled slots.
-- mount, get, unmount: three operations
-- The Orchestrator module does the actual coordinating
-- Rust struct via PyO3
+### Slide 5: Session lifecycle (flow)
+Create (config in) -> Initialize (modules mount) -> Execute (repeatable) -> Cleanup (always runs)
+Orchestrator + Context Manager are required. Others are optional. Cleanup runs even after errors.
 
-### Slide 6: Session Lifecycle
-- Create → Initialize → Execute → Cleanup
-- Fixed loading order: Orchestrator, Context, Providers, Tools, Hooks
-- Orchestrator + Context required; rest optional
-- Cleanup runs in finally block, always
+### Slide 6: The universal mount contract (code)
+```
+async def mount(
+    coordinator: Coordinator,
+    config: dict
+) -> Optional[cleanup_fn]:
+    # receive the registry + configuration
+    # do your setup work
+    # register yourself in the coordinator
+    # optionally return a cleanup function
+```
+All six module types follow this exact interface.
 
-### Slide 7: Rust/Python boundary
-- Python: what module authors see and write
-- Rust: compiled kernel internals via PyO3
-- Module authors never touch Rust
-- Hot paths run at compiled speed
-
-### Slide 8: Zero file I/O
-- The kernel writes nothing to disk
-- Logging = hook module. Persistence = context manager. Config = Foundation.
-- Swap the logging module. The kernel doesn't change.
+### Slide 7: "Zero file writes. Search the kernel codebase. Zero matches." (statement)
+Logging = hook module. Persistence = context manager. Config = Foundation.
 
 ---
 
 ## Speaker Notes
 
 ### Slide 1
-Ground the audience: the kernel is the part everything depends on. Small by design. Fewer lines means fewer things that can break in the foundation.
+Five components. That's the entire kernel. This is the part that's always running, the part that everything else depends on. And it's small on purpose. The fewer lines of code here, the fewer things can go wrong in the piece that the entire system relies on.
 
 ### Slide 2
-The hook/event system is the kernel's nervous system. Key: events and hooks are ONE system, not two. One mechanism: `HookRegistry.emit()`. In Rust because it runs on every tool call, every message, every session transition.
+Let me name them. The Session Lifecycle, Contracts, the Loader, the Coordinator, and the hook system. Five things, nothing more. Each one exists because every module in the system needs it. That shared dependency is exactly why stability here matters so much.
 
 ### Slide 3
-Straightforward: find modules, give them a chance to set up. The interesting detail is that discovery uses standard Python mechanisms plus filesystem conventions. Install with pip or just drop a directory. The `mount` function is the universal contract, covered next.
+The hook and event system is the kernel's nervous system. And I want to be precise here: events and hooks are one system, not two. There's a single mechanism. HookRegistry.emit(). An event fires, registered hooks respond. That's it. Don't let anyone walk away thinking these are separate subsystems. This code runs on every tool call, every message, every session transition. It has to be fast.
 
 ### Slide 4
-Protocols might be unfamiliar to non-technical audiences. Analogy: a job posting says "must be able to do X, Y, Z." It doesn't say you need a specific degree. If you can do those things, you qualify. Same idea.
+Let me clear something up right away. Despite its name, the Coordinator does not coordinate. It's a registry: a shelf with labeled slots. You put a provider in the provider slot. You put an orchestrator in the orchestrator slot. The Coordinator holds them. The actual coordinating: deciding what runs when, driving the agent loop: that's the Orchestrator, which is a module, not part of the kernel. Mechanism versus policy, once again.
 
 ### Slide 5
-Address the naming first: "It's called Coordinator, but it doesn't coordinate." It stores modules. Three operations. The Orchestrator, a MODULE, does the coordinating.
+Walk through the four phases. Emphasize fixed loading order and why: each module can count on the ones before it being available. Required vs optional is practical: no Orchestrator means no agent, so hard error. One failed tool out of twenty? The agent has nineteen others. And cleanup is wrapped in a finally block, which means it runs even if the session crashed mid-session.
 
 ### Slide 6
-Walk through the four phases. Emphasize fixed loading order and why: each module can count on the ones before it being available. Required vs optional is practical: no Orchestrator means no agent, so hard error. One failed tool out of twenty? The agent has nineteen others.
+This is the connective tissue of the whole system. The Loader is completely generic: it doesn't know what it's loading. It just calls mount(). And the module self-mounts into the Coordinator at the right slot. One contract, every module type.
 
 ### Slide 7
-Don't get into Rust syntax. Focus on the WHY: performance for hot paths. "When you call `coordinator.get('provider')`, you're reaching into compiled Rust. Returns in microseconds."
-
-### Slide 8
-Payoff for the design philosophy section. Zero file writes in the kernel. Let it land. Each thing you'd expect the kernel to do (logging, saving, configuring) is actually a module's job.
+Payoff for the design philosophy section. Zero file writes in the entire kernel. Logging? That's a hook module. Persistence? Hook module. Telemetry? Hook module. Every capability you might expect the kernel to own is actually handled by a module. Remove all the hooks and the conversation still works identically: there's just no record of it.

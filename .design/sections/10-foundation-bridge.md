@@ -1,25 +1,21 @@
 # Section 10: The Foundation Bridge
 
-A bundle is a text file. The kernel expects a configuration dictionary and modules ready to mount. Something has to translate between the two.
+## Foundation is how we use the kernel. It is not the only way.
 
-Foundation (`amplifier-foundation`) reads bundle files, resolves references, downloads needed modules, and produces a configuration the kernel can work with. It bridges how people describe agents and how the system runs them.
+Foundation (`amplifier-foundation`) turns text bundle files into running sessions. It is the Amplifier team's reference implementation: their opinions about how to use the kernel, packaged for others. The kernel does not need it. You could build your own equivalent.
 
-## PreparedBundle
+Think of Foundation as a convenience layer. The kernel accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.
 
-Foundation's output is a PreparedBundle with four parts:
+### PreparedBundle
 
-**Mount plan.** Which modules to load, in what slots, with what configuration. The blueprint the session's Loader follows.
+Foundation's output has four parts: a mount plan (which modules to load, in what slots, with what configuration), a resolver (maps module names to file paths), the original bundle (preserved for reference), and package paths (for cleanup at session end).
 
-**Resolver.** Maps module identifiers (`provider-anthropic`, `tool-filesystem`) to file paths on disk.
+### The preparation pipeline
 
-**Bundle.** The original configuration, preserved for reference.
-
-**Package paths.** Filesystem paths for packages installed during preparation, enabling cleanup at session end.
-
-## The eight-step pipeline
+Foundation handles all the practical mess between a text file and a running session: creating isolated environments, downloading modules from registries, resolving version constraints, assembling paths. Eight steps:
 
 1. Compile mount plan from configuration
-2. Create virtual environment activator
+2. Set up environment
 3. Install required Python packages
 4. Collect module specifications
 5. Download and install missing modules
@@ -27,33 +23,25 @@ Foundation's output is a PreparedBundle with four parts:
 7. Create resolver function
 8. Package into PreparedBundle
 
-The pipeline absorbs all the practical mess: dependency management, downloads, path resolution, virtual environments. The kernel receives a clean mount plan and a resolver. Nothing else.
+The kernel never sees any of it. It receives a clean mount plan and a resolver.
 
-## Foundation is optional
+> The kernel doesn't need Foundation. The kernel works with a raw configuration dictionary and a set of module paths. Foundation is a user-experience layer. It makes the system approachable by translating text files into running sessions.
 
-The kernel works without it. Pass a raw configuration dictionary and module paths directly to the session API. The kernel has zero awareness that Foundation exists.
+## Foundation does not disappear after setup. It stays connected through two live channels.
 
-Foundation is a user-experience layer that makes the system approachable. The kernel's API is available to anyone who wants to bypass it.
-
-## Two persistent callbacks
-
-Most preparation layers do their work and disappear. Foundation does the preparation and then stays connected. It registers two callbacks that remain active for the session's entire lifetime.
+Most preparation layers do their work and leave. Foundation registers two callbacks during setup that remain active for the session's entire lifetime. The kernel calls back into Foundation code at runtime, even though the kernel has no dependency on Foundation.
 
 ### System Prompt Factory
 
-Called every turn. Every time the AI is about to think, the kernel calls a function to get the current system prompt. Foundation provides that function.
+Called on every single turn. Every time the AI is about to think (every single turn of conversation) Foundation re-reads all @mention files, resolves nested @mentions up to three levels deep, deduplicates content by SHA-256 hash, and rebuilds the complete system prompt from the instruction text plus all resolved context.
 
-On each call, Foundation re-reads every @mention file, resolves nested @mentions (up to three levels), deduplicates by SHA-256 hash, and rebuilds the complete system prompt from instruction text plus resolved context.
-
-The kernel calls a function and gets a string. It doesn't know files are involved. Foundation does the file I/O, the resolution, the deduplication, all on every turn.
-
-This is why @mention files are live. Edit a context file mid-conversation, and the agent sees the update on its next turn. Teams maintain living documents (coding standards, project requirements, API references) and agents always work with the latest version.
+This is why @mention files are live. The kernel calls a function and gets a string back. Foundation is the one doing the file I/O, all on every turn.
 
 ### BundleModuleResolver
 
-When the kernel's Loader needs to find a module, it calls the resolver. That resolver was created by Foundation during preparation.
+Called on demand during module loading. When the kernel's Module Loader needs to find a module (to resolve a module identifier like `tool-filesystem` to an actual file path) it calls the resolver. That resolver was created by Foundation during the preparation pipeline.
 
-Foundation code runs inside the kernel's dispatch path, even though the kernel has no dependency on Foundation and no knowledge of how resolution works. The kernel defines a callable slot; Foundation fills it.
+Foundation code is running inside the kernel's dispatch path, even though the kernel has no dependency on Foundation and no knowledge of how the resolution works.
 
 ## The runtime relationship
 
@@ -65,61 +53,69 @@ Connected at runtime through callbacks. Independent at compile time through inte
 
 ## Presentation Slides
 
-### Slide 1: The gap
+### Slide 1: Foundation translates text files into running sessions
 - Bundles are text files. The kernel expects config dicts and module paths.
 - Foundation is the translator: `amplifier-foundation`
+- The Amplifier team's reference implementation, not the only way
 
 ### Slide 2: PreparedBundle
 - Mount plan (kernel instructions)
-- Resolver (module name → file path)
+- Resolver (module name -> file path)
 - Bundle (original config preserved)
 - Package paths (for cleanup)
 
 ### Slide 3: Eight-step pipeline
-- Compile, install, download, resolve, package
+- Compile, set up environment, install, download, resolve, package
 - Foundation handles the mess. Kernel gets a clean mount plan.
 
-### Slide 4: Foundation is optional
-- The kernel works with raw config dicts
-- Foundation is a UX layer, not a requirement
+### Slide 4: The kernel has no knowledge that Foundation exists
+- Call the kernel session API directly
+- Foundation is a user-experience layer, not a requirement
 
-### Slide 5: System Prompt Factory
+### Slide 5: Foundation does not just set up. It stays connected.
+- Two persistent callbacks registered at session start
+- Active for the entire session lifetime
+
+### Slide 6: System Prompt Factory
 - Called every turn. Re-reads all @mention files.
 - Resolves nested mentions, deduplicates by SHA-256
-- Edit a file mid-conversation → agent sees it next turn
+- Edit a file mid-conversation -> agent sees it next turn
 - The kernel calls a function. Doesn't know files are involved.
 
-### Slide 6: BundleModuleResolver
-- Kernel needs a module → calls the resolver → Foundation answers
+### Slide 7: BundleModuleResolver
+- Kernel needs a module -> calls the resolver -> Foundation answers
 - Foundation code inside the kernel's dispatch path
 - Kernel has no dependency on Foundation. Just calls a function.
 
-### Slide 7: The relationship
-- Foundation sets up AND sustains the session
-- Neither side depends on the other in code
-- Connected at runtime through well-defined callbacks
+### Slide 8: The runtime relationship
+- Foundation depends on kernel in code
+- Kernel calls Foundation at runtime only (through callbacks)
+- Neither side knows about the other at compile time
 
 ---
 
 ## Speaker Notes
 
 ### Slide 1
-The gap: users write text, kernel needs structure. Foundation bridges it.
+The gap: users write text, kernel needs structure. Foundation bridges it. But it's the team's opinion about how to bridge it, not the only possible bridge.
 
 ### Slide 2
 Walk through the four parts briefly. Mount plan is what the kernel uses. Resolver comes up in the callbacks discussion.
 
 ### Slide 3
-List the steps to show what "turning a text file into a running agent" involves. Don't dwell on individual steps. The takeaway: Foundation handles complexity so the kernel doesn't have to.
+List the steps to show what "turning a text file into a running agent" involves. Step 2 is now "Set up environment" (covers virtualenv creation and related setup). The takeaway: Foundation handles complexity so the kernel doesn't have to.
 
 ### Slide 4
-This shows the architecture is principled. Foundation is convenient but not required. The kernel was designed to work without it.
+This shows the architecture is principled. Foundation is convenient but not required. The kernel was designed to work without it. You can call the kernel's API directly.
 
 ### Slide 5
-Most important slide in this section. Walk through slowly. Every turn, Foundation re-reads files. Not caching. Not file-watching. Full re-read. The practical consequence: "Edit a context file while the agent is running. It sees the change next turn."
+Transition slide. Most preparation layers do their work and leave. Foundation stays. Set up the two-callback reveal.
 
 ### Slide 6
-Architecturally significant. Foundation code runs inside kernel dispatch, but the kernel has no dependency on Foundation. Callback-driven architecture: kernel defines slots, Foundation fills them.
+Most important slide in this section. Walk through slowly. Every turn, Foundation re-reads files. Not caching. Not file-watching. Full re-read. The practical consequence: "Edit a context file while the agent is running. It sees the change next turn."
 
 ### Slide 7
-Tie it together. Setup plus sustained participation. Neither side depends on the other in code. Connected at runtime. This is callback-driven architecture applied to the preparation layer.
+Architecturally significant. Foundation code runs inside kernel dispatch, but the kernel has no dependency on Foundation. Callback-driven architecture: kernel defines slots, Foundation fills them.
+
+### Slide 8
+Tie it together. Foundation depends on kernel (in code). Kernel calls Foundation (at runtime only). Connected at runtime through well-defined callback interfaces. Even the preparation layer follows mechanism versus policy.

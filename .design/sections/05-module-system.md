@@ -1,34 +1,32 @@
 # Section 5: The Module System
 
-Everything outside the kernel's five subsystems is a module: a self-contained piece that plugs in through a standard interface to add a specific capability.
+## Everything outside the kernel is a module.
 
-## Six types, in order of importance
+A module is a self-contained piece that plugs in through a standard interface to add a specific capability. Six types, one universal contract, fixed loading order. Remove one, add another. The rest of the system doesn't notice.
 
-### Orchestrator
+## Five module types
 
-Drives the conversation. Decides what context the AI needs, which provider handles each request, how tool calls are managed, when to stop. Exactly one per session. Required. The Orchestrator's unique privilege is covered in its own section.
+### Orchestrator — "The conductor"
 
-### Provider
+Drives the conversation. Decides what context the AI needs, which provider handles each request, how tool calls are handled, when to stop. Exactly one per session. Required.
 
-Connects to an AI model. Claude, GPT-4, Gemini, a local model on your machine: each connection is a separate Provider. The Provider translates between Amplifier's internal request format and whatever the model expects. A session can have multiple Providers; the Orchestrator picks which one to use per turn.
+### Provider — "The AI connection"
 
-### Tool
+Connects to an AI model. Claude, GPT, Gemini, local model. Each connection is a separate Provider. Translates between Amplifier's format and the model's API. Multiple per session allowed.
 
-An action the agent can take: read a file, search the web, run a command. The AI *decides* when to use tools. It sees them in its system prompt, considers its options, and generates a tool call. Tools are visible, intentional, under the model's control. Each tool has a name, description, input schema, and an `execute` method.
+### Tool — "The agent's hands"
 
-### Context Manager
+An action the agent can take. Read a file. Search the web. Run a command. The AI *decides* when to use tools. It sees them listed in its instructions. Visible, intentional, under the model's control.
 
-The agent's memory. Tracks the conversation (user messages, AI responses, tool results) and decides what fits within the AI model's token budget. AI models have limited context windows; a long conversation can't be sent in its entirety. The Context Manager makes the cut. Exactly one per session. Required.
+### Context Manager — "The agent's memory"
 
-### Hook Handler
+Keeps track of what's been said and decides what to include when the AI needs context. Handles the token budget constraint and decides which messages fit in the AI's limited context window. Exactly one per session. Required.
 
-Reacts to system events. When something happens (a tool is about to execute, a message is being sent, a session is starting) an event fires. Registered hooks run automatically.
+### Hook Handler — "The sentinel"
 
-Unlike every other module type, hooks are invisible to the AI. The model has no concept they exist. Not in the system prompt, never chosen by the model. This distinction between tools the AI controls and hooks that control the AI is one of the most important in the architecture. It gets its own section.
+Reacts to events. Fires automatically when something happens. The AI has *no idea* hooks exist. They are invisible to the model, not listed in its instructions, never chosen by it. Observe, block, inject, or modify.
 
-### Resolver
-
-Maps module identifiers (names like `anthropic-provider`) to actual file paths on disk. Infrastructure plumbing. Foundation mounts one; users rarely write these.
+A sixth type, the **Resolver**, maps module names to file paths. Infrastructure plumbing; users rarely encounter it.
 
 ## One contract for all six
 
@@ -38,84 +36,97 @@ Every module type plugs in through the same function:
 async def mount(coordinator, config) -> Optional[cleanup_fn]
 ```
 
-The module receives the Coordinator (the registry) and a configuration dictionary. It does whatever setup it needs, registers itself into the Coordinator at the appropriate slot, and optionally returns a cleanup function for session teardown.
+The contract is a function called `mount`. It receives two things: the Coordinator and a configuration dictionary. The module does whatever setup it needs, registers itself into the Coordinator at the right slot, and optionally returns a cleanup function that will be called when the session ends.
 
-Orchestrators follow this. Providers follow this. Tools, Context Managers, Hooks, Resolvers: all of them. The Loader doesn't need to know what type it's loading. It calls `mount`; the module handles the rest.
+The Orchestrator follows this contract. Providers, Tools, Context Managers, Hook Handlers, and Resolvers all follow this contract. The Module Loader does not need to know what type of module it is loading. It calls `mount`, and the module handles the rest.
 
-The cleanup function is the flip side. If a module opens a network connection or allocates resources during mount, it returns a cleanup function that releases those resources. The session calls all cleanup functions at shutdown.
+## Loading order
 
-## Fixed loading order
+Modules are loaded in a fixed order: **Orchestrator first**, then Context Manager, then Providers, then Tools, then Hook Handlers last. The Orchestrator and Context Manager are required. If either fails to mount, the session stops immediately with an error. The rest are optional.
 
-Modules load in sequence:
-
-1. **Orchestrator** first, because other modules may need to know the conversation strategy
-2. **Context Manager** second, because the Orchestrator needs memory available
-3. **Providers** third, because tools may check which models are available
-4. **Tools** fourth, because hooks may want to observe tool registration
-5. **Hook Handlers** last, because they observe everything else and need the system fully set up
-
-Orchestrator and Context Manager are required. If either fails to mount, the session stops. There's no reasonable way to run an agent that can't think or can't remember. The remaining three are optional. A failed Provider gets logged; you might have others. A failed Tool means the agent has fewer actions. A failed Hook means fewer observers.
-
-## Discovery channels
-
-Before mounting, the Loader needs to find modules. Two primary channels:
-
-**Python entry points**: installed packages advertise "I contain an Amplifier module." Standard `pip install` handles registration automatically. The Loader scans these at startup.
-
-**Filesystem scanning**: directories named `amplifier-module-*` in configured search paths. Useful for local development. Create a directory, name it correctly, and the Loader finds it.
-
-Advanced channels exist for WebAssembly modules (sandboxed binaries) and remote gRPC modules (running on separate machines), but entry points and filesystem scanning cover most needs.
-
-## Contracts are contracts, not enforcement
-
-The six protocols use structural subtyping. The system checks what methods a module has and infers the type. A module with `complete` is probably a Provider. A module with `execute` and `input_schema` is probably a Tool.
-
-There's no runtime type-checking at load time. If you write a Provider missing its `complete` method, nothing complains until the system actually calls it. That's a trade-off: maximum flexibility for module authors (no base classes, no registration boilerplate) at the cost of late failure. In practice it works well, because module authors test their modules.
+The Orchestrator is required: if it fails to mount, the session stops. But the system needs *an* orchestrator, not a *specific* orchestrator. The default one handles think, act, observe, repeat. Swap it for one that runs parallel provider calls. The kernel does not care which orchestrator is in the slot. It only cares that something is there.
 
 ---
 
 ## Presentation Slides
 
-### Slide 1: Six module types
-- Orchestrator: drives conversation. Required.
-- Provider: connects to AI model. Multiple allowed.
-- Tool: action the AI can take. AI decides when.
-- Context Manager: the agent's memory. Required.
-- Hook Handler: reacts to events. Invisible to AI.
-- Resolver: maps names to paths. Infrastructure.
+### Slide 1: "Everything outside the kernel is a module." (statement)
+Six types. One mount contract. Fixed loading order. Swap any piece through a standard interface.
 
-### Slide 2: The universal mount contract
+### Slide 2: Six module types (icon-grid)
+- **Orchestrator** — Drives the conversation. Exactly one per session. Required.
+- **Provider** — Connects to an AI model. Claude, GPT, Gemini, local. Typically required.
+- **Tool** — An action the agent can take. The AI decides when to use it.
+- **Context Manager** — The agent's memory. Manages the context window. Required.
+- **Hook Handler** — Reacts to events. Invisible to the AI. The model does not know they exist.
+
+### Slide 3: Required vs Optional (compare-grid)
+**Required** — session fails without these
+- Orchestrator: no agent loop without it
+- Context Manager: no memory without it
+- Both must mount successfully
+
+**Optional** — warn and continue if missing
+- Providers: you may have others
+- Tools: agent just has fewer actions
+- Hook Handlers: no observers
+
+### Slide 4: One contract for all six types (code)
 ```
-async def mount(coordinator, config) → Optional[cleanup_fn]
+async def mount(
+    coordinator: Coordinator,
+    config: dict
+) -> Optional[cleanup_fn]:
+    ...
 ```
-- Receive the registry + configuration
-- Set yourself up, register yourself
-- Optionally return a cleanup function
-- Same interface for all six types
+The Orchestrator follows this. The Provider follows this. All six module types, one interface.
 
-### Slide 3: Loading order
-- Orchestrator → Context → Providers → Tools → Hooks
-- Orchestrator and Context are required; session fails without them
-- Others are optional: warn and continue
+### Slide 5: Loading order is fixed (flow)
+Orchestrator (required) -> Context (required) -> Providers (optional) -> Tools (optional) -> Hooks (optional)
+Each module can count on the ones loaded before it being available.
 
-### Slide 4: Discovery
-- Entry points: install with pip, module advertises itself
-- Filesystem: directories named `amplifier-module-*`
-- Advanced: WebAssembly, remote gRPC
-- Most users need only the first two
+### Slide 6: How modules are found (icon-grid)
+- **Python entry points** — Install with pip. Module advertises itself automatically.
+- **Filesystem scan** — Directories named `amplifier-module-*` in search paths.
+
+### Slide 7: "If you have the right methods, you qualify." (statement)
+No base class required. No explicit registration. Structural subtyping: if you have the right methods, you qualify.
+
+### Slide 8: A preview: Tools vs Hooks (compare-grid)
+**Tools** — visible to the AI
+- Listed in the system prompt
+- The AI decides when to call them
+- Part of the model's deliberate reasoning
+
+**Hook Handlers** — invisible to the AI
+- Not in the system prompt
+- Fire automatically on events
+- The model does not know they exist
 
 ---
 
 ## Speaker Notes
 
 ### Slide 1
-Walk through the types briefly. Two things to emphasize: Tools are AI-visible (the model decides when to use them), Hook Handlers are AI-invisible (the model has no idea they exist). This gets expanded in Section 7.
+This is literal. Everything outside those five kernel subsystems is a module. Not some things: everything. Six module types, one mount contract, fixed loading order. That's the entire module system.
 
 ### Slide 2
-The mount contract is the system's connective tissue. The Loader is completely generic. It doesn't know what type it's loading. It calls `mount`, and the module self-mounts into the Coordinator at the right slot.
+Six types. The Orchestrator is the conductor: it drives the agent loop. Providers connect to AI models. The Context Manager handles memory and conversation state. Tools: two things to know. First, the AI can see them. Tools appear in the system prompt. Second, the AI decides when to use them. Hook Handlers are the opposite: completely invisible to the AI. They observe and intervene, but the AI never knows they're there. And Resolvers handle module discovery: infrastructure plumbing. Don't linger on Resolvers.
 
 ### Slide 3
-Order matters because each module can rely on the ones before it. Ask the audience: "No Orchestrator. What does the agent do? Nothing. Hard error. One failed tool out of twenty? Nineteen still work."
+Think about it this way. If there's no Orchestrator, what does the agent do? Nothing. There's no one to drive the loop. That's a hard error: the session cannot start. But if one tool out of twenty fails to load? The agent still has nineteen other tools. It can work. That's the distinction between required and optional. Required means the session cannot function without it. Optional means the session is degraded but viable.
 
 ### Slide 4
-Keep brief. Entry points and filesystem scanning are what matter for most users.
+One contract for all six types. The Loader calls mount() and doesn't know whether it's loading a provider, a tool, or a hook handler. The module receives the Coordinator, registers itself in the correct slot, and that's it. This uniformity is what makes the system composable.
+
+### Slide 5
+The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Providers come next, then Tools. And Hooks load last. Why last? Because hooks observe everything else. They need the full system set up before they start watching.
+
+### Slide 6
+Keep this brief. Two main mechanisms: Python entry points and filesystem scanning. Entry points are the standard Python packaging approach: install a package and it registers itself. Filesystem scanning looks in known directories.
+
+### Slide 7
+Amplifier uses structural subtyping. If your class has the right methods with the right signatures, it qualifies as that module type. You don't need to inherit from a base class. You don't need to declare "I am a Tool." The structure of your code determines its type.
+
+### Slide 8
+Before we move on, I want to flag something. Tools and hooks are both modules. They both plug in through mount(). But they operate in fundamentally different realms. We're going to spend an entire section on this distinction later, because getting it right is one of the most important design decisions you'll make.

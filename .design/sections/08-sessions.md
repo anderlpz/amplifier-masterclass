@@ -1,22 +1,29 @@
 # Section 8: Sessions
 
-A session is one conversation: one agent interaction from start to cleanup. It's the container where kernel infrastructure, modules, the Orchestrator, tools, and hooks all come together.
+## A session is a container.
+
+A session is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a lifecycle.
 
 ## Four phases
 
-**Creation** (`__init__`). Configuration goes in. Coordinator and Loader are created. Nothing loaded yet. The system has a plan but hasn't acted on it.
+A visual timeline of the session lifecycle:
 
-**Initialization** (`initialize`). Modules load in fixed order. Orchestrator and Context Manager must succeed or the session stops. Providers, Tools, Hooks are optional; failures get logged, session continues.
+| Phase 1 | Phase 2 | Phase 3 | Phase 4 |
+|---------|---------|---------|---------|
+| **Create** | **Initialize** | **Execute** | **Cleanup** |
+| Session created with configuration. Coordinator and Module Loader are set up. Nothing has been loaded yet. The system knows what it needs, but hasn't started yet. | Module Loader loads modules in fixed order. If the Orchestrator or Context Manager fails to load, the session stops. Everything else is optional. | Session receives a message. Passes it to the Orchestrator. Gets a response back. This phase is repeatable. Each call is one turn of conversation. Between turns, all state is maintained. | `session:end` fires first (hooks get a final chance). Then Coordinator cleans up modules. Then Loader cleans up. In a `finally` block. Always runs, even after errors. |
 
-**Execution** (`execute`). A user message arrives, passes to the Orchestrator, and a response comes back. Repeatable. Each call is one turn. Between turns, state persists: Context Manager remembers what was said, hooks retain registrations, modules stay mounted.
+> **Required**: Orchestrator + Context Manager must mount successfully during Initialize. If either fails, the session stops immediately.
 
-**Cleanup**. A `session:end` event fires first. Hooks get a final chance to flush logs, record summaries, do last processing. Then Coordinator cleans up mounted modules. Then Loader cleans up. The last step runs in a `finally` block, so cleanup happens even if the session crashed.
+## Parent and child sessions
 
-## Parent-child sessions
+| What you might expect | What Amplifier does |
+|-----------------------|---------------------|
+| Child inherits parent's context | Set `parent_id`. That is the only link. |
+| Shared modules, shared memory | No shared modules, memory, or config |
+| Changes in parent affect child | Each session fully self-contained |
 
-A coding agent delegates a research task to a research agent. A planning agent hands individual items to specialized workers. Amplifier handles this through parent-child sessions.
-
-The mechanism: set `parent_id` when creating the child session. That's the entire API. The child is a full, independent session with its own Coordinator, own modules, own configuration. No automatic inheritance. No shared memory. No shared modules. Linked by ID only.
+The core provides a `parent_id` field that links one session to another. That is the extent of what the kernel does. How parent-child relationships are used (delegation, sub-agents, task decomposition) is decided by Foundation and applications built on top of it.
 
 This is deliberately minimal. Automatic inheritance creates hidden dependencies; changes to the parent's conversation would affect the child unpredictably. Explicit is better: pass what you need, share nothing by default. Each session is self-contained and predictable.
 
@@ -26,27 +33,38 @@ When you see session files on disk (`transcript.jsonl`, `events.jsonl`, `metadat
 
 ## Cancellation
 
-Cancellation is cooperative, not preemptive. The kernel sets a flag with three states: none, graceful (finish current turn), immediate (stop at next safe point). The Orchestrator is responsible for checking. If it ignores the flag, cancellation doesn't happen.
+Cancellation is cooperative, not preemptive. The kernel can't forcibly stop an Orchestrator in the middle of its work. Instead, it sets a flag with three states:
+
+1. **No cancellation requested** — normal operation continues.
+2. **Graceful cancellation** — finish what you're doing, then stop.
+3. **Immediate cancellation** — stop as soon as possible.
+
+The Orchestrator must check this flag periodically. If it ignores the flag, cancellation doesn't happen.
 
 ---
 
 ## Presentation Slides
 
-### Slide 1: Four phases
+### Slide 1: Anatomy of a session
+- One session = one container. All modules, all state, one lifetime.
 - Create → Initialize → Execute → Cleanup
 - Orchestrator + Context required; rest optional
 - Execute is repeatable; each call is one turn
 - Cleanup always runs (finally block)
 
-### Slide 2: Parent-child sessions
-- Set `parent_id` when creating child. That's the entire API.
-- No auto-inheritance, no shared modules, memory, or config
-- Each session fully independent. Linked by ID only.
-- Explicit > implicit: predictable behavior.
+### Slide 2: Inside each phase
+- **Create**: Configuration in. Coordinator and Loader set up. Nothing loaded yet.
+- **Initialize**: Fixed loading order. Orchestrator + Context required. Others optional.
+- **Execute**: User sends a message. Orchestrator runs the loop. Response comes back. Repeatable.
+- **Cleanup**: `session:end` fires. Modules clean up. Loader cleans up. Always runs (finally block).
 
-### Slide 3: File output is a module concern
-- The kernel writes nothing to disk
-- transcript.jsonl, events.jsonl, metadata.json: all from hook modules
+### Slide 3: Parent-child sessions (compare grid)
+- **What you might expect**: automatic inheritance — child inherits parent's context, shared modules and memory, changes in parent affect child
+- **What Amplifier does**: explicit and independent — set `parent_id` (the only link), no shared modules/memory/config, each session fully self-contained
+
+### Slide 4: The kernel writes nothing
+- Session files come from hook modules
+- `transcript.jsonl`, `events.jsonl`, `metadata.json`: all written by hooks, never by the kernel
 - Remove hooks: session still runs, zero files on disk
 
 ---
@@ -54,10 +72,13 @@ Cancellation is cooperative, not preemptive. The kernel sets a flag with three s
 ## Speaker Notes
 
 ### Slide 1
-Walk through phases in order. Key details: fixed loading order, required vs optional, cleanup guarantee. The `finally` block means sessions are always cleanly shut down even after crashes.
+Walk through as a flow. Key concept: a session means different things in different contexts (CLI conversation vs pipeline batch vs kernel ID+lifecycle). The kernel doesn't prescribe the meaning.
 
 ### Slide 2
-Emphasize the minimalism. In many frameworks, spawning a child inherits configuration or state. Amplifier doesn't. If you want the child to behave like the parent, pass the same configuration. If someone asks "why not share automatically?" the answer is that hidden dependencies create unpredictable behavior.
+Walk through phases in order. Key details: fixed loading order, required vs optional, cleanup guarantee. The `finally` block means sessions are always cleanly shut down even after crashes.
 
 ### Slide 3
-Callback to design philosophy. The kernel writes nothing. Session files are module behavior, not kernel behavior.
+Use the compare-grid framing. In many frameworks, spawning a child inherits configuration or state. Amplifier doesn't. If you want the child to behave like the parent, pass the same configuration. If someone asks "why not share automatically?" the answer is that hidden dependencies create unpredictable behavior.
+
+### Slide 4
+Callback to design philosophy. The kernel writes nothing. Session files are module behavior, not kernel behavior. This IS mechanism versus policy in action.
