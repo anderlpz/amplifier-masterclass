@@ -1,0 +1,282 @@
+/* =============================================================================
+   tokens.css — Amplifier Masterclass Design System
+   Version: 2.0
+   Date: 2026-04-01
+   Source: DESIGN-SYSTEM.md
+
+   All custom properties live under :root.
+   Sections mirror the design doc for 1:1 traceability.
+   Responsive overrides and prefers-reduced-motion at the bottom.
+   ============================================================================= */
+
+:root {
+
+  /* ===========================================================================
+     § 1.1 · COLORS — Dark Palette
+     Deep navy, not pure black. #0f172a = Tailwind slate-900.
+     Subtle blue undertone complements the brand gradient.
+     Never use #000000.
+     =========================================================================== */
+
+  --dark:            #0f172a;   /* Primary section background (the default)       */
+  --dark-deep:       #080f1e;   /* Hero, full-bleed, code block, graph container  */
+  --dark-card:       #1e293b;   /* Solid card backgrounds on dark sections        */
+  --dark-card-hover: #263348;   /* Solid card hover state                         */
+
+  /* ===========================================================================
+     § 1.2 · COLORS — Light Palette
+     Break dark rhythm every 2–3 sections for visual rest.
+     =========================================================================== */
+
+  --surface:      #f8f9fa;   /* Light section background                        */
+  --surface-card: #ffffff;   /* Cards on light sections                         */
+  --white:        #ffffff;   /* Pure white: text on dark, card bgs              */
+
+  /* ===========================================================================
+     § 1.3 · COLORS — Brand Accent (Blue → Purple)
+     One accent system only. No second hue.
+     =========================================================================== */
+
+  --amp-blue:        #0092F3;   /* Gradient start; flat accent on light bgs       */
+  --amp-azure:       #0082EB;   /* Primary flat accent: links, emphasis, borders  */
+  --amp-mid:         #0066E0;   /* Mid-range for hover states                     */
+  --amp-blue-purple: #234FE7;   /* Transition point in gradient                   */
+  --amp-violet:      #5A24D7;   /* Towards purple end                             */
+  --amp-purple:      #7C17D3;   /* Gradient end                                   */
+  --amp-deep:        #002D79;   /* Deep accent text on light bgs (7.2:1 contrast) */
+
+  --amp-gradient:        linear-gradient(135deg, #0092F3, #7C17D3);
+  --amp-gradient-subtle: linear-gradient(135deg, rgba(0,146,243,0.15), rgba(124,23,211,0.15));
+  --amp-gradient-text:   linear-gradient(135deg, #0092F3, #7C17D3);
+
+  --amp-glow:   rgba(0, 146, 243, 0.30);   /* box-shadow glow on hover/focus     */
+  --amp-tint:   rgba(0, 146, 243, 0.15);   /* Tag bgs, icon circles, highlights  */
+  --amp-subtle: rgba(0, 146, 243, 0.06);   /* Card hover tints, section bg vars  */
+
+  /* ===========================================================================
+     § 1.4 · COLORS — Text
+     Contrast ratios documented per token (against respective bg).
+     =========================================================================== */
+
+  /* On dark backgrounds */
+  --text-bright:     #ffffff;                /* Headlines — 15.4:1 vs --dark       */
+  --text-body-dark:  rgba(255, 255, 255, 0.6);  /* Body — 7.1:1 vs --dark (AA)   */
+  --text-muted-dark: rgba(255, 255, 255, 0.4);  /* Captions — 4.8:1 (large only) */
+
+  /* On light backgrounds */
+  --text-primary: #111827;   /* Headlines — 16.0:1 vs --surface                   */
+  --text-body:    #4B5563;   /* Body — 7.5:1 vs --surface (AA)                    */
+  --text-muted:   #9CA3AF;   /* Captions — 3.0:1 vs --surface (large only)        */
+
+  /* ===========================================================================
+     § 1.5 · COLORS — Borders
+     All borders 1px solid. No 2px except callout (3px) and cascade (4px).
+     =========================================================================== */
+
+  --border-dark:        rgba(255, 255, 255, 0.08);  /* On dark backgrounds        */
+  --border-dark-hover:  rgba(255, 255, 255, 0.14);  /* Hover state on dark        */
+  --border-light:       rgba(0, 0, 0, 0.07);        /* On light backgrounds       */
+  --border-light-hover: rgba(0, 0, 0, 0.12);        /* Hover state on light       */
+
+  /* ===========================================================================
+     § 1.6 · COLORS — Semantic: Tools vs Hooks (Section 7 only)
+     Scoped to comparison panel component. Do not use elsewhere.
+     =========================================================================== */
+
+  --color-tools-border: rgba(34, 197, 94, 0.20);   /* Green border               */
+  --color-tools-bg:     rgba(34, 197, 94, 0.05);   /* Green tint background      */
+  --color-tools-text:   rgba(34, 197, 94, 0.70);   /* Green label text           */
+  --color-hooks-border: rgba(239, 68, 68, 0.20);   /* Red border                 */
+  --color-hooks-bg:     rgba(239, 68, 68, 0.05);   /* Red tint background        */
+  --color-hooks-text:   rgba(239, 68, 68, 0.70);   /* Red label text             */
+
+  /* ===========================================================================
+     § 1.6 · COLORS — Hook Priority Cascade (waterfall only)
+     Assign to --cascade-color per level. Not ambient accent colors.
+     =========================================================================== */
+
+  --cascade-deny:     #EF4444;   /* Deny          — stop, fail-closed             */
+  --cascade-ask-user: #F59E0B;   /* AskUser       — pause, human decision         */
+  --cascade-inject:   #3B82F6;   /* InjectContext  — information flowing in        */
+  --cascade-modify:   #8B5CF6;   /* Modify         — transformation               */
+  --cascade-continue: #22C55E;   /* Continue       — go, default no-op            */
+
+  /* ===========================================================================
+     § 2.1 · TYPOGRAPHY — Font Families
+     Rule: Lora = READ. Inter = LEARN. Space Grotesk = REFERENCE.
+     --font-mono = Space Grotesk (monospace heritage, not a code font).
+     --font-code = actual monospace for code blocks.
+     =========================================================================== */
+
+  --font-serif: 'Lora', serif;
+  --font-sans:  'Inter', sans-serif;
+  --font-mono:  'Space Grotesk', sans-serif;
+  --font-code:  'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* ===========================================================================
+     § 2.3 · TYPOGRAPHY — Type Scale (fluid via clamp)
+     Scales smoothly from 375px mobile to 1200px+ desktop.
+     No breakpoint-based jumps.
+     =========================================================================== */
+
+  --text-xs:   0.75rem;                         /*  12px — small labels, metadata     */
+  --text-sm:   0.875rem;                        /*  14px — captions, footnotes        */
+  --text-base: 1rem;                            /*  16px — body text                  */
+  --text-lg:   1.125rem;                        /*  18px — lead paragraphs, card text */
+  --text-xl:   1.25rem;                         /*  20px — subheadings                */
+  --text-2xl:  clamp(1.5rem, 2vw, 1.75rem);    /*  24–28px — h3 section titles       */
+  --text-3xl:  clamp(1.875rem, 3vw, 2.25rem);  /*  30–36px — h2 section titles       */
+  --text-4xl:  clamp(2.25rem, 4vw, 3rem);      /*  36–48px — h1 major titles         */
+  --text-5xl:  clamp(2.75rem, 5vw, 3.75rem);   /*  44–60px — hero headline           */
+
+  /* ===========================================================================
+     § 3.1 · SPACING — 8px base unit
+     Every value is a multiple of 8 (except --space-xs = 4px for tight gaps).
+     =========================================================================== */
+
+  --space-xs:      4px;    /* Tight gaps: icon + inline text                       */
+  --space-sm:      8px;    /* Base unit. Label gaps, small padding.                */
+  --space-md:      16px;   /* Grid gaps, element margins                           */
+  --space-lg:      24px;   /* Card internal padding (compact)                      */
+  --space-xl:      32px;   /* Card internal padding (standard)                     */
+  --space-2xl:     48px;   /* Below headlines, between content blocks              */
+  --space-3xl:     64px;   /* Between major content groups within section          */
+  --space-4xl:     80px;   /* Hero-level spacing only                              */
+  --space-section: 120px;  /* Vertical section padding (top + bottom)              */
+
+  /* ===========================================================================
+     § 3.2 · LAYOUT CONSTANTS
+     =========================================================================== */
+
+  --container-max: 1200px;   /* Maximum content width                              */
+  --container-pad: 40px;     /* Horizontal padding (desktop)                       */
+  --grid-gap:      16px;     /* Default gap: card grids, asymmetric layouts        */
+
+  /* ===========================================================================
+     § 4 · BORDER RADIUS
+     Subtle. Modern but technical — not toy-like.
+     =========================================================================== */
+
+  --radius-sm:   6px;      /* Buttons, tags, small interactive elements            */
+  --radius-md:   12px;     /* Cards, code blocks (the default card radius)         */
+  --radius-lg:   16px;     /* Feature cards, large panels, graph container         */
+  --radius-xl:   24px;     /* Hero-level cards (max 2 per page)                    */
+  --radius-full: 9999px;   /* Pills, icon circles                                 */
+
+  /* ===========================================================================
+     § 5.1 · SHADOWS & ELEVATION — Glass (dark contexts)
+     Depth via luminance stepping: lighter surface = higher layer.
+     No traditional shadows on dark — they're invisible.
+     =========================================================================== */
+
+  --glass-soft:   rgba(255, 255, 255, 0.04);   /* Raised: card resting state      */
+  --glass-strong: rgba(255, 255, 255, 0.08);   /* Elevated: card hover state      */
+  --glass-blur:   blur(20px);                   /* backdrop-filter value            */
+
+  /* § 5.4 · Glow Effects — accent color diffusion, hover-only */
+  --shadow-glow:        0 0 30px rgba(0, 146, 243, 0.30);
+  --shadow-glow-strong: 0 0 60px rgba(0, 146, 243, 0.30),
+                        0 0 120px rgba(0, 146, 243, 0.10);
+
+  /* § 5.2 · Traditional Shadows — light contexts only */
+  --shadow-light:       0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-light-hover: 0 4px 12px rgba(0, 0, 0, 0.10);
+
+  /* ===========================================================================
+     § 6.1 · MOTION — Duration Tokens
+     Entrance-only and hover-reactive. No loops. No auto-animation.
+     =========================================================================== */
+
+  --duration-fast:   150ms;   /* Micro-interactions: buttons, toggles              */
+  --duration-base:   250ms;   /* Standard transitions: hover, focus, border-color  */
+  --duration-slow:   400ms;   /* Deliberate transitions: panels, modals            */
+  --duration-reveal: 700ms;   /* Scroll-reveal entrance (fade + translateY)        */
+
+  /* § 6.2 · Easing Functions */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);      /* Default for reveals       */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);  /* Button lift only          */
+
+  /* § 10.1 · Stagger delay for sequential card reveals */
+  --stagger-delay: 80ms;
+
+  /* ===========================================================================
+     § 7 · Z-INDEX LAYERS
+     Managed scale. No ad-hoc z-index values outside this table.
+     =========================================================================== */
+
+  --z-base:    1;      /* Default elevated content                                 */
+  --z-card:    10;     /* Cards on hover: lift above siblings                      */
+  --z-sticky:  100;    /* Sticky nav elements                                      */
+  --z-overlay: 1000;   /* Fullscreen graph overlay, presentation mode              */
+
+}
+
+/* =============================================================================
+   § 9.3 · RESPONSIVE OVERRIDES
+   Tokens that change value at specific breakpoints.
+   ============================================================================= */
+
+/* Tablet — collapse asymmetric grids, tighten container padding */
+@media (max-width: 1024px) {
+  :root {
+    --container-pad: 24px;
+  }
+}
+
+/* Mobile — reduce section height, tighten container */
+@media (max-width: 768px) {
+  :root {
+    --space-section: 64px;
+    --container-pad: 20px;
+  }
+}
+
+/* Small mobile — minimum comfortable padding */
+@media (max-width: 480px) {
+  :root {
+    --space-section: 48px;
+    --container-pad: 16px;
+  }
+}
+
+/* =============================================================================
+   § 6.4 · REDUCED MOTION
+   Zero all duration tokens. Belt-and-suspenders: also zero raw
+   transition-duration and animation-duration on all elements.
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:   0.01ms;
+    --duration-base:   0.01ms;
+    --duration-slow:   0.01ms;
+    --duration-reveal: 0.01ms;
+  }
+
+  /* Scroll-reveal elements: immediately visible, no translate, no fade */
+  .reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Catch any hardcoded durations that bypass the token system */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration:  0.01ms !important;
+  }
+}
+
+/* =============================================================================
+   § 11.2 · FOCUS INDICATORS
+   Visible focus ring for keyboard navigation. :focus-visible ensures
+   mouse users don't see the ring; keyboard users always do.
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--amp-azure);     /* #0082EB */
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);         /* 6px */
+}
