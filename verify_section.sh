@@ -3,7 +3,7 @@
 # This should FAIL before implementation, PASS after.
 set -e
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PASS=0
 FAIL=0
 ERRORS=()

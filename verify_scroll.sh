@@ -2,7 +2,7 @@
 # Verification test for Task 6: ScrollProvider.tsx
 # RED phase: This should FAIL before implementation, PASS after.
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILE="$PROJECT/src/components/scroll/ScrollProvider.tsx"
 PASS=0
 FAIL=0

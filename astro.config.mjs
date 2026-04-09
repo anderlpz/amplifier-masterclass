@@ -12,7 +12,7 @@ export default defineConfig({
   },
   vite: {
     server: {
-      allowedHosts: ['localhost'],
+      allowedHosts: process.env.ALLOWED_HOSTS?.split(',') ?? [],
     },
   },
 });

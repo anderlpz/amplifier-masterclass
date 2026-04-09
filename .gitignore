@@ -2,3 +2,7 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+
+# Internal config and session artifacts
+.amplifier/
+.scratch/

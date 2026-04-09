@@ -2,7 +2,7 @@
 # Verification test for Task 7: SidebarTOC.astro + sections.ts
 # RED phase: This should FAIL before implementation, PASS after.
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SECTIONS_FILE="$PROJECT/src/data/sections.ts"
 TOC_FILE="$PROJECT/src/components/navigation/SidebarTOC.astro"
 PASS=0

@@ -2,7 +2,7 @@
 # Verification test for Task 10: MasterclassLayout.astro
 # RED phase: This should FAIL before implementation, PASS after.
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LAYOUT_FILE="$PROJECT/src/layouts/MasterclassLayout.astro"
 INDEX_FILE="$PROJECT/src/pages/index.astro"
 PASS=0

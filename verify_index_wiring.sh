@@ -3,7 +3,7 @@
 # RED phase: Should FAIL before implementation, PASS after.
 # Checks items 1-9 from the built dist/index.html
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PASS=0
 FAIL=0
 ERRORS=()
@@ -58,7 +58,7 @@ echo ""
 echo "2. Section background classes correct"
 python3 - <<'PYEOF'
 import re, sys
-with open("./dist/index.html") as f:
+with open("$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dist/index.html") as f:
     content = f.read()
 
 section_pattern = re.compile(r'<section\b([^>]*)>', re.DOTALL)
@@ -103,7 +103,7 @@ check "SidebarTOC element present" "$R"
 # Count only TOP-LEVEL items (sidebar-toc__item), not children (sidebar-toc__child)
 TOC_LI_COUNT=$(python3 - <<'PYEOF'
 import re
-with open("./dist/index.html") as f:
+with open("$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dist/index.html") as f:
     content = f.read()
 toc_m = re.search(r'class="sidebar-toc["\s].*?</nav>', content, re.DOTALL)
 if toc_m:

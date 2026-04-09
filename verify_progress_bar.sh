@@ -2,7 +2,7 @@
 # Verification test for Task 8: ProgressBar.astro
 # RED phase: This should FAIL before implementation, PASS after.
 
-PROJECT="."
+PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPONENT="$PROJECT/src/components/navigation/ProgressBar.astro"
 PASS=0
 FAIL=0

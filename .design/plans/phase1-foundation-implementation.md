@@ -777,7 +777,7 @@ git commit -m "feat: Section wrapper component with background variants"
 **Files:**
 - Create: `src/components/scroll/ScrollProvider.tsx`
 
-This is a React island (`client:only="react"`) that initializes Lenis smooth scroll driven by GSAP's ticker. Ported from the production-quality pattern in `(internal reference)`. Key behaviors: `autoRaf: false` (GSAP ticker drives Lenis), `lenis.on('scroll')` fires `ScrollTrigger.update()`, `gsap.ticker.lagSmoothing(0)`, respects `prefers-reduced-motion`.
+This is a React island (`client:only="react"`) that initializes Lenis smooth scroll driven by GSAP's ticker. Ported from the production-quality pattern in `(internal reference: withamplifier/lib/scroll.ts)`. Key behaviors: `autoRaf: false` (GSAP ticker drives Lenis), `lenis.on('scroll')` fires `ScrollTrigger.update()`, `gsap.ticker.lagSmoothing(0)`, respects `prefers-reduced-motion`.
 
 **Step 1: Create `src/components/scroll/ScrollProvider.tsx`**
 
