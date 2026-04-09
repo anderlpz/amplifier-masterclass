@@ -1,0 +1,864 @@
+// Amplifier Masterclass — Interactive Architecture Map
+// Designed for the dotviewer.html interactive explorer
+// Aesthetic: Parchment ground, ink text, azure flow, copper concepts
+//
+// Navigate: Click clusters to spotlight. Double-click to collapse/expand.
+// Hover nodes for connections. Click edges to follow the flow.
+
+digraph AmplifierMasterclass {
+
+  // ═══════════════════════════════════════════════════════
+  // GLOBAL STYLING — Aesthetic Guide alignment
+  // Void (#0F0F13), Azure (#0082EB), Copper (#C87B60)
+  // ═══════════════════════════════════════════════════════
+
+  graph [
+    bgcolor="#F5F3EC"
+    fontname="Helvetica Neue"
+    fontcolor="#3D3830"
+    fontsize=11
+    pad="0.8"
+    nodesep=0.6
+    ranksep=1.0
+    splines=curved
+    concentrate=false
+    compound=true
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="22" COLOR="#1A1815"><B>How Amplifier Works</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="12" COLOR="#A0624B">A modular AI agent framework built on the Linux kernel philosophy</FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="9" COLOR="#998F82">Click clusters to spotlight  |  Double-click to collapse  |  Hover for connections  |  Search with Ctrl+F</FONT></TD></TR>
+    </TABLE>>
+    labelloc=t
+    labeljust=c
+  ]
+
+  node [
+    fontname="Helvetica Neue"
+    fontsize=10
+    fontcolor="#1A1815"
+    style="filled,rounded"
+    fillcolor="#FFFFFF"
+    color="#D8D4CC"
+    penwidth=1.2
+    margin="0.15,0.08"
+  ]
+
+  edge [
+    fontname="Helvetica Neue"
+    fontsize=8
+    fontcolor="#887E72"
+    color="#0082EB77"
+    penwidth=1.5
+    arrowsize=0.7
+    arrowhead=vee
+  ]
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 0 — DESIGN PHILOSOPHY (Copper conceptual cluster)
+  // "The principles that constrain every decision"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_philosophy {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#C87B60"><B>DESIGN PHILOSOPHY</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>The Principles</B></FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded,dashed"
+    color="#C87B6077"
+    bgcolor="#C87B6008"
+    fontname="Helvetica Neue"
+    fontcolor="#C87B60"
+    penwidth=1.0
+
+    mechanism [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Mechanism, Not Policy</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">The kernel provides capabilities.</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Modules decide behavior.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#FDF6F3"
+      color="#C87B6099"
+    ]
+
+    center_still [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>The Center Stays Still</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Stable kernel, fast-moving edges.</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">~2,600 lines that rarely change.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#FDF6F3"
+      color="#C87B6099"
+    ]
+
+    simplicity [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Ruthless Simplicity</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Every abstraction justifies its existence.</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Zero file I/O from the kernel.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#FDF6F3"
+      color="#C87B6099"
+    ]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 1 — THE KERNEL (The still center)
+  // "Five responsibilities. Nothing more."
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_kernel {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>THE KERNEL</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>The Still Center</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="8" COLOR="#8A8178">~2,600 lines of Rust + Python bindings</FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB08"
+    fontname="Helvetica Neue"
+    penwidth=1.5
+
+    session_lifecycle [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Session Lifecycle</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Create &#8594; Initialize &#8594; Execute &#8594; Cleanup</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">The container for everything that happens</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    contracts [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Contracts</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">6 protocol types define the rules</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Structural subtyping: if it fits, it works</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    module_loader [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Module Loader</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Entry-points + filesystem scan</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">The doorway modules enter through</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    coordinator [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Coordinator</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Passive registry: register / get / list</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Modules register here. Orchestrator reads here.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    hooks_system [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Hook System</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">41 lifecycle events, priority cascade</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Observe without blocking. Events tell the story.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    // Internal kernel connections
+    session_lifecycle -> contracts [style=dashed, color="#0082EB66", label="defines rules", fontcolor="#9A9188"]
+    module_loader -> coordinator [label="registers into", color="#0082EB77"]
+    coordinator -> hooks_system [style=dashed, color="#0082EB66", label="emits events", fontcolor="#9A9188"]
+    session_lifecycle -> coordinator [label="provides context", color="#0082EB77"]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 2 — THE MODULE SYSTEM (The moving edges)
+  // "Six types. One universal contract: mount()"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_modules {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>MODULE SYSTEM</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>The Moving Edges</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="8" COLOR="#8A8178">All enter through mount(coordinator, config)</FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB06"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    // The Orchestrator — the main engine
+    subgraph cluster_orchestrator {
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>THE ORCHESTRATOR</B></FONT></TD></TR>
+        <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="9" COLOR="#1A1815"><B>The Engine That Drives Everything</B></FONT></TD></TR>
+      </TABLE>>
+      labeljust=l
+      style="rounded"
+      color="#0082EB88"
+      bgcolor="#0082EB0C"
+      penwidth=1.2
+
+      think [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+          <TR><TD><FONT POINT-SIZE="9" COLOR="#0082EB"><B>THINK</B></FONT></TD></TR>
+          <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Send context to LLM</FONT></TD></TR>
+        </TABLE>>
+        shape=box
+        fillcolor="#EDF4FC"
+        color="#0082EB88"
+      ]
+
+      act [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+          <TR><TD><FONT POINT-SIZE="9" COLOR="#0082EB"><B>ACT</B></FONT></TD></TR>
+          <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Execute tool calls</FONT></TD></TR>
+        </TABLE>>
+        shape=box
+        fillcolor="#EDF4FC"
+        color="#0082EB88"
+      ]
+
+      observe [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+          <TR><TD><FONT POINT-SIZE="9" COLOR="#0082EB"><B>OBSERVE</B></FONT></TD></TR>
+          <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Collect results</FONT></TD></TR>
+        </TABLE>>
+        shape=box
+        fillcolor="#EDF4FC"
+        color="#0082EB88"
+      ]
+
+      decide [
+        label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+          <TR><TD><FONT POINT-SIZE="9" COLOR="#0082EB"><B>DECIDE</B></FONT></TD></TR>
+          <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Continue or respond?</FONT></TD></TR>
+        </TABLE>>
+        shape=diamond
+        fillcolor="#EDF4FC"
+        color="#0082EB88"
+        width=1.4
+        height=0.9
+      ]
+
+      // The reasoning loop
+      think -> act [color="#0082EBBB", penwidth=2.0]
+      act -> observe [color="#0082EBBB", penwidth=2.0]
+      observe -> decide [color="#0082EBBB", penwidth=2.0]
+      decide -> think [color="#0082EBBB", penwidth=2.0, label="more work needed", fontcolor="#9A9188"]
+    }
+
+    // Other module types
+    provider [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Provider</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">LLM backends</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Anthropic, OpenAI, Azure, Ollama, etc.</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    tool_module [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Tool</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">AI-chosen capabilities</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">The model decides when to use these</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    context_mgr [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Context Manager</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Memory management</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">What the AI remembers and forgets</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    hook_handler [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Hook Handler</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Code-triggered observers</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Fire on events, invisible to the AI</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    resolver [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Resolver</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Module source resolution</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Finds and fetches module code</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    // The key distinction: Tools vs Hooks
+    tools_vs_hooks [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#C87B60"><B>The Key Distinction</B></FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358"><B>Tools:</B> AI sees them, AI chooses when</FONT></TD></TR>
+        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358"><B>Hooks:</B> AI can't see them, code decides when</FONT></TD></TR>
+      </TABLE>>
+      shape=note
+      fillcolor="#FDF6F3"
+      color="#C87B6077"
+    ]
+
+    tool_module -> tools_vs_hooks [style=dashed, color="#C87B6077", arrowhead=none]
+    hook_handler -> tools_vs_hooks [style=dashed, color="#C87B6077", arrowhead=none]
+
+    // Orchestrator connects to other modules
+    think -> provider [label="sends prompt", color="#0082EB88", lhead=cluster_orchestrator]
+    act -> tool_module [label="executes", color="#0082EB88"]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 3 — SESSIONS (The container model)
+  // "Everything happens inside a session"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_sessions {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>SESSIONS</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>The Container</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="8" COLOR="#8A8178">Everything happens inside a session</FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB06"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    session_create [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#1A1815"><B>Create</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Allocate resources</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    session_init [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#1A1815"><B>Initialize</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Load modules via mount()</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    session_execute [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#1A1815"><B>Execute</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Run the orchestrator loop</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#0082EB">&#x21BB; repeatable</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB88"
+      penwidth=1.5
+    ]
+
+    session_cleanup [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#1A1815"><B>Cleanup</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Always runs (finally)</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    child_session [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#1A1815"><B>Child Sessions</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Inherit config, not state</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Linked by parent_id only</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      style="filled,rounded,dashed"
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    session_create -> session_init [color="#0082EB88"]
+    session_init -> session_execute [color="#0082EB88"]
+    session_execute -> session_cleanup [color="#0082EB88"]
+    session_execute -> child_session [label="spawn", color="#0082EB88", style=dashed]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 4 — BUNDLES & CONFIGURATION
+  // "Composable packages that wire everything together"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_bundles {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>BUNDLES &amp; CONFIGURATION</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>Composition</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="8" COLOR="#8A8178">YAML frontmatter + Markdown = a complete AI personality</FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB06"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    bundle_md [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>bundle.md</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">YAML frontmatter defines modules</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Markdown body becomes instructions</FONT></TD></TR>
+      </TABLE>>
+      shape=note
+      fillcolor="#FFFFFF"
+    ]
+
+    includes [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Composition</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">include: other bundles</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Recursive nesting, not inheritance</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    at_mentions [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>@mentions</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">@namespace:path/to/file</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Context files re-read every turn</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    agents_as_bundles [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Agents</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Agents ARE bundles</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Same file format, meta: key instead of bundle:</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      style="filled,rounded,dashed"
+      color="#C87B6077"
+      fillcolor="#FDF6F3"
+    ]
+
+    bundle_md -> includes [color="#0082EB77"]
+    bundle_md -> at_mentions [color="#0082EB77"]
+    bundle_md -> agents_as_bundles [style=dashed, color="#C87B6077"]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 5 — THE FOUNDATION BRIDGE
+  // "Turns text bundles into running AI sessions"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_foundation {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>THE FOUNDATION BRIDGE</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>Foundation</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="8" COLOR="#8A8178">Reference implementation that makes bundles real</FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB06"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    prepared_bundle [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>PreparedBundle Pipeline</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">8-step transformation</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Text bundle &#8594; running configuration</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    sys_prompt_factory [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>System Prompt Factory</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Re-reads @mentions every turn</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Live context, not cached</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    bundle_resolver [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>BundleModuleResolver</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Connects bundle declarations to kernel</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">The handshake between config and runtime</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    prepared_bundle -> sys_prompt_factory [color="#0082EB77"]
+    prepared_bundle -> bundle_resolver [color="#0082EB77"]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // LAYER 6 — APPLICATIONS & ECOSYSTEM
+  // "What users actually interact with"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_applications {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>APPLICATIONS &amp; ECOSYSTEM</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>What You Touch</B></FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#0082EB66"
+    bgcolor="#0082EB06"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    cli_app [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>CLI Application</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">amplifier run "your request"</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">The reference user interface</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    custom_apps [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Custom Applications</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Build your own with the same primitives</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    recipes [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Recipes</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Multi-step workflows in YAML</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Chained sessions with approval gates</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    skills [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Skills</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Domain knowledge packages</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Lazy-loaded, 3-level progressive disclosure</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+
+    modes [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Modes</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#6B6358">Runtime behavior overlays</FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#8A8178">Change how the agent operates on the fly</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+    ]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // SPECIAL — THE REQUEST FLOW (How it all connects)
+  // "Follow a single request through the system"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_request_flow {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#C87B60"><B>THE REQUEST FLOW</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="#1A1815"><B>Following a Request Through the System</B></FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded,dashed"
+    color="#C87B6077"
+    bgcolor="#C87B6006"
+    fontname="Helvetica Neue"
+    penwidth=1.0
+
+    user_request [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>User</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#C87B60">"Help me refactor auth"</FONT></TD></TR>
+      </TABLE>>
+      shape=oval
+      fillcolor="#FDF6F3"
+      color="#C87B6099"
+    ]
+
+    flow_cli [
+      label="CLI receives request"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_session [
+      label="Session created"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_bundle [
+      label="Bundle loaded & resolved"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_orchestrator [
+      label="Orchestrator loop begins"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#0082EB77"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_provider [
+      label="Provider sends to LLM"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_tools [
+      label="Tools execute actions"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_hooks [
+      label="Hooks observe everything"
+      shape=box
+      fillcolor="#FFFFFF"
+      color="#C87B6077"
+      fontcolor="#3D3830"
+      fontsize=9
+    ]
+
+    flow_response [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1">
+        <TR><TD><FONT POINT-SIZE="10" COLOR="#1A1815"><B>Response</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="8" COLOR="#C87B60">"Here's the refactored code..."</FONT></TD></TR>
+      </TABLE>>
+      shape=oval
+      fillcolor="#FDF6F3"
+      color="#C87B6099"
+    ]
+
+    user_request -> flow_cli [color="#C87B6099", penwidth=2.0]
+    flow_cli -> flow_session [color="#C87B6099", penwidth=2.0]
+    flow_session -> flow_bundle [color="#C87B6099", penwidth=2.0]
+    flow_bundle -> flow_orchestrator [color="#0082EBBB", penwidth=2.0]
+    flow_orchestrator -> flow_provider [color="#0082EBBB", penwidth=2.0]
+    flow_provider -> flow_tools [color="#0082EBBB", penwidth=2.0]
+    flow_tools -> flow_hooks [color="#0082EBBB", penwidth=2.0]
+    flow_hooks -> flow_response [color="#C87B6099", penwidth=2.0]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // HOOK PRIORITY CASCADE (Detail)
+  // "The five levels of hook intervention"
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_hook_cascade {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="7" COLOR="#0082EB"><B>HOOK PRIORITY CASCADE</B></FONT></TD></TR>
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="9" COLOR="#1A1815"><B>How Hooks Intervene</B></FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#D8D4CC"
+    bgcolor="#EEEEF3"
+    fontname="Helvetica Neue"
+    penwidth=0.8
+
+    hook_deny [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#FF6B6B"><B>1. Deny</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Stop the action entirely</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#FFF0EE"
+      color="#FF6B6B66"
+    ]
+
+    hook_ask [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#FFB347"><B>2. Ask User</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Pause for human approval</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#FFF8F0"
+      color="#FFB34766"
+    ]
+
+    hook_inject [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#0082EB"><B>3. Inject Context</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Add information (accumulates)</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F7F7FC"
+      color="#0082EB77"
+    ]
+
+    hook_modify [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#7EC8E3"><B>4. Modify</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Transform the payload (chains)</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F0F6FA"
+      color="#7EC8E366"
+    ]
+
+    hook_continue [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+        <TR><TD><FONT POINT-SIZE="9" COLOR="#66BB6A"><B>5. Continue</B></FONT></TD></TR>
+        <TR><TD><FONT POINT-SIZE="7" COLOR="#6B6358">Let it pass through</FONT></TD></TR>
+      </TABLE>>
+      shape=box
+      fillcolor="#F0F8F0"
+      color="#66BB6A66"
+    ]
+
+    hook_deny -> hook_ask [color="#444444", style=dashed]
+    hook_ask -> hook_inject [color="#444444", style=dashed]
+    hook_inject -> hook_modify [color="#444444", style=dashed]
+    hook_modify -> hook_continue [color="#444444", style=dashed]
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // CROSS-LAYER CONNECTIONS
+  // "How the layers depend on each other"
+  // ═══════════════════════════════════════════════════════
+
+  // Philosophy constrains everything
+  mechanism -> contracts [label="constrains", color="#C87B6077", style=dashed, constraint=false]
+  center_still -> session_lifecycle [label="keeps stable", color="#C87B6077", style=dashed, constraint=false]
+
+  // Kernel → Modules
+  module_loader -> provider [label="loads", color="#0082EB77", ltail=cluster_kernel]
+  module_loader -> tool_module [label="loads", color="#0082EB77"]
+  module_loader -> context_mgr [label="loads", color="#0082EB77"]
+  module_loader -> hook_handler [label="loads", color="#0082EB77"]
+  module_loader -> resolver [label="loads", color="#0082EB77"]
+  coordinator -> think [label="provides to", color="#0082EB77", lhead=cluster_orchestrator]
+  hooks_system -> hook_handler [label="dispatches to", color="#0082EB88"]
+
+  // Sessions use modules
+  session_execute -> think [label="runs", color="#0082EB88", lhead=cluster_orchestrator]
+
+  // Bundles configure modules
+  bundle_md -> module_loader [label="declares modules", color="#0082EB77"]
+
+  // Foundation bridges bundles to kernel
+  prepared_bundle -> bundle_md [label="reads", color="#0082EB77", dir=back]
+  bundle_resolver -> module_loader [label="feeds into", color="#0082EB77"]
+  sys_prompt_factory -> at_mentions [label="reads", color="#0082EB77", dir=back]
+
+  // Applications use foundation
+  cli_app -> prepared_bundle [label="loads via", color="#0082EB77"]
+  custom_apps -> prepared_bundle [label="loads via", color="#0082EB77"]
+  recipes -> session_execute [label="chains", color="#0082EB77"]
+  agents_as_bundles -> child_session [label="spawn into", color="#0082EB77"]
+
+  // Request flow connects to real components
+  flow_cli -> cli_app [style=dotted, color="#C87B6044", constraint=false, arrowhead=none]
+  flow_session -> session_lifecycle [style=dotted, color="#C87B6044", constraint=false, arrowhead=none]
+  flow_orchestrator -> think [style=dotted, color="#0082EB66", constraint=false, arrowhead=none]
+  flow_provider -> provider [style=dotted, color="#C87B6044", constraint=false, arrowhead=none]
+  flow_tools -> tool_module [style=dotted, color="#C87B6044", constraint=false, arrowhead=none]
+  flow_hooks -> hooks_system [style=dotted, color="#C87B6044", constraint=false, arrowhead=none]
+
+  // Hook cascade connects to hook system
+  hooks_system -> hook_deny [label="evaluates", color="#0082EB66", lhead=cluster_hook_cascade]
+
+  // Decide outputs
+  decide -> flow_response [label="done", color="#0082EB88", style=dashed, constraint=false]
+
+  // ═══════════════════════════════════════════════════════
+  // LEGEND
+  // ═══════════════════════════════════════════════════════
+
+  subgraph cluster_legend {
+    label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD><FONT FACE="Helvetica Neue" POINT-SIZE="9" COLOR="#998F82"><B>LEGEND</B></FONT></TD></TR>
+    </TABLE>>
+    labeljust=l
+    style="rounded"
+    color="#D8D4CC"
+    bgcolor="#EEEEF3"
+    penwidth=0.5
+
+    legend [
+      label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" CELLPADDING="4">
+        <TR>
+          <TD><FONT COLOR="#0082EB">&#9632;</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Technical component (azure)</FONT></TD>
+          <TD>    </TD>
+          <TD><FONT COLOR="#C87B60">&#9632;</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Conceptual / philosophical (copper)</FONT></TD>
+        </TR>
+        <TR>
+          <TD><FONT COLOR="#0082EB">&#8594;</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Data/control flow</FONT></TD>
+          <TD>    </TD>
+          <TD><FONT COLOR="#8A8178">- - -</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Conceptual relationship</FONT></TD>
+        </TR>
+        <TR>
+          <TD><FONT COLOR="#C87B60">&#8594;</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Request flow path</FONT></TD>
+          <TD>    </TD>
+          <TD><FONT COLOR="#B5AEA5">&#183;&#183;&#183;</FONT></TD>
+          <TD ALIGN="LEFT"><FONT POINT-SIZE="8" COLOR="#6B6358">Maps to (reference link)</FONT></TD>
+        </TR>
+      </TABLE>>
+      shape=none
+    ]
+  }
+}

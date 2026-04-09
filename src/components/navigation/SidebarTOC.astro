@@ -76,13 +76,32 @@ import { sections } from '../../data/sections';
   }
 
   /*
-   * Parchment sections (S03, S12): warm cream background makes white text
-   * unreadable. Reduce to near-invisible so it doesn't cause confusion.
-   * pointer-events off so it doesn't accidentally intercept clicks.
+   * Parchment sections (S03, S12): progressively switch to dark text
+   * instead of dimming to invisible. The TOC stays usable — it just
+   * adapts to the light background. CSS transitions handle the crossfade.
    */
   .sidebar-toc[data-parchment] {
-    opacity: 0.2;
-    pointer-events: none;
+    opacity: 1;
+  }
+
+  .sidebar-toc[data-parchment] .sidebar-toc__link {
+    color: rgba(26, 24, 21, 0.35);
+  }
+
+  .sidebar-toc[data-parchment] .sidebar-toc__link:hover {
+    color: rgba(26, 24, 21, 0.60);
+  }
+
+  .sidebar-toc[data-parchment] .sidebar-toc__item.is-active > .sidebar-toc__link {
+    color: var(--accent); /* Azure stays readable on both backgrounds */
+  }
+
+  .sidebar-toc[data-parchment] .sidebar-toc__child-link {
+    color: rgba(26, 24, 21, 0.22);
+  }
+
+  .sidebar-toc[data-parchment] .sidebar-toc__child-link:hover {
+    color: rgba(26, 24, 21, 0.50);
   }
 
   /* ── List ──────────────────────────────────────────────────────────────── */

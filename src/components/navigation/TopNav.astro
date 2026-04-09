@@ -107,16 +107,37 @@ import { sections } from '../../data/sections';
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  /* ── Parchment override: dark glass on light background ──────────────── */
+  /* ── Parchment override: LIGHT frosted glass on cream background ───── */
   /*
-   * S03 and S12 use parchment (#F5F3EC) — warm cream background.
-   * The frosted-glass void color (rgba(15,15,19,...)) would look wrong
-   * against cream. Instead: deep warm dark (#1A1815 at 85%) creates
-   * a deliberate dark ink panel that reads as intentional contrast.
+   * S03 and S12 use parchment (#F5F3EC). Instead of a dark alien bar
+   * floating over cream, the nav progressively switches to a light theme:
+   * frosted cream glass, dark text, warm border. CSS transitions on all
+   * properties handle the progressive cross-fade between dark ↔ light.
    */
   .topnav.is-scrolled[data-parchment] {
-    background: rgba(26, 24, 21, 0.85); /* --text-on-break (#1A1815) at 85% */
-    border-bottom: 1px solid rgba(26, 24, 21, 0.20);
+    background: rgba(245, 243, 236, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* ── Parchment: text colors flip to dark (scrolled or not) ────────── */
+  .topnav[data-parchment] .topnav__wordmark {
+    color: rgba(26, 24, 21, 0.45);
+  }
+  .topnav[data-parchment] .topnav__wordmark:hover {
+    color: rgba(26, 24, 21, 0.70);
+  }
+  .topnav[data-parchment] .topnav__section-label {
+    color: rgba(26, 24, 21, 0.60);
+  }
+  .topnav[data-parchment] .topnav__toc-btn {
+    color: rgba(26, 24, 21, 0.50);
+    border-color: rgba(26, 24, 21, 0.15);
+  }
+  .topnav[data-parchment] .topnav__toc-btn:hover {
+    color: rgba(26, 24, 21, 0.80);
+    border-color: rgba(26, 24, 21, 0.30);
   }
 
   /* ── Inner layout ──────────────────────────────────────────────────────── */
@@ -170,8 +191,10 @@ import { sections } from '../../data/sections';
     flex: 1;
     text-align: center;
     padding: 0 var(--space-3);
-    /* Fade transition for cross-dissolve on section change */
-    transition: opacity var(--duration-fast) var(--ease-default);
+    /* Fade + color transition for cross-dissolve and parchment switch */
+    transition:
+      opacity var(--duration-fast) var(--ease-default),
+      color   var(--duration-normal) var(--ease-default);
     /* Truncate long section names */
     white-space: nowrap;
     overflow: hidden;
