@@ -24,7 +24,7 @@ const MOBILE_COUNT = 4_000;
 const MOBILE_BP = 768;
 
 // Particle appearance
-const BASE_ALPHA = 0.28;        // base draw opacity (on dark sections)
+const BASE_ALPHA = 0.45;        // base draw opacity — attenuated by 78%-opaque section overlays
 const PARTICLE_PX = 2.0;        // radius in canvas pixels
 
 // Physics
