@@ -1,0 +1,202 @@
+---
+/*
+ * S07ToolsVsHooks.astro — Tools vs Hooks section
+ *
+ * Two-zone layout (iyo-clean pattern):
+ *   Entry:  Eyebrow "TOOLS VS HOOKS" (azure) + BlurReveal headline + lead
+ *   Body:   Two GlassCard comparison blocks — AI decides vs code decides
+ *           "The code quality problem" — same task, two approaches
+ *           "Hook priority cascade" — 5 priority levels
+ *
+ * background="slate"   mode="technical" (azure eyebrow)
+ * Content sourced from: .design/sections/07-tools-vs-hooks.md
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+import GlassCard from '../components/content/GlassCard.astro';
+import NumberedRow from '../components/content/NumberedRow.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s7" label="Tools vs Hooks" background="slate">
+  <Fragment slot="entry">
+    <Eyebrow label="TOOLS VS HOOKS" mode="technical" />
+    <BlurReveal>
+      <h2>Tools are capabilities the AI controls. Hooks control the AI without it knowing.</h2>
+    </BlurReveal>
+    <p class="lead">
+      Both are modules. Both plug in the same way. But they operate in fundamentally different
+      realms, and using the wrong one for a task produces unreliable behavior.
+    </p>
+  </Fragment>
+
+  <!-- ── Comparison blocks ────────────────────────────────────────────────── -->
+  <div class="comparison">
+
+    <GlassCard>
+      <h3>Tools — 'The AI decides'</h3>
+      <p>
+        Available tools are listed in the AI's system prompt. The model sees each tool's
+        name, description, and input schema. When the model decides it needs to take an
+        action, it generates a tool call. The model looks at the user's request, considers
+        its available tools, and chooses intentionally. Tool calls appear in the conversation
+        history. The result appears in the conversation history. Everything is visible,
+        traceable, and explainable. Reading files, writing files, searching the web, running
+        commands. Tools extend what the model can do.
+      </p>
+    </GlassCard>
+
+    <GlassCard>
+      <h3>Hooks — 'Code decides'</h3>
+      <p>
+        Hook Handlers respond to events in the system. When something happens, an event
+        fires. Hook Handlers that have registered for that event run automatically. The AI
+        model has no idea that hooks exist. Hooks do not appear in the model's instructions.
+        They are not listed in the system prompt. The model cannot see them, cannot call
+        them, cannot choose to use them. Hooks operate entirely in the system layer. Getting
+        user permission, safety-checking operations, monitoring context and injecting
+        relevant information, logging events. Hooks govern what the model is allowed to do.
+      </p>
+    </GlassCard>
+
+  </div>
+
+  <!-- ── The code quality problem ─────────────────────────────────────────── -->
+  <div class="subsection">
+    <h3>The code quality problem</h3>
+    <p>
+      You want every file the AI writes to pass a code quality check. Two approaches:
+    </p>
+    <p>
+      As a tool: You give the AI a run_code_checker tool and tell it in its instructions to
+      always run it after writing a file. The problem? The AI might forget. It might decide
+      the check isn't needed this time. It might get sidetracked by the user's follow-up
+      question. You're relying on the model's compliance with an instruction, which is
+      probabilistic, not guaranteed.
+    </p>
+    <p>
+      As a hook: You register a Hook Handler for the tool:post event, which fires after any
+      tool completes. When the event fires for a file-writing tool, the hook runs the code
+      checker. If it finds issues, it injects a message: 'The code checker found 3 issues on
+      lines 12, 15, and 22.' The AI reads this on its next turn and fixes the issues. The
+      check happens every single time, regardless of what the model decides.
+    </p>
+  </div>
+
+  <!-- ── Hook priority cascade ────────────────────────────────────────────── -->
+  <div class="subsection">
+    <h3>Hook priority cascade</h3>
+    <div class="cascade">
+      <NumberedRow
+        number="—"
+        label="Deny (highest)"
+        description="Highest priority. One deny blocks the entire operation. No further hooks execute. Fail-closed security posture."
+      />
+      <NumberedRow
+        number="—"
+        label="AskUser"
+        description="Pauses execution for a human decision. First one wins."
+      />
+      <NumberedRow
+        number="—"
+        label="InjectContext"
+        description="Multiple hooks accumulate. All messages are merged and added to conversation history."
+      />
+      <NumberedRow
+        number="—"
+        label="Modify"
+        description="Transforms data flowing through the event. Multiple modify hooks chain."
+      />
+      <NumberedRow
+        number="—"
+        label="Continue (lowest)"
+        description="The default. No-op. The event passes through unmodified."
+      />
+    </div>
+  </div>
+
+  <img
+    src={`${import.meta.env.BASE_URL}diagrams/tools-vs-hooks.svg`}
+    alt="Tools are LLM-decided, Hooks are code-decided"
+    class="diagram"
+  />
+
+  <UpNextTeaser
+    nextSection="Sessions"
+    teaser="A session is a container."
+  />
+</Section>
+
+<style>
+  /* ── Entry zone ───────────────────────────────────────────────────────────── */
+
+  h2 {
+    max-width: 20ch;
+  }
+
+  .lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+    max-width: 55ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ── Comparison blocks ────────────────────────────────────────────────────── */
+
+  .comparison {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 60ch;
+  }
+
+  .comparison :global(h3) {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .comparison :global(p) {
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+    margin-top: var(--space-2);
+  }
+
+  /* ── Sub-sections (code quality problem + cascade) ────────────────────────── */
+
+  .subsection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 60ch;
+    color: var(--text-body);
+    margin-top: var(--space-6);
+  }
+
+  .subsection h3 {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  .subsection p {
+    line-height: var(--leading-normal);
+  }
+
+  .cascade {
+    margin-top: var(--space-2);
+  }
+
+  /* ── Diagram ──────────────────────────────────────────────────────────────── */
+  .diagram {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: var(--space-8) 0;
+    opacity: 0.9;
+  }
+</style>

@@ -1,0 +1,134 @@
+<svg width="600" height="500" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <!-- Downward arrowhead marker (azure) -->
+    <marker id="arr-down" viewBox="0 0 9 9" refX="4.5" refY="8.5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M1,1 L4.5,8 L8,1" fill="none"
+            stroke="#0082EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    </marker>
+
+    <!-- Drop shadow: KERNEL — heaviest, most present -->
+    <filter id="sh-kernel" x="-18%" y="-18%" width="136%" height="148%">
+      <feDropShadow dx="0" dy="5" stdDeviation="12" flood-color="#000" flood-opacity="0.48"/>
+    </filter>
+    <!-- Drop shadow: MODULES -->
+    <filter id="sh-modules" x="-14%" y="-14%" width="128%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8"  flood-color="#000" flood-opacity="0.36"/>
+    </filter>
+    <!-- Drop shadow: FOUNDATION -->
+    <filter id="sh-foundation" x="-10%" y="-10%" width="120%" height="132%">
+      <feDropShadow dx="0" dy="2" stdDeviation="5"  flood-color="#000" flood-opacity="0.24"/>
+    </filter>
+    <!-- Drop shadow: APPLICATIONS — lightest, furthest -->
+    <filter id="sh-apps" x="-8%"  y="-8%"  width="116%" height="126%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3"  flood-color="#000" flood-opacity="0.14"/>
+    </filter>
+
+    <!-- Subtle glow for BUNDLES dashed box -->
+    <filter id="sh-bundles" x="-12%" y="-6%" width="124%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#fff" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <!-- ─────────────────────────────────────────────
+       LAYER STACK  (top = APPLICATIONS, bottom = KERNEL)
+       Layers: x=40, width=432, height=64, gap=24
+       Stack y-range: y=84 → y=428
+       ───────────────────────────────────────────── -->
+
+  <!-- APPLICATIONS — topmost, lightest shadow, lowest opacity -->
+  <rect x="40" y="84" width="432" height="64" rx="8"
+        fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.08)" stroke-width="1"
+        filter="url(#sh-apps)"/>
+  <!-- Main label -->
+  <text x="72" y="122" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="600" fill="#FAFAF8" letter-spacing="0.12em" opacity="0.72">APPLICATIONS</text>
+  <!-- Component hints — right-aligned, low weight -->
+  <text x="456" y="122" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.04em" opacity="0.28"
+        text-anchor="end">agents · CLI · workflows</text>
+
+  <!-- Arrow: APPLICATIONS → FOUNDATION -->
+  <line x1="256" y1="150" x2="256" y2="168"
+        stroke="#0082EB" stroke-width="1.5" opacity="0.65"
+        marker-end="url(#arr-down)"/>
+
+  <!-- FOUNDATION -->
+  <rect x="40" y="172" width="432" height="64" rx="8"
+        fill="rgba(255,255,255,0.032)" stroke="rgba(255,255,255,0.12)" stroke-width="1"
+        filter="url(#sh-foundation)"/>
+  <text x="72" y="210" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="600" fill="#FAFAF8" letter-spacing="0.12em" opacity="0.82">FOUNDATION</text>
+  <text x="456" y="210" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.04em" opacity="0.30"
+        text-anchor="end">path · logger · config</text>
+
+  <!-- Arrow: FOUNDATION → MODULES -->
+  <line x1="256" y1="238" x2="256" y2="256"
+        stroke="#0082EB" stroke-width="1.5" opacity="0.65"
+        marker-end="url(#arr-down)"/>
+
+  <!-- MODULES — azure accent stroke -->
+  <rect x="40" y="260" width="432" height="64" rx="8"
+        fill="rgba(255,255,255,0.038)" stroke="#0082EB" stroke-width="1" stroke-opacity="0.52"
+        filter="url(#sh-modules)"/>
+  <text x="72" y="298" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="600" fill="#FAFAF8" letter-spacing="0.12em" opacity="0.90">MODULES</text>
+  <text x="456" y="298" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.04em" opacity="0.32"
+        text-anchor="end">tools · hooks · providers · orchestrators</text>
+
+  <!-- Arrow: MODULES → KERNEL -->
+  <line x1="256" y1="326" x2="256" y2="344"
+        stroke="#0082EB" stroke-width="1.5" opacity="0.65"
+        marker-end="url(#arr-down)"/>
+
+  <!-- KERNEL — bottom, amber stroke, heaviest shadow, most present -->
+  <rect x="40" y="348" width="432" height="64" rx="8"
+        fill="rgba(255,255,255,0.045)" stroke="#C87B60" stroke-width="1"
+        filter="url(#sh-kernel)"/>
+  <!-- Subtle amber inner glow edge (second rect, no fill, thicker amber stroke inside) -->
+  <rect x="41" y="349" width="430" height="62" rx="7.5"
+        fill="none" stroke="#C87B60" stroke-width="0.5" opacity="0.22"/>
+  <text x="72" y="386" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="700" fill="#FAFAF8" letter-spacing="0.12em">KERNEL</text>
+  <text x="456" y="386" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.04em" opacity="0.34"
+        text-anchor="end">session · coordinator · contracts · loader</text>
+
+  <!-- ─────────────────────────────────────────────
+       BUNDLES — floating label on right
+       Dashed border rect, connects to 3 layers
+       ───────────────────────────────────────────── -->
+  <rect x="492" y="112" width="84" height="204" rx="8"
+        fill="rgba(255,255,255,0.018)" stroke="rgba(255,255,255,0.20)" stroke-width="1"
+        stroke-dasharray="5 3.5" filter="url(#sh-bundles)"/>
+  <text x="534" y="200" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="600" fill="#FAFAF8" letter-spacing="0.18em" opacity="0.55"
+        text-anchor="middle" writing-mode="lr">BUNDLES</text>
+  <!-- Vertical label - rotate for side placement -->
+  <text x="534" y="224" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#FAFAF8" letter-spacing="0.06em" opacity="0.28"
+        text-anchor="middle">installs across layers</text>
+
+  <!-- Dashed connecting lines: BUNDLES left edge → layer right edges -->
+  <!-- To APPLICATIONS -->
+  <line x1="491" y1="145" x2="472" y2="116"
+        stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-dasharray="3.5 3"/>
+  <!-- To FOUNDATION -->
+  <line x1="491" y1="200" x2="472" y2="204"
+        stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-dasharray="3.5 3"/>
+  <!-- To MODULES -->
+  <line x1="491" y1="255" x2="472" y2="292"
+        stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-dasharray="3.5 3"/>
+
+  <!-- Small connection dots at layer end-points -->
+  <circle cx="472" cy="116" r="2.5" fill="rgba(255,255,255,0.22)"/>
+  <circle cx="472" cy="204" r="2.5" fill="rgba(255,255,255,0.22)"/>
+  <circle cx="472" cy="292" r="2.5" fill="#0082EB" opacity="0.45"/>
+
+  <!-- Dependency direction label (micro) -->
+  <text x="246" y="80" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#0082EB" letter-spacing="0.1em" opacity="0.45"
+        text-anchor="middle">depends on ↓</text>
+</svg>

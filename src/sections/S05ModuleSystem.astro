@@ -1,0 +1,183 @@
+---
+/*
+ * S05ModuleSystem.astro — Module System section
+ *
+ * Two-zone layout (iyo-clean pattern):
+ *   Entry:  Eyebrow "MODULE SYSTEM" (azure) + BlurReveal headline + lead
+ *   Body:   6 GlassCards, each with an anchor ID for TOC navigation
+ *           Orchestrator → variant="highlighted" (architecturally central)
+ *           Agent        → variant="dashed" (not a module type — the disruption is the lesson)
+ *
+ * background="slate"   mode="technical" (azure eyebrow)
+ *
+ * Anchor IDs: s5-provider, s5-tool, s5-orchestrator, s5-context, s5-hook, s5-agent
+ * Content sourced from: .design/sections/05-module-system.md
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+import GlassCard from '../components/content/GlassCard.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s5" label="Module System" background="slate">
+  <Fragment slot="entry">
+    <Eyebrow label="MODULE SYSTEM" mode="technical" />
+    <BlurReveal>
+      <h2>Everything outside the kernel is a module.</h2>
+    </BlurReveal>
+    <p class="lead">
+      A module is a self-contained piece that plugs in through a standard interface to add a
+      specific capability. Six types, one universal contract, fixed loading order. Remove one,
+      add another. The rest of the system doesn't notice.
+    </p>
+  </Fragment>
+
+  <!-- ── Module type catalog ──────────────────────────────────────────────── -->
+  <div class="module-cards">
+
+    <GlassCard variant="highlighted">
+      <h3 id="s5-orchestrator">Orchestrator — 'The conductor'</h3>
+      <p>
+        Drives the conversation. Decides what context the AI needs, which provider handles
+        each request, how tool calls are handled, when to stop. Exactly one per session.
+        Required.
+      </p>
+    </GlassCard>
+
+    <GlassCard>
+      <h3 id="s5-provider">Provider — 'The AI connection'</h3>
+      <p>
+        Connects to an AI model. Claude, GPT, Gemini, local model. Each connection is a
+        separate Provider. Translates between Amplifier's format and the model's API.
+        Multiple per session allowed.
+      </p>
+    </GlassCard>
+
+    <GlassCard>
+      <h3 id="s5-tool">Tool — 'The agent's hands'</h3>
+      <p>
+        An action the agent can take. Read a file. Search the web. Run a command. The AI
+        decides when to use tools. It sees them listed in its instructions. Visible,
+        intentional, under the model's control.
+      </p>
+    </GlassCard>
+
+    <GlassCard>
+      <h3 id="s5-context">Context Manager — 'The agent's memory'</h3>
+      <p>
+        Keeps track of what's been said and decides what to include when the AI needs
+        context. Handles the token budget constraint and decides which messages fit in the
+        AI's limited context window. Exactly one per session. Required.
+      </p>
+    </GlassCard>
+
+    <GlassCard>
+      <h3 id="s5-hook">Hook Handler — 'The sentinel'</h3>
+      <p>
+        Reacts to events. Fires automatically when something happens. The AI has no idea
+        hooks exist. They are invisible to the model, not listed in its instructions, never
+        chosen by it. Observe, block, inject, or modify.
+      </p>
+    </GlassCard>
+
+    <GlassCard variant="dashed">
+      <h3 id="s5-agent">Agent</h3>
+      <p>
+        A sixth type, the Resolver, maps module names to file paths. Infrastructure
+        plumbing; users rarely encounter it.
+      </p>
+    </GlassCard>
+
+  </div>
+
+  <!-- ── Universal mount contract ─────────────────────────────────────────── -->
+  <div class="mount-contract">
+    <h3>Every module type plugs in through the same function</h3>
+    <p>
+      The contract is a function called mount. It receives two things: the Coordinator and a
+      configuration dictionary. The module does whatever setup it needs, registers itself into
+      the Coordinator at the right slot, and optionally returns a cleanup function that will be
+      called when the session ends.
+    </p>
+    <p>
+      The Orchestrator follows this contract. Providers, Tools, Context Managers, Hook
+      Handlers, and Resolvers all follow this contract. The Module Loader does not need to
+      know what type of module it is loading. It calls mount, and the module handles the rest.
+    </p>
+  </div>
+
+  <UpNextTeaser
+    nextSection="The Orchestrator"
+    teaser="One module gets live access to the full system at runtime."
+  />
+</Section>
+
+<style>
+  /* ── Entry zone ───────────────────────────────────────────────────────────── */
+
+  h2 {
+    max-width: 20ch; /* editorial wrap — iyo-clean entry viewport */
+  }
+
+  .lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+    max-width: 55ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ── Module card grid ─────────────────────────────────────────────────────── */
+
+  .module-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 60ch;
+  }
+
+  /*
+   * h3 inside cards: Inter 700 at body size.
+   * Global h3 uses weight 600 and --text-h3 size — we tighten to body
+   * weight so card titles read as labels, not section headings.
+   */
+  .module-cards :global(h3) {
+    font-size: var(--text-body);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+  }
+
+  .module-cards :global(p) {
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+    margin-top: var(--space-2);
+  }
+
+  .module-cards :global(em) {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  /* ── Mount contract ───────────────────────────────────────────────────────── */
+
+  .mount-contract {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 60ch;
+    color: var(--text-body);
+    margin-top: var(--space-6);
+  }
+
+  .mount-contract h3 {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .mount-contract p {
+    line-height: var(--leading-normal);
+  }
+</style>

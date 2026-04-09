@@ -1,0 +1,140 @@
+<svg width="700" height="400" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <!-- Divider glow: soft blur behind the hairline -->
+    <filter id="divider-glow" x="-400%" y="-5%" width="900%" height="110%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Bullet dot glow -->
+    <filter id="dot-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#0082EB" flood-opacity="0.45"/>
+    </filter>
+    <!-- Panel shadow -->
+    <filter id="sh-panel" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- ─────────────────────────────────────────────
+       GLASS PANEL BACKGROUNDS
+       Very subtle fills — left and right halves
+       ───────────────────────────────────────────── -->
+  <!-- Left glass (TOOLS) -->
+  <rect x="0" y="0" width="349" height="400"
+        fill="rgba(255,255,255,0.018)" stroke="none"/>
+  <!-- Right glass (HOOKS) — very slightly brighter -->
+  <rect x="351" y="0" width="349" height="400"
+        fill="rgba(255,255,255,0.024)" stroke="none"/>
+
+  <!-- Outer border for right glass — faint edge -->
+  <rect x="351.5" y="0.5" width="348" height="399"
+        fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <rect x="0.5" y="0.5" width="348" height="399"
+        fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- ─────────────────────────────────────────────
+       LUMINOUS DIVIDER — hairline + ghost glow
+       ───────────────────────────────────────────── -->
+  <!-- Ghost glow line (wider, blurred) -->
+  <line x1="350" y1="32" x2="350" y2="368"
+        stroke="rgba(255,255,255,0.08)" stroke-width="6" filter="url(#divider-glow)"/>
+  <!-- Sharp hairline -->
+  <line x1="350" y1="32" x2="350" y2="368"
+        stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <!-- Divider end caps -->
+  <circle cx="350" cy="32"  r="2" fill="rgba(255,255,255,0.20)"/>
+  <circle cx="350" cy="368" r="2" fill="rgba(255,255,255,0.20)"/>
+
+  <!-- ─────────────────────────────────────────────
+       LEFT SIDE — TOOLS
+       ───────────────────────────────────────────── -->
+  <!-- Header -->
+  <text x="60" y="90" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="26" font-weight="700" fill="#FAFAF8" letter-spacing="0.10em">TOOLS</text>
+
+  <!-- Subtitle — azure accent -->
+  <text x="60" y="124" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="11" font-weight="500" fill="#0082EB" letter-spacing="0.14em" opacity="0.90">LLM-DECIDED</text>
+
+  <!-- Divider under subtitle -->
+  <line x1="60" y1="138" x2="290" y2="138"
+        stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Bullet 1 -->
+  <rect x="60" y="158" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="76" y="168" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Extend what agents can do</text>
+
+  <!-- Bullet 2 -->
+  <rect x="60" y="195" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="76" y="205" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">
+    <tspan fill="#0082EB" opacity="0.95">Model</tspan> decides when to invoke
+  </text>
+
+  <!-- Bullet 3 -->
+  <rect x="60" y="232" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="76" y="242" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Declared as capabilities</text>
+
+  <!-- Bullet 4 -->
+  <rect x="60" y="269" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="76" y="279" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Dynamic, on-demand dispatch</text>
+
+  <!-- Footnote tag -->
+  <text x="60" y="350" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.25">fires when model requests it</text>
+
+  <!-- ─────────────────────────────────────────────
+       RIGHT SIDE — HOOKS
+       ───────────────────────────────────────────── -->
+  <!-- Header -->
+  <text x="390" y="90" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="26" font-weight="700" fill="#FAFAF8" letter-spacing="0.10em">HOOKS</text>
+
+  <!-- Subtitle — azure accent -->
+  <text x="390" y="124" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="11" font-weight="500" fill="#0082EB" letter-spacing="0.14em" opacity="0.90">CODE-DECIDED</text>
+
+  <!-- Divider under subtitle -->
+  <line x1="390" y1="138" x2="620" y2="138"
+        stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Bullet 1 -->
+  <rect x="390" y="158" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="406" y="168" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Observe system lifecycle</text>
+
+  <!-- Bullet 2 -->
+  <rect x="390" y="195" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="406" y="205" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">
+    <tspan fill="#0082EB" opacity="0.95">Developer</tspan> registers handlers
+  </text>
+
+  <!-- Bullet 3 -->
+  <rect x="390" y="232" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="406" y="242" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Fire on framework lifecycle events</text>
+
+  <!-- Bullet 4 -->
+  <rect x="390" y="269" width="3" height="3" rx="0.5" fill="#0082EB" opacity="0.70" filter="url(#dot-glow)"/>
+  <text x="406" y="279" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="12" font-weight="400" fill="#FAFAF8" letter-spacing="0.02em" opacity="0.80">Enforced, not requested</text>
+
+  <!-- Footnote tag -->
+  <text x="390" y="350" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.25">fires because the runtime demands it</text>
+
+  <!-- ─────────────────────────────────────────────
+       CENTER LABELS — identify the axis of comparison
+       ───────────────────────────────────────────── -->
+  <!-- "who decides?" label — sits directly on the divider -->
+  <text x="350" y="26" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="500" fill="rgba(255,255,255,0.32)" letter-spacing="0.12em"
+        text-anchor="middle">WHO DECIDES?</text>
+</svg>

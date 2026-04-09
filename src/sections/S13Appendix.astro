@@ -1,0 +1,53 @@
+---
+/*
+ * S13Appendix.astro — Appendix section (the quiet ending)
+ *
+ * Two-zone layout per Section.astro architecture:
+ *   entry slot  — Eyebrow → BlurReveal(h2) → investigation methodology lead
+ *   default slot — (empty — this is the last section, no UpNextTeaser)
+ *
+ * Background: void (#0F0F13). Conceptual mode (copper eyebrow).
+ * No UpNextTeaser — this is the last section.
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+---
+
+<Section id="s13" label="Appendix" background="void">
+  <Fragment slot="entry">
+    <Eyebrow label="APPENDIX" mode="conceptual" />
+    <BlurReveal>
+      <h2 class="s13__headline">Quick reference.</h2>
+    </BlurReveal>
+    <p class="s13__lead">The facts in this document were established through a structured, multi-pass investigation of the Amplifier source code using a method called Parallax Discovery. Seven independent investigators across four teams each examined different aspects of the codebase. Their findings were reconciled into a single 805-line document. Each claim is backed by at least two independent confirmations with file-and-line evidence. Sources: <em>amplifier-core</em> and <em>amplifier-foundation</em>.</p>
+  </Fragment>
+</Section>
+
+<style>
+  /* —— Entry: headline ————————————————————————————————————————————————————— */
+  .s13__headline {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    max-width: 20ch;
+    margin: 0;
+  }
+
+  /* —— Entry: lead ————————————————————————————————————————————————————————— */
+  .s13__lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+    max-width: 55ch;
+    margin: var(--space-4) 0 0;
+  }
+
+  .s13__lead em {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+</style>

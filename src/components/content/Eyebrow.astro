@@ -1,28 +1,48 @@
 ---
 /*
- * Eyebrow.astro — IYO-style eyebrow label
+ * Eyebrow.astro — Section identity label
  *
- * Small, dimmer text with a bullet prefix. Used to label sections
- * and subsections with their module name (e.g. "THE KERNEL").
+ * TWO semantic variants — the color choice is not aesthetic, it's semantic:
+ *   mode="conceptual" → copper (#C87B60) — marks philosophical/ideas sections
+ *   mode="technical"  → azure  (#0082EB) — marks mechanism/structure sections
+ *
+ * Space Grotesk 500, 11px, uppercase, wide tracking.
+ * No bullet prefix — just the label text.
+ *
+ * Props:
+ *   label — the text to display (required)
+ *   mode  — "conceptual" | "technical" (default: "technical")
  */
 interface Props {
   label: string;
+  mode?: 'conceptual' | 'technical';
 }
 
-const { label } = Astro.props;
+const { label, mode = 'technical' } = Astro.props;
 ---
 
-<span class="eyebrow">• {label}</span>
+<span class={`eyebrow eyebrow--${mode}`}>{label}</span>
 
 <style>
   .eyebrow {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
+    display: block;
+    font-family: var(--font-mono); /* Space Grotesk — Voice of Precision */
+    font-size: 11px;               /* --text-eyebrow per style-seed */
     font-weight: 500;
-    color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    margin-bottom: var(--space-3);
+    letter-spacing: 0.1em;         /* --tracking-wide */
+    margin-bottom: var(--space-3); /* 24px gap before headline */
+    line-height: 1;
+  }
+
+  /* Technical mode: azure — the color of mechanism and navigation */
+  .eyebrow--technical {
+    color: var(--accent); /* #0082EB azure — already defined in tokens.css */
+  }
+
+  /* Conceptual mode: copper — the color of ideas */
+  /* --accent-warm is the new token; fallback to hardcoded until tokens.css is updated */
+  .eyebrow--conceptual {
+    color: var(--accent-warm, #C87B60);
   }
 </style>

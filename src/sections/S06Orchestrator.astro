@@ -1,0 +1,174 @@
+---
+/*
+ * S06Orchestrator.astro — The Orchestrator section
+ *
+ * Two-zone layout (iyo-clean pattern):
+ *   Entry:  Eyebrow "THE ORCHESTRATOR" (azure) + BlurReveal headline + lead
+ *   Body:   3 paragraphs — runtime privilege gap, what that enables, why by design
+ *           Sub-section: 7-step common pattern (NumberedRows)
+ *
+ * background="void"   mode="technical" (azure eyebrow)
+ * Content sourced from: .design/sections/06-orchestrator.md
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+import NumberedRow from '../components/content/NumberedRow.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s6" label="The Orchestrator" background="void">
+  <Fragment slot="entry">
+    <Eyebrow label="THE ORCHESTRATOR" mode="technical" />
+    <BlurReveal>
+      <h2>One module gets live access to the full system at runtime. Every other module is isolated after setup.</h2>
+    </BlurReveal>
+    <p class="lead">
+      Every other module is isolated after mount. The Orchestrator gets the Coordinator at
+      runtime, on every call. That privilege gap defines how the entire agent loop works.
+    </p>
+  </Fragment>
+
+  <!-- ── Body ─────────────────────────────────────────────────────────────── -->
+  <div class="body">
+    <p>
+      Every module in Amplifier receives the Coordinator (the registry where modules are
+      stored) once: at mount time. The module uses it to register itself, and then the
+      Coordinator reference is gone.
+    </p>
+    <p>
+      The Orchestrator is the exception. It receives the Coordinator again, at runtime, every
+      time it's called. This means the Orchestrator can, at any moment during execution, reach
+      into the registry and access any module: the Context Manager, every Provider, every Tool,
+      every Hook Handler.
+    </p>
+    <p>
+      No other module can do this. A Provider can't look up which Tools are available. A Tool
+      can't check which Provider is being used. Only the Orchestrator has a live connection to
+      the full system at runtime. This is by design, not by accident.
+    </p>
+  </div>
+
+  <!-- ── Common pattern: 7 steps ──────────────────────────────────────────── -->
+  <div class="pattern">
+    <h3>One common pattern: what happens when you send a message</h3>
+    <p class="pattern__intro">
+      This shows one commonly used orchestrator. Different orchestrators can implement
+      completely different strategies.
+    </p>
+
+    <div class="pattern__steps">
+      <NumberedRow
+        number="01"
+        label="You send a message"
+        description="The session receives it and hands it to the Orchestrator."
+      />
+      <NumberedRow
+        number="02"
+        label="Hooks fire; context monitoring begins"
+        description="A context monitor hook might notice the conversation involves database queries and inject the relevant schema documentation."
+      />
+      <NumberedRow
+        number="03"
+        label="Orchestrator fetches context"
+        description="Calls the Context Manager to get conversation history (what's been said, what tools have been used)."
+      />
+      <NumberedRow
+        number="04"
+        label="Provider calls the AI model"
+        description="The Orchestrator calls a Provider. The Provider sends the assembled context to the AI model and waits for a response."
+      />
+      <NumberedRow
+        number="05"
+        label="If the AI wants a tool, hooks check first"
+        description="Before the tool executes, an event fires. Hook Handlers can observe, modify, or block the call. A safety hook might say 'that tool call is trying to delete system files. Denied.' If no hook blocks the call, the tool executes."
+      />
+      <NumberedRow
+        number="06"
+        label="After the tool runs, hooks inject feedback"
+        description="A code quality hook might run after a file-writing tool, find issues, and inject 'The code checker found 3 issues in lines 12, 15, and 22.' The AI reads this on its next iteration."
+      />
+      <NumberedRow
+        number="07"
+        label="The Orchestrator returns the response"
+        description="Rich data (token usage, tool history) flows through the event system for any hooks that want to observe it."
+      />
+    </div>
+  </div>
+
+  <img
+    src={`${import.meta.env.BASE_URL}diagrams/reasoning-loop.svg`}
+    alt="Orchestrator reasoning loop: Think, Act, Observe, Decide"
+    class="diagram"
+  />
+
+  <UpNextTeaser
+    nextSection="Tools vs Hooks"
+    teaser="Tools are capabilities the AI controls. Hooks control the AI without it knowing."
+  />
+</Section>
+
+<style>
+  /* ── Entry zone ───────────────────────────────────────────────────────────── */
+
+  h2 {
+    max-width: 20ch;
+  }
+
+  .lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--text-body);
+    max-width: 55ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ── Body ─────────────────────────────────────────────────────────────────── */
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 60ch;
+    color: var(--text-body);
+  }
+
+  .body p {
+    line-height: var(--leading-normal);
+  }
+
+  /* ── Common pattern ───────────────────────────────────────────────────────── */
+
+  .pattern {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 60ch;
+    margin-top: var(--space-6);
+  }
+
+  .pattern h3 {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .pattern__intro {
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+  }
+
+  .pattern__steps {
+    margin-top: var(--space-2);
+  }
+
+  /* ── Diagram ──────────────────────────────────────────────────────────────── */
+  .diagram {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: var(--space-8) 0;
+    opacity: 0.9;
+  }
+</style>

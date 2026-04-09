@@ -1,10 +1,23 @@
 ---
 /*
- * SidebarTOC.astro — Persistent left sidebar table of contents
+ * SidebarTOC.astro — Glasswing-inspired floating table of contents
  *
- * Scroll-synced via IntersectionObserver. Inspired by Glasswing's
- * structurally invisible TOC pattern. Hidden on mobile; TopNav handles
- * mobile navigation.
+ * Design spec (style-seed + aesthetic-guide):
+ *   - NO background, NO glass container, NO border
+ *   - Floating text directly on whatever is beneath it (Layer 2 — the Compass)
+ *   - Position: fixed, left: 48px (--space-6), vertically centered
+ *   - Items: Inter 400, 13px, 8px vertical gaps
+ *   - Inactive: rgba(255,255,255,0.35) — very muted, recessive
+ *   - Active:   azure dot (6px circle) + azure text at weight 500
+ *   - Sub-items: indented 14px, 11px, revealed on parent activation
+ *   - Hidden on mobile ≤1024px (TopNav handles mobile navigation)
+ *   - Fades to near-invisible on parchment sections (S03, S12) — white text
+ *     on a light cream background would be unreadable; dim instead
+ *
+ * IntersectionObserver logic: tracks [data-section] elements, marks the
+ * currently-intersecting section's TOC item as .is-active. One observer
+ * per section. A second observer hides/shows the TOC based on whether the
+ * first section is in view (the TOC isn't useful before you've started reading).
  */
 import { sections } from '../../data/sections';
 ---
@@ -14,9 +27,10 @@ import { sections } from '../../data/sections';
     {sections.map(section => (
       <li class="sidebar-toc__item" data-section-id={section.id}>
         <a href={`#${section.id}`} class="sidebar-toc__link">
-          <span class="sidebar-toc__dot"></span>
-          <span class="sidebar-toc__label">{section.label}</span>
+          <span class="sidebar-toc__dot" aria-hidden="true"></span>
+          <span class="sidebar-toc__text">{section.label}</span>
         </a>
+
         {section.children && (
           <ul class="sidebar-toc__children">
             {section.children.map(child => (
@@ -34,57 +48,94 @@ import { sections } from '../../data/sections';
 </nav>
 
 <style>
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  /*
+   * Floating text. No box. No background. No border.
+   * The TOC is the Compass in the aesthetic guide — it floats above
+   * content but never competes with it.
+   */
   .sidebar-toc {
     position: fixed;
-    left: var(--space-8); /* 64px from left edge */
+    left: var(--space-6);          /* 48px from left edge */
     top: 50%;
     transform: translateY(-50%);
-    width: var(--sidebar-width); /* 280px from tokens */
-    z-index: var(--z-sidebar); /* 20 */
-    transition: opacity var(--duration-slow) var(--ease-default);
+    z-index: var(--z-sidebar);     /* 20 — floats above content */
+    width: 160px;                  /* Narrow; long labels wrap cleanly */
+
+    /* Smooth transitions for opacity state changes */
+    transition:
+      opacity var(--duration-slow) var(--ease-default),
+      visibility var(--duration-slow) var(--ease-default);
   }
 
-  /* Hidden state — when hero is in view */
+  /* Hidden state — when first section (hero/intro) is in view */
   .sidebar-toc[data-hidden="true"] {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
   }
 
+  /*
+   * Parchment sections (S03, S12): warm cream background makes white text
+   * unreadable. Reduce to near-invisible so it doesn't cause confusion.
+   * pointer-events off so it doesn't accidentally intercept clicks.
+   */
+  .sidebar-toc[data-parchment] {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  /* ── List ──────────────────────────────────────────────────────────────── */
   .sidebar-toc__list {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;                      /* 8px between section items */
   }
 
+  /* ── Link ──────────────────────────────────────────────────────────────── */
   .sidebar-toc__link {
     display: flex;
     align-items: center;
-    gap: var(--space-1); /* 8px */
-    padding: 4px 0;
+    gap: 8px;
     text-decoration: none;
-    color: var(--text-muted); /* #87867F — inactive */
-    font-family: var(--font-sans);
-    font-size: var(--text-xs); /* 0.75rem */
-    line-height: 1.4;
-    transition: color var(--duration-normal) var(--ease-default);
+    color: rgba(255, 255, 255, 0.35); /* Very muted — recessive by design */
+    font-family: var(--font-sans);    /* Inter — Voice of Structure */
+    font-size: 13px;                  /* --text-toc per style-seed */
+    font-weight: 400;
+    line-height: 1.3;
+    transition: color var(--duration-fast) var(--ease-default);
   }
 
-  /* Active state */
+  .sidebar-toc__link:hover {
+    color: rgba(255, 255, 255, 0.6); /* Hover: brighter but not azure */
+  }
+
+  /* Active parent link: azure + medium weight */
   .sidebar-toc__item.is-active > .sidebar-toc__link {
-    color: var(--text-primary); /* #FAFAF8 — bright */
+    color: var(--accent);  /* #0082EB azure */
+    font-weight: 500;
   }
 
-  /* The dot indicator */
+  /* ── Dot indicator ─────────────────────────────────────────────────────── */
+  /*
+   * 6px circle (not Glasswing's square — circular per new spec).
+   * Azure. Pops in with a spring overshoot — the TOC's only moment of life.
+   */
   .sidebar-toc__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 1px; /* Glasswing uses a square, not circle */
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;             /* Circle */
     background-color: var(--accent); /* Azure */
-    opacity: 0;
-    transform: scale(0.5);
-    transition: opacity var(--duration-normal) var(--ease-default),
-                transform var(--duration-normal) var(--ease-default);
     flex-shrink: 0;
+    opacity: 0;
+    transform: scale(0.4);
+    /* Spring easing: this is the TOC's personality — precise with a slight spring */
+    transition:
+      opacity  var(--duration-normal) var(--ease-spring),
+      transform var(--duration-normal) var(--ease-spring);
   }
 
   .sidebar-toc__item.is-active > .sidebar-toc__link > .sidebar-toc__dot {
@@ -92,83 +143,114 @@ import { sections } from '../../data/sections';
     transform: scale(1);
   }
 
-  /* Children (sub-items) — hidden by default, shown when parent is active */
+  /* ── Sub-items ─────────────────────────────────────────────────────────── */
+  /*
+   * Collapsed by default. Revealed when parent is active.
+   * Indent aligns with the text (past dot: 6px + gap: 8px = 14px).
+   */
   .sidebar-toc__children {
     list-style: none;
     padding: 0;
     margin: 0;
-    padding-left: calc(8px + var(--space-1)); /* indent past dot */
+    padding-left: 14px;
+
+    /* Collapse animation via max-height */
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height var(--duration-slow) var(--ease-default),
-                opacity var(--duration-normal) var(--ease-default);
+    transition:
+      max-height var(--duration-slow) var(--ease-default),
+      opacity    var(--duration-normal) var(--ease-default);
   }
 
   .sidebar-toc__item.is-active > .sidebar-toc__children {
-    max-height: 300px; /* enough for any child list */
+    max-height: 240px;    /* Enough for the longest child list (S04 has 5, S05 has 6) */
     opacity: 1;
   }
 
+  /* Child links: even more muted, smaller */
   .sidebar-toc__child-link {
     display: block;
     padding: 2px 0;
     text-decoration: none;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.22); /* More recessive than parent inactive */
     font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    transition: color var(--duration-normal) var(--ease-default);
+    font-size: 11px;                   /* Smaller than parent items */
+    line-height: 1.4;
+    transition: color var(--duration-fast) var(--ease-default);
   }
 
   .sidebar-toc__child-link:hover {
-    color: var(--text-body);
+    color: rgba(255, 255, 255, 0.5);
   }
 
-  /* Hide sidebar on mobile — TopNav handles mobile TOC */
+  /* ── Responsive: hidden on mobile ─────────────────────────────────────── */
   @media (max-width: 1024px) {
     .sidebar-toc {
-      display: none;
+      display: none; /* TopNav handles mobile navigation */
     }
   }
 </style>
 
 <script>
-  const tocNav = document.querySelector('.sidebar-toc');
-  const items = document.querySelectorAll('.sidebar-toc__item');
-  const sections = document.querySelectorAll('[data-section]');
+  const tocNav = document.querySelector<HTMLElement>('.sidebar-toc');
+  const items = document.querySelectorAll<HTMLElement>('.sidebar-toc__item');
+  const sections = document.querySelectorAll<HTMLElement>('[data-section]');
+
+  // Parchment sections: white text would be unreadable — fade the TOC
+  const PARCHMENT_SECTIONS = new Set(['s3', 's12']);
 
   if (tocNav && sections.length > 0) {
-    const observer = new IntersectionObserver(
+
+    // ── Section tracking ──────────────────────────────────────────────────
+    //
+    // rootMargin: fires when section occupies the center-ish band of the viewport.
+    // The generous bottom margin ensures the active item reflects what the reader
+    // is actually reading, not just what's at the top of the viewport.
+    const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.getAttribute('data-section');
+
+            // Update .is-active on all items
             items.forEach((item) => {
               item.classList.toggle(
                 'is-active',
                 item.getAttribute('data-section-id') === sectionId
               );
             });
+
+            // Parchment detection: fade TOC on light-background sections
+            if (sectionId && PARCHMENT_SECTIONS.has(sectionId)) {
+              tocNav.setAttribute('data-parchment', '');
+            } else {
+              tocNav.removeAttribute('data-parchment');
+            }
           }
         });
       },
       { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => sectionObserver.observe(section));
 
-    // Hide/show based on scroll position (hero detection)
+    // ── Hero detection ────────────────────────────────────────────────────
+    //
+    // Hide TOC while the intro section occupies most of the viewport —
+    // the reader is still in the "arrival" state, not the "reading" state.
+    // Show once they've scrolled past the first section.
     const heroObserver = new IntersectionObserver(
       ([entry]) => {
-        if (tocNav) {
-          tocNav.setAttribute('data-hidden', entry.isIntersecting ? 'true' : 'false');
-        }
+        tocNav.setAttribute(
+          'data-hidden',
+          entry.isIntersecting ? 'true' : 'false'
+        );
       },
       { threshold: 0.5 }
     );
 
-    // Observe the first section as the "hero" proxy
-    const firstSection = document.querySelector('[data-section="s1"]');
+    const firstSection = document.querySelector<HTMLElement>('[data-section="s1"]');
     if (firstSection) heroObserver.observe(firstSection);
   }
 </script>

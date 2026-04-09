@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -6,11 +6,22 @@ import Lenis from 'lenis';
 // Always register ScrollTrigger — needed for scrub/pin even with native scroll
 gsap.registerPlugin(ScrollTrigger);
 
-interface ScrollProviderProps {
-  children: ReactNode;
-}
-
-export default function ScrollProvider({ children }: ScrollProviderProps) {
+/*
+ * ScrollProvider — side-effect-only component.
+ *
+ * Initializes Lenis smooth scroll + GSAP ScrollTrigger sync.
+ * Does NOT wrap children — rendered as <ScrollProvider client:only="react" />
+ * alongside (not around) the <main> content.
+ *
+ * Why no children: with client:only="react", any children passed to a React
+ * island are serialized into a <template> and are NOT in the live DOM until
+ * React hydrates. Deferred module scripts (BlurReveal, TopNav, SidebarTOC)
+ * run after DOM parse but BEFORE React hydrates — so they would query the DOM
+ * and find zero elements, breaking every IntersectionObserver and section
+ * tracker. Keeping <main> outside the island ensures it's in the live DOM at
+ * parse time, and Lenis operates on window anyway (no wrapping needed).
+ */
+export default function ScrollProvider() {
   // Keep tickerCb in a ref so we can remove the exact same function reference
   // from the GSAP ticker during cleanup
   const tickerCbRef = useRef<((time: number) => void) | null>(null);
@@ -52,5 +63,6 @@ export default function ScrollProvider({ children }: ScrollProviderProps) {
     };
   }, []);
 
-  return <>{children}</>;
+  // No render output — pure side-effect component
+  return null;
 }

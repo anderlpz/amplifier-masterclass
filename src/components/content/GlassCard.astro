@@ -1,0 +1,81 @@
+---
+/*
+ * GlassCard.astro — Glass surface for technical sub-sections
+ *
+ * Used in S04 (kernel responsibilities), S05 (module type catalog),
+ * S07 (comparison panels), and other technical sections where related
+ * items need visual grouping.
+ *
+ * Three variants per design spec:
+ *
+ *   "standard"    — rgba(255,255,255,0.04) bg, rgba(255,255,255,0.07) solid border, 8px radius
+ *                   The baseline. Most cards in S04, S07, S08, etc.
+ *
+ *   "highlighted" — brighter border (0.12 opacity) + faint azure tint background
+ *                   For the Orchestrator card in S05 — signals "this one is central"
+ *
+ *   "dashed"      — dashed border instead of solid
+ *                   For the Agent entry in S05 — "this is NOT a module type"
+ *                   The visual disruption IS the lesson.
+ *
+ * NOTE: No backdrop-filter blur on cards. Per design guide: glass blur is
+ * for nav elements only. Cards use ONLY background + border for the glass
+ * surface effect. The depth comes from the border catching light, not blur.
+ *
+ * Props:
+ *   variant — "standard" | "highlighted" | "dashed" (default: "standard")
+ */
+interface Props {
+  variant?: 'standard' | 'highlighted' | 'dashed';
+}
+
+const { variant = 'standard' } = Astro.props;
+---
+
+<div class={`glass-card glass-card--${variant}`}>
+  <slot />
+</div>
+
+<style>
+  /* ── Base ──────────────────────────────────────────────────────────────── */
+  .glass-card {
+    padding: var(--space-4);   /* 32px — internal breathing room */
+    border-radius: 8px;        /* --glass-radius-card: 8px, precision over friendliness */
+    /*
+     * NO backdrop-filter: blur here.
+     * Cards are Layer 2 instruments, but body text sits on them —
+     * blur behind body text muddles the reading surface.
+     * Glass character comes from the border edge catching ambient light.
+     */
+  }
+
+  /* ── Standard ─────────────────────────────────────────────────────────── */
+  .glass-card--standard {
+    background: rgba(255, 255, 255, 0.04);  /* Almost invisible surface */
+    border: 1px solid rgba(255, 255, 255, 0.07); /* Hair-thin white light edge */
+  }
+
+  /* ── Highlighted ──────────────────────────────────────────────────────── */
+  /*
+   * Used for the Orchestrator in S05. Slightly elevated visual presence
+   * communicates "this card is architecturally central" without shouting.
+   * The azure tint is extremely subtle — just enough to shift the feeling
+   * from neutral to directional.
+   */
+  .glass-card--highlighted {
+    background: rgba(0, 130, 235, 0.03);    /* Faint azure tint — signal color, barely there */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Brighter edge vs standard's 0.07 */
+  }
+
+  /* ── Dashed ───────────────────────────────────────────────────────────── */
+  /*
+   * Used for the Agent entry in S05. The dashed border is a deliberate
+   * visual break in a catalog of solid-bordered cards. It signals:
+   * "I don't belong to the same category as the others."
+   * The disruption communicates without a word.
+   */
+  .glass-card--dashed {
+    background: rgba(255, 255, 255, 0.02);  /* Even more recessive than standard */
+    border: 1px dashed rgba(255, 255, 255, 0.10); /* Dashed, slightly more visible than standard */
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+/*
+ * S04Kernel.astro — The Kernel section
+ *
+ * Technical mode: void ground, azure eyebrow, Lora h2.
+ * iyo-clean two-zone pattern via Section.astro's entry/content slots.
+ *
+ * Entry slot (min-height: 100vh, ~85% negative space):
+ *   Eyebrow (technical/azure) → BlurReveal(h2) → lead paragraph
+ *
+ * Default slot (body below the entry viewport):
+ *   5 GlassCard-wrapped sub-sections (with anchor IDs) → UpNextTeaser
+ *
+ * Sub-section anchor IDs for TOC navigation:
+ *   s4-session, s4-contracts, s4-loader, s4-coordinator, s4-hooks
+ *
+ * GlassCard usage: each kernel responsibility is a distinct instrument,
+ * grouped in glass to communicate "these are the five things, and they
+ * are separate." Per design guide: glass is for instruments, not prose.
+ *
+ * Content sourced from: .design/sections/04-kernel.md
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+import GlassCard from '../components/content/GlassCard.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s4" label="The Kernel" background="void">
+
+  <Fragment slot="entry">
+    <div class="s04-entry">
+      <Eyebrow label="THE KERNEL" />
+      <BlurReveal>
+        <h2 class="s04-entry__headline">
+          Five things live in the kernel. Nothing else.
+        </h2>
+      </BlurReveal>
+      <p class="s04-entry__lead">
+        The kernel (amplifier-core) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.
+      </p>
+    </div>
+  </Fragment>
+
+  <!-- Five kernel responsibilities, each in a GlassCard with a TOC anchor -->
+  <div class="s04-subsections">
+
+    <div id="s4-session" class="s04-subsection">
+      <GlassCard>
+        <div class="s04-card">
+          <h3 class="s04-card__title">Session Lifecycle</h3>
+          <p>
+            A session is the container around a particular instance of the system running. Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order. Orchestrator and Context Manager are required. Everything else is optional. Cleanup runs in a finally block. Always.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+
+    <div id="s4-contracts" class="s04-subsection">
+      <GlassCard>
+        <div class="s04-card">
+          <h3 class="s04-card__title">Contracts</h3>
+          <p>
+            Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+
+    <div id="s4-loader" class="s04-subsection">
+      <GlassCard>
+        <div class="s04-card">
+          <h3 class="s04-card__title">Module Loader</h3>
+          <p>
+            Discovers available modules, loads them, and gives each one a chance to set itself up. The loader does not need to know what type of module it is loading. It calls mount, and the module takes care of the rest.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+
+    <div id="s4-coordinator" class="s04-subsection">
+      <GlassCard>
+        <div class="s04-card">
+          <h3 class="s04-card__title">The Coordinator</h3>
+          <p>
+            A passive registry: a structured shelf where modules are stored after loading. Three operations: mount, get, unmount. Despite the name, it does not coordinate anything. Think of it as a phone book. The Orchestrator module does the actual work.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+
+    <div id="s4-hooks" class="s04-subsection">
+      <GlassCard>
+        <div class="s04-card">
+          <h3 class="s04-card__title">Hooks</h3>
+          <p>
+            Hooks let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens (a tool is called, a session starts, a file is written) hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.
+          </p>
+        </div>
+      </GlassCard>
+    </div>
+
+  </div>
+
+  <UpNextTeaser
+    nextSection="Module System"
+    teaser="Everything outside the kernel is a module."
+  />
+
+</Section>
+
+<style>
+  /* ── Entry cluster ──────────────────────────────────────────────────────────
+   * Technical entry: azure eyebrow (Eyebrow default mode="technical"),
+   * Lora h2 at --text-h2 scale, Inter lead at 75% opacity.
+   * ─────────────────────────────────────────────────────────────────────────── */
+  .s04-entry {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .s04-entry :global(.blur-reveal) {
+    margin-bottom: var(--space-3); /* 24px: headline → lead */
+  }
+
+  .s04-entry__headline {
+    font-family: var(--font-serif);        /* Lora — Voice of Ideas */
+    font-size: var(--text-h2);             /* clamp(1.5rem, 2.5vw, 2.25rem) */
+    font-weight: 600;
+    line-height: var(--leading-tight);     /* 1.15 */
+    letter-spacing: var(--tracking-tight); /* -0.02em */
+    color: var(--text-primary);            /* #FAFAF8 */
+    max-width: 22ch;
+    margin: 0;
+  }
+
+  .s04-entry__lead {
+    font-family: var(--font-sans);
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    font-weight: 400;
+    line-height: var(--leading-relaxed);   /* 1.8 */
+    color: var(--text-body);
+    opacity: 0.75;
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  /* ── Sub-sections: GlassCard wrappers ───────────────────────────────────────
+   * Each kernel responsibility sits in a GlassCard.
+   * GlassCard provides: padding: var(--space-4), radius: 8px, glass border.
+   * .s04-subsection wraps it with the TOC anchor ID.
+   * .s04-card is the inner flex column providing title + paragraph spacing.
+   * ─────────────────────────────────────────────────────────────────────────── */
+  .s04-subsections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);           /* 24px between GlassCards */
+    max-width: 60ch;
+  }
+
+  /* Anchor div — ID is here so the TOC can link to the card */
+  .s04-subsection {
+    /* passthrough — no visual styling, only provides anchor target */
+  }
+
+  /* Inner layout: flex column for title + paragraphs */
+  .s04-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);           /* 16px between title and paragraphs, and between paragraphs */
+  }
+
+  .s04-card__title {
+    font-family: var(--font-sans); /* Inter — Voice of Structure */
+    font-size: var(--text-h3);     /* clamp(1.125rem, 1.5vw, 1.5rem) */
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-normal);
+    color: var(--text-primary);    /* Full brightness for sub-section titles */
+    margin: 0;
+  }
+
+  .s04-card p {
+    line-height: var(--leading-normal); /* 1.6 — technical section */
+    color: var(--text-body);
+    margin: 0;
+  }
+</style>

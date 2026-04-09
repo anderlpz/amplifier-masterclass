@@ -1,0 +1,168 @@
+<svg width="600" height="420" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <!-- Azure arrowhead (spawn lines + result arrow) -->
+    <marker id="arr-az" viewBox="0 0 9 9" refX="8" refY="4.5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0.5,0.5 L8,4.5 L0.5,8.5" fill="none"
+            stroke="#0082EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+    </marker>
+    <!-- White arrowhead for "result" path going back up -->
+    <marker id="arr-result" viewBox="0 0 9 9" refX="8" refY="4.5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0.5,0.5 L8,4.5 L0.5,8.5" fill="none"
+            stroke="#FAFAF8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    </marker>
+
+    <!-- Drop shadow: parent (most prominent) -->
+    <filter id="sh-parent" x="-16%" y="-16%" width="132%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#000" flood-opacity="0.40"/>
+    </filter>
+    <!-- Drop shadow: child nodes -->
+    <filter id="sh-child" x="-14%" y="-14%" width="128%" height="136%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6"  flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <!-- Drop shadow: isolation boundary dashes -->
+    <filter id="sh-iso" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <!-- ─────────────────────────────────────────────
+       ISOLATION BOUNDARIES (dashed)
+       Drawn first so nodes render on top
+       ───────────────────────────────────────────── -->
+  <!-- Parent isolation boundary -->
+  <rect x="188" y="24" width="224" height="72" rx="10"
+        fill="rgba(255,255,255,0.008)" stroke="rgba(255,255,255,0.14)" stroke-width="1"
+        stroke-dasharray="5 3.5"/>
+
+  <!-- Child 1 isolation boundary -->
+  <rect x="36" y="236" width="168" height="70" rx="8"
+        fill="rgba(255,255,255,0.008)" stroke="rgba(255,255,255,0.11)" stroke-width="1"
+        stroke-dasharray="4 3"/>
+  <!-- Child 2 isolation boundary -->
+  <rect x="216" y="236" width="168" height="70" rx="8"
+        fill="rgba(255,255,255,0.008)" stroke="rgba(255,255,255,0.11)" stroke-width="1"
+        stroke-dasharray="4 3"/>
+  <!-- Child 3 isolation boundary -->
+  <rect x="396" y="236" width="168" height="70" rx="8"
+        fill="rgba(255,255,255,0.008)" stroke="rgba(255,255,255,0.11)" stroke-width="1"
+        stroke-dasharray="4 3"/>
+
+  <!-- ─────────────────────────────────────────────
+       CONNECTOR LINES
+       Parent bottom → child tops, azure
+       ───────────────────────────────────────────── -->
+  <!-- Parent bottom center: (300, 96) -->
+  <!-- Children tops: (120, 252), (300, 252), (480, 252) -->
+
+  <!-- Connector to Child 1 -->
+  <path d="M 300,98 L 300,155 L 120,155 L 120,252"
+        stroke="#0082EB" stroke-width="1.2" opacity="0.45"
+        marker-end="url(#arr-az)"/>
+  <!-- "spawn" label on Child 1 connector -->
+  <text x="186" y="149" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="500" fill="#0082EB" letter-spacing="0.10em" opacity="0.55">spawn</text>
+
+  <!-- Connector to Child 2 (straight down) -->
+  <path d="M 300,98 L 300,252"
+        stroke="#0082EB" stroke-width="1.2" opacity="0.45"
+        marker-end="url(#arr-az)"/>
+  <!-- "spawn" label on Child 2 connector (beside the line) -->
+  <text x="306" y="181" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="500" fill="#0082EB" letter-spacing="0.10em" opacity="0.55">spawn</text>
+
+  <!-- Connector to Child 3 -->
+  <path d="M 300,98 L 300,155 L 480,155 L 480,252"
+        stroke="#0082EB" stroke-width="1.2" opacity="0.45"
+        marker-end="url(#arr-az)"/>
+  <!-- "spawn" label on Child 3 connector -->
+  <text x="370" y="149" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="500" fill="#0082EB" letter-spacing="0.10em" opacity="0.55">spawn</text>
+
+  <!-- Horizontal join line -->
+  <line x1="120" y1="155" x2="480" y2="155"
+        stroke="#0082EB" stroke-width="1.2" opacity="0.28"/>
+
+  <!-- ─────────────────────────────────────────────
+       RESULT ARROW — Child 2 back up to Parent
+       Curves to the right side of the diagram
+       ───────────────────────────────────────────── -->
+  <!-- Path from right side of Child 2 rect (x=384) curving up to right side of Parent (x=390) -->
+  <path d="M 384,287 C 440,287 445,60 390,60"
+        stroke="rgba(250,250,248,0.40)" stroke-width="1.2" stroke-dasharray="4 3"
+        marker-end="url(#arr-result)"/>
+  <!-- "result" label -->
+  <text x="449" y="185" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="500" fill="#FAFAF8" letter-spacing="0.10em" opacity="0.35">result</text>
+
+  <!-- ─────────────────────────────────────────────
+       PARENT SESSION NODE
+       ───────────────────────────────────────────── -->
+  <rect x="196" y="34" width="208" height="56" rx="8"
+        fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.14)" stroke-width="1"
+        filter="url(#sh-parent)"/>
+  <!-- Label -->
+  <text x="300" y="57" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="11" font-weight="600" fill="#FAFAF8" letter-spacing="0.12em" opacity="0.55"
+        text-anchor="middle">PARENT SESSION</text>
+  <!-- Coordinator sub-label -->
+  <text x="300" y="79" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="400" fill="#0082EB" letter-spacing="0.06em" opacity="0.70"
+        text-anchor="middle">coordinator</text>
+
+  <!-- ─────────────────────────────────────────────
+       CHILD SESSION NODES (3)
+       ───────────────────────────────────────────── -->
+  <!-- Child 1 -->
+  <rect x="48" y="252" width="144" height="48" rx="8"
+        fill="rgba(255,255,255,0.038)" stroke="rgba(255,255,255,0.09)" stroke-width="1"
+        filter="url(#sh-child)"/>
+  <text x="120" y="271" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="600" fill="#FAFAF8" letter-spacing="0.10em" opacity="0.55"
+        text-anchor="middle">CHILD SESSION</text>
+  <text x="120" y="289" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#FAFAF8" letter-spacing="0.06em" opacity="0.30"
+        text-anchor="middle">agent</text>
+
+  <!-- Child 2 -->
+  <rect x="228" y="252" width="144" height="48" rx="8"
+        fill="rgba(255,255,255,0.038)" stroke="rgba(255,255,255,0.09)" stroke-width="1"
+        filter="url(#sh-child)"/>
+  <text x="300" y="271" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="600" fill="#FAFAF8" letter-spacing="0.10em" opacity="0.55"
+        text-anchor="middle">CHILD SESSION</text>
+  <text x="300" y="289" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#FAFAF8" letter-spacing="0.06em" opacity="0.30"
+        text-anchor="middle">agent</text>
+
+  <!-- Child 3 -->
+  <rect x="408" y="252" width="144" height="48" rx="8"
+        fill="rgba(255,255,255,0.038)" stroke="rgba(255,255,255,0.09)" stroke-width="1"
+        filter="url(#sh-child)"/>
+  <text x="480" y="271" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="10" font-weight="600" fill="#FAFAF8" letter-spacing="0.10em" opacity="0.55"
+        text-anchor="middle">CHILD SESSION</text>
+  <text x="480" y="289" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#FAFAF8" letter-spacing="0.06em" opacity="0.30"
+        text-anchor="middle">agent</text>
+
+  <!-- ─────────────────────────────────────────────
+       MICRO ANNOTATIONS
+       ───────────────────────────────────────────── -->
+  <!-- "isolated state" labels inside dashed boxes -->
+  <text x="120" y="322" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="8" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.20"
+        text-anchor="middle">isolated state</text>
+  <text x="300" y="322" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="8" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.20"
+        text-anchor="middle">isolated state</text>
+  <text x="480" y="322" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="8" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.20"
+        text-anchor="middle">isolated state</text>
+
+  <!-- "no shared state" proof label at bottom -->
+  <text x="300" y="395" font-family="'Space Grotesk','Helvetica Neue',Arial,sans-serif"
+        font-size="9" font-weight="400" fill="#FAFAF8" letter-spacing="0.08em" opacity="0.22"
+        text-anchor="middle">children inherit config, not state</text>
+</svg>

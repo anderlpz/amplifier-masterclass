@@ -1,0 +1,232 @@
+---
+/*
+ * S12CompletePicture.astro — Complete Picture section
+ *
+ * Two-zone layout per Section.astro architecture:
+ *   entry slot  — Eyebrow → BlurReveal(h2) → lead
+ *   default slot — six-layer stack → body (2p) → diagram → UpNextTeaser
+ *
+ * Background: parchment (#F5F3EC warm cream). Conceptual mode (copper eyebrow).
+ * ALL text uses --text-on-break (#1A1815) — dark warm ink on warm cream.
+ * Section.astro handles h1/h2/h3 color; we handle lead, body, and
+ * UpNextTeaser overrides manually here.
+ */
+import Section from '../components/sections/Section.astro';
+import Eyebrow from '../components/content/Eyebrow.astro';
+import BlurReveal from '../components/content/BlurReveal.astro';
+import UpNextTeaser from '../components/content/UpNextTeaser.astro';
+---
+
+<Section id="s12" label="Complete Picture" background="parchment">
+  <Fragment slot="entry">
+    <Eyebrow label="COMPLETE PICTURE" mode="conceptual" />
+    <BlurReveal>
+      <h2 class="s12__headline">Each layer depends only on the one below it.</h2>
+    </BlurReveal>
+    <p class="s12__lead">Replace anything at one layer without affecting the others. A new Foundation implementation could be written without changing the kernel. A new module could be published without any existing module knowing it exists. This is the literal code dependency structure.</p>
+  </Fragment>
+
+  <div class="s12__content">
+    <div class="s12__stack">
+      <div class="s12__layer">
+        <span class="s12__layer-num">06</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Community</span>
+          <p class="s12__layer-desc">Third-party modules, bundles, recipes, integrations. Open at every level.</p>
+        </div>
+      </div>
+      <div class="s12__layer">
+        <span class="s12__layer-num">05</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Applications</span>
+          <p class="s12__layer-desc">CLI, web interface, IDE integration, voice assistant. The things people use.</p>
+        </div>
+      </div>
+      <div class="s12__layer">
+        <span class="s12__layer-num">04</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Foundation</span>
+          <p class="s12__layer-desc">Turns bundles into running sessions. Finds modules, assembles config, and stays connected at runtime.</p>
+        </div>
+      </div>
+      <div class="s12__layer">
+        <span class="s12__layer-num">03</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Bundles</span>
+          <p class="s12__layer-desc">Configuration packages. Text files. Combine modules into deployable agents. No code required.</p>
+        </div>
+      </div>
+      <div class="s12__layer">
+        <span class="s12__layer-num">02</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Modules</span>
+          <p class="s12__layer-desc">Providers, tools, hooks, orchestrators, context managers, resolvers. The actual capabilities.</p>
+        </div>
+      </div>
+      <div class="s12__layer">
+        <span class="s12__layer-num">01</span>
+        <div class="s12__layer-content">
+          <span class="s12__layer-label">Kernel</span>
+          <p class="s12__layer-desc">Contracts, module loading, event dispatch, session lifecycle. The unchanging center.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s12__body">
+      <p>The pattern across all six layers is the same: each layer depends only on the one below. This means you can replace anything at one layer without affecting the layers above or below it.</p>
+      <p>The kernel provides mechanism. Modules provide policy. You build the harness.</p>
+    </div>
+
+    <img
+      src={`${import.meta.env.BASE_URL}diagrams/request-flow.svg`}
+      alt="Complete request flow through all layers"
+      class="diagram"
+    />
+    <UpNextTeaser nextSection="Appendix" teaser="How these facts were established." />
+  </div>
+</Section>
+
+<style>
+  /* —— Entry: headline ————————————————————————————————————————————————————— */
+  /*
+   * Section.astro--parchment already sets h2 to --text-on-break via :global().
+   * We only need layout/typography here.
+   */
+  .s12__headline {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    max-width: 20ch;
+    margin: 0;
+    /* color: inherited from Section.astro parchment override → --text-on-break */
+  }
+
+  /* —— Entry: lead ————————————————————————————————————————————————————————— */
+  /*
+   * Section.astro parchment override only covers h1/h2/h3 and a.
+   * Paragraphs must be colored explicitly.
+   */
+  .s12__lead {
+    font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    line-height: var(--leading-relaxed);
+    color: var(--text-on-break);
+    max-width: 55ch;
+    margin: var(--space-4) 0 0;
+  }
+
+  /* —— Content wrapper (body + UpNextTeaser) —————————————————————————————— */
+  .s12__content {
+    display: contents; /* transparent wrapper for UpNextTeaser scoping */
+  }
+
+  /* —— Six-layer stack ————————————————————————————————————————————————————— */
+  /*
+   * Parchment-safe numbered rows. Uses --text-on-break and --divider-on-break
+   * instead of NumberedRow's dark-background tokens.
+   */
+  .s12__stack {
+    display: flex;
+    flex-direction: column;
+    max-width: 60ch;
+    border-top: 1px solid var(--divider-on-break);
+  }
+
+  .s12__layer {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--divider-on-break);
+  }
+
+  .s12__layer-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--text-on-break);
+    opacity: 0.35;
+    flex-shrink: 0;
+    min-width: 2.5ch;
+    line-height: var(--leading-normal);
+  }
+
+  .s12__layer-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .s12__layer-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--text-on-break);
+    line-height: var(--leading-normal);
+  }
+
+  .s12__layer-desc {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    font-weight: 400;
+    color: var(--text-on-break);
+    opacity: 0.65;
+    line-height: var(--leading-relaxed);
+    margin: var(--space-1) 0 0;
+    max-width: 60ch;
+  }
+
+  /* —— Body ————————————————————————————————————————————————————————————————— */
+  .s12__body {
+    display: flex;
+    flex-direction: column;
+    max-width: 60ch;
+    color: var(--text-on-break);
+    border-top: 1px solid var(--divider-on-break);
+  }
+
+  .s12__body p {
+    line-height: var(--leading-normal);
+    padding-block: var(--space-3);
+  }
+
+  /* Hairline divider between paragraphs — narrative rhythm */
+  .s12__body p + p {
+    border-top: 1px solid var(--divider-on-break);
+  }
+
+  /* —— UpNextTeaser: parchment overrides —————————————————————————————————— */
+  /*
+   * UpNextTeaser is designed for dark backgrounds. On parchment we override
+   * its text colors to dark ink and its separator to --divider-on-break.
+   * The glass surface (rgba white) becomes near-invisible on cream — that
+   * is intentional; the teaser recedes further on the light background.
+   */
+  .s12__content :global(.up-next) {
+    border-top-color: var(--divider-on-break);
+  }
+
+  .s12__content :global(.up-next__label) {
+    color: var(--text-on-break);
+    opacity: 0.55;
+  }
+
+  .s12__content :global(.up-next__section) {
+    color: var(--text-on-break);
+  }
+
+  .s12__content :global(.up-next__teaser) {
+    color: var(--text-on-break);
+    opacity: 0.65;
+  }
+
+  /* —— Diagram ————————————————————————————————————————————————————————————— */
+  .diagram {
+    display: block;
+    width: 100%;
+    max-width: 400px;    /* portrait orientation */
+    margin: var(--space-8) 0;
+    opacity: 0.9;
+  }
+</style>

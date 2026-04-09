@@ -1,6 +1,12 @@
 /*
- * Design Token System
- * amplifier-masterclass → withamplifier.com bridge
+ * Design Token System — Amplifier Masterclass
+ * Visual Foundation Layer (rebuilt 2026-04-08)
+ *
+ * Source of truth: .design/AESTHETIC-GUIDE.md (authoritative)
+ *                  ui-studio/storyboards/style-seed.md (token ground truth)
+ *
+ * Palette direction: iyo-clean — cool void ground, glass instruments,
+ * warm typography, copper for conceptual, azure for interactive.
  *
  * All values are CSS custom properties on :root.
  * Import this file first; reference tokens everywhere else.
@@ -10,124 +16,199 @@
 
   /* ─────────────────────────────────────────────
    * Backgrounds
+   *
+   * Three surfaces. Each one has a precise semantic role.
+   * Void/Slate alternate for dark sections; Parchment is
+   * the palette-break "exhale" moment (S03, S12 only).
    * ───────────────────────────────────────────── */
-  --bg-primary:   #242426;  /* Default canvas — most sections */
-  --bg-secondary: #3d3d40;  /* Rhythm variation — alternating technical sections */
-  --bg-break:     #e0e1e6;  /* Pearl-grey — used sparingly for conceptual sections */
+  --bg-void:      #0F0F13;  /* Primary dark ground. Cool near-black with blue undertone.
+                               The undertone creates perceptual depth for glass layers. */
+  --bg-slate:     #161619;  /* Secondary dark ground. Barely distinguishable from void.
+                               The difference should be felt, not seen. */
+  --bg-parchment: #F5F3EC;  /* Warm cream. Editorial, not institutional.
+                               Parchment = "well-made book." Used sparingly. */
+
 
   /* ─────────────────────────────────────────────
    * Text Colors
+   *
+   * Warmth in body text (#E8E6DC) is essential for extended
+   * dark-mode reading — pure white causes eye strain at 10k+ words.
    * ───────────────────────────────────────────── */
-  --text-primary:  #FAFAF8; /* Headlines, bright white */
-  --text-body:     #E8E6DC; /* Body text, warm cream */
-  --text-muted:    #87867F; /* TOC inactive items, secondary text */
-  --text-on-break: #242426; /* Text color when on pearl-grey background */
+  --text-primary:  #FAFAF8;  /* Headlines on dark. Bright warm-white. */
+  --text-body:     #E8E6DC;  /* Body text on dark. Warm cream. */
+  --text-muted:    #87867F;  /* TOC inactive items, tertiary text on dark. */
+  --text-on-break: #1A1815;  /* Ink on parchment. Deeper/warmer than old #242426.
+                                Creates ink-on-paper feeling, not pixels on screen. */
+
 
   /* ─────────────────────────────────────────────
-   * Accent
+   * Accents
+   *
+   * SEMANTIC RULE: Azure owns interactivity. Copper owns concepts.
+   * They NEVER appear together in the same section.
+   * Neither is ever purely decorative.
    * ───────────────────────────────────────────── */
-  --accent:       #0082EB; /* Azure — TOC indicator, interactive affordances */
-  --accent-hover: #0092F3; /* Slightly lighter for hover states */
+  --accent:       #0082EB;  /* Azure — signal. Interactive/navigation ONLY.
+                               TOC active state, progress bar, links, technical eyebrows. */
+  --accent-hover: #0092F3;  /* Azure hover state. */
+  --accent-warm:  #C87B60;  /* Copper — warmth. Conceptual eyebrows, pull-quote marks.
+                               S01, S03, S12 ONLY. Never buttons. Never hover. */
+
 
   /* ─────────────────────────────────────────────
-   * Glass Treatment (card collections)
+   * Glass Treatment
+   *
+   * Glass says: "I am a tool. I am separate from the content."
+   * It appears in navigation and interactive surfaces.
+   * It NEVER wraps body text or conceptual content.
+   *
+   * These values are calibrated for the new void ground (#0F0F13).
+   * The cool undertone of void makes even rgba(255,255,255,0.04) visible.
    * ───────────────────────────────────────────── */
-  --glass-bg:     rgba(33, 33, 33, 0.35);
-  --glass-border: rgba(169, 194, 242, 0.1);
-  --glass-blur:   15px;
-  --glass-radius: 28.8px; /* ~1.8rem */
+  --glass-bg:           rgba(255, 255, 255, 0.04);  /* Almost invisible. You know glass
+                                                        is there from the border + blur. */
+  --glass-border:       rgba(255, 255, 255, 0.07);  /* Hair-thin. Neutral white.
+                                                        NOT blue-tinted (old value was
+                                                        rgba(169,194,242,0.1) — wrong). */
+  --glass-blur:         10px;                        /* Subtle depth. Not frosted. */
+  --glass-radius-card:  8px;                         /* Content cards, sub-section cards. */
+  --glass-radius-nav:   12px;                        /* Navigation containers (TOC, TopNav). */
+  --glass-radius-small: 4px;                         /* Small interactive elements. */
+
 
   /* ─────────────────────────────────────────────
    * Hairline Dividers
    * ───────────────────────────────────────────── */
-  --divider:          rgba(255, 255, 255, 0.1);
-  --divider-on-break: rgba(0, 0, 0, 0.1);
+  --divider:          rgba(255, 255, 255, 0.08);   /* On dark surfaces */
+  --divider-on-break: rgba(26, 24, 21, 0.12);      /* On parchment */
+
 
   /* ─────────────────────────────────────────────
    * Typography Families
+   *
+   * Three voices. Not interchangeable. Semantic signals.
+   *   Lora    → Voice of Ideas (headlines, lead para, pull quotes)
+   *   Inter   → Voice of Structure (body, nav, labels, sub-headings)
+   *   Space Grotesk → Voice of Precision (eyebrows, code, technical terms)
    * ───────────────────────────────────────────── */
   --font-serif: 'Lora', Georgia, serif;
-  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
   --font-mono:  'Space Grotesk', 'SF Mono', monospace;
 
+
   /* ─────────────────────────────────────────────
-   * Typography Scale (viewport-fluid with clamp)
+   * Typography Scale (viewport-fluid clamp)
+   *
+   * The scale is correct and stays as-is.
+   * Section entry headlines use --text-h1 (conceptual) or --text-h2 (technical).
    * ───────────────────────────────────────────── */
   --text-hero:  clamp(3rem, 8vw, 7rem);              /* Hero / page title */
-  --text-h1:    clamp(2.25rem, 4.9vw, 4.5rem);       /* Section headlines */
-  --text-h2:    clamp(1.5rem, 2.5vw, 2.25rem);       /* Sub-section headlines */
-  --text-h3:    clamp(1.125rem, 1.5vw, 1.5rem);      /* Component titles */
-  --text-body:  clamp(0.9375rem, 1vw, 1.0625rem);   /* Body text (15–17px) */
-  --text-small: clamp(0.8125rem, 0.85vw, 0.875rem); /* Eyebrow labels, captions */
+  --text-h1:    clamp(2.25rem, 4.9vw, 4.5rem);       /* Conceptual section headlines */
+  --text-h2:    clamp(1.5rem, 2.5vw, 2.25rem);       /* Technical section headlines */
+  --text-h3:    clamp(1.125rem, 1.5vw, 1.5rem);      /* Sub-section titles */
+  --text-small: clamp(0.8125rem, 0.85vw, 0.875rem);  /* Eyebrow labels, captions */
   --text-xs:    0.75rem;                              /* TOC items, micro labels */
+
 
   /* ─────────────────────────────────────────────
    * Line Heights
    * ───────────────────────────────────────────── */
-  --leading-tight:   1.15; /* Headlines */
-  --leading-normal:  1.6;  /* Body text */
-  --leading-relaxed: 1.8;  /* Generous for conceptual sections */
+  --leading-entry:   1.1;   /* Section entry headlines. Tighter than tight.
+                               For the large Lora display type in entry viewports. */
+  --leading-tight:   1.15;  /* Display headlines */
+  --leading-normal:  1.6;   /* Body text in technical sections */
+  --leading-relaxed: 1.8;   /* Body text in conceptual sections.
+                               Wider leading = more breathing room for mental models. */
+
 
   /* ─────────────────────────────────────────────
    * Letter Spacing
    * ───────────────────────────────────────────── */
-  --tracking-tight:  -0.02em; /* Display headlines */
+  --tracking-tight:  -0.02em; /* Display headlines (Lora) */
   --tracking-normal: 0;       /* Body text */
-  --tracking-wide:   0.08em;  /* Eyebrow labels, uppercase text */
+  --tracking-wide:   0.1em;   /* Eyebrow labels (Space Grotesk uppercase) */
+
 
   /* ─────────────────────────────────────────────
    * Spacing (8px base grid)
    * ───────────────────────────────────────────── */
-  --space-1:  0.5rem;  /*   8px */
-  --space-2:  1rem;    /*  16px */
-  --space-3:  1.5rem;  /*  24px */
-  --space-4:  2rem;    /*  32px */
-  --space-6:  3rem;    /*  48px */
-  --space-8:  4rem;    /*  64px */
-  --space-12: 6rem;    /*  96px */
-  --space-16: 8rem;    /* 128px */
-  --space-24: 12rem;   /* 192px */
+  --space-1:  0.5rem;   /*   8px — micro gap (icon-to-label, tight items) */
+  --space-2:  1rem;     /*  16px — small gap (list items, card internal) */
+  --space-3:  1.5rem;   /*  24px — between paragraphs, between glass cards */
+  --space-4:  2rem;     /*  32px — eyebrow-to-headline, major elements (technical) */
+  --space-5:  2.5rem;   /*  40px — card internal horizontal padding */
+  --space-6:  3rem;     /*  48px — major elements (conceptual), divider padding */
+  --space-8:  4rem;     /*  64px — diagram vertical padding (above + below) */
+  --space-12: 6rem;     /*  96px */
+  --space-16: 8rem;     /* 128px — before technical sections (continuity gap) */
+  --space-24: 12rem;    /* 192px — before conceptual sections (chapter break gap) */
+
+  /* Entry viewport vertical positioning */
+  --space-entry-top: 35vh; /* Distance from viewport top where the eyebrow sits.
+                               Entry content cluster: ~35% from top, weight toward bottom. */
+
 
   /* ─────────────────────────────────────────────
    * Content Widths
+   *
+   * Body: 720px → ~60-65ch at 15-17px. Optimal for sustained reading.
+   * Wide: 960px → diagrams, card grids, comparison layouts.
+   * Full: 1200px → maximum including sidebar. Nothing wider.
    * ───────────────────────────────────────────── */
-  --content-max:   720px;  /* Main content column */
-  --content-wide:  960px;  /* Wide content (diagrams, cards) */
-  --content-full: 1200px;  /* Full section including sidebar */
+  --content-max:   720px;
+  --content-wide:  960px;
+  --content-full: 1200px;
   --sidebar-width: 280px;  /* TOC sidebar */
+
 
   /* ─────────────────────────────────────────────
    * Motion / Easing
+   *
+   * Every animation answers: "What just changed, and why should I notice?"
+   * Motion is not for delight. Motion communicates hierarchy.
    * ───────────────────────────────────────────── */
-  --ease-spring:  cubic-bezier(0.625, 0.05, 0, 1);  /* IYO spring — subtle overshoot */
-  --ease-settle:  cubic-bezier(0.22, 1, 0.36, 1);   /* Settle/land — from Glasswing */
-  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);     /* Standard ease-out */
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);  /* Subtle overshoot — TOC active state */
+  --ease-settle:  cubic-bezier(0.16, 1, 0.3, 1);       /* Smooth deceleration — content reveals */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);        /* Standard ease-out — hover states */
+  --ease-blur:    cubic-bezier(0.22, 1, 0.36, 1);       /* Text blur reveal (lookbook) */
 
-  --duration-fast:   150ms;
-  --duration-normal: 250ms;
-  --duration-slow:   500ms;
-  --duration-reveal: 800ms; /* Section entry animations */
+  --duration-fast:        150ms;  /* Hover states, micro-interactions */
+  --duration-normal:      250ms;  /* Navigation transitions (TOC active state, nav show/hide) */
+  --duration-slow:        500ms;  /* Mode shift transitions (background color changes) */
+  --duration-reveal:      800ms;  /* Content reveal on scroll (fade + translate) */
+  --duration-blur-letter: 550ms;  /* Per-letter blur reveal duration */
+  --blur-stagger:          38ms;  /* Per-character stagger delay (lookbook text blur) */
+
 
   /* ─────────────────────────────────────────────
    * Z-Index Scale
    * ───────────────────────────────────────────── */
-  --z-content:  1;
-  --z-sticky:  10; /* Sticky-stack elements */
-  --z-sidebar: 20; /* TOC sidebar */
-  --z-topnav:  30; /* Top navigation */
-  --z-progress: 40; /* Progress bar (topmost) */
-  --z-modal:   50; /* Fullscreen graph, presentation mode */
+  --z-content:  1;   /* Dark sections scrolling over parchment */
+  --z-sticky:  10;   /* Sticky-stack elements */
+  --z-sidebar: 20;   /* TOC sidebar */
+  --z-topnav:  30;   /* Top navigation */
+  --z-progress: 40;  /* Progress bar (topmost layout element) */
+  --z-modal:   50;   /* Fullscreen graph, presentation mode */
 
 }
 
+
 /* ─────────────────────────────────────────────
  * Reduced Motion Overrides
+ *
+ * When reduced motion is requested, all durations collapse.
+ * The particle swarm JS should also freeze on this query.
+ * The site loses nothing essential — it's a beautifully
+ * typeset document on still dark/light grounds.
  * ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --duration-fast:   0ms;
-    --duration-normal: 0ms;
-    --duration-slow:   0ms;
-    --duration-reveal: 0ms;
+    --duration-fast:        0ms;
+    --duration-normal:      0ms;
+    --duration-slow:        0ms;
+    --duration-reveal:      0ms;
+    --duration-blur-letter: 0ms;
+    --blur-stagger:         0ms;
   }
 }

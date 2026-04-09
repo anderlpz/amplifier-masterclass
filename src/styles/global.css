@@ -1,16 +1,21 @@
 /*
- * Global Stylesheet
- * amplifier-masterclass
+ * Global Stylesheet — Amplifier Masterclass
+ * Rebuilt 2026-04-08 for iyo-clean aesthetic direction
  *
- * 1. Import design tokens
- * 2. Font face declarations (11 total: 4 Lora, 3 Inter, 4 Space Grotesk)
- * 3. Minimal modern CSS reset
- * 4. Base dark styles
- * 5. Scrollbar hiding
- * 6. Typography defaults
- * 7. Focus indicators
- * 8. Selection style
+ * 1. Design Tokens (import)
+ * 2. Font Face Declarations (11 total: 4 Lora, 3 Inter, 4 Space Grotesk)
+ * 3. Minimal Modern CSS Reset
+ * 4. Base Styles (void ground, warm body text)
+ * 5. Grain Texture (opt-in utility — conceptual sections only)
+ * 6. Scrollbar Hiding
+ * 7. Typography Defaults
+ * 8. Content Width Utilities
+ * 9. Glass Card Utility
+ * 10. Parallax Reveal (palette-break z-index pattern)
+ * 11. Focus Indicators (accessibility)
+ * 12. Selection Style
  */
+
 
 /* ─────────────────────────────────────────────
  * 1. Design Tokens
@@ -20,9 +25,11 @@
 
 /* ─────────────────────────────────────────────
  * 2. Font Faces
+ *
+ * 11 files total. All local, all woff2, swap display.
  * ───────────────────────────────────────────── */
 
-/* Lora — serif (4 weights) */
+/* Lora — Voice of Ideas (4 weights) */
 @font-face {
   font-family: 'Lora';
   font-weight: 400;
@@ -55,7 +62,7 @@
   src: url('/fonts/lora-700.woff2') format('woff2');
 }
 
-/* Inter — sans-serif (3 weights) */
+/* Inter — Voice of Structure (3 weights) */
 @font-face {
   font-family: 'Inter';
   font-weight: 400;
@@ -80,7 +87,7 @@
   src: url('/fonts/inter-600.woff2') format('woff2');
 }
 
-/* Space Grotesk — mono/display (4 weights) */
+/* Space Grotesk — Voice of Precision (4 weights) */
 @font-face {
   font-family: 'Space Grotesk';
   font-weight: 400;
@@ -143,17 +150,20 @@ p, h1, h2, h3, h4, h5, h6 {
 
 
 /* ─────────────────────────────────────────────
- * 4. Base Dark Styles
+ * 4. Base Styles
+ *
+ * Void ground. Warm body text. The reading environment
+ * is a still, deep space — not bright, not warm gray.
  * ───────────────────────────────────────────── */
 html {
   scroll-behavior: smooth; /* fallback when Lenis isn't loaded */
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-void);
   color: var(--text-body);
   font-family: var(--font-sans);
-  font-size: var(--text-body);
+  font-size: clamp(0.9375rem, 1vw, 1.0625rem); /* ~15–17px body text */
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -161,7 +171,44 @@ body {
 
 
 /* ─────────────────────────────────────────────
- * 5. Scrollbar Hiding
+ * 5. Grain Texture
+ *
+ * Static film grain at 2–3% opacity. Adds analog warmth
+ * to conceptual sections (S01, S13). Absent from technical
+ * sections and parchment breaks.
+ *
+ * Usage: add class="grain" or data-grain to the section wrapper.
+ * The pseudo-element is position:absolute, so the container
+ * must be position:relative (Section.astro handles this).
+ * ───────────────────────────────────────────── */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* SVG feTurbulence noise — static, analog warmth */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  background-repeat: repeat;
+  opacity: 0.025; /* 2.5% — analog warmth, not visible noise */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grain is never visible on high-contrast displays */
+@media (prefers-contrast: more) {
+  .grain::before {
+    display: none;
+  }
+}
+
+
+/* ─────────────────────────────────────────────
+ * 6. Scrollbar Hiding
  * ───────────────────────────────────────────── */
 body {
   scrollbar-width: none;
@@ -173,7 +220,14 @@ body::-webkit-scrollbar {
 
 
 /* ─────────────────────────────────────────────
- * 6. Typography Defaults
+ * 7. Typography Defaults
+ *
+ * h1/h2 — Lora (Voice of Ideas): section headlines
+ * h3    — Inter (Voice of Structure): sub-section titles
+ * p     — Inter (inherited from body): body text
+ *
+ * Note: --text-primary (#FAFAF8) on dark. Individual parchment
+ * sections override to --text-on-break (#1A1815) via local CSS.
  * ───────────────────────────────────────────── */
 h1, h2 {
   font-family: var(--font-serif);
@@ -214,7 +268,79 @@ a:hover {
 
 
 /* ─────────────────────────────────────────────
- * 7. Focus Indicators (accessibility)
+ * 8. Content Width Utilities
+ *
+ * Three tiers. All centered horizontally within the
+ * available space (sidebar offset handled by Section.astro).
+ * ───────────────────────────────────────────── */
+.content-body {
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+.content-wide {
+  max-width: var(--content-wide);
+  margin-inline: auto;
+}
+
+.content-full {
+  max-width: var(--content-full);
+  margin-inline: auto;
+}
+
+
+/* ─────────────────────────────────────────────
+ * 9. Glass Card Utility
+ *
+ * Glass = "I am a tool. I am separate from the content."
+ * Applied to navigation, TOC, and technical sub-section cards.
+ * NEVER applied behind body text or conceptual prose.
+ * ───────────────────────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--glass-radius-card);
+  padding: var(--space-4) var(--space-5);
+}
+
+/* Glass inverts on parchment sections */
+.section--parchment .glass-card {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.07);
+}
+
+
+/* ─────────────────────────────────────────────
+ * 10. Parallax Reveal (Dark → Light Transitions)
+ *
+ * Used at S02→S03 and S11→S12.
+ * Dark sections scroll OVER parchment sections (z-index stacking).
+ * The parchment section holds in place via sticky positioning.
+ * The mode shift is a REVEAL, not a blend.
+ *
+ * Applied by Section.astro based on background variant.
+ * ───────────────────────────────────────────── */
+.section--before-break {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.section--palette-break {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.section--after-break {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+
+/* ─────────────────────────────────────────────
+ * 11. Focus Indicators (accessibility)
  * ───────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -223,7 +349,7 @@ a:hover {
 
 
 /* ─────────────────────────────────────────────
- * 8. Selection Style
+ * 12. Selection Style
  * ───────────────────────────────────────────── */
 ::selection {
   background-color: var(--accent);
