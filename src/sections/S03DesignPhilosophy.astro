@@ -54,22 +54,22 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     <div class="s03-blocks">
 
       <div class="s03-block">
+        <h3 class="s03-block__name">Mechanism, not policy.</h3>
         <p class="s03-block__text">
-          <strong class="s03-block__name">Mechanism, not policy.</strong>
           The kernel fires a tool:pre event before every tool call. A safety module decides whether to block it. A logging module records it. The kernel has no opinion about what should happen. It fires events and collects results. This separation has a name: mechanism versus policy.
         </p>
       </div>
 
       <div class="s03-block">
+        <h3 class="s03-block__name">The center stays still.</h3>
         <p class="s03-block__text">
-          <strong class="s03-block__name">The center stays still.</strong>
           A new AI model ships. Someone writes a provider module. The kernel does not know or care which model it talks to. New tools, new paradigms, new safety requirements: all handled at the edges. The center does not move.
         </p>
       </div>
 
       <div class="s03-block">
+        <h3 class="s03-block__name">Ruthless simplicity.</h3>
         <p class="s03-block__text">
-          <strong class="s03-block__name">Ruthless simplicity.</strong>
           Search the entire amplifier-core codebase for file-writing operations: zero matches. The kernel does not write logs, save transcripts, or persist configuration. If something can live in a module, it must.
         </p>
       </div>
@@ -137,21 +137,39 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     margin: 0;
   }
 
-  /* ── Principle blocks ────────────────────────────────────────────────────────
-   * 3 philosophy principles, each separated by a hairline divider.
-   * Body text at 80% opacity for reading weight; principle names at full.
-   * Uses rgba() not opacity so strong inherits full color, not stacked opacity.
+  /* ── Principle cards ────────────────────────────────────────────────────────
+   * 3 philosophy principles in a 3-column responsive grid.
+   * Each principle gets its own bordered card with subtle parchment background.
+   * Parchment-appropriate: black-alpha border + background (not white-alpha).
    * ─────────────────────────────────────────────────────────────────────────── */
   .s03-blocks {
-    display: flex;
-    flex-direction: column;
-    max-width: 60ch;
-    border-top: 1px solid var(--divider-on-break); /* rgba(26,24,21,0.12) */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-4);
+    max-width: var(--content-wide);
+  }
+
+  @media (max-width: 767px) {
+    .s03-blocks {
+      grid-template-columns: 1fr;
+    }
   }
 
   .s03-block {
-    padding: var(--space-5) 0;             /* 40px top/bottom per principle */
-    border-bottom: 1px solid var(--divider-on-break);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    padding: var(--space-5);
+  }
+
+  /* Principle name — h3-level prominence */
+  .s03-block__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);             /* clamp(1.125rem, 1.5vw, 1.5rem) */
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    color: var(--text-on-break);           /* #1A1815 — full opacity */
+    margin: 0 0 var(--space-3);
   }
 
   .s03-block__text {
@@ -159,13 +177,6 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     /* 80% opacity body text; avoids opacity cascade by using rgba() */
     color: rgba(26, 24, 21, 0.8);
     margin: 0;
-  }
-
-  /* Principle name (bold prefix) — full ink weight */
-  .s03-block__name {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    color: var(--text-on-break);           /* #1A1815 — full opacity */
   }
 
   /* ── "Why mechanism…" sub-section ───────────────────────────────────────────

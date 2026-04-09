@@ -266,6 +266,30 @@ a:hover {
   color: var(--accent-hover);
 }
 
+/* Inline code — monospace with background pill */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+/* Code on parchment sections */
+.section--parchment code {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-on-break);
+}
+
+/* Don't double-style code blocks */
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
 
 /* ─────────────────────────────────────────────
  * 8. Content Width Utilities
@@ -337,6 +361,172 @@ a:hover {
   position: relative;
   z-index: var(--z-content);
 }
+
+
+/* ─────────────────────────────────────────────────
+ * 10b. Atmospheric Section Washes
+ *
+ * Each dark section gets a subtle radial gradient
+ * wash that gives it a unique atmospheric color.
+ * Position and color vary per section for visual
+ * rhythm. 3–6% opacity — felt, not seen.
+ * ───────────────────────────────────────────────── */
+
+/* Base wash infrastructure — applied to all void/slate sections */
+.section--void,
+.section--slate {
+  position: relative;
+}
+
+.section--void::after,
+.section--slate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* S01 — Warm amber entry glow (top-right) */
+[data-section="s1"]::after {
+  background: radial-gradient(ellipse 60% 50% at 70% 30%, rgba(200, 123, 96, 0.06), transparent 70%);
+  opacity: 1;
+}
+
+/* S02 — Cool azure technical (center-left) */
+[data-section="s2"]::after {
+  background: radial-gradient(ellipse 50% 60% at 30% 50%, rgba(0, 130, 235, 0.04), transparent 65%);
+  opacity: 1;
+}
+
+/* S04 — Deep blue core (center) */
+[data-section="s4"]::after {
+  background: radial-gradient(ellipse 40% 40% at 50% 40%, rgba(0, 100, 200, 0.05), transparent 60%);
+  opacity: 1;
+}
+
+/* S05 — Slate with teal undertone (bottom-left) */
+[data-section="s5"]::after {
+  background: radial-gradient(ellipse 50% 50% at 25% 70%, rgba(0, 180, 160, 0.04), transparent 65%);
+  opacity: 1;
+}
+
+/* S06 — Vortex warm gold (center, larger) */
+[data-section="s6"]::after {
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212, 200, 160, 0.05), transparent 70%);
+  opacity: 1;
+}
+
+/* S07 — Split cool/warm (left blue, right copper) */
+[data-section="s7"]::after {
+  background:
+    radial-gradient(ellipse 30% 40% at 25% 50%, rgba(0, 130, 235, 0.035), transparent 60%),
+    radial-gradient(ellipse 30% 40% at 75% 50%, rgba(200, 123, 96, 0.035), transparent 60%);
+  opacity: 1;
+}
+
+/* S08 — Azure tree branches (top-center) */
+[data-section="s8"]::after {
+  background: radial-gradient(ellipse 45% 45% at 55% 35%, rgba(0, 130, 235, 0.04), transparent 65%);
+  opacity: 1;
+}
+
+/* S09 — Warm slate (center-right) */
+[data-section="s9"]::after {
+  background: radial-gradient(ellipse 50% 50% at 65% 50%, rgba(180, 140, 100, 0.035), transparent 65%);
+  opacity: 1;
+}
+
+/* S10 — Bridge azure span (wide horizontal) */
+[data-section="s10"]::after {
+  background: radial-gradient(ellipse 80% 30% at 50% 60%, rgba(0, 130, 235, 0.035), transparent 65%);
+  opacity: 1;
+}
+
+/* S11 — Converge warm (center bottom) */
+[data-section="s11"]::after {
+  background: radial-gradient(ellipse 50% 50% at 50% 65%, rgba(160, 130, 100, 0.04), transparent 65%);
+  opacity: 1;
+}
+
+/* S13 — Fading embers warm (scattered) */
+[data-section="s13"]::after {
+  background: radial-gradient(ellipse 60% 50% at 40% 40%, rgba(200, 123, 96, 0.04), transparent 70%);
+  opacity: 1;
+}
+
+
+/* ─────────────────────────────────────────────────
+ * 10c. Diagram Containers
+ *
+ * SVG diagrams get a glass container with subtle
+ * glow border. The container provides separation
+ * from the dark background and frames the diagram.
+ * ───────────────────────────────────────────────── */
+.diagram-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--glass-radius-card);
+  padding: var(--space-6);
+  margin: var(--space-8) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glow on the border */
+.diagram-container::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 130, 235, 0.12) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(0, 130, 235, 0.08) 100%
+  );
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+}
+
+.diagram-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+/* Caption below diagram */
+.diagram-container figcaption {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* On parchment sections, invert diagram container */
+.section--parchment .diagram-container {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.section--parchment .diagram-container::before {
+  background: linear-gradient(
+    135deg,
+    rgba(200, 123, 96, 0.10) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(200, 123, 96, 0.06) 100%
+  );
+}
+
 
 
 /* ─────────────────────────────────────────────

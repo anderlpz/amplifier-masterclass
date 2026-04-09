@@ -44,11 +44,12 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
   </Fragment>
 
   <!-- Five kernel responsibilities, each in a GlassCard with a TOC anchor -->
-  <div class="s04-subsections">
+  <div class="s04-cards">
 
     <div id="s4-session" class="s04-subsection">
       <GlassCard>
         <div class="s04-card">
+          <span class="s04-num">01</span>
           <h3 class="s04-card__title">Session Lifecycle</h3>
           <p>
             A session is the container around a particular instance of the system running. Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order. Orchestrator and Context Manager are required. Everything else is optional. Cleanup runs in a finally block. Always.
@@ -60,6 +61,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     <div id="s4-contracts" class="s04-subsection">
       <GlassCard>
         <div class="s04-card">
+          <span class="s04-num">02</span>
           <h3 class="s04-card__title">Contracts</h3>
           <p>
             Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.
@@ -71,6 +73,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     <div id="s4-loader" class="s04-subsection">
       <GlassCard>
         <div class="s04-card">
+          <span class="s04-num">03</span>
           <h3 class="s04-card__title">Module Loader</h3>
           <p>
             Discovers available modules, loads them, and gives each one a chance to set itself up. The loader does not need to know what type of module it is loading. It calls mount, and the module takes care of the rest.
@@ -82,6 +85,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     <div id="s4-coordinator" class="s04-subsection">
       <GlassCard>
         <div class="s04-card">
+          <span class="s04-num">04</span>
           <h3 class="s04-card__title">The Coordinator</h3>
           <p>
             A passive registry: a structured shelf where modules are stored after loading. Three operations: mount, get, unmount. Despite the name, it does not coordinate anything. Think of it as a phone book. The Orchestrator module does the actual work.
@@ -93,12 +97,18 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     <div id="s4-hooks" class="s04-subsection">
       <GlassCard>
         <div class="s04-card">
+          <span class="s04-num">05</span>
           <h3 class="s04-card__title">Hooks</h3>
           <p>
             Hooks let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens (a tool is called, a session starts, a file is written) hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.
           </p>
         </div>
       </GlassCard>
+    </div>
+
+    <div class="s04-callout">
+      <div class="s04-callout-label">Key Fact</div>
+      <p>The kernel is <strong>~2,600 lines of code</strong>. That's it. Everything else — providers, tools, hooks, orchestrators — lives in modules. The center stays small so the edges can move fast.</p>
     </div>
 
   </div>
@@ -111,7 +121,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
 </Section>
 
 <style>
-  /* ── Entry cluster ──────────────────────────────────────────────────────────
+  /* ── Entry cluster ───────────────────────────────────────────────────────────
    * Technical entry: azure eyebrow (Eyebrow default mode="technical"),
    * Lora h2 at --text-h2 scale, Inter lead at 75% opacity.
    * ─────────────────────────────────────────────────────────────────────────── */
@@ -146,29 +156,45 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     margin: 0;
   }
 
-  /* ── Sub-sections: GlassCard wrappers ───────────────────────────────────────
-   * Each kernel responsibility sits in a GlassCard.
-   * GlassCard provides: padding: var(--space-4), radius: 8px, glass border.
-   * .s04-subsection wraps it with the TOC anchor ID.
-   * .s04-card is the inner flex column providing title + paragraph spacing.
+  /* ── Cards: CSS grid ────────────────────────────────────────────────────────
+   * 2-column grid on desktop; stacks to 1 column on mobile.
+   * Each .s04-subsection is a grid item; the callout spans both columns.
    * ─────────────────────────────────────────────────────────────────────────── */
-  .s04-subsections {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);           /* 24px between GlassCards */
-    max-width: 60ch;
+  .s04-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    max-width: var(--content-wide);
   }
 
   /* Anchor div — ID is here so the TOC can link to the card */
   .s04-subsection {
-    /* passthrough — no visual styling, only provides anchor target */
+    /* Grid makes the glass-card auto-stretch to fill the cell height */
+    display: grid;
   }
 
-  /* Inner layout: flex column for title + paragraphs */
+  /* Equalize card heights: glass-card fills the full grid cell height */
+  .s04-cards :global(.glass-card) {
+    height: 100%;
+  }
+
+  /* Inner layout: flex column for number + title + paragraphs */
   .s04-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);           /* 16px between title and paragraphs, and between paragraphs */
+    gap: var(--space-2);           /* 16px between elements */
+  }
+
+  /* Large blue ordinal number badge */
+  .s04-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-h3);
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: var(--space-2);
+    display: block;
   }
 
   .s04-card__title {
@@ -185,5 +211,37 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     line-height: var(--leading-normal); /* 1.6 — technical section */
     color: var(--text-body);
     margin: 0;
+  }
+
+  /* ── KEY FACT callout — full-width bottom strip ──────────────────────────── */
+  .s04-callout {
+    grid-column: 1 / -1;
+    background: rgba(0, 130, 235, 0.06);
+    border: 1px solid rgba(0, 130, 235, 0.15);
+    border-radius: var(--glass-radius-card);
+    padding: var(--space-5);
+    margin-top: var(--space-2);
+  }
+
+  .s04-callout-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+
+  .s04-callout p {
+    line-height: var(--leading-normal);
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  /* ── Mobile: single column ─────────────────────────────────────────────────── */
+  @media (max-width: 767px) {
+    .s04-cards {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

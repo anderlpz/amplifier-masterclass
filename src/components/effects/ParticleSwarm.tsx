@@ -24,8 +24,8 @@ const MOBILE_COUNT = 4_000;
 const MOBILE_BP = 768;
 
 // Particle appearance
-const BASE_ALPHA = 0.10;        // base draw opacity (on dark sections)
-const PARTICLE_PX = 1.5;        // radius in canvas pixels
+const BASE_ALPHA = 0.28;        // base draw opacity (on dark sections)
+const PARTICLE_PX = 2.0;        // radius in canvas pixels
 
 // Physics
 const MAX_SPEED = 1.5;          // px / frame

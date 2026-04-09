@@ -39,9 +39,11 @@ interface Props {
     | 'primary-dark'     /* legacy → void */
     | 'secondary-dark'   /* legacy → slate */
     | 'palette-break';   /* legacy → parchment */
+  /** Extra CSS classes forwarded to the <section> element (e.g. "grain"). */
+  class?: string;
 }
 
-const { id, label, background = 'void' } = Astro.props;
+const { id, label, background = 'void', class: extraClass } = Astro.props;
 
 /* Normalize legacy prop names to new semantic class names */
 const bgClass = (
@@ -57,7 +59,7 @@ const isParchment = bgClass === 'parchment';
 
 <section
   id={id}
-  class={`section section--${bgClass}`}
+  class:list={['section', `section--${bgClass}`, extraClass]}
   data-section={id}
   data-label={label}
   aria-label={label}
@@ -101,11 +103,19 @@ const isParchment = bgClass === 'parchment';
    * ───────────────────────────────────────────── */
   .section--void {
     background-color: var(--bg-void);
+    background-image:
+      linear-gradient(rgba(0, 130, 235, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 130, 235, 0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
     color: var(--text-body);
   }
 
   .section--slate {
     background-color: var(--bg-slate);
+    background-image:
+      linear-gradient(rgba(0, 130, 235, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 130, 235, 0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
     color: var(--text-body);
   }
 

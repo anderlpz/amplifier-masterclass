@@ -28,42 +28,42 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
 
   <div class="s12__content">
     <div class="s12__stack">
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--6">
         <span class="s12__layer-num">06</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Community</span>
           <p class="s12__layer-desc">Third-party modules, bundles, recipes, integrations. Open at every level.</p>
         </div>
       </div>
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--5">
         <span class="s12__layer-num">05</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Applications</span>
           <p class="s12__layer-desc">CLI, web interface, IDE integration, voice assistant. The things people use.</p>
         </div>
       </div>
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--4">
         <span class="s12__layer-num">04</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Foundation</span>
           <p class="s12__layer-desc">Turns bundles into running sessions. Finds modules, assembles config, and stays connected at runtime.</p>
         </div>
       </div>
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--3">
         <span class="s12__layer-num">03</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Bundles</span>
           <p class="s12__layer-desc">Configuration packages. Text files. Combine modules into deployable agents. No code required.</p>
         </div>
       </div>
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--2">
         <span class="s12__layer-num">02</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Modules</span>
           <p class="s12__layer-desc">Providers, tools, hooks, orchestrators, context managers, resolvers. The actual capabilities.</p>
         </div>
       </div>
-      <div class="s12__layer">
+      <div class="s12__layer s12__layer--1">
         <span class="s12__layer-num">01</span>
         <div class="s12__layer-content">
           <span class="s12__layer-label">Kernel</span>
@@ -116,7 +116,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     margin: var(--space-4) 0 0;
   }
 
-  /* —— Content wrapper (body + UpNextTeaser) —————————————————————————————— */
+  /* —— Content wrapper (body + UpNextTeaser) ——————————————————————————————— */
   .s12__content {
     display: contents; /* transparent wrapper for UpNextTeaser scoping */
   }
@@ -139,6 +139,48 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     gap: var(--space-3);
     padding: var(--space-3) 0;
     border-bottom: 1px solid var(--divider-on-break);
+    border-radius: var(--glass-radius-sm);
+  }
+
+  /* —— Pastel layer colors — visible against parchment (#F5F3EC) ——————————
+   * Each layer gets a distinct colored left-border accent + tinted background.
+   * Colors are saturated enough to read on warm cream without being harsh.
+   * padding-left overrides the 0 from the shorthand padding above.
+   * ————————————————————————————————————————————————————————————————————————— */
+  .s12__layer--6 {
+    background-color: rgba(249, 115, 22, 0.08);
+    border-left: 3px solid rgba(249, 115, 22, 0.4);
+    padding-left: var(--space-4);
+  }
+
+  .s12__layer--5 {
+    background-color: rgba(16, 185, 129, 0.07);
+    border-left: 3px solid rgba(16, 185, 129, 0.4);
+    padding-left: var(--space-4);
+  }
+
+  .s12__layer--4 {
+    background-color: rgba(139, 92, 246, 0.06);
+    border-left: 3px solid rgba(139, 92, 246, 0.35);
+    padding-left: var(--space-4);
+  }
+
+  .s12__layer--3 {
+    background-color: rgba(14, 165, 233, 0.06);
+    border-left: 3px solid rgba(14, 165, 233, 0.35);
+    padding-left: var(--space-4);
+  }
+
+  .s12__layer--2 {
+    background-color: rgba(100, 116, 139, 0.06);
+    border-left: 3px solid rgba(100, 116, 139, 0.3);
+    padding-left: var(--space-4);
+  }
+
+  .s12__layer--1 {
+    background-color: rgba(202, 138, 4, 0.05);
+    border-left: 3px solid rgba(202, 138, 4, 0.3);
+    padding-left: var(--space-4);
   }
 
   .s12__layer-num {
@@ -177,7 +219,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     max-width: 60ch;
   }
 
-  /* —— Body ————————————————————————————————————————————————————————————————— */
+  /* —— Body ——————————————————————————————————————————————————————————————— */
   .s12__body {
     display: flex;
     flex-direction: column;
@@ -196,8 +238,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     border-top: 1px solid var(--divider-on-break);
   }
 
-  /* —— UpNextTeaser: parchment overrides —————————————————————————————————— */
-  /*
+  /* —— UpNextTeaser: parchment overrides ——————————————————————————————————
    * UpNextTeaser is designed for dark backgrounds. On parchment we override
    * its text colors to dark ink and its separator to --divider-on-break.
    * The glass surface (rgba white) becomes near-invisible on cream — that
@@ -221,7 +262,7 @@ import UpNextTeaser from '../components/content/UpNextTeaser.astro';
     opacity: 0.65;
   }
 
-  /* —— Diagram ————————————————————————————————————————————————————————————— */
+  /* —— Diagram ——————————————————————————————————————————————————————————— */
   .diagram {
     display: block;
     width: 100%;
