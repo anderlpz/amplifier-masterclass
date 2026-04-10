@@ -1,14 +1,141 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import DataTable from '../components/blocks/DataTable.astro';
+import Diagram from '../components/blocks/Diagram.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="A session is a container."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    A session is the container around one running instance of the system. In
+    the CLI, a session is a conversation. In a pipeline runner, a session is a
+    single batch execution. In the kernel, a session is just an ID and a
+    lifecycle.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>Create</h2>
+  <p>
+    Session created with configuration. The Coordinator and Module Loader are
+    set up. Nothing has been loaded yet. The system knows what it needs, but
+    hasn't started yet.
+  </p>
+
+  <h2>Initialize</h2>
+  <p>
+    The Module Loader loads modules in fixed order. If the Orchestrator or
+    Context Manager fails to load, the session stops immediately. Everything
+    else is optional. <strong>Required:</strong> Orchestrator and Context
+    Manager must mount successfully during Initialize. If either fails, the
+    session stops.
+  </p>
+
+  <h2>Execute</h2>
+  <p>
+    The session receives a message. It passes the message to the Orchestrator
+    and gets a response back. This phase is repeatable — each call is one turn
+    of conversation. Between turns, all state is maintained.
+  </p>
+
+  <h2>Cleanup</h2>
+  <p>
+    <code>session:end</code> fires first (hooks get a final chance). Then the
+    Coordinator cleans up modules. Then the Loader cleans up. All of this runs
+    in a <code>finally</code> block — it always runs, even after errors.
+  </p>
+</Prose>
+
+<Diagram
+  src="/diagrams/session-tree.svg"
+  width="wide"
+  alt="Parent-child session tree showing sessions as isolated containers linked only by parent_id"
+  caption="Sessions are self-contained. The only link between parent and child is parent_id."
+/>
+
+<DataTable caption="Parent-Child Sessions: Expectations vs Reality">
+  <table>
+    <thead>
+      <tr>
+        <th>What you might expect</th>
+        <th>What Amplifier does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Child inherits parent's context</td>
+        <td>Set <code>parent_id</code>. That is the only link.</td>
+      </tr>
+      <tr>
+        <td>Shared modules, shared memory</td>
+        <td>No shared modules, memory, or config.</td>
+      </tr>
+      <tr>
+        <td>Changes in parent affect child</td>
+        <td>Each session is fully self-contained.</td>
+      </tr>
+    </tbody>
+  </table>
+</DataTable>
+
+<Prose>
+  <p>
+    The core provides a <code>parent_id</code> field that links one session to
+    another. That is the extent of what the kernel does. How parent-child
+    relationships are used — delegation, sub-agents, task decomposition — is
+    decided by Foundation and applications built on top of it.
+  </p>
+
+  <p>
+    This is deliberately minimal. Automatic inheritance creates hidden
+    dependencies; changes to the parent's conversation would affect the child
+    unpredictably. Explicit is better: pass what you need, share nothing by
+    default. Each session is self-contained and predictable.
+  </p>
+
+  <h2>Cancellation</h2>
+
+  <p>
+    Cancellation is cooperative, not preemptive. The kernel cannot forcibly
+    stop an Orchestrator in the middle of its work. Instead, it sets a flag
+    with three states:
+  </p>
+
+  <ol>
+    <li><strong>No cancellation requested</strong> — normal operation continues.</li>
+    <li><strong>Graceful cancellation</strong> — finish what you're doing, then stop.</li>
+    <li><strong>Immediate cancellation</strong> — stop as soon as possible.</li>
+  </ol>
+
+  <p>
+    The Orchestrator must check this flag periodically. If it ignores the
+    flag, cancellation doesn't happen.
+  </p>
+
+  <h2>Cleanup order</h2>
+
+  <p>
+    When a session ends, cleanup always runs. The <code>session:end</code>{' '}
+    event fires first, giving hooks a final opportunity to act. Then the
+    Coordinator cleans up modules in reverse load order. Then the Loader
+    cleans up. This entire sequence is wrapped in a <code>finally</code>{' '}
+    block — it runs even after errors, even after a crash.
+  </p>
+
+  <p>
+    When you see session files on disk — <code>transcript.jsonl</code>,{' '}
+    <code>events.jsonl</code>, <code>metadata.json</code> — the kernel didn't
+    write them. Hook modules did. Remove every hook, and the session still
+    runs identically. No trace on disk, but the conversation works the same.
+  </p>
 </Prose>
