@@ -39,26 +39,6 @@ assert_match() {
   fi
 }
 
-assert_file_content_equals() {
-  local description="$1"
-  local file="$2"
-  local expected="$3"
-  local actual
-  actual=$(cat "$file")
-  if [ "$actual" = "$expected" ]; then
-    echo "PASS: $description"
-    ((PASS++))
-  else
-    echo "FAIL: $description"
-    echo "  Expected:"
-    echo "$expected" | head -20
-    echo "  Actual:"
-    echo "$actual" | head -20
-    ERRORS+=("$description")
-    ((FAIL++))
-  fi
-}
-
 echo "========================================="
 echo "Task 1: Remove React and animation deps"
 echo "========================================="
@@ -125,10 +105,10 @@ if grep -qE 'react|gsap|lenis|phosphor' package.json 2>/dev/null; then
   echo "  Offending lines:"
   grep -E 'react|gsap|lenis|phosphor' package.json
   ERRORS+=("grep acceptance criteria: no react|gsap|lenis|phosphor in package.json")
-  ((FAIL++))
+  FAIL=$((FAIL + 1))
 else
   echo "PASS: grep -E 'react|gsap|lenis|phosphor' package.json returns no matches"
-  ((PASS++))
+  PASS=$((PASS + 1))
 fi
 
 echo ""
