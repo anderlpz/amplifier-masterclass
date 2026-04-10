@@ -1,14 +1,157 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import CodeBlock from '../components/blocks/CodeBlock.astro';
+import Callout from '../components/blocks/Callout.astro';
+import VignettePlaceholder from '../components/blocks/VignettePlaceholder.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Five things live in the kernel. Nothing else."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    The kernel (<code>amplifier-core</code>) is a Rust and Python package. Inside
+    it are five components. Each exists because every module in the system depends
+    on it.
+  </p>
 </Prose>
+
+<Prose>
+  <h2>1. Session Lifecycle</h2>
+
+  <p>
+    A session is the container around a particular instance of the system running.
+    Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order.
+    Orchestrator and Context Manager are required. Everything else is optional.
+    Cleanup runs in a <code>finally</code> block. Always.
+  </p>
+
+  <p>
+    <strong>Creation.</strong> Configuration goes in. Coordinator and Loader are
+    created. Nothing loaded yet. The system knows what it needs, but hasn't
+    started yet.
+  </p>
+
+  <p>
+    <strong>Initialization.</strong> Modules load in fixed order: Orchestrator,
+    Context Manager, Providers, Tools, Hooks. Orchestrator and Context Manager
+    are required; failure to load either stops the session. The rest are optional
+    (warn and continue).
+  </p>
+
+  <p>
+    <strong>Execution.</strong> A prompt arrives, passes to the Orchestrator, and
+    a response comes back. This phase is repeatable. Each <code>execute</code> call
+    is one conversation turn. Between turns, all state is maintained.
+  </p>
+
+  <p>
+    <strong>Cleanup.</strong> A <code>session:end</code> event fires first (hooks
+    get a final chance to process). Then Coordinator tears down modules. Then
+    Loader cleans up. In a <code>finally</code> block. Always runs, even after
+    errors.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>2. Contracts</h2>
+
+  <p>
+    Six module types, each defined as a contract. If a module has the right
+    methods, it satisfies the contract. No base class required. No explicit
+    registration. Small, stable contracts that rarely change.
+  </p>
+
+  <p>
+    The six contracts define the module ecosystem's shape. They're small (each
+    specifying just a few methods). When they do change, every module of that
+    type is affected, which is why stability matters here more than anywhere else.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>3. Module Loader</h2>
+
+  <p>
+    Discovers available modules, loads them, and gives each one a chance to set
+    itself up. The loader does not need to know what type of module it is loading.
+    It calls <code>mount</code>, and the module takes care of the rest.
+  </p>
+
+  <p>
+    Discovery uses two primary channels: Python entry points (installed packages
+    advertising they contain Amplifier modules) and filesystem scanning
+    (directories following the <code>amplifier-module-*</code> naming
+    convention).
+  </p>
+</Prose>
+
+<CodeBlock lang="python">
+{`async def mount(
+    coordinator: Coordinator,
+    config: dict
+) -> Optional[cleanup_fn]:
+    # receive the registry + configuration
+    # do your setup work
+    # register yourself in the coordinator
+    # optionally return a cleanup function`}
+</CodeBlock>
+
+<Prose>
+  <h2>4. The Coordinator</h2>
+
+  <p>
+    A passive registry: a structured shelf where modules are stored after
+    loading. Three operations: <code>mount</code>, <code>get</code>,
+    <code>unmount</code>. Despite the name, it does not coordinate anything.
+    Think of it as a phone book. The Orchestrator module does the actual work.
+  </p>
+
+  <p>
+    When a module mounts, it goes into the right slot. When something needs to
+    find a module, it checks the Coordinator. No decisions. No message routing.
+    No behavior.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>5. Hooks</h2>
+
+  <p>
+    Hooks let you interact with the system's lifecycle programmatically. They
+    are injection points for deterministic, non-AI-driven actions. When something
+    happens (a tool is called, a session starts, a file is written) hooks fire
+    automatically. The AI model has no idea they exist. Hooks can observe, block,
+    inject information into the model's context, or transform data flowing through
+    the system.
+  </p>
+
+  <p>
+    There are 41 canonical events, organized by category: session, tool,
+    provider, prompt, context. Events and hooks are the same system: one dispatch
+    mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An
+    event fires, hooks respond, results are collected.
+  </p>
+</Prose>
+
+<Callout label="Implementation Note">
+  <p>
+    The hook and event dispatch implementation is in Rust, because event dispatch
+    is the hottest path in the system. It runs on every tool call, every message,
+    every session transition. The Python layer wraps these Rust internals —
+    <code>amplifier-core</code> is both a Rust crate and a Python package.
+  </p>
+</Callout>
+
+<VignettePlaceholder
+  rationale="Animating the 5 components appearing one by one with brief descriptions would orient faster than reading a list"
+  width="wide"
+/>
