@@ -789,6 +789,31 @@
     .table-wrapper[data-layer="modules"]    { border-top: 3px solid var(--layer-modules); }
     .table-wrapper[data-layer="bundles"]    { border-top: 3px solid var(--layer-bundles); }
     .table-wrapper[data-layer="boundary"]   { border-top: 3px solid var(--layer-boundary); }
+
+    /* ── Inline layer term highlights ────────────────────────────────────────── */
+
+    .lt {
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0px;
+      text-decoration: none;
+      transition: border-color 150ms, background-color 150ms;
+    }
+    .lt[data-l="kernel"]     { border-bottom-color: var(--layer-kernel); }
+    .lt[data-l="modules"]    { border-bottom-color: var(--layer-modules); }
+    .lt[data-l="bundles"]    { border-bottom-color: var(--layer-bundles); }
+    .lt[data-l="foundation"] { border-bottom-color: var(--layer-foundation); }
+    .lt[data-l="apps"]       { border-bottom-color: var(--layer-apps); }
+    .lt[data-l="ecosystem"]  { border-bottom-color: var(--layer-ecosystem); }
+    .lt[data-l="boundary"]   { border-bottom-color: var(--layer-boundary); }
+
+    /* Subtle background on hover — reinforces the association */
+    .lt[data-l="kernel"]:hover     { background-color: var(--layer-kernel-soft); }
+    .lt[data-l="modules"]:hover    { background-color: var(--layer-modules-soft); }
+    .lt[data-l="bundles"]:hover    { background-color: var(--layer-bundles-soft); }
+    .lt[data-l="foundation"]:hover { background-color: var(--layer-foundation-soft); }
+    .lt[data-l="apps"]:hover       { background-color: var(--layer-apps-soft); }
+    .lt[data-l="ecosystem"]:hover  { background-color: var(--layer-ecosystem-soft); }
+    .lt[data-l="boundary"]:hover   { background-color: var(--layer-boundary-soft); }
   </style>
 </head>
 <body>
@@ -966,9 +991,9 @@
 
       <h3 id="s1-1">1.1 The operating system analogy</h3>
 
-      <p>If you've used a computer, you've used an operating system. An operating system has a kernel at its center. The kernel is tiny relative to the whole system. It handles the most fundamental things: managing memory, scheduling tasks, letting programs talk to hardware. Everything else — the web browser, the file manager, the apps — runs on top of the kernel, plugging into it through well-defined interfaces.</p>
+      <p>If you've used a computer, you've used an operating system. An operating system has a <span class="lt" data-l="kernel">kernel</span> at its center. The kernel is tiny relative to the whole system. It handles the most fundamental things: managing memory, scheduling tasks, letting programs talk to hardware. Everything else — the web browser, the file manager, the apps — runs on top of the kernel, plugging into it through well-defined interfaces.</p>
 
-      <p>Amplifier borrows this structure. At the center is a small core called <code>amplifier-core</code>. It handles module loading, event dispatch, and session lifecycle. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows: each of those is a module that plugs in from the outside.</p>
+      <p>Amplifier borrows this structure. At the center is a small core called <code>amplifier-core</code>. It handles module loading, event dispatch, and <span class="lt" data-l="kernel">session lifecycle</span>. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows: each of those is a <span class="lt" data-l="modules">module</span> that plugs in from the outside.</p>
 
       <p>A new AI model comes out? Write a new provider module. Need the agent to follow safety rules? Add a hook module. The core does not change. It provides the infrastructure; the modules provide the behavior.</p>
 
@@ -1033,11 +1058,11 @@
         <span class="legend-item" style="--lc: var(--layer-ecosystem)">Ecosystem</span>
       </div>
 
-      <p><strong>The center</strong> is the kernel. Inside it: the Coordinator (a registry storing modules), the Hook and Event system (a notification network), the Module Loader, and the Session lifecycle.</p>
+      <p><strong>The center</strong> is the <span class="lt" data-l="kernel">kernel</span>. Inside it: the <span class="lt" data-l="kernel">Coordinator</span> (a registry storing modules), the Hook and Event system (a notification network), the Module Loader, and the Session lifecycle.</p>
 
-      <p><strong>The middle ring</strong> holds the modules, the pluggable pieces that define how an agent behaves. The Orchestrator drives the conversation. Providers connect to AI models. Tools give the agent actions. Context Managers handle memory. Hook Handlers enforce rules and react to events.</p>
+      <p><strong>The middle ring</strong> holds the <span class="lt" data-l="modules">modules</span>, the pluggable pieces that define how an agent behaves. The <span class="lt" data-l="modules">Orchestrator</span> drives the conversation. Providers connect to AI models. Tools give the agent actions. Context Managers handle memory. Hook Handlers enforce rules and react to events.</p>
 
-      <p><strong>The outer ring</strong> is Foundation (which turns configuration files into running sessions) and the ecosystem: bundles, recipes, apps, community extensions.</p>
+      <p><strong>The outer ring</strong> is <span class="lt" data-l="foundation">Foundation</span> (which turns configuration files into running sessions) and the <span class="lt" data-l="ecosystem">ecosystem</span>: bundles, recipes, apps, community extensions.</p>
 
       <p>The most important cluster is at the center: <code>amplifier-core</code>. Everything else depends on it; it depends on nothing. That asymmetry is the architecture in one sentence.</p>
 
@@ -1063,9 +1088,9 @@
 
       <h3 id="s3-1">3.1 Mechanism, not policy</h3>
 
-      <p>The kernel fires a <code>tool:pre</code> event before every tool call. A safety module decides whether to block it. A logging module records it. The kernel has no opinion about what should happen. It fires events and collects results. This separation has a name: mechanism versus policy.</p>
+      <p>The kernel fires a <code>tool:pre</code> event before every tool call. A safety module decides whether to block it. A logging module records it. The kernel has no opinion about what should happen. It fires events and collects results. This separation has a name: <span class="lt" data-l="boundary">mechanism</span> versus <span class="lt" data-l="boundary">policy</span>.</p>
 
-      <p>This principle comes from operating system design. The Linux kernel provides process scheduling and memory management without deciding how programs use those mechanisms. Amplifier does the same: the kernel provides module loading, event dispatch, and session lifecycle. It never decides which modules matter, which events to act on, or what should happen during a session.</p>
+      <p>This principle comes from operating system design. The Linux kernel provides process scheduling and memory management without deciding how programs use those mechanisms. Amplifier does the same: the <span class="lt" data-l="kernel">kernel</span> provides module loading, event dispatch, and session lifecycle. It never decides which modules matter, which events to act on, or what should happen during a session.</p>
 
       <p>The consequence is that when rules change — new safety requirements, new compliance needs — you change modules. The kernel stays the same.</p>
 
@@ -1106,7 +1131,7 @@
 
       <h3 id="s4-1">4.1 Session Lifecycle</h3>
 
-      <p>A session is the container around a particular instance of the system running. Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order. Orchestrator and Context Manager are required. Everything else is optional. Cleanup runs in a <code>finally</code> block. Always.</p>
+      <p>A <span class="lt" data-l="kernel">session</span> is the container around a particular instance of the system running. Four phases: Create, Initialize, Execute, Cleanup. Fixed loading order. <span class="lt" data-l="modules">Orchestrator</span> and <span class="lt" data-l="modules">Context Manager</span> are required. Everything else is optional. Cleanup runs in a <code>finally</code> block. Always.</p>
 
       <p><strong>Creation.</strong> Configuration goes in. Coordinator and Loader are created. Nothing loaded yet. The system knows what it needs, but hasn't started yet.</p>
 
@@ -1118,7 +1143,7 @@
 
       <h3 id="s4-2">4.2 Contracts</h3>
 
-      <p>Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.</p>
+      <p>Six module types, each defined as a <span class="lt" data-l="kernel">contract</span>. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.</p>
 
       <p>The six contracts define the module ecosystem's shape. They're small (each specifying just a few methods). When they do change, every module of that type is affected, which is why stability matters here more than anywhere else.</p>
 
@@ -1132,7 +1157,7 @@
 
       <p>A passive registry: a structured shelf where modules are stored after loading. Three operations: <code>mount</code>, <code>get</code>, <code>unmount</code>. Despite the name, it does not coordinate anything. Think of it as a phone book. The Orchestrator module does the actual work.</p>
 
-      <p>When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator. No decisions. No message routing. No behavior.</p>
+      <p>When a module mounts, it goes into the right slot. When something needs to find a module, it checks the <span class="lt" data-l="kernel">Coordinator</span>. No decisions. No message routing. No behavior.</p>
 
       <div class="callout" data-layer="kernel">
         <p><strong>Despite its name, the Coordinator does not coordinate.</strong> It is a registry — a shelf with labeled slots. The actual coordinating is done by the Orchestrator, which is a module, not part of the kernel. Mechanism versus policy, once again.</p>
@@ -1140,7 +1165,7 @@
 
       <h3 id="s4-5">4.5 Hooks</h3>
 
-      <p>Hooks let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.</p>
+      <p><span class="lt" data-l="kernel">Hooks</span> let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.</p>
 
       <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.</p>
 
@@ -1168,7 +1193,7 @@
       <!-- ── Section 5 ── -->
       <h2 id="s5"><span class="section-num">5</span> The Module System</h2>
 
-      <p>Everything outside the kernel is a module. A module is a self-contained piece that plugs in through a standard interface to add a specific capability. Six types, one universal contract, fixed loading order. Remove one, add another. The rest of the system doesn't notice.</p>
+      <p>Everything outside the <span class="lt" data-l="kernel">kernel</span> is a module. A <span class="lt" data-l="modules">module</span> is a self-contained piece that plugs in through a standard interface to add a specific capability. Six types, one universal contract, fixed loading order. Remove one, add another. The rest of the system doesn't notice.</p>
 
       <h3 id="s5-1">5.1 Five module types</h3>
 
@@ -1223,9 +1248,9 @@
         </table>
       </div>
 
-      <p><strong>Tools</strong> are visible to the AI. Available tools are listed in the AI's system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally.</p>
+      <p><strong><span class="lt" data-l="modules">Tools</span></strong> are visible to the AI. Available tools are listed in the AI's system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally.</p>
 
-      <p><strong>Hook Handlers</strong> are invisible to the AI. They do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer.</p>
+      <p><strong><span class="lt" data-l="modules">Hook Handlers</span></strong> are invisible to the AI. They do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer.</p>
 
       <h3 id="s5-2">5.2 One contract for all six</h3>
 
@@ -1235,7 +1260,7 @@
 
       <p>The contract is a function called <code>mount</code>. It receives two things: the Coordinator and a configuration dictionary. The module does whatever setup it needs, registers itself into the Coordinator at the right slot, and optionally returns a cleanup function that will be called when the session ends.</p>
 
-      <p>The Orchestrator follows this contract. Providers, Tools, Context Managers, Hook Handlers, and Resolvers all follow this contract. The Module Loader does not need to know what type of module it is loading. It calls <code>mount</code>, and the module handles the rest.</p>
+      <p>The <span class="lt" data-l="modules">Orchestrator</span> follows this contract. <span class="lt" data-l="modules">Providers</span>, Tools, <span class="lt" data-l="modules">Context Managers</span>, Hook Handlers, and Resolvers all follow this contract. The Module Loader does not need to know what type of module it is loading. It calls <code>mount</code>, and the module handles the rest.</p>
 
       <p>Amplifier uses structural subtyping. If your class has the right methods with the right signatures, it qualifies as that module type. You don't need to inherit from a base class. You don't need to declare "I am a Tool." The structure of your code determines its type.</p>
 
@@ -1283,9 +1308,9 @@
 
       <p>Every module in Amplifier receives the Coordinator (the registry where modules are stored) once: at mount time. The module uses it to register itself, and then the Coordinator reference is gone.</p>
 
-      <p>The Orchestrator is the exception. It receives the Coordinator again, at runtime, <em>every time it's called.</em> This means the Orchestrator can, at any moment during execution, reach into the registry and access any module: the Context Manager, every Provider, every Tool, every Hook Handler.</p>
+      <p>The <span class="lt" data-l="modules">Orchestrator</span> is the exception. It receives the Coordinator again, at runtime, <em>every time it's called.</em> This means the Orchestrator can, at any moment during execution, reach into the registry and access any module: the Context Manager, every Provider, every Tool, every Hook Handler.</p>
 
-      <p>No other module can do this. A Provider can't look up which Tools are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system at runtime. This is by design, not by accident.</p>
+      <p>No other module can do this. A <span class="lt" data-l="modules">Provider</span> can't look up which <span class="lt" data-l="modules">Tools</span> are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system at runtime. This is by design, not by accident.</p>
 
       <h3 id="s6-2">6.2 One common pattern: what happens when you send a message</h3>
 
@@ -1294,7 +1319,7 @@
       <ol>
         <li><strong>You send a message.</strong> The session receives it and hands it to the Orchestrator.</li>
         <li><strong>Hooks fire; context monitoring begins.</strong> A context monitor hook might notice the conversation involves database queries and inject the relevant schema documentation.</li>
-        <li><strong>Orchestrator fetches context.</strong> Calls the Context Manager to get conversation history — what's been said, what tools have been used.</li>
+        <li><strong>Orchestrator fetches context.</strong> Calls the <span class="lt" data-l="modules">Context Manager</span> to get conversation history — what's been said, what tools have been used.</li>
         <li><strong>Provider calls the AI model.</strong> The Orchestrator calls a Provider. The Provider sends the assembled context to the AI model and waits for a response.</li>
         <li><strong>If the AI wants a tool, hooks check first.</strong> Before the tool executes, an event fires. Hook Handlers can observe, modify, or block the call. A safety hook might say "that tool call is trying to delete system files. Denied." If no hook blocks the call, the tool executes.</li>
         <li><strong>After the tool runs, hooks inject feedback.</strong> A code quality hook might run after a file-writing tool, find issues, and inject "The code checker found 3 issues in lines 12, 15, and 22." The AI reads this on its next iteration.</li>
@@ -1307,7 +1332,7 @@
 
       <h3 id="s6-3">6.3 The loop lives outside the kernel</h3>
 
-      <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the kernel. It lives in an Orchestrator module. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
+      <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the <span class="lt" data-l="kernel">kernel</span>. It lives in an Orchestrator module. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
 
       <p>The Orchestrator returns a plain string as its public response. Rich data — token usage, tool history, thinking blocks — exits through hook events. This keeps the Orchestrator loosely coupled to every consumer. New instrumentation means new hooks, not a changed Orchestrator interface.</p>
 
@@ -1349,13 +1374,13 @@
 
       <h3 id="s7-1">7.1 Tools: the AI decides</h3>
 
-      <p>A Tool is an action: read a file, search the web, run a command. Available tools are listed in the AI's system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call: "Use <code>read_file</code> with path <code>/src/main.py</code>."</p>
+      <p>A <span class="lt" data-l="modules">Tool</span> is an action: read a file, search the web, run a command. Available tools are listed in the AI's system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call: "Use <code>read_file</code> with path <code>/src/main.py</code>."</p>
 
       <p>The model <em>chooses.</em> It looks at the request, evaluates its options, and picks a tool intentionally. Tool calls appear in conversation history. Results appear in conversation history. Everything is visible, traceable, and explainable. Tools extend what the model can do.</p>
 
       <h3 id="s7-2">7.2 Hooks: code decides</h3>
 
-      <p>Hook Handlers respond to events in the system. When something happens, an event fires. Hook Handlers that have registered for that event run automatically. The AI model has <em>no idea</em> that hooks exist.</p>
+      <p><span class="lt" data-l="modules">Hook Handlers</span> respond to events in the system. When something happens, an event fires. Hook Handlers that have registered for that event run automatically. The AI model has <em>no idea</em> that hooks exist.</p>
 
       <p>Hooks do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer.</p>
 
@@ -1423,7 +1448,7 @@
 
       <p>Amplifier defines 41 canonical events, organized by namespace. Each event name follows a consistent pattern: <code>namespace:action</code>. Session events are <code>session:start</code>, <code>session:end</code>. Tool events are <code>tool:pre</code> (before execution), <code>tool:post</code> (after execution). Provider events are <code>provider:request</code>, <code>provider:response</code>.</p>
 
-      <p>Events and hooks are the same system. There is no separate "event bus" and "hook registry." It's one unified dispatch mechanism (<code>HookRegistry.emit()</code>) that fires an event and collects responses from registered hooks.</p>
+      <p><span class="lt" data-l="boundary">Events</span> and hooks are the same system. There is no separate "event bus" and "hook registry." It's one unified dispatch mechanism (<code>HookRegistry.emit()</code>) that fires an event and collects responses from registered hooks.</p>
 
       <p>When a hook handler throws an error, the error is swallowed. The pipeline continues. The error is logged, but it doesn't crash the system. The only hook action that stops an operation is an explicit <code>deny</code>. Every event also gets automatically stamped with the session ID, parent session ID, and a UTC timestamp.</p>
 
@@ -1432,7 +1457,7 @@
       <!-- ── Section 8 ── -->
       <h2 id="s8"><span class="section-num">8</span> Sessions</h2>
 
-      <p>A session is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a lifecycle.</p>
+      <p>A <span class="lt" data-l="kernel">session</span> is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a lifecycle.</p>
 
       <h3 id="s8-1">8.1 Four phases</h3>
 
@@ -1490,7 +1515,7 @@
         </table>
       </div>
 
-      <p>The core provides a <code>parent_id</code> field that links one session to another. That is the extent of what the kernel does. How parent-child relationships are used — delegation, sub-agents, task decomposition — is decided by Foundation and applications built on top of it.</p>
+      <p>The core provides a <code>parent_id</code> field that links one session to another. That is the extent of what the <span class="lt" data-l="kernel">kernel</span> does. How parent-child relationships are used — delegation, sub-agents, task decomposition — is decided by <span class="lt" data-l="foundation">Foundation</span> and applications built on top of it.</p>
 
       <p>This is deliberately minimal. Automatic inheritance creates hidden dependencies; changes to the parent's conversation would affect the child unpredictably. Explicit is better: pass what you need, share nothing by default. Each session is self-contained and predictable.</p>
 
@@ -1500,7 +1525,7 @@
 
       <h3 id="s8-4">8.4 Cancellation</h3>
 
-      <p>Cancellation is cooperative, not preemptive. The kernel can't forcibly stop an Orchestrator in the middle of its work. Instead, it sets a flag with three states:</p>
+      <p>Cancellation is cooperative, not preemptive. The kernel can't forcibly stop an <span class="lt" data-l="modules">Orchestrator</span> in the middle of its work. Instead, it sets a flag with three states:</p>
 
       <ol>
         <li><strong>No cancellation requested</strong> — normal operation continues.</li>
@@ -1515,7 +1540,7 @@
       <!-- ── Section 9 ── -->
       <h2 id="s9"><span class="section-num">9</span> Bundles and Configuration</h2>
 
-      <p>If modules are the building blocks, bundles are the packaging. A bundle is a text file that describes which modules to load, what context to give the AI, and how the session should behave. Bundles are language-agnostic: the definitions are YAML or Markdown. What you include can be anything.</p>
+      <p>If <span class="lt" data-l="modules">modules</span> are the building blocks, bundles are the packaging. A <span class="lt" data-l="bundles">bundle</span> is a text file that describes which modules to load, what context to give the AI, and how the session should behave. Bundles are language-agnostic: the definitions are YAML or Markdown. What you include can be anything.</p>
 
       <p>Think of bundles like npm packages for AI capabilities. A bundle packages modules, tools, hooks, instructions, and context files together. The simplest bundle is a single file: a few lines of configuration and a paragraph of instructions. That is enough to create an AI agent.</p>
 
@@ -1523,7 +1548,7 @@
 
       <h3 id="s9-1">9.1 Two formats</h3>
 
-      <p><strong>Markdown with YAML frontmatter</strong> is the more common format. The file has two parts: a block of YAML configuration at the top (between <code>---</code> markers), and a Markdown body below it. The YAML says what modules to load and how to configure them. The Markdown body becomes the AI's system instruction: its personality, its rules, its sense of purpose.</p>
+      <p><strong>Markdown with YAML frontmatter</strong> is the more common format. The file has two parts: a block of <span class="lt" data-l="bundles">YAML</span> configuration at the top (between <code>---</code> markers), and a Markdown body below it. The YAML says what modules to load and how to configure them. The Markdown body becomes the AI's system instruction: its personality, its rules, its sense of purpose.</p>
 
       <p><strong>Pure YAML</strong> is configuration only, with no prose instruction body. Used when a bundle is providing configuration (loading certain tools, setting session parameters) but doesn't need to tell the AI anything directly.</p>
 
@@ -1583,9 +1608,9 @@ standards (see @project:standards.md).</code></pre>
       <!-- ── Section 10 ── -->
       <h2 id="s10"><span class="section-num">10</span> The Foundation Bridge</h2>
 
-      <p>Foundation (<code>amplifier-foundation</code>) turns text bundle files into running sessions. It is the Amplifier team's reference implementation: their opinions about how to use the kernel, packaged for others. The kernel does not need it. You could build your own equivalent.</p>
+      <p><span class="lt" data-l="foundation">Foundation</span> (<code>amplifier-foundation</code>) turns text <span class="lt" data-l="bundles">bundle</span> files into running sessions. It is the Amplifier team's reference implementation: their opinions about how to use the kernel, packaged for others. The kernel does not need it. You could build your own equivalent.</p>
 
-      <p>Think of Foundation as a convenience layer. The kernel accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.</p>
+      <p>Think of Foundation as a convenience layer. The <span class="lt" data-l="kernel">kernel</span> accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.</p>
 
       <div class="feature-quote" data-layer="foundation">
         <p>The kernel doesn't need Foundation. The kernel works with a raw configuration dictionary and a set of module paths. Foundation is a user-experience layer. It makes the system approachable by translating text files into running sessions.</p>
@@ -1646,7 +1671,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s11-1">11.1 Agents are bundles</h3>
 
-      <p>Agents <em>are</em> bundles. Same file format. Same parser. Same composition, @mentions, and merge rules.</p>
+      <p><span class="lt" data-l="apps">Agents</span> <em>are</em> <span class="lt" data-l="bundles">bundles</span>. Same file format. Same parser. Same composition, @mentions, and merge rules.</p>
 
       <p>One difference: the YAML frontmatter key. A bundle uses <code>bundle:</code>. An agent uses <code>meta:</code>. That's it. Everything else — how the file is read, how instructions are parsed, how modules load — is identical.</p>
 
@@ -1664,7 +1689,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Sometimes a task is too complex for a single agent conversation. It involves multiple steps, each requiring different capabilities, where the output of one step feeds into the next. Recipes handle this.</p>
 
-      <p>A recipe is a YAML file that defines a sequence of steps. Each step runs its own agent session with its own bundle, tools, and instructions. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
+      <p>A <span class="lt" data-l="bundles">recipe</span> is a YAML file that defines a sequence of steps. Each step runs its own agent session with its own bundle, tools, and instructions. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
 
       <p><strong>Approval gates</strong> pause execution for human review. Between steps, a person can review the current output before the system continues. Automated work with human judgment at the critical junctions.</p>
 
@@ -1674,7 +1699,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s11-4">11.4 Skills</h3>
 
-      <p>An agent can use tools and delegate to other agents, but sometimes what it needs is knowledge: coding standards for a specific framework, deployment procedures for a particular cloud provider, the team's naming conventions. Skills fill this role. A skill is a Markdown file with YAML frontmatter that the agent can discover and load on demand.</p>
+      <p>An agent can use tools and delegate to other agents, but sometimes what it needs is knowledge: coding standards for a specific framework, deployment procedures for a particular cloud provider, the team's naming conventions. Skills fill this role. A <span class="lt" data-l="bundles">skill</span> is a Markdown file with YAML frontmatter that the agent can discover and load on demand.</p>
 
       <p>The loading follows a three-level progressive disclosure pattern:</p>
 
@@ -1727,14 +1752,14 @@ standards (see @project:standards.md).</code></pre>
 
       <p><strong>Modes</strong> are runtime behavior overlays: a Markdown file that, when activated, injects guidance into the AI's system prompt and enforces tool-level policies. Each tool in the session can be set to <code>safe</code>, <code>warn</code>, <code>confirm</code>, or <code>block</code>. Modes compose into workflow pipelines — brainstorm, then plan, then execute, then verify — where each phase constrains the agent to the tools and mindset appropriate for that stage. The kernel has no concept of modes. They are built from hooks and context injection.</p>
 
-      <p><strong>Model routing</strong> removes the need to hard-code which AI model handles each request. Instead, agents declare the <em>type of thinking</em> a task requires: <code>coding</code>, <code>reasoning</code>, <code>critique</code>, <code>fast</code>, <code>vision</code>. A routing matrix maps these semantic roles to concrete models. When better models arrive or costs change, only the matrix needs updating. Agents carry their role declaration in their frontmatter. The kernel routes through the Provider slot as it always has. The routing logic lives in Foundation.</p>
+      <p><strong>Model routing</strong> removes the need to hard-code which AI model handles each request. Instead, agents declare the <em>type of thinking</em> a task requires: <code>coding</code>, <code>reasoning</code>, <code>critique</code>, <code>fast</code>, <code>vision</code>. A routing matrix maps these semantic roles to concrete models. When better models arrive or costs change, only the matrix needs updating. Agents carry their role declaration in their frontmatter. The kernel routes through the Provider slot as it always has. The routing logic lives in <span class="lt" data-l="foundation">Foundation</span>.</p>
 
       <hr>
 
       <!-- ── Section 12 ── -->
       <h2 id="s12"><span class="section-num">12</span> The Complete Picture</h2>
 
-      <p>Each layer depends only on the one below it. Replace anything at one layer without affecting the others. A new Foundation implementation could be written without changing the kernel. A new module could be published without any existing module knowing it exists. This is the literal code dependency structure.</p>
+      <p>Each layer depends only on the one below it. Replace anything at one layer without affecting the others. A new <span class="lt" data-l="foundation">Foundation</span> implementation could be written without changing the <span class="lt" data-l="kernel">kernel</span>. A new <span class="lt" data-l="modules">module</span> could be published without any existing module knowing it exists. This is the literal code dependency structure.</p>
 
       <h3 id="s12-1">12.1 Six layers</h3>
 
@@ -1800,7 +1825,7 @@ standards (see @project:standards.md).</code></pre>
         <p>The kernel provides mechanism. Modules provide policy. You build the harness.</p>
       </div>
 
-      <p>That's why the kernel contains five things and not fifty. Why modules follow a universal mount contract. Why Foundation is optional. Why bundles are text files. Why hooks are invisible to the AI. Every decision traces to this: keep the center simple and stable, push everything that changes to the outside.</p>
+      <p>That's why the <span class="lt" data-l="kernel">kernel</span> contains five things and not fifty. Why <span class="lt" data-l="modules">modules</span> follow a universal mount contract. Why <span class="lt" data-l="foundation">Foundation</span> is optional. Why <span class="lt" data-l="bundles">bundles</span> are text files. Why hooks are invisible to the AI. Every decision traces to this: keep the center simple and stable, push everything that changes to the outside.</p>
 
       <p>The most interesting parts of this system are the ones that haven't been built yet.</p>
 
