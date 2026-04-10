@@ -4,11 +4,41 @@ import Prose from '../components/blocks/Prose.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="How these facts were established."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    The facts in this document were established through a structured, multi-pass
+    investigation of the Amplifier source code using a method called Parallax
+    Discovery. Seven independent investigators across four teams each examined
+    different aspects of the codebase. Their findings were reconciled into a
+    single 805-line document. Each claim is backed by at least two independent
+    confirmations with file-and-line evidence. Sources:{' '}
+    <code>amplifier-core</code> and <code>amplifier-foundation</code>.
+  </p>
+
+  <p>
+    <strong>37 verified claims.</strong> Each confirmed by two or more
+    investigators with file-and-line evidence. These are the facts throughout
+    Sections 1-12.
+  </p>
+
+  <p>
+    <strong>4 identified discrepancies.</strong> Cases where investigators reached
+    different conclusions. Documented with conflicting evidence and impact
+    assessment. None affected the architectural claims in this document.
+  </p>
+
+  <p>
+    <strong>8 consolidated unknowns.</strong> Questions the investigation couldn't
+    answer from source code alone, areas requiring runtime tracing. Prioritized
+    and documented.
+  </p>
 </Prose>
