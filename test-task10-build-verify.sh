@@ -147,6 +147,20 @@ check_file_exists "dist/index.html redirect exists" "$DIST/index.html"
 echo "Test 10: ~/masterclass-preview/chapters/1/index.html exists (after rsync)"
 check_file_exists "masterclass-preview/chapters/1/index.html" "$HOME/masterclass-preview/chapters/1/index.html"
 
+# --- Test 11: TOC overlay links use number-based paths (not slugs) ---
+echo "Test 11: TOC overlay links use number-based chapter paths"
+if [ -f "$DIST/chapters/1/index.html" ]; then
+  # Extract first href pointing to a chapters/ path from the TOC overlay links
+  first_toc_href=$(grep -o 'href="[^"]*chapters/[^"]*"' "$DIST/chapters/1/index.html" | head -1)
+  # Should match /chapters/1/ (number), not /chapters/some-slug/ (slug)
+  check "TOC link uses number-based path (not slug)" \
+    "$(echo "$first_toc_href" | grep -c '/chapters/[0-9]\+/' || echo 0)" "1"
+else
+  echo "  ❌ FAIL: file not found: $DIST/chapters/1/index.html"
+  FAIL=$((FAIL + 1))
+  ERRORS+=("TOC link path check - file missing")
+fi
+
 echo ""
 echo "═══════════════════════════════════════════════════════════"
 echo " Results: $PASS passed, $FAIL failed"

@@ -22,7 +22,7 @@ const base = import.meta.env.BASE_URL;
     <ol class="toc-overlay__list">
       {chapters.map((ch) => (
         <li class={`toc-overlay__item${ch.number === currentChapter ? ' toc-overlay__item--active' : ''}`}>
-          <a href={`${base}chapters/${ch.slug}/`} class="toc-overlay__link">
+          <a href={`${base}chapters/${ch.number}/`} class="toc-overlay__link">
             <span class="toc-overlay__number">{ch.number}</span>
             <span class="toc-overlay__title">{ch.title}</span>
           </a>
@@ -65,7 +65,7 @@ const base = import.meta.env.BASE_URL;
   ----------------------------------------------------------------------- */
   .toc-overlay__panel {
     position: absolute;
-    top: 52px;
+    top: var(--nav-height);
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -73,7 +73,7 @@ const base = import.meta.env.BASE_URL;
     background: var(--bg-card);
     border-bottom: 1px solid var(--border-default);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    max-height: calc(100vh - 52px);
+    max-height: calc(100vh - var(--nav-height));
     overflow-y: auto;
     padding: var(--space-6) var(--container-pad);
   }
