@@ -1,14 +1,75 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import Diagram from '../components/blocks/Diagram.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="A map of the territory before we walk through it."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    This diagram shows every major component and how they connect. Think of it
+    as a city map before you walk the streets. You don't need to know every
+    building. You need the neighborhoods.
+  </p>
+
+  <p>
+    <strong>The center</strong> is the kernel. Inside it: the Coordinator (a registry
+    storing modules), the Hook and Event system (a notification network), the Module
+    Loader, and the Session lifecycle.
+  </p>
+
+  <p>
+    <strong>The middle ring</strong> holds the modules, the pluggable pieces that
+    define how an agent behaves. The Orchestrator drives the conversation. Providers
+    connect to AI models. Tools give the agent actions. Context Managers handle
+    memory. Hook Handlers enforce rules and react to events.
+  </p>
+
+  <p>
+    <strong>The outer ring</strong> is Foundation (which turns configuration files
+    into running agents) and the ecosystem: bundles, recipes, apps, community
+    extensions.
+  </p>
+</Prose>
+
+<Diagram
+  src="/diagrams/architecture-stack.svg"
+  width="wide"
+  alt="Architecture overview showing kernel, modules, and ecosystem layers"
+  caption="Amplifier architecture: kernel at center, modules in the middle ring, ecosystem on the outside."
+/>
+
+<Prose>
+  <p>
+    The most important cluster is at the center: <code>amplifier-core</code>.
+    Everything else depends on it; it depends on nothing. That asymmetry is
+    the architecture in one sentence.
+  </p>
+
+  <p>
+    Don't try to memorize the diagram. Use it as a reference. As we walk
+    through each piece in the sections that follow, this map will make more
+    sense. By the time we reach the final section, every cluster will be
+    familiar.
+  </p>
+
+  <p><em>The interactive version lets you click any component to highlight its connections, zoom in, and pan around.</em></p>
+
+  <h3>Reading the diagram</h3>
+
+  <ul>
+    <li>Arrow direction = dependency direction</li>
+    <li>Cluster = a group of related components</li>
+    <li>Click "Explore full diagram" to zoom &amp; pan</li>
+    <li>Click any node to highlight its connections</li>
+  </ul>
 </Prose>
