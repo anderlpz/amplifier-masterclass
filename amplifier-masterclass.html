@@ -667,6 +667,56 @@
       h2 { margin-top: 40px; }
       h3 { margin-top: 32px; }
     }
+
+    /* ── Additive Layer Revelation (§2 diagram) ───────────────────────────── */
+
+    /* Unrevealed state: own border + background become invisible;
+       does NOT use opacity on the container so child layers remain visible */
+    .diagram .layer[data-layer] {
+      border-color: transparent;
+      background-color: transparent;
+      transition: border-color 400ms ease-in-out, background-color 400ms ease-in-out;
+    }
+
+    /* Hide the text content of unrevealed layers */
+    .diagram .layer[data-layer] > .layer-label,
+    .diagram .layer[data-layer] > .layer-desc {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 400ms ease-in-out;
+    }
+
+    /* Revealed: restore border */
+    .diagram .layer[data-layer].revealed {
+      border-color: var(--border);
+    }
+
+    /* Revealed: restore each layer's correct background colour */
+    .diagram .layer[data-layer="1"].revealed { background-color: var(--surface-recessed); }
+    .diagram .layer[data-layer="2"].revealed { background-color: var(--surface); }
+    .diagram .layer[data-layer="3"].revealed { background-color: var(--surface); }
+    .diagram .layer[data-layer="4"].revealed { background-color: var(--surface); }
+    .diagram .layer[data-layer="5"].revealed { background-color: var(--surface); }
+    .diagram .layer[data-layer="6"].revealed { background-color: var(--bg); }
+
+    /* Revealed: fade in the text */
+    .diagram .layer[data-layer].revealed > .layer-label,
+    .diagram .layer[data-layer].revealed > .layer-desc {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Mini-map "You Are Here" ──────────────────────────────────────────── */
+    .minimap {
+      display: flex;
+      justify-content: center;
+      margin: 16px auto 32px;
+    }
+
+    .minimap svg {
+      display: block;
+      overflow: visible;
+    }
   </style>
 </head>
 <body>
@@ -876,22 +926,22 @@
       <p>This section provides a map of every major component and how they connect. Think of it as a city map before you walk the streets. You don't need to know every building. You need the neighborhoods.</p>
 
       <div class="diagram">
-        <div class="layer layer-outer">
+        <div class="layer layer-outer" data-layer="6">
           <div class="layer-label">Layer 6 — Community &amp; Ecosystem</div>
           <div class="layer-desc">Third-party modules, bundles, recipes, integrations. Open at every level.</div>
-          <div class="layer layer-mid">
+          <div class="layer layer-mid" data-layer="5">
             <div class="layer-label">Layer 5 — Applications</div>
             <div class="layer-desc">CLI, web interface, IDE integrations, voice assistants. The things people use.</div>
-            <div class="layer layer-mid">
+            <div class="layer layer-mid" data-layer="4">
               <div class="layer-label">Layer 4 — Foundation</div>
               <div class="layer-desc">Turns bundle text files into running sessions. The Amplifier team's reference implementation.</div>
-              <div class="layer layer-mid">
+              <div class="layer layer-mid" data-layer="3">
                 <div class="layer-label">Layer 3 — Bundles</div>
                 <div class="layer-desc">Text files. Combine modules into deployable agents. No code required.</div>
-                <div class="layer layer-mid">
+                <div class="layer layer-mid" data-layer="2">
                   <div class="layer-label">Layer 2 — Modules (middle ring)</div>
                   <div class="layer-desc">Orchestrator · Providers · Tools · Context Managers · Hook Handlers</div>
-                  <div class="layer layer-inner">
+                  <div class="layer layer-inner revealed" data-layer="1">
                     <div class="layer-label">Layer 1 — Kernel (center)</div>
                     <div class="layer-desc"><strong>amplifier-core</strong> · Session Lifecycle · Contracts · Module Loader · Coordinator · Hooks</div>
                   </div>
@@ -920,7 +970,7 @@
         <li>Arrow direction = dependency direction</li>
         <li>Cluster = a group of related components</li>
         <li>Each layer depends only on the one below it — outer layers can be replaced without touching inner ones</li>
-        <li>Click any node in the interactive version to highlight its connections</li>
+        <li>Layers are revealed progressively as you read — by the final section, the full architecture will be complete</li>
       </ul>
 
       <hr>
@@ -1801,6 +1851,142 @@ standards (see @project:standards.md).</code></pre>
       setTimeout(() => scrollToSection(link.getAttribute('data-target')), 50);
     }
   });
+
+  // ── Additive Layer Revelation ─────────────────────────────────────────────
+  // Maps section IDs to the layer number that becomes newly visible when
+  // that section enters the viewport. Only sections that introduce a new
+  // layer are listed; entering other sections is a no-op for the diagram.
+  const LAYER_REVEAL_AT = { s5: 2, s9: 3, s10: 4, s11: 5, s12: 6 };
+
+  // Layer 1 starts revealed via HTML class; this tracks the high-water mark.
+  let maxRevealedLayer = 1;
+
+  function revealLayersUpTo(n) {
+    if (n <= maxRevealedLayer) return;
+    // Target only the §2 diagram — the §12 diagram has no data-layer attrs.
+    const diag = document.querySelector('.diagram');
+    if (!diag) return;
+    for (let i = maxRevealedLayer + 1; i <= n; i++) {
+      const el = diag.querySelector('.layer[data-layer="' + i + '"]');
+      if (el) el.classList.add('revealed');
+    }
+    maxRevealedLayer = n;
+  }
+
+  // Observe h2 section headings; reveal corresponding layers as they appear.
+  const layerObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      const target = LAYER_REVEAL_AT[entry.target.id];
+      if (target) revealLayersUpTo(target);
+    });
+  }, { threshold: 0.1 });
+
+  ['s3','s4','s5','s6','s7','s8','s9','s10','s11','s12'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) layerObserver.observe(el);
+  });
+
+  // ── "You Are Here" Mini-Maps ──────────────────────────────────────────────
+  // Configuration per chapter: which layer is highlighted (active) and
+  // which layers are already revealed (shown in the minimap).
+  var MINIMAP_CFG = {
+    s3:  { active: 1,     shown: [1] },
+    s4:  { active: 1,     shown: [1] },
+    s5:  { active: 2,     shown: [1, 2] },
+    s6:  { active: 2,     shown: [1, 2] },
+    s7:  { active: 2,     shown: [1, 2] },
+    s8:  { active: 1,     shown: [1, 2] },
+    s9:  { active: 3,     shown: [1, 2, 3] },
+    s10: { active: 4,     shown: [1, 2, 3, 4] },
+    s11: { active: 5,     shown: [1, 2, 3, 4, 5] },
+    s12: { active: 'all', shown: [1, 2, 3, 4, 5, 6] }
+  };
+
+  // Concentric-rectangle geometry for each layer (outermost → innermost).
+  var MINIMAP_LAYERS = [
+    { n: 6, x: 0,  y: 0,  w: 200, h: 120, rx: 4, label: 'Ecosystem' },
+    { n: 5, x: 16, y: 12, w: 168, h: 96,  rx: 3, label: 'Apps' },
+    { n: 4, x: 32, y: 24, w: 136, h: 72,  rx: 3, label: 'Foundation' },
+    { n: 3, x: 48, y: 36, w: 104, h: 48,  rx: 2, label: 'Bundles' },
+    { n: 2, x: 64, y: 44, w: 72,  h: 32,  rx: 2, label: 'Modules' },
+    { n: 1, x: 76, y: 50, w: 48,  h: 20,  rx: 2, label: 'Kernel' }
+  ];
+
+  // Hard-coded colour values — CSS custom properties are not resolved
+  // inside SVG attribute strings, so we inline the actual hex values.
+  var MM_ACCENT      = '#3E5C8A';
+  var MM_ACCENT_BG   = 'rgba(62,92,138,0.28)';
+  var MM_MUTED_BG    = '#EDEDF2';   // --surface-recessed
+  var MM_MUTED_BORD  = '#E8E9EF';   // --border-light
+  var MM_TEXT_ACC    = '#3E5C8A';   // --accent
+  var MM_TEXT_MUT    = '#8B8D9C';   // --text-tertiary
+
+  function buildMinimapSVG(activeLayer, shownLayers) {
+    var isAll = (activeLayer === 'all');
+    var rects = '';
+    var labels = '';
+
+    // Draw rectangles from outermost to innermost (back → front).
+    MINIMAP_LAYERS.forEach(function(L) {
+      if (shownLayers.indexOf(L.n) === -1) return;
+      var active = isAll || (L.n === activeLayer);
+      rects +=
+        '<rect x="' + L.x + '" y="' + L.y +
+        '" width="' + L.w + '" height="' + L.h +
+        '" rx="' + L.rx + '"' +
+        ' fill="'   + (active ? MM_ACCENT_BG  : MM_MUTED_BG)   + '"' +
+        ' stroke="' + (active ? MM_ACCENT     : MM_MUTED_BORD)  + '"' +
+        ' stroke-width="1.5"/>';
+    });
+
+    // Labels: active-layer label(s) only, positioned at the top-left of
+    // each highlighted rect so the text sits in the visible ring band.
+    MINIMAP_LAYERS.forEach(function(L) {
+      if (shownLayers.indexOf(L.n) === -1) return;
+      var active = isAll || (L.n === activeLayer);
+      if (!active) return;
+      labels +=
+        '<text' +
+        ' x="' + (L.x + 5) + '"' +
+        ' y="' + (L.y + 9) + '"' +
+        ' fill="' + (isAll ? MM_TEXT_MUT : MM_TEXT_ACC) + '"' +
+        ' font-size="8.5"' +
+        ' font-family="Inter,system-ui,sans-serif"' +
+        ' font-weight="600">' +
+        L.label +
+        '</text>';
+    });
+
+    var ariaLabel = isAll
+      ? 'Architecture overview: all six layers'
+      : 'You are here: Layer ' + activeLayer;
+
+    return (
+      '<svg viewBox="0 0 200 120" width="200" height="120"' +
+      ' role="img" aria-label="' + ariaLabel + '">' +
+      rects + labels +
+      '</svg>'
+    );
+  }
+
+  function injectMinimaps() {
+    Object.keys(MINIMAP_CFG).forEach(function(id) {
+      var heading = document.getElementById(id);
+      if (!heading) return;
+      var cfg = MINIMAP_CFG[id];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'minimap';
+      wrapper.setAttribute('aria-hidden', 'true');
+      wrapper.innerHTML = buildMinimapSVG(cfg.active, cfg.shown);
+      // Insert directly after the <h2>, before the first paragraph.
+      heading.insertAdjacentElement('afterend', wrapper);
+    });
+  }
+
+  // The script tag sits at the bottom of <body>, so the DOM is already
+  // fully parsed — no DOMContentLoaded wrapper needed.
+  injectMinimaps();
 </script>
 
 </body>
