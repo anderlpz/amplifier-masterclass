@@ -1,14 +1,159 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import ComparisonLayout from '../components/blocks/ComparisonLayout.astro';
+import Diagram from '../components/blocks/Diagram.astro';
+import CascadeVisualization from '../components/blocks/CascadeVisualization.astro';
+import VignettePlaceholder from '../components/blocks/VignettePlaceholder.astro';
+import ChatPlaceholder from '../components/blocks/ChatPlaceholder.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="The critical distinction in the system."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    Both are modules. Both plug in the same way. But they operate in fundamentally
+    different realms, and using the wrong one for a task produces unreliable behavior.
+  </p>
 </Prose>
+
+<ComparisonLayout>
+  <Fragment slot="tools">
+    <p>
+      <strong>AI-decided.</strong> The model sees tools in its context. It chooses
+      when to call them. Visible, intentional.
+    </p>
+    <p>
+      Tools appear in the system prompt. The AI sees each tool's name, description,
+      and input schema. When it decides to take an action, it generates a tool call.
+      Tool calls and results appear in conversation history — everything is traceable
+      and explainable.
+    </p>
+    <p>Tools extend what the model can do.</p>
+  </Fragment>
+
+  <Fragment slot="hooks">
+    <p>
+      <strong>Code-decided.</strong> The AI has no concept that hooks exist. They
+      fire automatically. Invisible to the model.
+    </p>
+    <p>
+      Hooks are not listed in the system prompt. The model cannot see them, cannot
+      call them, cannot choose to use them. They operate entirely in the system layer,
+      responding to events the AI never sees.
+    </p>
+    <p>Hooks govern what the model is allowed to do.</p>
+  </Fragment>
+</ComparisonLayout>
+
+<Diagram
+  src="/diagrams/tools-vs-hooks.svg"
+  width="wide"
+  alt="Side-by-side comparison showing the fundamental difference: AI-visible tools vs AI-invisible hooks"
+  caption="Tools are listed in the AI's context. Hooks fire in the system layer, invisible to the model."
+/>
+
+<Prose>
+  <h2>Tools: the AI decides</h2>
+
+  <p>
+    A Tool is an action: read a file, search the web, run a command. Available tools
+    are listed in the AI's system prompt. The model sees each tool's name, description,
+    and input schema. When it decides to take an action, it generates a tool call:
+    <em>"Use <code>read_file</code> with path <code>/src/main.py</code>."</em>
+  </p>
+
+  <p>
+    The model <em>chooses</em>. It looks at the request, evaluates its options, and
+    picks a tool intentionally. Tool calls appear in conversation history. Results
+    appear in conversation history. Everything is visible, traceable, and explainable.
+  </p>
+
+  <p>Tools extend what the model can do.</p>
+</Prose>
+
+<Prose>
+  <h2>Hooks: code decides</h2>
+
+  <p>
+    Hook Handlers respond to events in the system. When something happens, an event
+    fires. Hook Handlers that have registered for that event run automatically. The
+    AI model has <em>no idea</em> that hooks exist.
+  </p>
+
+  <p>
+    Hooks do not appear in the model's instructions. They are not listed in the
+    system prompt. The model cannot see them, cannot call them, cannot choose to use
+    them. Hooks operate entirely in the system layer.
+  </p>
+
+  <p>
+    Hooks can observe (logging, analytics), block (safety, compliance), modify (data
+    transformation), or inject new context the AI reads on its next turn. In every
+    case, the AI doesn't know a hook was involved.
+  </p>
+
+  <p>
+    The most powerful hook action is <strong>inject_context</strong>: a hook places a
+    message into the conversation that the AI reads on its next turn, as if it were
+    part of the natural flow. The hook doesn't interrupt the AI — it places information
+    where the AI will naturally encounter it, and the AI does what language models do:
+    read text and respond to it.
+  </p>
+
+  <p>
+    Consider the code quality problem. If you give the AI a <code>run_code_checker</code>{' '}
+    tool and instruct it to always run it after writing a file, the AI might forget.
+    It might decide the check isn't needed this time. That's probabilistic compliance.
+    As a hook registered for the <code>tool:post</code> event, the check runs
+    automatically every single time, regardless of what the model decides. The error
+    is swallowed if the hook itself crashes — the pipeline continues — but the operation
+    is blocked only by an explicit <strong>deny</strong>.
+  </p>
+</Prose>
+
+<CascadeVisualization />
+
+<VignettePlaceholder
+  width="wide"
+  rationale="Animating the cascade with events flowing through deny/askuser/inject/modify/continue would show how results resolve dynamically — much clearer than static text"
+/>
+
+<Prose>
+  <h2>Events and dispatch</h2>
+
+  <p>
+    Amplifier defines 41 canonical events, organized by namespace. Each event name
+    follows a consistent pattern: <code>namespace:action</code>. Session events are
+    <code>session:start</code>, <code>session:end</code>. Tool events are{' '}
+    <code>tool:pre</code> (before execution), <code>tool:post</code> (after execution).
+    Provider events are <code>provider:request</code>, <code>provider:response</code>.
+  </p>
+
+  <p>
+    Events and hooks are the same system. There is no separate "event bus" and "hook
+    registry." It's one unified dispatch mechanism (<code>HookRegistry.emit()</code>)
+    that fires an event and collects responses from registered hooks.
+  </p>
+
+  <p>
+    When a hook handler throws an error, the error is swallowed. The pipeline
+    continues. The error is logged, but it doesn't crash the system. Hook errors are
+    non-fatal — a crashed logging hook does not stop the tool call. The only hook
+    action that stops an operation is an explicit <strong>deny</strong>. Every event
+    also gets automatically stamped with the session ID, parent session ID, and a UTC
+    timestamp as infrastructure stamps.
+  </p>
+</Prose>
+
+<ChatPlaceholder
+  prompt="Not sure whether something should be a tool or a hook? Ask here."
+/>
