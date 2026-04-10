@@ -20,7 +20,7 @@ check() {
   fi
 }
 
-ROOT=$HOME/projects/amplifier-masterclass
+ROOT="$(cd "$(dirname "$0")" && pwd)"
 FILE="$ROOT/src/styles/global.css"
 
 echo ""
