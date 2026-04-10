@@ -1,14 +1,90 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import Callout from '../components/blocks/Callout.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Three ideas shape how Amplifier is built."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    They weren't written on a whiteboard first. They emerged from the code,
+    from decisions made repeatedly about what belongs in the kernel and what
+    doesn't.
+  </p>
 </Prose>
+
+<Prose>
+  <h2>Mechanism, not policy</h2>
+
+  <p>
+    The kernel fires a <code>tool:pre</code> event before every tool call. A
+    safety module decides whether to block it. A logging module records it. The
+    kernel has no opinion about what should happen. It fires events and collects
+    results. This separation has a name: mechanism versus policy.
+  </p>
+
+  <p>
+    This principle comes from operating system design. The Linux kernel provides
+    process scheduling and memory management without deciding how programs use
+    those mechanisms. Amplifier does the same: the kernel provides module
+    loading, event dispatch, and session lifecycle. It never decides which
+    modules matter, which events to act on, or what should happen during a
+    session.
+  </p>
+
+  <p>
+    The consequence is that when rules change — new safety requirements, new
+    compliance needs — you change modules. The kernel stays the same.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>The center stays still</h2>
+
+  <p>
+    A new AI model ships. Someone writes a provider module. The kernel does not
+    know or care which model it talks to. New tools, new paradigms, new safety
+    requirements: all handled at the edges. The center does not move.
+  </p>
+
+  <p>
+    None of this touches the kernel. A new model arrives; someone writes a
+    provider module that connects to its API and translates between Amplifier's
+    format and the model's format. Same interface every other provider uses. The
+    kernel doesn't know or care whether it's talking to Claude, GPT, Gemini, or
+    a model that doesn't exist yet.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>Ruthless simplicity</h2>
+
+  <p>
+    Search the entire <code>amplifier-core</code> codebase for file-writing
+    operations: zero matches. The kernel does not write logs, save transcripts,
+    or persist configuration. If something can live in a module, it must.
+  </p>
+
+  <p>
+    Every line in the kernel is a line that every module depends on. Every line
+    is a potential constraint on the future. So the kernel is aggressive about
+    exclusion. A logging hook writes logs. A persistence module saves
+    conversations. A configuration layer reads settings. Each one is a module.
+  </p>
+</Prose>
+
+<Callout label="Key Fact">
+  <p>
+    Grep the entire <code>amplifier-core</code> codebase for file writes. Zero
+    matches.
+  </p>
+</Callout>
