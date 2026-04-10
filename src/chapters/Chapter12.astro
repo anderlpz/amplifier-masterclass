@@ -1,14 +1,141 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import Diagram from '../components/blocks/Diagram.astro';
+import ChatPlaceholder from '../components/blocks/ChatPlaceholder.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Each layer depends only on the one below it."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    Replace anything at one layer without affecting the others. A new Foundation
+    implementation could be written without changing the kernel. A new module
+    could be published without any existing module knowing it exists. This is the
+    literal code dependency structure.
+  </p>
+
+  <p>
+    <strong>Layer 1: Kernel.</strong> Contracts, module loading, event dispatch,
+    session lifecycle. <code>amplifier-core</code>. The unchanging center.
+    Everything above depends on it. Nothing here depends on anything above.
+  </p>
+
+  <p>
+    <strong>Layer 2: Modules.</strong> Providers, tools, hooks, orchestrators,
+    context managers. The actual capabilities. Depend on kernel contracts. Don't
+    depend on Foundation (a module doesn't need to know how it was discovered).
+  </p>
+
+  <p>
+    <strong>Layer 3: Bundles.</strong> Configuration packages. Text files. Combine
+    modules into deployable agents. No code required. Reference modules by name
+    but don't depend on module code.
+  </p>
+
+  <p>
+    <strong>Layer 4: Foundation.</strong> Turns bundles into running sessions.
+    Finds modules, assembles config, and stays connected at runtime. Essentially
+    a community bundle that the Amplifier team maintains. Depends on the kernel.
+    The kernel does not depend on Foundation.
+  </p>
+
+  <p>
+    <strong>Layer 5: Applications.</strong> What people use. CLI, web interface,
+    IDE integrations, voice assistants. Create sessions through Foundation or
+    directly through the kernel API.
+  </p>
+
+  <p>
+    <strong>Layer 6: Community.</strong> Third-party modules, bundles, recipes,
+    integrations. Open at every level. Anyone can build here.
+  </p>
+
+  <p>
+    The pattern across all six layers is the same: each layer depends only on the
+    one below. This means you can replace anything at one layer without affecting
+    the layers above or below it.
+  </p>
 </Prose>
+
+<Diagram
+  src="/diagrams/six-layer-stack.svg"
+  width="wide"
+  alt="The 6-layer ecosystem stack: Kernel, Modules, Bundles, Foundation, Applications, Community"
+  caption="Six layers. Each depends only on the one below it."
+/>
+
+<Prose>
+  <h2>Where new things go</h2>
+
+  <p>
+    A new AI model (say, one that processes video) goes at Layer 2. A provider
+    module. Same interface, kernel unchanged.
+  </p>
+
+  <p>
+    A team wants to block file modifications in production directories. Layer 2.
+    A hook module. Registers for <code>tool:pre</code>, checks the path, returns{' '}
+    <code>deny</code>. The AI never knows.
+  </p>
+
+  <p>
+    A standard agent configuration for the organization. Layer 3. A bundle.
+    Lists modules, sets configuration, provides instruction text. Anyone can
+    include it and customize further.
+  </p>
+
+  <p>
+    The architecture tells you where things belong. New capabilities: modules.
+    New rules: hooks. New configurations: bundles. New interfaces: applications.
+    The kernel doesn't change.
+  </p>
+</Prose>
+
+<Diagram
+  src="/diagrams/full-system-flow.svg"
+  width="reading"
+  alt="A single user request flowing through every layer from user to CLI to Coordinator to Orchestrator to Provider to Model to Tools to Hooks to Response"
+  caption="One request, all six layers. The kernel provides mechanism. Modules provide policy."
+/>
+
+<Prose>
+  <h2>Closing</h2>
+
+  <p>
+    The kernel provides mechanism. Modules provide policy. You build the harness.
+  </p>
+
+  <p>
+    That's why the kernel contains five things and not fifty. Why modules follow
+    a universal mount contract. Why Foundation is optional. Why bundles are text
+    files. Why hooks are invisible to the AI. Every decision traces to this: keep
+    the center simple and stable, push everything that changes to the outside.
+  </p>
+
+  <p>
+    The most interesting parts of this system are the ones that haven't been
+    built yet.
+  </p>
+
+  <p>
+    This document covers how Amplifier is built. For a hands-on walkthrough
+    covering installation, your first conversation, and practical usage of every
+    concept here, see the{' '}
+    <a href="https://ramparte.github.io/amplifier-tutorial/">
+      Amplifier Tutorial
+    </a>.
+  </p>
+</Prose>
+
+<ChatPlaceholder
+  prompt="Finished the masterclass. Have questions about any concept?"
+/>
