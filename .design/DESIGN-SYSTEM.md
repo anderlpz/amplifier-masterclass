@@ -80,6 +80,31 @@ The aesthetic is editorial and typographic: a well-designed educational paper, n
 - Shadows are extremely subtle. The card-on-canvas relationship is primarily communicated through color difference, not shadow.
 - No glow effects. No colored shadows.
 
+### 1.6 Semantic Colors (Scoped)
+
+Component-scoped tokens for the Tools vs Hooks comparison (Section 7) and Hook Priority Cascade. Do not use outside their scoped components.
+
+**Tools vs Hooks comparison:**
+
+| Token | Value | Purpose |
+|---|---|---|
+| `--color-tools-border` | `rgba(34, 163, 74, 0.25)` | Tools column border |
+| `--color-tools-bg` | `rgba(34, 163, 74, 0.06)` | Tools column background |
+| `--color-tools-text` | `#1B7A3D` | Tools column text |
+| `--color-hooks-border` | `rgba(220, 53, 53, 0.25)` | Hooks column border |
+| `--color-hooks-bg` | `rgba(220, 53, 53, 0.06)` | Hooks column background |
+| `--color-hooks-text` | `#B91C1C` | Hooks column text |
+
+**Hook Priority Cascade:**
+
+| Token | Value | Purpose |
+|---|---|---|
+| `--cascade-deny` | `#DC2626` | Deny action (red) |
+| `--cascade-ask-user` | `#D97706` | Ask-user action (amber) |
+| `--cascade-inject` | `#2563EB` | Inject action (blue) |
+| `--cascade-modify` | `#7C3AED` | Modify action (purple) |
+| `--cascade-continue` | `#16A34A` | Continue action (green) |
+
 ---
 
 ## 2. Typography
@@ -125,11 +150,11 @@ Fluid scaling via `clamp()` for headlines. Fixed sizes for body and below.
 
 ### 2.4 Line Height & Letter Spacing
 
-| Context | Font | Letter spacing | Line height |
-|---|---|---|---|
-| Chapter titles (h1) | Lora 600 | `-0.02em` | `1.15` |
-| Section headings (h2-h3) | Lora 600 | `-0.015em` | `1.2` |
-| Body text | Inter 400 | `0` | `1.7` |
+| Context | Font | Letter spacing | Line height | Token |
+|---|---|---|---|---|
+| Chapter titles (h1) | Lora 600 | `-0.02em` | `1.15` | `--leading-tight` |
+| Section headings (h2-h3) | Lora 600 | `-0.015em` | `1.2` | `--leading-snug` |
+| Body text | Inter 400 | `0` | `1.7` | `--leading-normal` |
 | Lead paragraphs | Inter 400 | `0` | `1.7` |
 | Nav chapter indicator | Space Grotesk 500 | `0.06em` | `1` |
 | Eyebrow labels | Space Grotesk 500 | `0.08em` | `1` |
@@ -164,6 +189,7 @@ Fluid scaling via `clamp()` for headlines. Fixed sizes for body and below.
 | `--measure-reading` | `650px` | Reading column max-width. ~65ch at 16px body. |
 | `--measure-wide` | `1100px` | Wide breakout for diagrams, tables. |
 | `--measure-container` | `1200px` | Outer container max-width (includes card margins). |
+| `--container-pad` | `40px` → `24px` → `20px` → `16px` | Horizontal padding. Desktop 40px, tablet (≤1024px) 24px, mobile (≤768px) 20px, small mobile (≤480px) 16px. |
 
 ---
 

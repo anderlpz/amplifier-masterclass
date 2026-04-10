@@ -67,7 +67,7 @@ The palette is minimal because the content is rich. When you have vignettes, dia
 | **Canvas** | `#EDEBE6` | Warm stone | The page background. Not pure gray (institutional) or pure white (sterile). A warm, slightly creamy stone that reads as "paper." Everything sits on this. |
 | **Card** | `#FFFFFF` | White | The reading surface. The card is pure white against the warm canvas. The contrast is subtle but creates a clear "this is where you read" zone. |
 | **Text primary** | `#1A1815` | Ink | Near-black with warmth. Not pure black (#000, too harsh for extended reading). Not cool gray (reads as digital). This reads as printed ink on paper. |
-| **Text secondary** | `#6B6560` | Warm gray | Body text, descriptions. High enough contrast for WCAG AA (7.5:1 against white). Warm enough to feel editorial. |
+| **Text secondary** | `#6B6560` | Warm gray | Body text, descriptions. High enough contrast for WCAG AA (5.8:1 (WCAG AA) against white). Warm enough to feel editorial. |
 | **Text muted** | `#9C9590` | Stone | Captions, metadata, chapter numbers. Passes AA for large text only. |
 | **Accent** | `#0082EB` | Azure | Carried from the Amplifier brand. Used for: links, active nav state, interactive elements, audio play button. One accent color everywhere. Precious. |
 | **Accent deep** | `#005AA0` | Deep azure | For accent text on white backgrounds where the standard azure is too light for WCAG AA body text contrast. |
@@ -179,7 +179,7 @@ The chapter indicator doubles as the TOC toggle. You always know where you are w
 
 - Background: white or near-white, with a subtle bottom border (`rgba(0,0,0,0.06)`)
 - Fixed to the top of the viewport
-- Height: ~48-56px
+- Height: 52px
 - The chapter indicator uses Space Grotesk 500, uppercase, with the chapter number as a visual anchor
 - Transitions smoothly when navigating between chapters
 
@@ -207,7 +207,7 @@ Wide breakout. Horizontal-rule style (NYT editorial tables, not data-grid UI). C
 
 ### Code Blocks
 
-Reading-column width. Light gray background (`#F5F3EE` or similar) with subtle border. Monospace font (SF Mono / Fira Code / Cascadia Code). Not dark-on-light reverse — light background keeps the reading context consistent.
+Reading-column width. Light gray background (`--bg-code`) with subtle border. Monospace font (SF Mono / Fira Code / Cascadia Code). Not dark-on-light reverse — light background keeps the reading context consistent.
 
 ### Vignette Blocks (Stubbed)
 

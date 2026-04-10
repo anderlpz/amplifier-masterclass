@@ -14,7 +14,7 @@ blocks:
     placement: after-flow-description
     rationale: "The 7-step message flow is the best scrollytelling candidate: a sticky diagram with each step highlighting as text cards scroll past"
   - type: vignette
-    id: ooda-loop-explainer
+    id: orchestrator-loop-explainer
     width: wide
     placement: after-diagram
     status: stub
