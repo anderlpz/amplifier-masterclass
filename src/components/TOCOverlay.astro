@@ -1,0 +1,212 @@
+---
+import { chapters } from '../data/chapters';
+
+interface Props {
+  currentChapter: number;
+}
+
+const { currentChapter } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<div
+  id="toc-overlay"
+  class="toc-overlay"
+  role="dialog"
+  aria-label="Table of contents"
+  aria-hidden="true"
+>
+  <div class="toc-overlay__backdrop"></div>
+  <div class="toc-overlay__panel">
+    <p class="toc-overlay__heading">Contents</p>
+    <ol class="toc-overlay__list">
+      {chapters.map((ch) => (
+        <li class={`toc-overlay__item${ch.number === currentChapter ? ' toc-overlay__item--active' : ''}`}>
+          <a href={`${base}chapters/${ch.slug}/`} class="toc-overlay__link">
+            <span class="toc-overlay__number">{ch.number}</span>
+            <span class="toc-overlay__title">{ch.title}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
+<style>
+  /* -----------------------------------------------------------------------
+     Overlay container — fixed, full-screen, invisible by default
+  ----------------------------------------------------------------------- */
+  .toc-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-toc-overlay);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out);
+  }
+
+  /* Open state — toggled by aria-hidden attribute */
+  .toc-overlay[aria-hidden="false"] {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  /* -----------------------------------------------------------------------
+     Backdrop — semi-transparent scrim behind the panel
+  ----------------------------------------------------------------------- */
+  .toc-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  /* -----------------------------------------------------------------------
+     Panel — the visible dropdown card
+  ----------------------------------------------------------------------- */
+  .toc-overlay__panel {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: var(--measure-container);
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    padding: var(--space-6) var(--container-pad);
+  }
+
+  /* -----------------------------------------------------------------------
+     Contents heading — font-mono, xs, uppercase, muted
+  ----------------------------------------------------------------------- */
+  .toc-overlay__heading {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  /* -----------------------------------------------------------------------
+     Chapter list
+  ----------------------------------------------------------------------- */
+  .toc-overlay__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-overlay__item {
+    /* Items styled via link below */
+  }
+
+  .toc-overlay__link {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-2);
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-fast) var(--ease-default);
+  }
+
+  .toc-overlay__link:hover {
+    background-color: var(--bg-muted);
+    color: var(--text-primary);
+  }
+
+  /* Chapter number — font-mono sm 500 muted 1.5em min-width */
+  .toc-overlay__number {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 1.5em;
+    flex-shrink: 0;
+    line-height: var(--leading-normal);
+  }
+
+  /* Chapter title — font-sans base 400 */
+  .toc-overlay__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 400;
+    line-height: var(--leading-normal);
+  }
+
+  /* -----------------------------------------------------------------------
+     Active chapter — accent color + accent-bg background
+  ----------------------------------------------------------------------- */
+  .toc-overlay__item--active .toc-overlay__link {
+    background-color: var(--accent-bg);
+    color: var(--accent);
+  }
+
+  .toc-overlay__item--active .toc-overlay__link:hover {
+    background-color: var(--accent-bg);
+  }
+
+  .toc-overlay__item--active .toc-overlay__number {
+    color: var(--accent);
+  }
+
+  .toc-overlay__item--active .toc-overlay__title {
+    color: var(--accent);
+  }
+
+  /* -----------------------------------------------------------------------
+     Mobile — reduced padding
+  ----------------------------------------------------------------------- */
+  @media (max-width: 768px) {
+    .toc-overlay__panel {
+      padding: var(--space-4) var(--container-pad);
+    }
+  }
+</style>
+
+<script>
+  const overlay = document.getElementById('toc-overlay');
+  const backdrop = overlay?.querySelector('.toc-overlay__backdrop');
+
+  function openTOC() {
+    if (overlay) {
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeTOC() {
+    if (overlay) {
+      overlay.setAttribute('aria-hidden', 'true');
+      window.dispatchEvent(new CustomEvent('toc-close'));
+    }
+  }
+
+  // Listen for toc-toggle custom event from NavBar
+  window.addEventListener('toc-toggle', (e) => {
+    const detail = (e as CustomEvent).detail;
+    if (detail && detail.open) {
+      openTOC();
+    } else {
+      closeTOC();
+    }
+  });
+
+  // Backdrop click closes the TOC
+  if (backdrop) {
+    backdrop.addEventListener('click', () => {
+      closeTOC();
+    });
+  }
+
+  // Escape key closes when open
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay?.getAttribute('aria-hidden') === 'false') {
+      closeTOC();
+    }
+  });
+</script>
