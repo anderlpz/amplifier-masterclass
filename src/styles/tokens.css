@@ -1,214 +1,240 @@
-/*
- * Design Token System — Amplifier Masterclass
- * Visual Foundation Layer (rebuilt 2026-04-08)
- *
- * Source of truth: .design/AESTHETIC-GUIDE.md (authoritative)
- *                  ui-studio/storyboards/style-seed.md (token ground truth)
- *
- * Palette direction: iyo-clean — cool void ground, glass instruments,
- * warm typography, copper for conceptual, azure for interactive.
- *
- * All values are CSS custom properties on :root.
- * Import this file first; reference tokens everywhere else.
- */
+/* =============================================================================
+   tokens.css — Amplifier Masterclass Design System
+   Version: 3.0 — Paper Frame (light, typographic, chapter-based)
+   Date: 2026-04-09
+   Source: DESIGN-SYSTEM.md v3
+
+   All custom properties live under :root.
+   Sections mirror the design doc for 1:1 traceability.
+   Responsive overrides and prefers-reduced-motion at the bottom.
+   ============================================================================= */
 
 :root {
 
-  /* ─────────────────────────────────────────────
-   * Backgrounds
-   *
-   * Three surfaces. Each one has a precise semantic role.
-   * Void/Slate alternate for dark sections; Parchment is
-   * the palette-break "exhale" moment (S03, S12 only).
-   * ───────────────────────────────────────────── */
-  --bg-void:      #0F0F13;  /* Primary dark ground. Cool near-black with blue undertone.
-                               The undertone creates perceptual depth for glass layers. */
-  --bg-slate:     #161619;  /* Secondary dark ground. Barely distinguishable from void.
-                               The difference should be felt, not seen. */
-  --bg-parchment: #F5F3EC;  /* Warm cream. Editorial, not institutional.
-                               Parchment = "well-made book." Used sparingly. */
+  /* ===========================================================================
+     § 1.1 · COLORS — Backgrounds
+     Light paper frame. Warm canvas + white reading surface.
+     No dark backgrounds. No dark mode.
+     =========================================================================== */
 
+  --bg-canvas:   #EDEBE6;   /* Page background — warm stone                    */
+  --bg-card:     #FFFFFF;   /* Reading surface — white card on warm canvas      */
+  --bg-code:     #F5F3EE;   /* Code block backgrounds — warm light gray         */
+  --bg-muted:    #F7F5F0;   /* Callouts, blockquotes — subtle background        */
 
-  /* ─────────────────────────────────────────────
-   * Text Colors
-   *
-   * Warmth in body text (#E8E6DC) is essential for extended
-   * dark-mode reading — pure white causes eye strain at 10k+ words.
-   * ───────────────────────────────────────────── */
-  --text-primary:  #FAFAF8;  /* Headlines on dark. Bright warm-white. */
-  --text-body:     #E8E6DC;  /* Body text on dark. Warm cream. */
-  --text-muted:    #87867F;  /* TOC inactive items, tertiary text on dark. */
-  --text-on-break: #1A1815;  /* Ink on parchment. Deeper/warmer than old #242426.
-                                Creates ink-on-paper feeling, not pixels on screen. */
+  /* ===========================================================================
+     § 1.2 · COLORS — Text
+     Ink-on-paper hierarchy. Warm, not cool.
+     Contrast ratios documented per token (against --bg-card).
+     =========================================================================== */
 
+  --text-primary:   #1A1815;   /* Headlines, emphasis — 15.2:1 (AAA)            */
+  --text-secondary: #6B6560;   /* Body text, descriptions — 5.8:1 (AA)          */
+  --text-muted:     #9C9590;   /* Captions, metadata — 3.2:1 (AA large only)    */
+  --text-inverse:   #FFFFFF;   /* Text on accent backgrounds (rare)              */
 
-  /* ─────────────────────────────────────────────
-   * Accents
-   *
-   * SEMANTIC RULE: Azure owns interactivity. Copper owns concepts.
-   * They NEVER appear together in the same section.
-   * Neither is ever purely decorative.
-   * ───────────────────────────────────────────── */
-  --accent:       #0082EB;  /* Azure — signal. Interactive/navigation ONLY.
-                               TOC active state, progress bar, links, technical eyebrows. */
-  --accent-hover: #0092F3;  /* Azure hover state. */
-  --accent-warm:  #C87B60;  /* Copper — warmth. Conceptual eyebrows, pull-quote marks.
-                               S01, S03, S12 ONLY. Never buttons. Never hover. */
+  /* ===========================================================================
+     § 1.3 · COLORS — Accent
+     Azure — carried from Amplifier brand. One accent everywhere.
+     No gradient. No second hue.
+     =========================================================================== */
 
+  --accent:       #0082EB;   /* Links, active nav, interactive elements          */
+  --accent-hover: #006BC4;   /* Hover/active state                               */
+  --accent-deep:  #005AA0;   /* Accent text on light bgs (5.4:1 contrast)        */
+  --accent-bg:    rgba(0, 130, 235, 0.08);   /* Subtle accent background tint    */
 
-  /* ─────────────────────────────────────────────
-   * Glass Treatment
-   *
-   * Glass says: "I am a tool. I am separate from the content."
-   * It appears in navigation and interactive surfaces.
-   * It NEVER wraps body text or conceptual content.
-   *
-   * These values are calibrated for the new void ground (#0F0F13).
-   * The cool undertone of void makes even rgba(255,255,255,0.04) visible.
-   * ───────────────────────────────────────────── */
-  --glass-bg:           rgba(255, 255, 255, 0.04);  /* Almost invisible. You know glass
-                                                        is there from the border + blur. */
-  --glass-border:       rgba(255, 255, 255, 0.07);  /* Hair-thin. Neutral white.
-                                                        NOT blue-tinted (old value was
-                                                        rgba(169,194,242,0.1) — wrong). */
-  --glass-blur:         10px;                        /* Subtle depth. Not frosted. */
-  --glass-radius-card:  8px;                         /* Content cards, sub-section cards. */
-  --glass-radius-nav:   12px;                        /* Navigation containers (TOC, TopNav). */
-  --glass-radius-small: 4px;                         /* Small interactive elements. */
+  /* ===========================================================================
+     § 1.4 · COLORS — Borders
+     Hairline dividers. Structure through whitespace first, borders second.
+     =========================================================================== */
 
+  --border-default: rgba(0, 0, 0, 0.08);   /* Card edges, dividers, table rules */
+  --border-strong:  rgba(0, 0, 0, 0.15);   /* Diagram borders, strong separation */
+  --border-accent:  rgba(0, 130, 235, 0.25); /* Active/selected borders           */
 
-  /* ─────────────────────────────────────────────
-   * Hairline Dividers
-   * ───────────────────────────────────────────── */
-  --divider:          rgba(255, 255, 255, 0.08);   /* On dark surfaces */
-  --divider-on-break: rgba(26, 24, 21, 0.12);      /* On parchment */
+  /* ===========================================================================
+     § 1.5 · COLORS — Shadows
+     Extremely subtle. Card-on-canvas communicated by color difference,
+     not shadow depth.
+     =========================================================================== */
 
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04),
+                 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-nav:  0 1px 2px rgba(0, 0, 0, 0.06);
 
-  /* ─────────────────────────────────────────────
-   * Typography Families
-   *
-   * Three voices. Not interchangeable. Semantic signals.
-   *   Lora    → Voice of Ideas (headlines, lead para, pull quotes)
-   *   Inter   → Voice of Structure (body, nav, labels, sub-headings)
-   *   Space Grotesk → Voice of Precision (eyebrows, code, technical terms)
-   * ───────────────────────────────────────────── */
-  --font-serif: 'Lora', Georgia, serif;
-  --font-sans:  'Inter', system-ui, sans-serif;
-  --font-mono:  'Space Grotesk', 'SF Mono', monospace;
+  /* ===========================================================================
+     § 1.6 · COLORS — Semantic (scoped to specific components)
+     Tools vs Hooks comparison (Section 7) and Hook Priority Cascade.
+     Do not use outside their scoped components.
+     =========================================================================== */
 
+  /* Tools vs Hooks comparison */
+  --color-tools-border: rgba(34, 163, 74, 0.25);
+  --color-tools-bg:     rgba(34, 163, 74, 0.06);
+  --color-tools-text:   #1B7A3D;
+  --color-hooks-border: rgba(220, 53, 53, 0.25);
+  --color-hooks-bg:     rgba(220, 53, 53, 0.06);
+  --color-hooks-text:   #B91C1C;
 
-  /* ─────────────────────────────────────────────
-   * Typography Scale (viewport-fluid clamp)
-   *
-   * The scale is correct and stays as-is.
-   * Section entry headlines use --text-h1 (conceptual) or --text-h2 (technical).
-   * ───────────────────────────────────────────── */
-  --text-hero:  clamp(3rem, 8vw, 7rem);              /* Hero / page title */
-  --text-h1:    clamp(2.25rem, 4.9vw, 4.5rem);       /* Conceptual section headlines */
-  --text-h2:    clamp(1.5rem, 2.5vw, 2.25rem);       /* Technical section headlines */
-  --text-h3:    clamp(1.125rem, 1.5vw, 1.5rem);      /* Sub-section titles */
-  --text-small: clamp(0.8125rem, 0.85vw, 0.875rem);  /* Eyebrow labels, captions */
-  --text-xs:    0.75rem;                              /* TOC items, micro labels */
+  /* Hook Priority Cascade */
+  --cascade-deny:     #DC2626;
+  --cascade-ask-user: #D97706;
+  --cascade-inject:   #2563EB;
+  --cascade-modify:   #7C3AED;
+  --cascade-continue: #16A34A;
 
+  /* ===========================================================================
+     § 2.1 · TYPOGRAPHY — Font Families
+     Lora = READ. Inter = WORK. Space Grotesk = REFERENCE.
+     =========================================================================== */
 
-  /* ─────────────────────────────────────────────
-   * Line Heights
-   * ───────────────────────────────────────────── */
-  --leading-entry:   1.1;   /* Section entry headlines. Tighter than tight.
-                               For the large Lora display type in entry viewports. */
-  --leading-tight:   1.15;  /* Display headlines */
-  --leading-normal:  1.6;   /* Body text in technical sections */
-  --leading-relaxed: 1.8;   /* Body text in conceptual sections.
-                               Wider leading = more breathing room for mental models. */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:  'Space Grotesk', 'SF Mono', monospace; /* Precision labels/nav (Space Grotesk — NOT monospaced; use --font-code for code blocks) */
+  --font-code:  'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 
+  /* ===========================================================================
+     § 2.3 · TYPOGRAPHY — Type Scale (fluid headlines, fixed body)
+     Headlines scale via clamp() from 375px mobile to 1200px desktop.
+     Body sizes are fixed for consistent readability.
+     =========================================================================== */
 
-  /* ─────────────────────────────────────────────
-   * Letter Spacing
-   * ───────────────────────────────────────────── */
-  --tracking-tight:  -0.02em; /* Display headlines (Lora) */
-  --tracking-normal: 0;       /* Body text */
-  --tracking-wide:   0.1em;   /* Eyebrow labels (Space Grotesk uppercase) */
+  --text-xs:   0.75rem;                          /*  12px — small labels       */
+  --text-sm:   0.875rem;                         /*  14px — captions, nav      */
+  --text-base: 1rem;                             /*  16px — body text          */
+  --text-lg:   1.125rem;                         /*  18px — lead paragraphs    */
+  --text-xl:   1.25rem;                          /*  20px — subheadings        */
+  --text-2xl:  clamp(1.5rem, 2vw, 1.75rem);     /*  24–28px — h3              */
+  --text-3xl:  clamp(1.875rem, 3vw, 2.25rem);   /*  30–36px — h2              */
+  --text-4xl:  clamp(2.25rem, 4vw, 3rem);       /*  36–48px — h1 chapter      */
 
+  /* ===========================================================================
+     § 2.4 · TYPOGRAPHY — Line Heights
+     Body at 1.7 — generous for a reading-first experience.
+     =========================================================================== */
 
-  /* ─────────────────────────────────────────────
-   * Spacing (8px base grid)
-   * ───────────────────────────────────────────── */
-  --space-1:  0.5rem;   /*   8px — micro gap (icon-to-label, tight items) */
-  --space-2:  1rem;     /*  16px — small gap (list items, card internal) */
-  --space-3:  1.5rem;   /*  24px — between paragraphs, between glass cards */
-  --space-4:  2rem;     /*  32px — eyebrow-to-headline, major elements (technical) */
-  --space-5:  2.5rem;   /*  40px — card internal horizontal padding */
-  --space-6:  3rem;     /*  48px — major elements (conceptual), divider padding */
-  --space-8:  4rem;     /*  64px — diagram vertical padding (above + below) */
-  --space-12: 6rem;     /*  96px */
-  --space-16: 8rem;     /* 128px — before technical sections (continuity gap) */
-  --space-24: 12rem;    /* 192px — before conceptual sections (chapter break gap) */
+  --leading-tight:   1.15;   /* Headlines (h1)              */
+  --leading-snug:    1.2;    /* Section headings (h2-h3)    */
+  --leading-normal:  1.7;    /* Body text — generous         */
 
-  /* Entry viewport vertical positioning */
-  --space-entry-top: 35vh; /* Distance from viewport top where the eyebrow sits.
-                               Entry content cluster: ~35% from top, weight toward bottom. */
+  /* ===========================================================================
+     § 3.1 · SPACING — 8px base grid
+     =========================================================================== */
 
+  --space-1:   4px;    /* Tight gaps: icon + inline text                        */
+  --space-2:   8px;    /* Base unit. Small padding, label gaps.                 */
+  --space-3:   12px;   /* Minor gaps                                            */
+  --space-4:   16px;   /* Grid gaps, element margins                            */
+  --space-6:   24px;   /* Paragraph spacing, card padding (compact)             */
+  --space-8:   32px;   /* Card padding (standard), section sub-gaps             */
+  --space-12:  48px;   /* Between content blocks within a chapter               */
+  --space-16:  64px;   /* Between major sections within a chapter               */
+  --space-24:  96px;   /* Chapter top/bottom padding                            */
 
-  /* ─────────────────────────────────────────────
-   * Content Widths
-   *
-   * Body: 720px → ~60-65ch at 15-17px. Optimal for sustained reading.
-   * Wide: 960px → diagrams, card grids, comparison layouts.
-   * Full: 1200px → maximum including sidebar. Nothing wider.
-   * ───────────────────────────────────────────── */
-  --content-max:   720px;
-  --content-wide:  960px;
-  --content-full: 1200px;
-  --sidebar-width: 280px;  /* TOC sidebar */
+  /* ===========================================================================
+     § 3.2 · LAYOUT — Column widths
+     Three-width system: reading (default), wide (breakout), full (rare).
+     =========================================================================== */
 
+  --measure-reading:   650px;    /* Reading column — ~65ch at 16px body        */
+  --measure-wide:      1100px;   /* Wide breakout — diagrams, tables           */
+  --measure-container: 1200px;   /* Outer container — includes card margins    */
+  --container-pad:     40px;     /* Horizontal padding (desktop)               */
 
-  /* ─────────────────────────────────────────────
-   * Motion / Easing
-   *
-   * Every animation answers: "What just changed, and why should I notice?"
-   * Motion is not for delight. Motion communicates hierarchy.
-   * ───────────────────────────────────────────── */
-  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);  /* Subtle overshoot — TOC active state */
-  --ease-settle:  cubic-bezier(0.16, 1, 0.3, 1);       /* Smooth deceleration — content reveals */
-  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);        /* Standard ease-out — hover states */
-  --ease-blur:    cubic-bezier(0.22, 1, 0.36, 1);       /* Text blur reveal (lookbook) */
+  /* ===========================================================================
+     § 4 · BORDER RADIUS
+     Minimal. Clean editorial, not app UI.
+     =========================================================================== */
 
-  --duration-fast:        150ms;  /* Hover states, micro-interactions */
-  --duration-normal:      250ms;  /* Navigation transitions (TOC active state, nav show/hide) */
-  --duration-slow:        500ms;  /* Mode shift transitions (background color changes) */
-  --duration-reveal:      800ms;  /* Content reveal on scroll (fade + translate) */
-  --duration-blur-letter: 550ms;  /* Per-letter blur reveal duration */
-  --blur-stagger:          38ms;  /* Per-character stagger delay (lookbook text blur) */
+  --radius-sm:   4px;      /* Code inline pills, small elements               */
+  --radius-md:   8px;      /* Cards, code blocks, callouts                    */
+  --radius-lg:   12px;     /* Media containers                                 */
+  --radius-full: 9999px;   /* Audio play button, pills                        */
 
+  /* ===========================================================================
+     § 5 · MOTION — Duration & Easing
+     Subtle and purposeful. No loops. No auto-animation.
+     =========================================================================== */
 
-  /* ─────────────────────────────────────────────
-   * Z-Index Scale
-   * ───────────────────────────────────────────── */
-  --z-content:  1;   /* Dark sections scrolling over parchment */
-  --z-sticky:  10;   /* Sticky-stack elements */
-  --z-sidebar: 20;   /* TOC sidebar */
-  --z-topnav:  30;   /* Top navigation */
-  --z-progress: 40;  /* Progress bar (topmost layout element) */
-  --z-modal:   50;   /* Fullscreen graph, presentation mode */
+  --duration-fast:   150ms;   /* Hover states, micro-interactions              */
+  --duration-normal: 250ms;   /* Nav transitions, chapter indicator updates    */
+  --duration-slow:   400ms;   /* Chapter transitions, overlay open/close       */
+  --duration-reveal: 600ms;   /* Scroll-reveal content entrance                */
+
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);   /* Reveals, entrances     */
+  --ease-default: ease;                              /* Hover, simple          */
+
+  /* ===========================================================================
+     § 6 · Z-INDEX LAYERS
+     Managed scale. No ad-hoc z-index values outside this table.
+     =========================================================================== */
+
+  --z-base:          1;
+  --z-card:          10;
+  --z-nav:           100;
+  --z-toc-overlay:   200;
+  --z-media-overlay: 500;
+  --z-chat:          600;
 
 }
 
+/* =============================================================================
+   § 7 · RESPONSIVE OVERRIDES
+   ============================================================================= */
 
-/* ─────────────────────────────────────────────
- * Reduced Motion Overrides
- *
- * When reduced motion is requested, all durations collapse.
- * The particle swarm JS should also freeze on this query.
- * The site loses nothing essential — it's a beautifully
- * typeset document on still dark/light grounds.
- * ───────────────────────────────────────────── */
+/* Tablet — tighten container padding */
+@media (max-width: 1024px) {
+  :root {
+    --container-pad: 24px;
+  }
+}
+
+/* Mobile — card goes full-width, tighter padding */
+@media (max-width: 768px) {
+  :root {
+    --space-24: 64px;
+    --container-pad: 20px;
+  }
+}
+
+/* Small mobile — minimum comfortable padding */
+@media (max-width: 480px) {
+  :root {
+    --space-24: 48px;
+    --container-pad: 16px;
+  }
+}
+
+/* =============================================================================
+   § 8 · REDUCED MOTION
+   Zero all durations. Content always visible — animation is enhancement.
+   ============================================================================= */
+
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --duration-fast:        0ms;
-    --duration-normal:      0ms;
-    --duration-slow:        0ms;
-    --duration-reveal:      0ms;
-    --duration-blur-letter: 0ms;
-    --blur-stagger:         0ms;
+    --duration-fast:   0.01ms;
+    --duration-normal: 0.01ms;
+    --duration-slow:   0.01ms;
+    --duration-reveal: 0.01ms;
   }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration:  0.01ms !important;
+  }
+}
+
+/* =============================================================================
+   § 9 · FOCUS INDICATORS
+   Visible focus ring for keyboard navigation.
+   :focus-visible ensures mouse users don't see the ring.
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
