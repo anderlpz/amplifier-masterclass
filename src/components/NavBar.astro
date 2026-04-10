@@ -1,0 +1,158 @@
+---
+interface Props {
+  chapterNumber: number;
+  chapterTitle: string;
+}
+
+const { chapterNumber, chapterTitle } = Astro.props;
+---
+
+<nav class="navbar" role="navigation" aria-label="Chapter navigation">
+  <div class="navbar__inner">
+    <div class="navbar__left">
+      <button
+        class="navbar__chapter-toggle"
+        aria-expanded="false"
+        aria-controls="toc-overlay"
+        aria-label="Open table of contents"
+      >
+        <span class="navbar__chapter-indicator">
+          <span class="navbar__chapter-number">{chapterNumber}</span>
+          <span class="navbar__separator">&middot;</span>
+          <span class="navbar__chapter-title">{chapterTitle}</span>
+        </span>
+        <span class="navbar__hamburger" aria-hidden="true">&#9776;</span>
+      </button>
+    </div>
+    <div class="navbar__right">
+      <div class="navbar__audio" aria-hidden="true">
+        <span class="navbar__audio-icon">&#9654;</span>
+        <span class="navbar__audio-label">Listen</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: var(--shadow-nav);
+    z-index: var(--z-nav);
+  }
+
+  .navbar__inner {
+    max-width: var(--measure-container);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar__left {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar__right {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar__chapter-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2) var(--space-3);
+    margin-inline: calc(-1 * var(--space-3));
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-fast) var(--ease-default);
+    color: inherit;
+  }
+
+  .navbar__chapter-toggle:hover {
+    background-color: var(--bg-muted);
+  }
+
+  .navbar__chapter-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .navbar__chapter-number {
+    color: var(--text-muted);
+  }
+
+  .navbar__separator {
+    color: var(--text-muted);
+  }
+
+  .navbar__chapter-title {
+    color: var(--text-secondary);
+  }
+
+  .navbar__hamburger {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+
+  .navbar__audio {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    opacity: 0.5;
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  .navbar__audio-icon {
+    font-size: 0.75rem;
+  }
+
+  .navbar__audio-label {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.navbar__chapter-toggle');
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      toggle.setAttribute('aria-label', !expanded ? 'Close table of contents' : 'Open table of contents');
+
+      window.dispatchEvent(new CustomEvent('toc-toggle', {
+        detail: { open: !expanded }
+      }));
+    });
+
+    window.addEventListener('toc-close', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open table of contents');
+    });
+  }
+</script>
