@@ -840,6 +840,72 @@
       margin: 0 auto;
       max-width: 100%;
     }
+
+    /* Annotated code blocks — Stripe-style */
+    .annotated-code {
+      margin: 28px 0;
+    }
+
+    .annotated-code pre {
+      margin-bottom: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
+    }
+
+    .code-annotations {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      padding: 16px 20px;
+    }
+
+    .code-annotation {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    .code-annotation + .code-annotation {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .code-annotation .ann-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* The circled numbers in the code itself */
+    .code-marker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-family: var(--font-heading);
+      font-size: 10px;
+      font-weight: 600;
+      color: white;
+      vertical-align: middle;
+      margin-left: 8px;
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -1197,14 +1263,34 @@
 
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
-<pre data-layer="kernel"><code>async def mount(
-    coordinator: Coordinator,
-    config: dict
-) -&gt; Optional[cleanup_fn]:
+<div class="annotated-code">
+<pre data-layer="kernel"><code>async def mount(                            <span class="code-marker" style="background:#9B7B3E">1</span>
+    coordinator: Coordinator,               <span class="code-marker" style="background:#9B7B3E">2</span>
+    config: dict                            <span class="code-marker" style="background:#9B7B3E">3</span>
+) -&gt; Optional[cleanup_fn]:                 <span class="code-marker" style="background:#9B7B3E">4</span>
     # receive the registry + configuration
     # do your setup work
     # register yourself in the coordinator
     # optionally return a cleanup function</code></pre>
+  <div class="code-annotations">
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#9B7B3E">1</span>
+      <span><strong>async</strong> — Every module mounts asynchronously. The kernel awaits each mount in loading order, so modules can do I/O during setup (connect to APIs, read config files).</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#9B7B3E">2</span>
+      <span><strong>coordinator</strong> — The registry. The module reads from it (what other modules are loaded?) and writes to it (registers itself at the right slot). This is the only shared state.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#9B7B3E">3</span>
+      <span><strong>config</strong> — A plain dictionary. No config framework, no schema validation in the kernel. The module decides what keys it needs. Mechanism, not policy.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#9B7B3E">4</span>
+      <span><strong>Optional[cleanup_fn]</strong> — If the module returns a function, the kernel calls it during session cleanup. Database connections, open file handles, API sessions — the module cleans up its own resources.</span>
+    </div>
+  </div>
+</div>
 
       <p>All six module types follow this exact interface. The Loader is completely generic: it doesn't know what it's loading. It just calls <code>mount()</code>. And the module self-mounts into the Coordinator at the right slot.</p>
 
@@ -1545,6 +1631,41 @@
 
       <p><strong>As a hook:</strong> You register a Hook Handler for the <code>tool:post</code> event, which fires after any tool completes. When the event fires for a file-writing tool, the hook runs the code checker. If it finds issues, it injects a message: "The code checker found 3 issues on lines 12, 15, and 22." The AI reads this on its next turn and fixes the issues. The check happens every single time, regardless of what the model decides.</p>
 
+<div class="annotated-code">
+<pre data-layer="modules"><code>async def mount(coordinator, config):       <span class="code-marker" style="background:#3E7D8A">1</span>
+    hooks = coordinator.hooks
+    hooks.register("tool:post", on_tool)    <span class="code-marker" style="background:#3E7D8A">2</span>
+
+async def on_tool(event):
+    if event.tool not in FILE_WRITERS:      <span class="code-marker" style="background:#3E7D8A">3</span>
+        return {"action": "continue"}
+
+    issues = run_checker(event.result.path)
+    if issues:
+        return {                            <span class="code-marker" style="background:#3E7D8A">4</span>
+            "action": "inject_context",
+            "message": format_issues(issues)
+        }</code></pre>
+  <div class="code-annotations">
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#3E7D8A">1</span>
+      <span><strong>Same mount() contract</strong> — A hook handler is just another module. Same function signature as a provider, tool, or orchestrator.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#3E7D8A">2</span>
+      <span><strong>Register for an event</strong> — <code>tool:post</code> fires after any tool completes. The hook doesn't pick which tools — it sees all of them, then decides.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#3E7D8A">3</span>
+      <span><strong>Filter by relevance</strong> — Only file-writing tools matter. For everything else, return <code>continue</code> — the no-op passthrough from the priority cascade.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#3E7D8A">4</span>
+      <span><strong>inject_context</strong> — The hook's response goes into the conversation. The AI reads "3 issues on lines 12, 15, 22" on its next turn and fixes them. It never knows a hook was involved.</span>
+    </div>
+  </div>
+</div>
+
       <div class="callout" data-layer="boundary">
         <p><strong>The distinction in one sentence:</strong> Tools are capabilities you hand to the AI. Hooks are policies you enforce around it. Use tools when you want the AI to decide. Use hooks when you need the outcome to be guaranteed.</p>
       </div>
@@ -1817,20 +1938,40 @@
 
       <p>A minimal working bundle:</p>
 
-<pre data-layer="bundles"><code>---
+<div class="annotated-code">
+<pre data-layer="bundles"><code>---                                         <span class="code-marker" style="background:#5C6B9E">1</span>
 bundle:
-  model: anthropic/claude
+  model: anthropic/claude                   <span class="code-marker" style="background:#5C6B9E">2</span>
   tools:
-    - name: filesystem
+    - name: filesystem                      <span class="code-marker" style="background:#5C6B9E">3</span>
     - name: web-search
   hooks:
     - name: safety-guard
 ---
 
-You are a helpful coding assistant.
+You are a helpful coding assistant.          <span class="code-marker" style="background:#5C6B9E">4</span>
 You write clean, well-documented code.
 You follow the project's coding
 standards (see @project:standards.md).</code></pre>
+  <div class="code-annotations">
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#5C6B9E">1</span>
+      <span><strong>YAML frontmatter</strong> — The bundle is a single file. Everything between the <code>---</code> delimiters is structured configuration. Everything after is natural language.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#5C6B9E">2</span>
+      <span><strong>model</strong> — Which AI model to use. The bundle declares intent; Foundation resolves it to a specific provider module at runtime.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#5C6B9E">3</span>
+      <span><strong>tools and hooks</strong> — Module composition by name. No code, no imports, no dependency management. Just names. Foundation finds and loads the actual modules.</span>
+    </div>
+    <div class="code-annotation">
+      <span class="ann-num" style="background:#5C6B9E">4</span>
+      <span><strong>Markdown body</strong> — Natural language instructions the AI reads as its system prompt. <code>@project:standards.md</code> is a context reference — Foundation resolves it to a real file and injects its contents.</span>
+    </div>
+  </div>
+</div>
 
       <p>The YAML handles technical configuration. The Markdown handles human communication. This is everything you need for a working agent.</p>
 
