@@ -1,0 +1,149 @@
+---
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import type { Chapter } from '../../data/chapters';
+
+export function getStaticPaths() {
+  return chapters.map((ch) => ({
+    params: { chapter: String(ch.number) },
+    props: { chapter: ch },
+  }));
+}
+
+interface Props {
+  chapter: Chapter;
+}
+
+const { chapter } = Astro.props;
+
+const currentIndex = chapters.findIndex((ch) => ch.number === chapter.number);
+const prevChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
+const nextChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
+
+const base = import.meta.env.BASE_URL;
+---
+
+<ChapterLayout title="Amplifier Masterclass" chapterNumber={chapter.number} chapterTitle={chapter.title}>
+  <div class="chapter-entry width-reading">
+    <p class="eyebrow">Chapter {chapter.number}</p>
+    <h1>{chapter.title}</h1>
+    <p class="lead">{chapter.lead}</p>
+  </div>
+
+  <div class="chapter-body width-reading">
+    <p><em>Full chapter content coming in Phase 2 &amp; 3. Stay tuned.</em></p>
+  </div>
+
+  <nav class="chapter-nav width-reading">
+    {prevChapter ? (
+      <a href={`${base}chapters/${prevChapter.number}/`} class="nav-link nav-prev">
+        <span class="direction">← Previous</span>
+        <span class="chapter-label">{prevChapter.number} · {prevChapter.title}</span>
+      </a>
+    ) : (
+      <span class="nav-spacer" />
+    )}
+    {nextChapter ? (
+      <a href={`${base}chapters/${nextChapter.number}/`} class="nav-link nav-next">
+        <span class="direction">Next →</span>
+        <span class="chapter-label">{nextChapter.number} · {nextChapter.title}</span>
+      </a>
+    ) : (
+      <span class="nav-spacer" />
+    )}
+  </nav>
+</ChapterLayout>
+
+<style>
+  /* ─── Chapter Entry ─── */
+  .chapter-entry {
+    margin-bottom: var(--space-12);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    max-width: none;
+    margin: 0 0 var(--space-3) 0;
+  }
+
+  .chapter-entry h1 {
+    margin: 0 0 var(--space-4) 0;
+  }
+
+  .lead {
+    font-size: var(--text-lg);
+    color: var(--color-secondary);
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  /* ─── Placeholder Body ─── */
+  .chapter-body {
+    margin-bottom: var(--space-16);
+    color: var(--color-muted);
+    font-style: italic;
+    padding: var(--space-8) 0;
+  }
+
+  .chapter-body p {
+    margin: 0;
+  }
+
+  /* ─── Chapter Navigation ─── */
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-8);
+    margin-top: var(--space-16);
+  }
+
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+  }
+
+  .nav-prev {
+    align-items: flex-start;
+  }
+
+  .nav-next {
+    align-items: flex-end;
+  }
+
+  .direction {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+  }
+
+  .chapter-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+
+  .nav-spacer {
+    flex: 1;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 480px) {
+    .chapter-nav {
+      flex-direction: column;
+    }
+
+    .nav-next {
+      align-items: flex-start;
+    }
+  }
+</style>
