@@ -1,3 +1,25 @@
+---
+title: "The Kernel"
+chapter: 4
+blocks:
+  - type: prose
+  - type: diagram
+    id: kernel-components
+    width: wide
+    placement: after-intro
+    rationale: "Spatial relationship of the 5 kernel components shows what touches what"
+  - type: code
+    placement: mount-contract
+  - type: vignette
+    id: kernel-five-things
+    width: wide
+    placement: after-component-list
+    status: stub
+    rationale: "Animating the 5 components appearing one by one with brief descriptions would orient faster than reading a list"
+  - type: audio
+    status: stub
+---
+
 # Section 4: The Kernel
 
 ## Five things live in the kernel. Nothing else.

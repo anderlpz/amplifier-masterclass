@@ -1,3 +1,26 @@
+---
+title: "The Complete Picture"
+chapter: 12
+blocks:
+  - type: prose
+  - type: diagram
+    id: six-layer-stack
+    width: wide
+    placement: after-layer-descriptions
+    rationale: "The 6-layer ecosystem stack: Kernel, Modules, Bundles, Foundation, Applications, Community"
+  - type: diagram
+    id: full-system-flow
+    width: reading
+    placement: after-where-things-go
+    rationale: "A single user request flowing through every layer, top to bottom (User to CLI to Coordinator to Orchestrator to Provider to Model to Tools to Hooks to Response)"
+  - type: chat
+    placement: end-of-chapter
+    status: stub
+    prompt: "Finished the masterclass. Have questions about any concept?"
+  - type: audio
+    status: stub
+---
+
 # Section 12: The Complete Picture
 
 ## Each layer depends only on the one below it.

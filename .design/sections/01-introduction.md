@@ -1,3 +1,12 @@
+---
+title: "Introduction"
+chapter: 1
+blocks:
+  - type: prose
+  - type: audio
+    status: stub
+---
+
 # Section 1: Introduction
 
 Amplifier is a framework for building your AI harness.

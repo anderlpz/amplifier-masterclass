@@ -1,3 +1,21 @@
+---
+title: "The Architecture Map"
+chapter: 2
+blocks:
+  - type: prose
+  - type: diagram
+    id: architecture-overview
+    width: wide
+    placement: after-intro
+  - type: diagram
+    id: architecture-interactive
+    width: full
+    placement: end-of-chapter
+    rationale: "The interactive graph explorer lets readers click nodes to highlight connections and zoom into subsystems"
+  - type: audio
+    status: stub
+---
+
 # Section 2: The Architecture Map
 
 ## A map of the territory before we walk through it.

@@ -1,3 +1,23 @@
+---
+title: "Agents, Context Files, Skills, and Recipes"
+chapter: 11
+blocks:
+  - type: prose
+  - type: diagram
+    id: recipe-pipeline
+    width: wide
+    placement: after-recipes
+    rationale: "The recipe pipeline showing sequential steps with output feeding to input and approval gates between steps"
+  - type: vignette
+    id: recipe-workflow-animation
+    width: wide
+    placement: after-recipe-diagram
+    status: stub
+    rationale: "Animating a 3-step recipe (review, write docs, create PR) with data flowing between steps and an approval gate pausing would show the workflow pattern"
+  - type: audio
+    status: stub
+---
+
 # Section 11: Agents, Context Files, Skills, and Recipes
 
 ## Agents, skills, recipes: each one is built from pieces you have already seen.

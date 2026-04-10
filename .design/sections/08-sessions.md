@@ -1,3 +1,22 @@
+---
+title: "Sessions"
+chapter: 8
+blocks:
+  - type: prose
+  - type: diagram
+    id: session-lifecycle-timeline
+    width: wide
+    placement: after-four-phases
+    rationale: "The 4-phase lifecycle (Create, Initialize, Execute, Cleanup) as a horizontal timeline"
+  - type: table
+    id: parent-child-comparison
+    width: wide
+    placement: after-parent-child
+    rationale: "What you might expect vs what Amplifier does for parent-child sessions"
+  - type: audio
+    status: stub
+---
+
 # Section 8: Sessions
 
 ## A session is a container.

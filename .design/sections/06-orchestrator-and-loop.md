@@ -1,3 +1,32 @@
+---
+title: "The Orchestrator"
+chapter: 6
+blocks:
+  - type: prose
+  - type: diagram
+    id: reasoning-loop
+    width: wide
+    placement: after-privilege-gap
+    rationale: "The THINK-ACT-OBSERVE-DECIDE cycle as a loop diagram with the Orchestrator at center"
+  - type: scrollytelling
+    id: one-turn-of-conversation
+    width: full
+    placement: after-flow-description
+    rationale: "The 7-step message flow is the best scrollytelling candidate: a sticky diagram with each step highlighting as text cards scroll past"
+  - type: vignette
+    id: ooda-loop-explainer
+    width: wide
+    placement: after-diagram
+    status: stub
+    rationale: "The 4-phase cycle is hard to grasp from text alone. Animation of the loop with each phase lighting up and data flowing would teach faster"
+  - type: chat
+    placement: end-of-chapter
+    status: stub
+    prompt: "Have a question about how the orchestrator drives the agent loop?"
+  - type: audio
+    status: stub
+---
+
 # Section 6: The Orchestrator
 
 One module gets live access to the full system at runtime. Every other module is isolated after setup.

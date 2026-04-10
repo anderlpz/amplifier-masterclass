@@ -1,3 +1,30 @@
+---
+title: "Module System"
+chapter: 5
+blocks:
+  - type: prose
+  - type: table
+    id: module-types
+    width: wide
+    placement: after-intro
+    rationale: "The 6 module types with their roles, cardinality, and required/optional status"
+  - type: code
+    placement: mount-contract
+  - type: diagram
+    id: loading-order
+    width: wide
+    placement: after-loading-order
+    rationale: "The fixed loading sequence shown as a horizontal flow"
+  - type: vignette
+    id: module-mount-lifecycle
+    width: wide
+    placement: after-mount-contract
+    status: stub
+    rationale: "Animating the mount lifecycle (discover, load, mount, register in Coordinator) would show the sequence that text describes linearly"
+  - type: audio
+    status: stub
+---
+
 # Section 5: The Module System
 
 ## Everything outside the kernel is a module.

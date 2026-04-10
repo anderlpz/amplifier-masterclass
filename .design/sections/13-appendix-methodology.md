@@ -1,3 +1,12 @@
+---
+title: "Appendix: Research Methodology"
+chapter: 13
+blocks:
+  - type: prose
+  - type: audio
+    status: stub
+---
+
 # Appendix: Research Methodology
 
 The facts in this document were established through a structured, multi-pass investigation of the Amplifier source code using a method called Parallax Discovery. Seven independent investigators across four teams each examined different aspects of the codebase. Their findings were reconciled into a single 805-line document. Each claim is backed by at least two independent confirmations with file-and-line evidence. Sources: `amplifier-core` and `amplifier-foundation`.

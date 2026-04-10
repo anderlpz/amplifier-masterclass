@@ -1,3 +1,24 @@
+---
+title: "Bundles and Configuration"
+chapter: 9
+blocks:
+  - type: prose
+  - type: code
+    placement: minimal-bundle-example
+  - type: diagram
+    id: composition-layers
+    width: wide
+    placement: after-composition
+    rationale: "Base bundle + Team bundle + Project bundle layering with merge behavior"
+  - type: diagram
+    id: mention-resolution
+    width: wide
+    placement: after-mentions
+    rationale: "The @mention resolution flow: text reference to filesystem path to loaded content to system prompt"
+  - type: audio
+    status: stub
+---
+
 # Section 9: Bundles and Configuration
 
 ## Bundles are how you package and distribute capabilities.

@@ -1,3 +1,17 @@
+---
+title: "Design Philosophy"
+chapter: 3
+blocks:
+  - type: prose
+  - type: diagram
+    id: mechanism-vs-policy-flow
+    width: wide
+    placement: after-hook-example
+    rationale: "The tool:pre event flow (kernel fires, hooks decide) is the clearest illustration of mechanism vs policy"
+  - type: audio
+    status: stub
+---
+
 # Section 3: Design Philosophy
 
 ## Three ideas shape how Amplifier is built.

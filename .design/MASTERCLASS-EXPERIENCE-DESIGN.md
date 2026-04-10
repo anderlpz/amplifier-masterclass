@@ -1,430 +1,303 @@
 # Amplifier Masterclass Experience Design
 
-## Goal
-
-Transform the Amplifier Masterclass from a well-styled documentation page into a premium educational experience where someone finishes understanding what Amplifier is, has a deep reference they'll return to, and the execution feels like it belongs to the withamplifier.com family.
-
-## Background
-
-The Amplifier Masterclass currently exists as a single 1.4MB HTML file (`amplifier-masterclass-v2.html`) with 13 sections, a presentation mode (72 slides), and an interactive d3-graphviz architecture graph. The content is solid — 13 sections covering the full Amplifier architecture — but the storytelling, interaction design, and visual execution need a fundamental uplevel.
-
-The masterclass will live at **withamplifier.com/learn**. The withamplifier.com homepage is a cinematic 3D experience introducing Amplifier. The masterclass is the substance behind the spectacle — same family, different register. The homepage seduces; the masterclass educates. Both should feel like the same hand made them.
-
-**Primary visual reference:** [iyo.ai/iyo-one](https://www.iyo.ai/iyo-one) (the product page, not the homepage). The product page shifts from the homepage's infinite black void to structured charcoal with rooms — same family, different purpose: "We're real now. There's substance here." That's the exact relationship we want between the homepage and the masterclass.
-
-### What's Good Today
-
-- Dark aesthetic and glass cards are polished — not a template
-- Typography is well-chosen: Lora serif headlines, Inter body, Space Grotesk mono labels
-- The section-label system (blue Phosphor icon + monospace uppercase) is consistent
-- Presentation mode (72 slides with speaker notes) is a genuinely impressive feature
-- Content itself is thorough across 13 sections
-
-### What's Broken Today
-
-- The "WHAT THIS DOCUMENT COVERS" card looks like a clickable TOC — none of it is interactive. A broken UX promise.
-- The TOC dropdown has no active state. You can't tell where you are.
-- No narrative thread between sections. No "now that you understand X, let's look at Y."
-- Architecture Map is placed at section 2, before the reader has vocabulary for what they're seeing. The page literally says "Don't try to memorize this" — an admission the placement doesn't work.
-- The Present button is unexplained — a gradient pill in the corner with no label.
-
-**Core problem:** The site knows what it wants to teach, but it's styled like an experience while behaving like a document. The gap is in storytelling, navigation intelligence, and interaction honesty.
-
-## Audience
-
-Informed technical professionals who work with AI and engineering. They may not know Amplifier specifically, but they have context for understanding it. This is a level-500 college course in content depth.
-
-## Approach
-
-Hybrid navigation — a linear journey the first time through, and a random-access reference afterward. A single experience designed so well that the linear flow feels natural but navigation is never locked. No login, no tracking. The choreography *invites* linear reading; the TOC *permits* jumping. The design serves the educational outcome, period.
-
-The IYO product page register is the north star: structured charcoal backgrounds, frosted glass cards used selectively, hairline dividers for sequential content, floating visuals, eyebrow-headline-paragraph information hierarchy. Premium but purposeful — every design choice serves learning.
+**Version:** 3.0
+**Date:** 2026-04-09
+**Status:** Strategic brief for multi-modal chapter-based learning experience
 
 ---
 
-## Architecture
+## What This Is
+
+The Amplifier Masterclass is a multi-modal, chapter-based learning experience that teaches the Amplifier framework's architecture. The same curriculum (13 chapters) is consumable through reading, listening, watching, and conversing. The visual frame exists to make the content authoritative and to create room for multiple media types, not to be the spectacle itself.
+
+This is not a documentation site. Not a marketing page. Not a choose-your-own-adventure. It is an opinionated editorial flow through 13 chapters, with multiple ways to digest each chapter's content.
+
+## Why This Exists
+
+The masterclass content is excellent: 13 chapters covering the full Amplifier architecture, written in an authoritative but accessible voice. Previous versions packaged this content as a dark-mode atmospheric scroll site with particle effects and glass surfaces. The visual craft was high but the frame was wrong. A polished document is still a document. Someone scrolls, reads, and leaves.
+
+The v3 reframe asks: what if the content met people however they want to engage with it? The same concepts, available as:
+
+- **Prose** you read at your own pace (the foundation)
+- **Diagrams** that show spatial relationships text can't convey
+- **Video vignettes** that animate concepts too dynamic for static media
+- **Audio narration** you can listen to while doing other things
+- **A conversational tutor** you can ask questions of when stuck
+
+The static reading experience is the base. Everything else layers on.
+
+---
+
+## Design Philosophy
+
+### Content Authority Through Typography, Not Effects
+
+The previous direction used dark backgrounds, particle swarms, glass surfaces, and atmospheric washes to create visual authority. The v3 direction inverts this: authority comes from the typography, the whitespace, and the quality of the content itself. The frame is a clean white card on a warm canvas. The design disappears; the content speaks.
+
+### Media Woven Into Narrative, Not Bolted On
+
+Media types (vignettes, audio, diagrams, chat) are not in separate tabs or side panels. They appear inline within the reading flow at moments where that media type teaches better than prose. A diagram appears where spatial relationships need to be seen. A vignette appears where watching movement teaches faster than reading description. A chat prompt appears where the reader might have questions.
+
+This follows the NYT interactive pattern: compression (narrow prose) and expansion (wide diagram, full-width scrollytelling) as a rhythm. The width changes ARE the section transitions.
+
+### Opinionated, Not Customizable
+
+The reader doesn't choose a "reading track" vs "listening track." The editorial flow is singular and opinionated. Within that flow, different media types serve different moments. The authoring team decides which chapter uses which media based on what the content demands. Some chapters are pure prose. Some are vignette-heavy. The toolbox is consistent; the composition is editorial.
+
+---
+
+## The Frame
+
+### Visual Frame: Paper + iyo + NYT
+
+Three reference sources, each contributing a specific quality:
+
+| Reference | Contribution |
+|-----------|--------------|
+| **XOR Paper UI** | White card on canvas, serif-dominant typography, hidden-by-default navigation, authority through restraint |
+| **iyo.ai** | Product-narrative polish, clean section entries, every element earns its place |
+| **NYT Interactives** | Media woven into reading rhythm, compression/expansion between narrow text and wide/full-width media, scrollytelling |
+
+### Navigation Frame: Chapter-Based
+
+The 13 sections are now 13 chapters, each its own view/route. No infinite scroll. The reader is on "Chapter 6: The Orchestrator." They navigate between chapters via the nav bar.
+
+**The nav bar** is persistent at the top. It shows the current chapter ("4 · The Kernel ☰"), expands the full TOC when tapped, and hosts audio playback controls on the right. The reader always knows where they are.
+
+### Column System
+
+| Width | Size | Usage |
+|-------|------|-------|
+| **Reading column** | ~650px | Default. Prose, inline code, small media. |
+| **Wide breakout** | ~1100px | Diagrams, tables, annotated illustrations. |
+| **Full-width** | Edge to edge | Hero moments, immersive scrollytelling, key vignettes. Rare (2-3 times total). |
+
+The reading column is the resting state. Breakouts are earned moments of expansion.
+
+---
+
+## The Content Model
+
+### 13 Chapters
+
+Each chapter has its own view/route. Each is composed from a toolbox of content blocks. The composition is editorial, declared per chapter in frontmatter.
+
+| Chapter | Title | Primary Content |
+|---------|-------|-----------------|
+| 1 | Introduction | Prose, overview |
+| 2 | Architecture Map | Diagram (interactive), prose |
+| 3 | Design Philosophy | Prose, principles |
+| 4 | The Kernel | Prose, diagram, code |
+| 5 | Module System | Prose, table, code, diagram |
+| 6 | The Orchestrator | Prose, diagram (scrollytelling candidate), code |
+| 7 | Tools vs Hooks | Prose, comparison layout, diagram, cascade visualization |
+| 8 | Sessions | Prose, timeline, table |
+| 9 | Bundles & Configuration | Prose, code, diagram |
+| 10 | Foundation Bridge | Prose, diagram, code |
+| 11 | Agents, Context, Recipes | Prose, tabs/sections |
+| 12 | Complete Picture | Prose, layer stack, diagram |
+| 13 | Appendix | Prose, reference |
+
+### The Toolbox of Content Blocks
+
+These are the available block types. Each chapter uses whatever combination serves its content. No fixed template.
+
+| Block Type | Width | Description | Status |
+|------------|-------|-------------|--------|
+| **Prose** | Reading | Serif-oriented editorial text. The default. | Ready |
+| **Diagram** | Wide or Full | SVG or interactive graph. Print-editorial style on light background. | Ready (needs new styling) |
+| **Table** | Wide | Clean horizontal-rule style. Headers in Inter 600. | Ready |
+| **Code** | Reading | Light gray background, monospace, syntax highlighted. | Ready |
+| **Vignette** | Wide or Full | 30-60 second narrated motion graphic. Plays inline. | **Stub** |
+| **Audio** | Nav bar | Chapter narration. Play/pause in the nav bar. | **Stub** |
+| **Chat prompt** | Reading | Inline invitation to ask questions. Expands to chat interface. | **Stub** |
+| **Scrollytelling** | Full | Sticky visual + scrolling text cards. For 1-2 climactic concepts. | Ready (needs implementation) |
+
+### Per-Chapter Frontmatter
+
+Each section file in `.design/sections/` has YAML frontmatter declaring which blocks the chapter uses, where they appear, and which are stubs:
+
+```yaml
+---
+title: "The Orchestrator"
+chapter: 6
+blocks:
+  - type: prose
+  - type: diagram
+    id: reasoning-loop
+    width: wide
+    placement: after-intro
+  - type: vignette
+    id: ooda-loop-explainer
+    width: full
+    placement: after-diagram
+    status: stub
+    rationale: "The 4-phase cycle animation would teach faster than text"
+  - type: audio
+    status: stub
+---
+```
+
+---
+
+## The Multimedia Pipeline (Designed, Not Built)
+
+### Audio Narration (Stub)
+
+Each chapter can have an audio version: a narrated reading adapted for the listening format. Generated via TTS (ElevenLabs, OpenAI TTS, or Google Cloud TTS) from the chapter's prose content, edited for conversational tone. Output: static MP3 per chapter. The nav bar's audio controls play the current chapter's narration.
+
+### Video Vignettes (Stub)
+
+A vignette is a 30-60 second narrated motion graphic explaining one concept. Not screen recordings. Not AI-generated video (Veo/Runway/etc. cannot produce clean diagrams or text). Instead: programmatic animation + TTS narration.
+
+**Pipeline:**
+1. LLM reads the chapter markdown
+2. Generates a narration script + animation code (Manim or Motion Canvas)
+3. ElevenLabs generates voiceover with word-level timestamps
+4. The animation framework renders video synced to narration
+5. Optional: Veo generates atmospheric B-roll composited as backgrounds
+6. Human reviews and tweaks (~15-30 min per 60s piece)
+7. Output: MP4 per vignette
+
+**Placement:** Determined by editorial scan of all 13 chapters for where watching movement teaches faster than reading description. Not every chapter needs a vignette.
+
+**Candidates (initial assessment):**
+- Chapter 6: The orchestrator's THINK→DECIDE→ACT→OBSERVE cycle (loop animation)
+- Chapter 5: Module mount lifecycle (sequence diagram animation)
+- Chapter 8: Session spawning tree (parent→child branching)
+- Chapter 7: The hook priority cascade (waterfall animation)
+
+### Chat / Q&A (Stub)
+
+Inline chat prompts at natural break points within chapters. When the reader engages, a chat interface expands inline. The LLM has the current chapter's content (plus surrounding context) as grounding material.
+
+**Two implementation options:**
+- **WebLLM** (browser-only): Gemma/Phi/Llama running entirely in-browser. No API key, no backend, works offline. Lower quality but zero infrastructure.
+- **API-backed** (Anthropic/OpenAI/Google): Higher quality, requires a key. Could be offered as an upgrade path.
+
+---
+
+## What Ships First (The Base)
+
+The base is the paper UI frame with the 13 chapters of masterclass content, navigable by chapter. The reading experience. Clean, authoritative, complete.
+
+### Base includes:
+- White card on warm canvas, single reading column (~650px)
+- Chapter-based navigation via nav bar with TOC
+- Each chapter is its own view/route
+- Content blocks: prose, diagrams, tables, code
+- The typography system from the paper UI
+- Compression/expansion rhythm for media blocks
+- Scrollytelling for 1-2 climactic concepts (if time permits)
+
+### Stubbed for later:
+- Vignette blocks: rendered as placeholder cards
+- Audio controls in nav: present but inactive
+- Chat prompts: present but non-functional
+- The generative pipeline (Manim + TTS + compositing)
+- WebLLM or API-backed chat
+
+The stubs are visible in the UI with clear "coming soon" treatment so the multi-modal architecture is evident even before the media is produced.
+
+---
+
+## Technology Stack
 
 ### Framework: Astro
 
-The masterclass is built as an **Astro project**. Rationale:
-
-- withamplifier.com is a **GitHub Pages site** — Astro generates static output natively
-- The masterclass is content-heavy, mostly static, with **islands of interactivity** (d3-graphviz, presentation mode, card sliders, scroll animations)
-- Astro's island architecture ships static HTML with JS hydrating only interactive components — perfect for content-first with selective interactivity
-- The `withAmp-v2` cinematic prototype already proved Astro works for the homepage direction
-- The existing `withamplifier` Next.js project migrates to Astro, with the masterclass as the first major section built in the new framework
-
-### Deployment
-
-Static output to GitHub Pages — same as today, no infrastructure changes.
-
-### Project Structure
-
-```
-/learn
-├── layout/
-│   ├── SidebarTOC          — persistent left sidebar, scroll-synced
-│   ├── TopNav              — mobile collapsed TOC + presentation mode trigger
-│   └── ProgressBar         — thin azure bar, top of viewport
-├── sections/
-│   ├── Section             — base wrapper (dark/grey background, entry animation)
-│   ├── ConceptualSection   — mode 1: generous spacing, atmospheric visual, serif-forward
-│   ├── TechnicalSection    — mode 2: structured density, numbered rows, diagrams
-│   └── InteractiveSection  — mode 3: fullscreen graph explorer, hands-on elements
-├── components/
-│   ├── GlassCard           — frosted card with per-card accent glow (collections only)
-│   ├── NumberedRow         — 01 / Label / Description with hairline divider
-│   ├── StickyStack         — sub-components that layer on scroll
-│   ├── InlineDiagram       — SVG diagram with scroll-triggered path drawing
-│   ├── FloatingVisual      — atmospheric/diagrammatic visual, no container
-│   ├── UpNextTeaser        — section transition element
-│   ├── CardSlider          — horizontal drag-scroll for parallel card collections
-│   └── PresentationMode    — existing 72-slide system, ported
-├── graph/
-│   ├── SimplifiedDiagram   — per-section inline diagrams (static SVG)
-│   └── FullExplorer        — d3-graphviz fullscreen interactive view
-├── scroll/
-│   ├── LenisProvider       — smooth scroll initialization
-│   ├── ScrollTrigger       — GSAP section entrance orchestration
-│   └── StickyController    — manages sticky-stack scroll behavior
-└── assets/
-    ├── atmospheric/        — generated concept visuals (mode 1)
-    ├── diagrams/           — explanatory SVG diagrams (mode 2)
-    └── tokens.css          — design tokens shared with withamplifier.com
-```
-
-### Shared Design System
-
-`tokens.css` is the bridge between homepage and masterclass:
-
-- Same typography families and scale
-- Same color tokens (charcoal palette, azure accent, cream text)
-- Same spacing scale (8px base)
-- Same glass treatment values (blur, opacity, border)
-- Same easing curves
-
-Both homepage and `/learn` import from the same token source. Homepage applies them cinematically. Masterclass applies them educationally.
-
-### Migration Path
-
-1. 13 sections of content migrate from single HTML into individual section components
-2. Content (text, structure) stays — container, navigation, and visual treatment change
-3. Presentation mode (72 slides) ports as its own component
-4. d3-graphviz integration ports into graph module
-5. Visual assets (atmospheric + diagrams) are a new production workstream
-6. withamplifier migrates from Next.js to Astro, with the masterclass as the first major section
-
----
-
-## Components
-
-### Navigation & Orientation System
-
-#### Persistent Sidebar TOC (Glasswing-Inspired)
-
-Replace the current dropdown TOC with a persistent left-sidebar TOC visible on desktop at all times:
-
-- **No border, no background, no box** — just floating text and a small indicator dot
-- **Active section highlighted** — current section gets brighter text and the dot blooms in (8px indicator that scales from `0.5→1.0` over 250ms). Inactive sections stay in muted gray.
-- **Scroll-synced via IntersectionObserver** — tracks position automatically as user scrolls
-- **Fades out at the hero, fades in when content begins** — `opacity:0` with `pointer-events:none` above the content area
-- **Clickable for random access** — every item is an anchor link with smooth scroll. This is the reference-mode navigation for returning users.
-- **Two-level hierarchy** — top-level shows 13 sections; sections with numbered sub-components (Kernel's 5 components, Module System's 6 types) show sub-items indented beneath when that section is active. Collapsed when not active, so it never overwhelms.
-- **Mobile/tablet:** collapses into top-nav dropdown WITH active state indicator (currently missing)
-
-#### Remove the Fake TOC
-
-The "WHAT THIS DOCUMENT COVERS" glass card in the introduction is removed entirely. Its content is redundant with the sidebar TOC, and its current form is a broken UX promise (it looks clickable, it isn't). The introduction section focuses on what Amplifier is — the navigation system handles wayfinding.
-
-#### Section Transitions
-
-At the end of each section, a lightweight "Up next" element shows the next section's name and a one-sentence teaser. Not a full-bleed interstitial — a subtle footer within the current section providing narrative continuity:
-
-> **Next: The Kernel** — Five components that do everything by providing nothing.
-
-Linear-journey users get a thread to follow. Random-access users (via TOC) never see it because they jump directly.
-
-#### Progress Indicators
-
-Two levels:
-
-- **Page-level:** thin progress bar at top of viewport (2px, azure accent color)
-- **Section-level:** within sections with numbered sub-components, a "3 / 5" indicator near the section heading showing progress through sub-items
-
-### Content Modes
-
-The masterclass contains three distinct types of information, each deserving different visual treatment and visual artifact register.
-
-#### Mode 1: Conceptual / Philosophical
-
-**Sections:** Introduction, Design Philosophy, Complete Picture
-
-The "why" sections — principles, mental models, big-picture thinking. Prose-heavy, essayistic.
-
-**Layout treatment:** More generous spacing, larger typography, fewer UI components. Lora serif headlines get room to breathe. Full-width text without competing elements. Closer to typographic confidence — the content carries itself, the design steps back.
-
-**Visual artifact register — Atmospheric:** Generated concept visuals that make you *feel* the idea. A visualization of "the center stays still so the edges can move fast." A spatial rendering of the six-layer stack. One strong visual per section, floating on the background without a containing box. These are produced visuals (nano-banana / concept art pipeline), not UI components.
-
-#### Mode 2: Technical / Structural
-
-**Sections:** The Kernel, Module System, Orchestrator, Tools vs Hooks, Sessions, Bundles, Foundation Bridge, Agents & Recipes
-
-The "what and how" sections — components, mechanisms, relationships, types.
-
-**Layout treatment:** Tighter spacing, more visual structure. Numbered rows for component breakdowns. Side-by-side comparisons. Inline diagrams. Space Grotesk monospace labels anchor the technical identity. Purpose-built layouts per content type.
-
-**Visual artifact register — Diagrammatic:** Clean, minimal, Throxy-style diagrams that prove mechanisms:
-
-- The orchestrator loop as a flow diagram: LLM → tool call → response → back to LLM
-- The 5 kernel components as a spatial relationship diagram showing what touches what
-- Tools vs Hooks as a side-by-side comparison showing the triggering difference (LLM-decided vs code-decided)
-- Module types as a structured visual showing the 6 types with their shapes/colors from the dot graph vocabulary
-- Session lifecycle as a timeline/flow
-
-Same color vocabulary as the dot graph. Inline with content at 50/50 or full-width. Scroll-triggered SVG path drawing for animated diagrams (paths wipe in as you scroll into view).
-
-#### Mode 3: Interactive / Orientational
-
-**Section:** Architecture Map (graph explorer)
-
-The "where am I" content — spatial understanding of the whole system.
-
-**Layout treatment:** The full d3-graphviz interactive graph is a reference companion, not a linear section. Available from the TOC at any time. Progressive simplified diagrams appear inline within each section (just the relevant sub-system), building toward the full picture.
-
-**Visual artifact register — Interactive:** Zoom, pan, click, explore.
-
-### Visual System
-
-#### Color System — Structured Dark
-
-Three background tones rotating through sections (IYO product page approach):
-
-| Tone | Hex Range | Use |
-|---|---|---|
-| Primary dark | `#242426` | Default canvas — most sections |
-| Secondary dark | `#3d3d40` | Rhythm variation — alternating technical sections |
-| Palette break | `#e0e1e6` | Pearl-grey, used sparingly (1-2 conceptual sections only) |
-
-Predominantly dark. The pearl-grey is a deliberate, rare punctuation mark — not an alternating pattern.
-
-- **Azure accent** (`#0082EB`) — precious, used only on TOC active indicator, interactive affordances, and key section labels
-- **Body text** — warm cream (`#E8E6DC` range) rather than pure white, for sustained reading comfort on dark
-- **Headlines** — bright white for contrast
-
-#### Typography
-
-Three families (shared with withamplifier.com homepage via `tokens.css`):
-
-| Family | Role | Application |
-|---|---|---|
-| **Lora** | Serif | Headlines and section titles |
-| **Inter** | Sans-serif | Body text and UI elements |
-| **Space Grotesk** | Monospace | Technical labels and code-adjacent content |
-
-Applied with IYO's information density discipline:
-
-- **Eyebrow → Headline → One short paragraph** per section opening. Never more than 3 sentences of body text before a visual break.
-- **Eyebrow label pattern:** small, dimmer text with bullet prefix (• THE KERNEL, • MODULE SYSTEM) establishing context before the big headline
-- **Viewport-fluid headline sizing** (vw-based scaling) for monumental presence on large screens
-
-#### Surface Language
-
-**Hairline dividers** (`1px`, `rgba(255,255,255,0.1)`) — the default for sequential/structured content. Numbered component breakdowns, spec-style rows, step-by-step explanations.
-
-**Glass cards** — reserved for **collections of parallel items only**, things that sit side-by-side inviting comparison:
-
-- **Treatment:** true frosted glass (`backdrop-filter: blur(15px)`, `rgba(33,33,33,0.35)` background, ~28px border-radius, hairline blue-tinted border at 10% opacity)
-- **Per-card accent glow** — a unique subtle color from the dot graph's existing vocabulary (providers = one color, tools = another, hooks = another). Not a different card background — same glass treatment, different glow.
-- **Cards float over textured dark backgrounds** so `backdrop-filter: blur` has visual material to work with. Plain dark + glass looks flat; atmospheric texture + glass looks premium.
-- **Use cases:** the 6 module types as a card collection, Tools vs Hooks as two comparison cards, agents in the Agents & Recipes section
-
-**No cards for prose** — conceptual content, explanatory text, and the narrative thread sit directly on the background.
-
-**Floating visuals** — diagrams and generated concept art float on the dark background with no containing box, no card, no border. The visual IS the surface.
-
-#### Spacing & Density
-
-Two densities matching content modes, same base spacing scale (8px grid), different multipliers:
-
-| Density | Content Mode | Character |
-|---|---|---|
-| Editorial | Conceptual sections | Generous margins, max-width constrained, single-column |
-| Structured | Technical sections | Tighter spacing, multi-column where needed (comparisons, card grids) |
-
-### Interaction Patterns
-
-#### Scroll System
-
-**Lenis smooth scroll** replaces native scrolling — same as IYO, same as withamplifier.com homepage. No visible scrollbars. Physical, weighted feel. This is one of the strongest "same family" signals between homepage and masterclass.
-
-**GSAP ScrollTrigger** for all content entrances:
-
-- **Section entry sequence:** Eyebrow fades in first → headline lands with slight translate-up → body text follows → visuals/cards stagger in. Every section announces itself in a choreographed sequence.
-- **Custom spring easing:** `cubic-bezier(.625,.05,0,1)` with subtle overshoot for element entrances. Nothing moves with CSS defaults.
-
-**Sticky-stack for sub-components:** Sections with numbered parallel items (Kernel's 5 components, Module System's 6 types) use sticky layering — each sub-item slides over the previous as you scroll, creating a "pages turning" feel.
-
-#### The Architecture Graph (Revised Approach)
-
-The current placement (section 2, before the reader has vocabulary) doesn't work. Revised:
-
-- **Inline simplified diagram at Architecture Map section** — a designed, legible illustration of the high-level layers (Kernel → Modules → Bundles → Apps). Not the full d3-graphviz graph. A diagram that teaches at a glance.
-- **Full interactive graph available from TOC at any time** — a dedicated "Architecture Explorer" entry in the sidebar that opens the fullscreen d3-graphviz view as a reference companion, accessible whenever the reader is ready for it.
-- **Progressive sub-diagrams within sections** — each technical section gets its own focused inline diagram of just the relevant sub-system. By Complete Picture, the reader has seen all the parts.
-
-#### Presentation Mode
-
-The existing 72-slide presentation mode with speaker notes is kept but made discoverable:
-
-- Clear label: **"Presentation Mode · 72 slides"** instead of an unlabeled gradient pill
-- Positioned in the top nav or as a persistent but unobtrusive element
-- Feature itself (slides, notes, keyboard navigation) remains unchanged
-
-#### Inline Diagrams
-
-Explanatory diagrams integrate as:
-
-- Inline with content — full-width or 50/50 split with explanatory text
-- Same color vocabulary as the dot graph — consistent visual language
-- Floating on the dark background without containing cards
-- Scroll-triggered SVG path drawing for animated diagrams (paths wipe in as you scroll into view)
-
----
-
-## Data Flow
-
-### Content Pipeline
-
-```
-Content (prose, structure)  →  Section Components  →  Astro Static Build  →  GitHub Pages
-                                     ↑
-Visual Assets (atmospheric + diagrams)
-                                     ↑
-Design Tokens (tokens.css shared with homepage)
-```
-
-Content is authored as section components within Astro. Each section component imports the shared design tokens and renders content using the appropriate content mode template (conceptual, technical, or interactive). Visual assets are produced separately and referenced by sections.
-
-### Scroll Data Flow
-
-```
-User Scroll  →  Lenis (smooth physics)  →  GSAP ScrollTrigger (entrance choreography)
-                                         →  IntersectionObserver (TOC sync)
-                                         →  StickyController (sub-component stacking)
-                                         →  ProgressBar (page-level position)
-```
-
-### Navigation Data Flow
-
-```
-Sidebar TOC click  →  smooth scroll to section anchor
-Section scroll     →  IntersectionObserver fires  →  TOC active state updates
-Sub-component scroll →  Section progress indicator updates ("3 / 5")
-Page scroll        →  Top progress bar width updates
-```
+Astro 6, stripped back from the v2 build. No React islands for particle effects. The frame is HTML + CSS + minimal JS for:
+- Chapter routing (Astro pages or client-side navigation)
+- TOC toggle and chapter indicator
+- Scroll-reveal animations (vanilla IntersectionObserver)
+- Scrollytelling (vanilla JS + CSS position:sticky)
+- Audio playback controls (native `<audio>` element)
+
+### What's Removed from v2:
+- React (ParticleSwarm.tsx, ScrollProvider.tsx)
+- GSAP + Lenis scroll engine
+- Particle swarm canvas
+- Atmospheric gradient washes
+- Glass card backdrop-filter effects
+- Dark mode backgrounds and the void/slate/parchment system
+
+### What's Preserved from v2:
+- Astro project structure
+- Self-hosted fonts (Lora, Inter, Space Grotesk)
+- CSS custom property token system (rewritten for new palette)
+- 13 section content files (`.design/sections/*.md`)
+
+### Future Additions (Not in Base):
+- Manim or Motion Canvas for vignette generation
+- ElevenLabs or similar for TTS
+- WebLLM for in-browser chat
+- Veo for atmospheric B-roll (optional)
 
 ---
 
 ## Content Structure
 
-The 13-section structure is settled. Content within sections is being refined in a separate workstream (per April 6 team meeting: reframing to "AI harness," reordering kernel components, removing language-specific references, etc.). The design system accommodates content changes without breaking.
-
-| # | Section | Content Mode | Background | Visual Artifacts |
-|---|---------|-------------|------------|------------------|
-| s1 | Introduction | Conceptual | Primary dark | Atmospheric concept visual |
-| s2 | Architecture Map | Interactive | Primary dark | Simplified layer diagram + full graph explorer |
-| s3 | Design Philosophy | Conceptual | Palette break (pearl-grey) | Atmospheric concept visual |
-| s4 | The Kernel | Technical | Primary dark | Component relationship diagram, sticky-stack |
-| s5 | Module System | Technical | Secondary dark | 6-type card collection, module shape diagram |
-| s6 | The Orchestrator | Technical | Primary dark | Orchestrator loop flow diagram |
-| s7 | Tools vs Hooks | Technical | Secondary dark | Side-by-side comparison diagram/cards |
-| s8 | Sessions | Technical | Primary dark | Session lifecycle timeline |
-| s9 | Bundles | Technical | Secondary dark | Bundle composition diagram |
-| s10 | Foundation Bridge | Technical | Primary dark | Bridge layer diagram |
-| s11 | Agents & Recipes | Technical | Secondary dark | Agent card collection |
-| s12 | Complete Picture | Conceptual | Palette break (pearl-grey) | Full architecture atmospheric visual |
-| s13 | Appendix | Technical | Primary dark | Reference diagrams |
+| # | Chapter | Content Type | Blocks Used |
+|---|---------|-------------|-------------|
+| 1 | Introduction | Conceptual | Prose |
+| 2 | Architecture Map | Orientational | Prose, Diagram (interactive) |
+| 3 | Design Philosophy | Conceptual | Prose |
+| 4 | The Kernel | Technical | Prose, Diagram, Code |
+| 5 | Module System | Technical | Prose, Table, Code, Diagram |
+| 6 | The Orchestrator | Technical | Prose, Diagram, Code, Vignette (stub), Scrollytelling |
+| 7 | Tools vs Hooks | Technical | Prose, Comparison, Diagram, Cascade |
+| 8 | Sessions | Technical | Prose, Timeline, Table |
+| 9 | Bundles & Configuration | Technical | Prose, Code, Diagram |
+| 10 | Foundation Bridge | Technical | Prose, Diagram, Code |
+| 11 | Agents, Context, Recipes | Technical | Prose, Tabs/Sections |
+| 12 | Complete Picture | Conceptual | Prose, Layer Stack, Diagram |
+| 13 | Appendix | Reference | Prose |
 
 ---
 
-## Error Handling
+## Error Handling & Graceful Degradation
 
-### Graceful Degradation
-
-- **Lenis fails to load:** native browser scroll takes over seamlessly — content is never blocked by scroll library
-- **GSAP fails:** content renders statically without entrance animations — all content visible by default with animations as enhancement
-- **d3-graphviz fails:** the simplified static SVG diagrams inline in sections still convey the architecture; the full explorer shows a fallback static image
-- **Glass card backdrop-filter unsupported:** cards fall back to solid dark backgrounds — functional but less premium
-- **Fonts fail to load:** system font stack fallback (sans-serif for Inter, serif for Lora, monospace for Space Grotesk)
-
-### Content Resilience
-
-The design system is built to accommodate content changes without breaking:
-
-- Section components accept content as props/slots, not hardcoded
-- Visual treatments are tied to content mode (conceptual/technical/interactive), not specific section content
-- Adding, removing, or reordering sections updates the TOC automatically via the section manifest
-- The sidebar TOC hierarchy is data-driven, not manually maintained
+- **JS disabled:** All content visible and readable. Scroll reveals don't fire (content is visible by default). TOC works via anchor links.
+- **Audio fails to load:** Nav bar audio controls hidden. Reading experience unaffected.
+- **Vignette fails to load:** Placeholder card remains. Caption describes what the vignette would show.
+- **Chat fails to initialize:** Chat prompt stays visible but input is disabled with "unavailable" message.
+- **Fonts fail to load:** System font stack fallback (Georgia for Lora, system sans for Inter, SF Mono for Space Grotesk).
 
 ---
 
 ## Testing Strategy
 
 ### Visual Verification
+- Each chapter renders cleanly at 375px, 768px, 1024px, 1440px
+- Card-on-canvas relationship is visible on desktop, card-as-page on mobile
+- Three column widths (reading, wide, full) work correctly
+- Typography hierarchy is clear: chapter titles > section headings > body > captions
+- Diagrams are legible on light backgrounds (the new editorial style)
 
-- Screenshot comparison against IYO product page reference for glass card fidelity, background tones, and typography hierarchy
-- Verify the three content modes are visually distinct when scrolling through the full page
-- Verify sidebar TOC tracks correctly across all 13 sections with sub-item expansion
-- Mobile responsive verification — TOC collapse, card reflow, readable typography at small viewports
+### Navigation Testing
+- Nav bar shows correct chapter on every route
+- TOC overlay opens, navigates, closes correctly
+- Chapter transitions are clean (no flash of unstyled content)
+- Audio controls (stubbed) are present and don't break layout
 
-### Interaction Testing
+### Accessibility Testing
+- All text passes WCAG AA contrast ratios
+- Focus indicators visible on keyboard navigation
+- Reduced motion preference disables all animations
+- Screen reader can navigate via heading hierarchy and landmarks
+- All images/diagrams have alt text
 
-- Lenis scroll behavior feels physical and weighted (not default browser scroll)
-- GSAP entrance animations fire at correct scroll positions and don't re-trigger on scroll back
-- Sticky-stack sections layer correctly and unstick on scroll-past
-- TOC click → smooth scroll lands at correct section with correct active state
-- Progress bar tracks page position accurately
-- Presentation mode launches correctly from the discoverable trigger
-
-### Cross-Browser / Performance
-
-- Static Astro build produces valid HTML/CSS/JS for GitHub Pages
-- Lighthouse performance score maintains acceptable threshold despite Lenis + GSAP
-- Core Web Vitals: LCP under 2.5s, CLS under 0.1 (critical for scroll-driven animations)
-- Verify glass card `backdrop-filter` renders correctly in Safari, Chrome, Firefox
-- Test with JS disabled — all content visible and readable (progressive enhancement)
-
-### Content Mode Coverage
-
-- Each of the three background tones renders with correct hex values and sufficient text contrast (WCAG AA minimum on both dark tones and palette break)
-- Atmospheric visuals display without containing boxes on conceptual sections
-- Diagrams render inline at correct sizes with scroll-triggered SVG path animation
-- Glass cards appear only for collection/comparison content, never for prose
-
----
-
-## Resolved Decisions
-
-1. **Visual asset production pipeline** → **Nano Banana.** Both atmospheric concept visuals (mode 1) and explanatory diagrams (mode 2) are generated using the nano-banana tool (Gemini VLM). Atmospheric visuals use nano-banana's generate operation with style prompts derived from the design system. Diagrams use a hybrid approach — nano-banana generation for initial compositions, with hand-refined SVG for precision where needed.
-
-2. **Harness builder interactive** → **Yes, future scope.** The Starlink-inspired "outfit your spaceship" interactive for explaining module composition is confirmed as a feature. It is not in the initial build but is part of the vision.
-
-3. **Presentation mode content sync** → **Yes, later workstream.** Presentation mode will sync with masterclass content, but this is a later workstream. Initial build focuses on the scroll experience. Presentation mode ports as-is and gets synced after the core experience is solid.
-
-4. **Mobile experience** → **Full treatment.** Mobile gets the full Lenis + GSAP + glass card experience — not a simplified version. Responsive design is a first-class concern, not a degraded fallback.
-
-5. **Migration scope** → **Learn (`/learn`) first.** The masterclass is built as the first Astro section. The homepage and other routes (`/stories`, etc.) migrate afterward, unless the team determines a full simultaneous pivot is feasible (reskinning existing pages to match the updated design system at the same time).
+### Performance
+- Static Astro build produces valid HTML/CSS/JS
+- No React bundle shipped (Astro renders to static HTML)
+- Core Web Vitals: LCP under 2.0s, CLS under 0.05
+- Total page weight under 500KB per chapter (excluding fonts)
 
 ---
 
 ## Reference Sites
 
-| Site | What We Took | URL |
-|---|---|---|
-| iyo.ai/iyo-one | **Primary visual direction** — structured charcoal, glass cards for collections, numbered rows, floating visuals, eyebrow→headline hierarchy, Lenis + GSAP | https://www.iyo.ai/iyo-one |
-| anthropic.com/glasswing | Sidebar TOC pattern — persistent, scroll-synced, structurally invisible, dot indicator animation | https://www.anthropic.com/glasswing |
-| mazehq.com | Scroll-triggered SVG drawing, dimensional particle reveals | https://mazehq.com/ |
-| throxy.com | Minimal inline diagrams — prove mechanisms, 50/50 layouts, controlled vocabulary | https://throxy.com/ |
-| jobyaviation.com | Content-mode shifting — cinematic vs structured based on content type | https://www.jobyaviation.com/ |
-| mantis.works | Typographic confidence, restraint as authority signal | https://www.mantis.works/ |
-| iyo.ai (homepage) | GPGPU particles, glass nav, full-viewport ownership, custom spring easings | https://www.iyo.ai/ |
+| Site | What We Took |
+|------|-------------|
+| XOR Paper UI | The frame: white card on canvas, serif-dominant typography, hidden-by-default navigation, authority through restraint |
+| iyo.ai | Product-narrative polish: clean section entries, every element earns its place, editorial density discipline |
+| NYT Interactives (Artemis II) | Media woven into reading: compression/expansion rhythm, scrollytelling, inline video, width changes as transitions |

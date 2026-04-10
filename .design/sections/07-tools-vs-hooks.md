@@ -1,3 +1,37 @@
+---
+title: "Tools vs Hooks"
+chapter: 7
+blocks:
+  - type: prose
+  - type: diagram
+    id: tools-vs-hooks-comparison
+    width: wide
+    placement: after-intro
+    rationale: "Side-by-side comparison showing the fundamental difference: AI-visible vs AI-invisible"
+  - type: diagram
+    id: inject-context-flow
+    width: wide
+    placement: after-code-quality-example
+    rationale: "The inject_context flow: event fires, hook processes, context injected, AI reads next turn"
+  - type: diagram
+    id: priority-cascade
+    width: reading
+    placement: after-cascade-description
+    rationale: "The 5-level priority cascade as a vertical waterfall with color-coded levels"
+  - type: vignette
+    id: hook-cascade-animation
+    width: wide
+    placement: after-cascade-diagram
+    status: stub
+    rationale: "Animating the cascade with events flowing through deny/askuser/inject/modify/continue would show how results resolve dynamically"
+  - type: chat
+    placement: end-of-chapter
+    status: stub
+    prompt: "Not sure whether something should be a tool or a hook? Ask here."
+  - type: audio
+    status: stub
+---
+
 # Section 7: Tools vs Hooks
 
 ## Tools are capabilities the AI controls. Hooks control the AI without it knowing.

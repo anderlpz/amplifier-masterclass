@@ -1,3 +1,22 @@
+---
+title: "The Foundation Bridge"
+chapter: 10
+blocks:
+  - type: prose
+  - type: diagram
+    id: preparation-pipeline
+    width: wide
+    placement: after-pipeline-description
+    rationale: "The 8-step pipeline from bundle text file to running session"
+  - type: diagram
+    id: two-callbacks
+    width: wide
+    placement: after-callback-channels
+    rationale: "System Prompt Factory and BundleModuleResolver as two persistent callback channels between Foundation and Kernel"
+  - type: audio
+    status: stub
+---
+
 # Section 10: The Foundation Bridge
 
 ## Foundation is how we use the kernel. It is not the only way.

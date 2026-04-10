@@ -587,3 +587,63 @@ A specific blocklist, drawn from the user's feedback on previous attempts.
 7. **No LEGO metaphor overextension.** One mention is fine ("modules compose like LEGO bricks"). Threading it through every section as "types of bricks" and "the baseplate" is too cute.
 
 8. **No equal-weight treatment.** The hook priority cascade gets a visual waterfall. The cleanup function order gets a sentence. Weight reflects importance.
+
+---
+
+## Part 6: Multi-Modal Content Guidance
+
+The v3 masterclass introduces multiple media modalities beyond prose. The voice, tone, and editorial principles from Parts 1-5 apply to ALL modalities, not just written text. This section provides guidance for each new format.
+
+### Vignette Scripts (Video Narration)
+
+Vignettes are 30-60 second narrated motion graphics that animate a single concept. The narration script is the voiceover that accompanies the animation.
+
+**Voice:** The same "best professor you ever had" voice from the prose. Slightly more conversational than the written version, because audio naturally requires shorter sentences and more direct address. But never casual, never breathless, never "hey guys."
+
+**Approach:** Inductive, always. Show the animation first, then name what the viewer is seeing. "Watch what happens when a message arrives. The Orchestrator fetches context, calls the provider, checks for tool calls. That cycle repeats until a final answer. This is the reasoning loop."
+
+**Length:** 60-120 words per 30-second segment. Shorter sentences than prose. Pauses are part of the script: write "[pause]" where the animation needs a beat to land before the narration continues.
+
+**What vignette scripts are NOT:**
+- Not a reading of the chapter text. The script is written specifically for the visual medium.
+- Not a summary. The vignette explains ONE concept that benefits from animation, not the whole chapter.
+- Not excited. No "amazing" or "incredible." The animation is the hook, not the narrator's enthusiasm.
+
+### Chat Prompt Copy
+
+Chat prompts appear inline at natural break points, inviting the reader to ask questions about the chapter. The copy for these prompts should feel like a professor checking in after explaining something complex.
+
+**Examples of good chat prompts:**
+- "Have a question about the priority cascade?"
+- "Want to see how the mount contract works with a different module type?"
+- "Not sure how hooks and tools differ? Ask here."
+
+**Examples of bad chat prompts:**
+- "Ask me anything!" (too broad, no signal about what's useful to ask)
+- "Test your knowledge!" (this is a quiz, not a conversation)
+- "Ready to learn more?" (condescending)
+
+**Placement:** After a complex concept, at the end of a chapter, or after a vignette/diagram where the reader might have questions. Not after every section. Not more than 1-2 per chapter.
+
+### Audio Narration (Chapter Audio)
+
+Each chapter can be narrated as audio. The audio version is NOT a direct reading of the prose. It is an adaptation that accounts for the fact that listeners can't see diagrams, code blocks, or tables.
+
+**Adaptations for audio:**
+- Replace "as shown in the diagram below" with a verbal description of what the diagram shows
+- Read code examples only when they're short (1-3 lines). For longer blocks, describe what the code does.
+- Add brief verbal signposts: "Now let's look at..." or "The next piece is..." where the prose uses visual breaks (headers, whitespace).
+- Simplify tables into verbal lists: "There are six module types. The first is the Orchestrator, which drives the conversation..."
+
+**Voice:** Same "best professor" voice. Slightly warmer than the prose because audio is intimate. The reader is in the listener's ears.
+
+### The Inductive Principle Across All Modalities
+
+The inductive principle (start with the concrete, then name the concept) applies everywhere:
+
+- **Prose:** Show the example, then name the principle.
+- **Vignettes:** Show the animation, then narrate what the viewer is seeing.
+- **Audio:** Describe the concrete scenario, then name the architectural concept.
+- **Chat:** When answering questions, give the specific answer first, then the general principle.
+
+No modality starts with an abstraction and works toward an example. Every modality starts with something concrete.
