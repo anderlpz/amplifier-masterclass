@@ -34,10 +34,14 @@ const { title = 'Amplifier Masterclass', chapterNumber, chapterTitle } = Astro.p
 </html>
 
 <style>
+  :root {
+    --nav-height: 52px;
+  }
+
   .chapter-card {
     max-width: var(--measure-container);
     margin-inline: auto;
-    margin-top: calc(52px + var(--space-8));
+    margin-top: calc(var(--nav-height) + var(--space-8));
     margin-bottom: var(--space-16);
     background: var(--bg-card);
     border-radius: var(--radius-md);
@@ -52,12 +56,12 @@ const { title = 'Amplifier Masterclass', chapterNumber, chapterTitle } = Astro.p
 
   @media (max-width: 768px) {
     .chapter-card {
-      margin-top: 52px;
+      margin-top: var(--nav-height);
       margin-bottom: 0;
       border-radius: 0;
       box-shadow: none;
       padding: var(--space-12) var(--container-pad);
-      min-height: calc(100vh - 52px);
+      min-height: calc(100vh - var(--nav-height));
     }
   }
 </style>

@@ -119,8 +119,10 @@ check ".chapter-card uses var(--measure-container)" \
   "$(grep -q 'var(--measure-container)' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 check ".chapter-card has margin-inline: auto" \
   "$(grep -q 'margin-inline: auto' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
-check ".chapter-card margin-top uses calc(52px + space-8)" \
-  "$(grep -q 'calc(52px' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
+check "--nav-height custom property defined" \
+  "$(grep -q '\-\-nav-height: 52px' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
+check ".chapter-card margin-top uses calc(var(--nav-height) + space-8)" \
+  "$(grep -q 'calc(var(--nav-height)' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 check ".chapter-card uses var(--bg-card)" \
   "$(grep -q 'var(--bg-card)' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 check ".chapter-card uses var(--radius-md)" \
@@ -137,14 +139,16 @@ echo ""
 echo "--- Mobile Responsive (768px) ---"
 check "mobile @media max-width: 768px present" \
   "$(grep -q '@media.*max-width.*768px\|768px.*max-width' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
-check "mobile: margin-top: 52px (no calc)" \
-  "$(grep -q 'margin-top: 52px' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
+check "mobile: margin-top: var(--nav-height)" \
+  "$(grep -q 'margin-top: var(--nav-height)' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
+check "mobile: margin-bottom: 0" \
+  "$(grep -q 'margin-bottom: 0' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 check "mobile: no border-radius (border-radius: 0)" \
   "$(grep -q 'border-radius: 0' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 check "mobile: no box-shadow (box-shadow: none)" \
   "$(grep -q 'box-shadow: none' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
-check "mobile: min-height calc(100vh - 52px)" \
-  "$(grep -q 'calc(100vh - 52px)' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
+check "mobile: min-height calc(100vh - var(--nav-height))" \
+  "$(grep -q 'calc(100vh - var(--nav-height))' "$NEW_FILE" 2>/dev/null && echo true || echo false)"
 
 echo ""
 if [ $FAIL -eq 0 ]; then
