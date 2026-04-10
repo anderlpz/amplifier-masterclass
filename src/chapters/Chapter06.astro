@@ -1,14 +1,81 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import Diagram from '../components/blocks/Diagram.astro';
+import VignettePlaceholder from '../components/blocks/VignettePlaceholder.astro';
+import ChatPlaceholder from '../components/blocks/ChatPlaceholder.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="One module gets live access to the full system at runtime."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <h2>The privilege gap</h2>
+
+  <p>
+    Every module in Amplifier receives the Coordinator (the registry where
+    modules are stored) once: at mount time. The module uses it to register
+    itself, and then the Coordinator reference is gone.
+  </p>
+
+  <p>
+    The Orchestrator is the exception. It receives the Coordinator again, at
+    runtime, <em>every time it's called.</em> This means the Orchestrator can,
+    at any moment during execution, reach into the registry and access any
+    module: the Context Manager, every Provider, every Tool, every Hook Handler.
+  </p>
+
+  <p>
+    No other module can do this. A Provider can't look up which Tools are
+    available. A Tool can't check which Provider is being used. Only the
+    Orchestrator has a live connection to the full system at runtime. This is
+    by design, not by accident.
+  </p>
 </Prose>
+
+<Diagram
+  src="/diagrams/reasoning-loop.svg"
+  width="wide"
+  alt="The OODA loop: Think, Act, Observe, Decide — with the Orchestrator at center"
+  caption="The OODA loop: THINK → ACT → OBSERVE → DECIDE, cycling with the Orchestrator at center."
+/>
+
+<Prose>
+  <h2>The loop lives outside the kernel</h2>
+
+  <p>
+    The agent loop — the "think, act, observe, repeat" cycle — is not in the
+    kernel. It lives in an Orchestrator module. The Orchestrator decides what
+    context the AI needs, which provider handles each request, how tool calls
+    are handled, and when to stop.
+  </p>
+
+  <p>
+    A different Orchestrator module could implement a completely different
+    strategy: parallel provider calls, multi-step planning, debate between
+    models. The kernel would not change.
+  </p>
+
+  <p>
+    At the end of every turn, the Orchestrator returns a <strong>plain string</strong>.
+    Rich data — token usage, tool history, thinking blocks — exits through hook
+    events. The string is the public response; hook events are the telemetry.
+    Add instruments without changing the engine.
+  </p>
+</Prose>
+
+<VignettePlaceholder
+  width="wide"
+  rationale="The 4-phase cycle is hard to grasp from text alone. Animation of the loop with each phase lighting up and data flowing would teach faster"
+/>
+
+<ChatPlaceholder
+  prompt="Have a question about how the orchestrator drives the agent loop?"
+/>
