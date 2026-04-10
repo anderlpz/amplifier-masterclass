@@ -1,24 +1,5 @@
 ---
-/*
- * MasterclassLayout.astro — Root layout for the Amplifier Masterclass
- *
- * Composes the full-page experience:
- *   ProgressBar  — fixed top, highest z-index, azure fill tracking scroll
- *   TopNav       — fixed top, glass container, section label
- *   SidebarTOC   — fixed left, glass container, scroll-tracked TOC
- *   ScrollProvider — Lenis smooth scroll context
- *   <main>       — full-width scroll container for the 13 sections
- *
- * Content offset (sidebar) is handled by each Section.astro component,
- * not by this layout wrapper. This lets the section backgrounds span
- * full viewport width while text content stays properly offset.
- */
 import '../styles/global.css';
-import ScrollProvider from '../components/scroll/ScrollProvider';
-import ParticleSwarm from '../components/effects/ParticleSwarm';
-import SidebarTOC from '../components/navigation/SidebarTOC.astro';
-import ProgressBar from '../components/navigation/ProgressBar.astro';
-import TopNav from '../components/navigation/TopNav.astro';
 
 interface Props {
   title?: string;
@@ -38,39 +19,6 @@ const { title = 'Amplifier Masterclass' } = Astro.props;
   <link rel="icon" type="image/png" sizes="192x192" href={`${import.meta.env.BASE_URL}icon-192.png`} />
 </head>
 <body>
-  <!--
-    Layer 0 — Atmospheric Ground
-    Fixed canvas behind everything. The particle swarm lives here.
-    position: fixed, z-index: 0, pointer-events: none.
-    Vanishes on parchment sections (s3, s12). Evolves per section as reader scrolls.
-  -->
-  <ParticleSwarm client:only="react" />
-
-  <!--
-    Layer 2 — Instruments
-    Fixed UI chrome. Float above content, never compete with it.
-  -->
-  <ProgressBar />
-  <TopNav />
-  <SidebarTOC />
-
-  <!--
-    Layer 1 — Content
-    Full-width scroll container.
-    Each section handles its own sidebar offset and content constraints.
-
-    ScrollProvider is mounted as a standalone side-effect (no children) so that
-    <main> is rendered directly by Astro — server-side, in the live DOM at parse
-    time. This is critical: with client:only="react", any children passed to a
-    React island are serialized into a <template> and are NOT in the live DOM
-    until React hydrates. That breaks every IntersectionObserver and scroll
-    listener (BlurReveal, TopNav, SidebarTOC) because they query the DOM in
-    deferred module scripts that run before React has a chance to hydrate.
-
-    Lenis (inside ScrollProvider) operates on window — it does not need to wrap
-    the content to function correctly.
-  -->
-  <ScrollProvider client:only="react" />
   <main class="mc-main">
     <slot />
   </main>
@@ -78,18 +26,8 @@ const { title = 'Amplifier Masterclass' } = Astro.props;
 </html>
 
 <style>
-  /*
-   * mc-main is intentionally full-width with no horizontal padding.
-   * Each Section.astro component applies padding-left to offset
-   * content for the sidebar TOC on desktop (≥1024px).
-   * This keeps section backgrounds flush to viewport edges.
-   */
   .mc-main {
     min-height: 100vh;
     width: 100%;
   }
 </style>
-
-<script>
-  import '../scripts/scroll-animations';
-</script>
