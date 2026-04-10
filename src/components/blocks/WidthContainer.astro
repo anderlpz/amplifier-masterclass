@@ -1,0 +1,13 @@
+---
+interface Props {
+  width?: 'reading' | 'wide' | 'full';
+  class?: string;
+}
+
+const { width = 'reading', class: className } = Astro.props;
+const widthClass = `width-${width}`;
+---
+
+<div class:list={[widthClass, className]}>
+  <slot />
+</div>

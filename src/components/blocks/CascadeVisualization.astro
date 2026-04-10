@@ -1,0 +1,128 @@
+---
+const levels = [
+  {
+    priority: 1,
+    action: 'Deny',
+    colorVar: '--cascade-deny',
+    description:
+      'Short-circuits immediately. No further handlers execute. Fail-closed security posture.',
+  },
+  {
+    priority: 2,
+    action: 'AskUser',
+    colorVar: '--cascade-ask-user',
+    description: 'Pauses for human decision. First one wins. Cannot merge approvals.',
+  },
+  {
+    priority: 3,
+    action: 'InjectContext',
+    colorVar: '--cascade-inject',
+    description:
+      'Accumulated across handlers, merged. The AI reads injected context on its next turn.',
+  },
+  {
+    priority: 4,
+    action: 'Modify',
+    colorVar: '--cascade-modify',
+    description:
+      'Chains data through handlers. Each sees modified data from the previous handler.',
+  },
+  {
+    priority: 5,
+    action: 'Continue',
+    colorVar: '--cascade-continue',
+    description: 'Default. No-op. Let it pass.',
+  },
+];
+---
+
+<div class="cascade width-wide">
+  <p class="cascade-heading">Hook Action Priority Cascade</p>
+  <ul class="cascade-list">
+    {levels.map((level) => (
+      <li
+        class="cascade-row"
+        style={`--cascade-color: var(${level.colorVar});`}
+      >
+        <span class="cascade-priority">{level.priority}</span>
+        <div class="cascade-content">
+          <span class="cascade-action">{level.action}</span>
+          <span class="cascade-description">{level.description}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  .cascade {
+    margin-bottom: var(--space-12);
+  }
+
+  /* ── Heading ───────────────────────────────────────────────────────────── */
+  .cascade-heading {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+    max-width: none;
+  }
+
+  /* ── List ──────────────────────────────────────────────────────────────── */
+  .cascade-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ── Row ───────────────────────────────────────────────────────────────── */
+  .cascade-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-6);
+    background: var(--bg-muted);
+    border-left: 4px solid var(--cascade-color);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  /* ── Priority number ───────────────────────────────────────────────────── */
+  .cascade-priority {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--cascade-color);
+    min-width: 1.5em;
+    flex-shrink: 0;
+  }
+
+  /* ── Content block ─────────────────────────────────────────────────────── */
+  .cascade-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  /* ── Action name ───────────────────────────────────────────────────────── */
+  .cascade-action {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--cascade-color);
+  }
+
+  /* ── Description ───────────────────────────────────────────────────────── */
+  .cascade-description {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>

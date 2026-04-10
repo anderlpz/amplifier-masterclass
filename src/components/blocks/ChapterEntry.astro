@@ -1,0 +1,44 @@
+---
+interface Props {
+  chapterNumber: number;
+  title: string;
+  lead: string;
+}
+
+const { chapterNumber, title, lead } = Astro.props;
+---
+
+<header class="chapter-entry width-reading">
+  <p class="chapter-entry__eyebrow">Chapter {chapterNumber}</p>
+  <h1 class="chapter-entry__title">{title}</h1>
+  <p class="chapter-entry__lead">{lead}</p>
+</header>
+
+<style>
+  .chapter-entry {
+    margin-bottom: var(--space-16);
+  }
+
+  .chapter-entry__eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+    max-width: none;
+  }
+
+  .chapter-entry__title {
+    margin-bottom: var(--space-6);
+  }
+
+  .chapter-entry__lead {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 55ch;
+  }
+</style>

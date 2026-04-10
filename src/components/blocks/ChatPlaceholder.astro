@@ -1,0 +1,78 @@
+---
+interface Props {
+  prompt?: string;
+}
+
+const { prompt = 'Have a question about this chapter?' } = Astro.props;
+---
+
+<div class="chat-placeholder width-reading">
+  <div class="chat-card">
+    <p class="chat-prompt">{prompt}</p>
+    <div class="chat-input-row">
+      <input
+        class="chat-input"
+        type="text"
+        placeholder="Ask a question..."
+        disabled
+        aria-disabled="true"
+      />
+      <span class="chat-badge">Coming soon</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  .chat-placeholder {
+    margin-bottom: var(--space-12);
+  }
+
+  /* ── Card ──────────────────────────────────────────────────────────────── */
+  .chat-card {
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* ── Prompt text ───────────────────────────────────────────────────────── */
+  .chat-prompt {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Input row ─────────────────────────────────────────────────────────── */
+  .chat-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* ── Input element ─────────────────────────────────────────────────────── */
+  .chat-input {
+    flex: 1;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* ── "Coming soon" badge ───────────────────────────────────────────────── */
+  .chat-badge {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+    opacity: 0.6;
+  }
+</style>

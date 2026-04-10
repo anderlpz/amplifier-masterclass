@@ -1,0 +1,84 @@
+---
+interface Props {
+  rationale?: string;
+  width?: 'wide' | 'full';
+}
+
+const { rationale, width = 'wide' } = Astro.props;
+---
+
+<div class:list={['vignette-placeholder', `width-${width}`]}>
+  <div class="vignette-frame">
+    <div class="vignette-content">
+      <span class="vignette-icon" aria-hidden="true">▶</span>
+      <span class="vignette-label">Video explainer</span>
+      <span class="vignette-badge">Coming soon</span>
+    </div>
+  </div>
+  {rationale && (
+    <p class="vignette-rationale">{rationale}</p>
+  )}
+</div>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────────── */
+  .vignette-placeholder {
+    margin-bottom: var(--space-12);
+  }
+
+  /* ── Frame ──────────────────────────────────────────────────────────────────── */
+  .vignette-frame {
+    background: var(--bg-muted);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Content ─────────────────────────────────────────────────────────────────── */
+  .vignette-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  /* ── Play icon ───────────────────────────────────────────────────────────────── */
+  .vignette-icon {
+    font-size: 2rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+    line-height: 1;
+  }
+
+  /* ── "Video explainer" label ─────────────────────────────────────────────────── */
+  .vignette-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  /* ── "Coming soon" badge ─────────────────────────────────────────────────────── */
+  .vignette-badge {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  /* ── Optional rationale ──────────────────────────────────────────────────────── */
+  .vignette-rationale {
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-style: italic;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+</style>

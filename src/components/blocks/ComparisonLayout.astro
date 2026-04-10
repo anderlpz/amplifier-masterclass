@@ -1,0 +1,107 @@
+---
+interface Props {
+  leftTitle?: string;
+  rightTitle?: string;
+}
+
+const { leftTitle = 'Tools', rightTitle = 'Hooks' } = Astro.props;
+---
+
+<div class="comparison width-wide">
+  <div class="col col-tools">
+    <p class="col-heading tools-heading">{leftTitle}</p>
+    <div class="col-body">
+      <slot name="tools" />
+    </div>
+  </div>
+  <div class="col col-hooks">
+    <p class="col-heading hooks-heading">{rightTitle}</p>
+    <div class="col-body">
+      <slot name="hooks" />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+  }
+
+  /* ── Columns (shared base) ─────────────────────────────────────────────── */
+  .col {
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    border-top: 3px solid;
+  }
+
+  /* ── Tools column ──────────────────────────────────────────────────────── */
+  .col-tools {
+    background: var(--color-tools-bg);
+    border-color: var(--color-tools-border);
+  }
+
+  /* ── Hooks column ──────────────────────────────────────────────────────── */
+  .col-hooks {
+    background: var(--color-hooks-bg);
+    border-color: var(--color-hooks-border);
+  }
+
+  /* ── Column headings ───────────────────────────────────────────────────── */
+  .col-heading {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-4);
+  }
+
+  .tools-heading {
+    color: var(--color-tools-text);
+  }
+
+  .hooks-heading {
+    color: var(--color-hooks-text);
+  }
+
+  /* ── Body ──────────────────────────────────────────────────────────────── */
+  .col-body {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .col-body :global(p) {
+    margin-bottom: var(--space-3);
+    max-width: none;
+  }
+
+  .col-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .col-body :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .col-body :global(ul) {
+    padding-left: 1.25em;
+    margin-bottom: var(--space-3);
+  }
+
+  .col-body :global(li) {
+    margin-bottom: var(--space-1);
+  }
+
+  /* ── Mobile ────────────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .comparison {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

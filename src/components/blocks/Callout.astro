@@ -1,0 +1,61 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<aside class="callout width-reading" role="note">
+  {label && <p class="callout-label">{label}</p>}
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  /* ── Container ─────────────────────────────────────────────────────────────── */
+  .callout {
+    background: var(--bg-muted);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: var(--space-6) var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  /* ── Optional label ────────────────────────────────────────────────────────── */
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: var(--space-3);
+    max-width: none;
+  }
+
+  /* ── Body text ─────────────────────────────────────────────────────────────── */
+  .callout-body {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .callout-body :global(p) {
+    max-width: 55ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .callout-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .callout-body :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-style: normal;
+  }
+</style>
