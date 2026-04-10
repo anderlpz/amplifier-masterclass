@@ -9,13 +9,13 @@ const { leftTitle = 'Tools', rightTitle = 'Hooks' } = Astro.props;
 
 <div class="comparison width-wide">
   <div class="col col-tools">
-    <p class="col-heading tools-heading">{leftTitle}</p>
+    <h3 class="col-heading tools-heading">{leftTitle}</h3>
     <div class="col-body">
       <slot name="tools" />
     </div>
   </div>
   <div class="col col-hooks">
-    <p class="col-heading hooks-heading">{rightTitle}</p>
+    <h3 class="col-heading hooks-heading">{rightTitle}</h3>
     <div class="col-body">
       <slot name="hooks" />
     </div>

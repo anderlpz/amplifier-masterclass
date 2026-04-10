@@ -6,3 +6,7 @@ dist/
 # Internal config and session artifacts
 .amplifier/
 .scratch/
+
+# Ad-hoc TDD shell scripts from pre-node:test era (tasks 1–6)
+# Superseded by src/components/blocks/__tests__/ and src/scripts/__tests__/
+test-task*.sh
