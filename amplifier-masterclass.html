@@ -26,6 +26,22 @@
       --positive: #3D7A4A;
       --caution: #8A6B3E;
 
+      /* ── Semantic layer colors ─────────────────────────────────────── */
+      --layer-kernel:           #9B7B3E;   /* Warm amber  — the core */
+      --layer-kernel-soft:      #F5F0E4;   /* Kernel background fill */
+      --layer-modules:          #3E7D8A;   /* Teal        — pluggable capabilities */
+      --layer-modules-soft:     #E4F0F2;   /* Modules background fill */
+      --layer-bundles:          #5C6B9E;   /* Muted indigo — configuration */
+      --layer-bundles-soft:     #ECEEF5;   /* Bundles background fill */
+      --layer-foundation:       #5A7D5A;   /* Sage green  — the bridge */
+      --layer-foundation-soft:  #E8F0E8;   /* Foundation background fill */
+      --layer-boundary:         #8A5A4A;   /* Warm coral  — cross-cutting */
+      --layer-boundary-soft:    #F2EAE6;   /* Boundary background fill */
+      --layer-apps:             #7B6B8A;   /* Muted purple — applications */
+      --layer-apps-soft:        #F0ECF2;   /* Apps background fill */
+      --layer-ecosystem:        #8A7B8A;   /* Dusty mauve — community */
+      --layer-ecosystem-soft:   #F2EEF2;   /* Ecosystem background fill */
+
       --font-heading: 'Inter', system-ui, sans-serif;
       --font-body: 'Source Serif 4', Georgia, serif;
       --font-code: 'JetBrains Mono', 'SF Mono', monospace;
@@ -413,17 +429,8 @@
       margin-top: 12px;
     }
 
-    .diagram .layer-inner {
-      background: var(--surface-recessed);
-    }
-
-    .diagram .layer-mid {
-      background: var(--surface);
-    }
-
-    .diagram .layer-outer {
-      background: var(--bg);
-    }
+    /* .layer-inner / .layer-mid / .layer-outer backgrounds removed —
+       semantic colours are now driven by data-layer + .revealed (see below). */
 
     /* Architecture split diagram */
     .arch-diagram {
@@ -686,18 +693,21 @@
       transition: opacity 400ms ease-in-out;
     }
 
-    /* Revealed: restore border */
-    .diagram .layer[data-layer].revealed {
-      border-color: var(--border);
-    }
+    /* Revealed: per-layer semantic background + border colour */
+    .diagram .layer[data-layer="1"].revealed { background-color: var(--layer-kernel-soft);     border-color: var(--layer-kernel); }
+    .diagram .layer[data-layer="2"].revealed { background-color: var(--layer-modules-soft);    border-color: var(--layer-modules); }
+    .diagram .layer[data-layer="3"].revealed { background-color: var(--layer-bundles-soft);    border-color: var(--layer-bundles); }
+    .diagram .layer[data-layer="4"].revealed { background-color: var(--layer-foundation-soft); border-color: var(--layer-foundation); }
+    .diagram .layer[data-layer="5"].revealed { background-color: var(--layer-apps-soft);       border-color: var(--layer-apps); }
+    .diagram .layer[data-layer="6"].revealed { background-color: var(--layer-ecosystem-soft);  border-color: var(--layer-ecosystem); }
 
-    /* Revealed: restore each layer's correct background colour */
-    .diagram .layer[data-layer="1"].revealed { background-color: var(--surface-recessed); }
-    .diagram .layer[data-layer="2"].revealed { background-color: var(--surface); }
-    .diagram .layer[data-layer="3"].revealed { background-color: var(--surface); }
-    .diagram .layer[data-layer="4"].revealed { background-color: var(--surface); }
-    .diagram .layer[data-layer="5"].revealed { background-color: var(--surface); }
-    .diagram .layer[data-layer="6"].revealed { background-color: var(--bg); }
+    /* Revealed: layer label uses semantic colour */
+    .diagram .layer[data-layer="1"].revealed > .layer-label { color: var(--layer-kernel); }
+    .diagram .layer[data-layer="2"].revealed > .layer-label { color: var(--layer-modules); }
+    .diagram .layer[data-layer="3"].revealed > .layer-label { color: var(--layer-bundles); }
+    .diagram .layer[data-layer="4"].revealed > .layer-label { color: var(--layer-foundation); }
+    .diagram .layer[data-layer="5"].revealed > .layer-label { color: var(--layer-apps); }
+    .diagram .layer[data-layer="6"].revealed > .layer-label { color: var(--layer-ecosystem); }
 
     /* Revealed: fade in the text */
     .diagram .layer[data-layer].revealed > .layer-label,
@@ -717,6 +727,68 @@
       display: block;
       overflow: visible;
     }
+
+    /* ── Color legend ──────────────────────────────────────────────────── */
+
+    .color-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin: 16px 0 32px;
+      font-family: var(--font-heading);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-item::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: var(--lc);
+      flex-shrink: 0;
+    }
+
+    /* ── Semantic callout variants ─────────────────────────────────────── */
+
+    .callout[data-layer="kernel"]     { border-left-color: var(--layer-kernel);     background: var(--layer-kernel-soft); }
+    .callout[data-layer="modules"]    { border-left-color: var(--layer-modules);    background: var(--layer-modules-soft); }
+    .callout[data-layer="bundles"]    { border-left-color: var(--layer-bundles);    background: var(--layer-bundles-soft); }
+    .callout[data-layer="foundation"] { border-left-color: var(--layer-foundation); background: var(--layer-foundation-soft); }
+    .callout[data-layer="boundary"]   { border-left-color: var(--layer-boundary);   background: var(--layer-boundary-soft); }
+
+    /* ── Semantic feature-quote variants ──────────────────────────────── */
+
+    .feature-quote[data-layer="kernel"]     { border-left-color: var(--layer-kernel); }
+    .feature-quote[data-layer="modules"]    { border-left-color: var(--layer-modules); }
+    .feature-quote[data-layer="bundles"]    { border-left-color: var(--layer-bundles); }
+    .feature-quote[data-layer="foundation"] { border-left-color: var(--layer-foundation); }
+    .feature-quote[data-layer="boundary"]   { border-left-color: var(--layer-boundary); }
+
+    /* ── Semantic code block accents ───────────────────────────────────── */
+
+    pre[data-layer="kernel"]  { border-left: 3px solid var(--layer-kernel); }
+    pre[data-layer="modules"] { border-left: 3px solid var(--layer-modules); }
+    pre[data-layer="bundles"] { border-left: 3px solid var(--layer-bundles); }
+
+    /* ── Semantic arch-diagram accents ─────────────────────────────────── */
+
+    .arch-diagram[data-layer="modules"] { border-top: 3px solid var(--layer-modules); }
+    .arch-diagram[data-layer="kernel"]  { border-top: 3px solid var(--layer-kernel); }
+
+    /* ── Semantic table-wrapper accents ────────────────────────────────── */
+
+    .table-wrapper[data-layer="kernel"]     { border-top: 3px solid var(--layer-kernel); }
+    .table-wrapper[data-layer="modules"]    { border-top: 3px solid var(--layer-modules); }
+    .table-wrapper[data-layer="bundles"]    { border-top: 3px solid var(--layer-bundles); }
+    .table-wrapper[data-layer="boundary"]   { border-top: 3px solid var(--layer-boundary); }
   </style>
 </head>
 <body>
@@ -952,6 +1024,15 @@
         </div>
       </div>
 
+      <div class="color-legend">
+        <span class="legend-item" style="--lc: var(--layer-kernel)">Kernel</span>
+        <span class="legend-item" style="--lc: var(--layer-modules)">Modules</span>
+        <span class="legend-item" style="--lc: var(--layer-bundles)">Bundles</span>
+        <span class="legend-item" style="--lc: var(--layer-foundation)">Foundation</span>
+        <span class="legend-item" style="--lc: var(--layer-apps)">Apps</span>
+        <span class="legend-item" style="--lc: var(--layer-ecosystem)">Ecosystem</span>
+      </div>
+
       <p><strong>The center</strong> is the kernel. Inside it: the Coordinator (a registry storing modules), the Hook and Event system (a notification network), the Module Loader, and the Session lifecycle.</p>
 
       <p><strong>The middle ring</strong> holds the modules, the pluggable pieces that define how an agent behaves. The Orchestrator drives the conversation. Providers connect to AI models. Tools give the agent actions. Context Managers handle memory. Hook Handlers enforce rules and react to events.</p>
@@ -994,7 +1075,7 @@
 
       <p>None of this touches the kernel. A new model arrives; someone writes a provider module that connects to its API and translates between Amplifier's format and the model's format. Same interface every other provider uses. The kernel doesn't know or care whether it's talking to Claude, GPT, Gemini, or a model that doesn't exist yet.</p>
 
-      <div class="feature-quote">
+      <div class="feature-quote" data-layer="boundary">
         <p>The center stays still so the edges can move at any speed.</p>
       </div>
 
@@ -1019,7 +1100,7 @@
 
       <p>The kernel (<code>amplifier-core</code>) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.</p>
 
-      <div class="callout">
+      <div class="callout" data-layer="kernel">
         <p><strong>Five things live in the kernel. Nothing else.</strong> Session Lifecycle · Contracts · Module Loader · The Coordinator · Hooks</p>
       </div>
 
@@ -1053,7 +1134,7 @@
 
       <p>When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator. No decisions. No message routing. No behavior.</p>
 
-      <div class="callout">
+      <div class="callout" data-layer="kernel">
         <p><strong>Despite its name, the Coordinator does not coordinate.</strong> It is a registry — a shelf with labeled slots. The actual coordinating is done by the Orchestrator, which is a module, not part of the kernel. Mechanism versus policy, once again.</p>
       </div>
 
@@ -1065,7 +1146,7 @@
 
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
-<pre><code>async def mount(
+<pre data-layer="kernel"><code>async def mount(
     coordinator: Coordinator,
     config: dict
 ) -&gt; Optional[cleanup_fn]:
@@ -1091,7 +1172,7 @@
 
       <h3 id="s5-1">5.1 Five module types</h3>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="modules">
         <table>
           <thead>
             <tr>
@@ -1150,7 +1231,7 @@
 
       <p>Every module type plugs in through the same function:</p>
 
-<pre><code>async def mount(coordinator: Coordinator, config: dict) -&gt; Optional[cleanup_fn]</code></pre>
+<pre data-layer="modules"><code>async def mount(coordinator: Coordinator, config: dict) -&gt; Optional[cleanup_fn]</code></pre>
 
       <p>The contract is a function called <code>mount</code>. It receives two things: the Coordinator and a configuration dictionary. The module does whatever setup it needs, registers itself into the Coordinator at the right slot, and optionally returns a cleanup function that will be called when the session ends.</p>
 
@@ -1164,7 +1245,7 @@
 
       <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. They need the full system set up before they start watching.</p>
 
-      <div class="arch-diagram">
+      <div class="arch-diagram" data-layer="modules">
         <div class="arch-top">
           <div class="arch-top-label">Fixed Loading Order</div>
           <div class="arch-top-desc">Each module can count on the ones loaded before it being available</div>
@@ -1220,7 +1301,7 @@
         <li><strong>The Orchestrator returns the response.</strong> Rich data — token usage, tool history — flows through the event system for any hooks that want to observe it.</li>
       </ol>
 
-      <div class="callout">
+      <div class="callout" data-layer="boundary">
         <p><strong>inject_context</strong> is the most powerful hook action. A hook places a message into the conversation that the AI reads on its next turn, as if it were part of the natural flow. The hook doesn't interrupt the AI. It doesn't send a signal or raise a flag. It places information where the AI will naturally encounter it, and the AI does what language models do: read text and respond to it.</p>
       </div>
 
@@ -1237,7 +1318,7 @@
 
       <p>Both are modules. Both plug in the same way. But they operate in fundamentally different realms, and using the wrong one for a task produces unreliable behavior.</p>
 
-      <div class="arch-diagram">
+      <div class="arch-diagram" data-layer="modules">
         <div class="arch-split" style="border-radius:4px;border:1px solid var(--border);">
           <div class="arch-half">
             <div class="arch-half-title">Tools — the AI decides</div>
@@ -1288,7 +1369,7 @@
 
       <p><strong>As a hook:</strong> You register a Hook Handler for the <code>tool:post</code> event, which fires after any tool completes. When the event fires for a file-writing tool, the hook runs the code checker. If it finds issues, it injects a message: "The code checker found 3 issues on lines 12, 15, and 22." The AI reads this on its next turn and fixes the issues. The check happens every single time, regardless of what the model decides.</p>
 
-      <div class="callout">
+      <div class="callout" data-layer="boundary">
         <p><strong>The distinction in one sentence:</strong> Tools are capabilities you hand to the AI. Hooks are policies you enforce around it. Use tools when you want the AI to decide. Use hooks when you need the outcome to be guaranteed.</p>
       </div>
 
@@ -1296,7 +1377,7 @@
 
       <p>When multiple hooks respond to one event, their results are resolved in this order, from highest authority to lowest:</p>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="kernel">
         <table>
           <thead>
             <tr><th>Priority</th><th>Action</th><th>Behavior</th><th>Use case</th></tr>
@@ -1355,7 +1436,7 @@
 
       <h3 id="s8-1">8.1 Four phases</h3>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="kernel">
         <table>
           <thead>
             <tr><th>Phase</th><th>What happens</th></tr>
@@ -1381,13 +1462,13 @@
         </table>
       </div>
 
-      <div class="callout">
+      <div class="callout" data-layer="kernel">
         <p><strong>Required:</strong> Orchestrator + Context Manager must mount successfully during Initialize. If either fails, the session stops immediately. No Orchestrator means no agent loop — hard error. One failed tool out of twenty? The agent still has nineteen others.</p>
       </div>
 
       <h3 id="s8-2">8.2 Parent and child sessions</h3>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="kernel">
         <table>
           <thead>
             <tr><th>What you might expect</th><th>What Amplifier does</th></tr>
@@ -1450,7 +1531,7 @@
 
       <p>A minimal working bundle:</p>
 
-<pre><code>---
+<pre data-layer="bundles"><code>---
 bundle:
   model: anthropic/claude
   tools:
@@ -1506,7 +1587,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Think of Foundation as a convenience layer. The kernel accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.</p>
 
-      <div class="feature-quote">
+      <div class="feature-quote" data-layer="foundation">
         <p>The kernel doesn't need Foundation. The kernel works with a raw configuration dictionary and a set of module paths. Foundation is a user-experience layer. It makes the system approachable by translating text files into running sessions.</p>
       </div>
 
@@ -1551,7 +1632,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Foundation doesn't just set up a session. It sustains it. The kernel calls into Foundation on every turn (system prompt) and during loading (module resolution). Neither side has a code dependency on the other. The kernel calls functions without knowing who provided them. Foundation calls the kernel's API without accessing kernel internals.</p>
 
-      <div class="callout">
+      <div class="callout" data-layer="boundary">
         <p><strong>Connected at runtime through callbacks. Independent at compile time through interfaces.</strong></p>
         <p>Foundation depends on the kernel in code. The kernel calls Foundation at runtime only — through callbacks. Even the preparation layer follows mechanism versus policy.</p>
       </div>
@@ -1597,7 +1678,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>The loading follows a three-level progressive disclosure pattern:</p>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="bundles">
         <table>
           <thead>
             <tr><th>Level</th><th>Content</th><th>Token cost</th><th>When loaded</th></tr>
@@ -1629,7 +1710,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Skills can also run as isolated subagents — called <strong>fork execution</strong> — bridging the gap between passive knowledge and autonomous agents. A code review skill, for example, loads like a skill but spawns its own session with its own context window to do the work.</p>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="bundles">
         <table>
           <thead>
             <tr><th>Type</th><th>How it's loaded</th><th>How it runs</th></tr>
@@ -1658,22 +1739,22 @@ standards (see @project:standards.md).</code></pre>
       <h3 id="s12-1">12.1 Six layers</h3>
 
       <div class="diagram">
-        <div class="layer layer-outer">
+        <div class="layer layer-outer revealed" data-layer="6">
           <div class="layer-label">Layer 6 — Community</div>
           <div class="layer-desc">Third-party modules, bundles, recipes, integrations. Open at every level. Anyone can build here.</div>
-          <div class="layer layer-outer">
+          <div class="layer layer-outer revealed" data-layer="5">
             <div class="layer-label">Layer 5 — Applications</div>
             <div class="layer-desc">CLI, web interface, IDE integrations, voice assistants. The things people use. Create sessions through Foundation or directly through the kernel API.</div>
-            <div class="layer layer-mid">
+            <div class="layer layer-mid revealed" data-layer="4">
               <div class="layer-label">Layer 4 — Foundation</div>
               <div class="layer-desc">Turns bundles into running sessions. Finds modules, assembles config, stays connected at runtime. Essentially a community bundle that the Amplifier team maintains. Depends on the kernel. The kernel does not depend on Foundation.</div>
-              <div class="layer layer-mid">
+              <div class="layer layer-mid revealed" data-layer="3">
                 <div class="layer-label">Layer 3 — Bundles</div>
                 <div class="layer-desc">Configuration packages. Text files. Combine modules into deployable agents. No code required. Reference modules by name but don't depend on module code.</div>
-                <div class="layer layer-mid">
+                <div class="layer layer-mid revealed" data-layer="2">
                   <div class="layer-label">Layer 2 — Modules</div>
                   <div class="layer-desc">Providers, tools, hooks, orchestrators, context managers, resolvers. The actual capabilities. Depend on kernel contracts. Don't depend on Foundation.</div>
-                  <div class="layer layer-inner">
+                  <div class="layer layer-inner revealed" data-layer="1">
                     <div class="layer-label">Layer 1 — Kernel (amplifier-core)</div>
                     <div class="layer-desc">Contracts, module loading, event dispatch, session lifecycle. The unchanging center. Everything above depends on it. Nothing here depends on anything above.</div>
                   </div>
@@ -1696,7 +1777,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>The architecture tells you where things belong. New capabilities: modules. New rules: hooks. New configurations: bundles. New interfaces: applications. The kernel doesn't change.</p>
 
-      <div class="table-wrapper">
+      <div class="table-wrapper" data-layer="boundary">
         <table>
           <thead>
             <tr><th>If you want to…</th><th>It goes at</th><th>As a…</th></tr>
@@ -1715,7 +1796,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s12-3">12.3 Closing</h3>
 
-      <div class="feature-quote">
+      <div class="feature-quote" data-layer="boundary">
         <p>The kernel provides mechanism. Modules provide policy. You build the harness.</p>
       </div>
 
@@ -1863,7 +1944,8 @@ standards (see @project:standards.md).</code></pre>
 
   function revealLayersUpTo(n) {
     if (n <= maxRevealedLayer) return;
-    // Target only the §2 diagram — the §12 diagram has no data-layer attrs.
+    // Target only the §2 diagram (the first .diagram); §12 already has
+    // .revealed on all layers so the reader sees it fully lit from the start.
     const diag = document.querySelector('.diagram');
     if (!diag) return;
     for (let i = maxRevealedLayer + 1; i <= n; i++) {
@@ -1915,12 +1997,17 @@ standards (see @project:standards.md).</code></pre>
 
   // Hard-coded colour values — CSS custom properties are not resolved
   // inside SVG attribute strings, so we inline the actual hex values.
-  var MM_ACCENT      = '#3E5C8A';
-  var MM_ACCENT_BG   = 'rgba(62,92,138,0.28)';
-  var MM_MUTED_BG    = '#EDEDF2';   // --surface-recessed
-  var MM_MUTED_BORD  = '#E8E9EF';   // --border-light
-  var MM_TEXT_ACC    = '#3E5C8A';   // --accent
-  var MM_TEXT_MUT    = '#8B8D9C';   // --text-tertiary
+  // These must match the --layer-* CSS custom properties declared in :root.
+  var LAYER_COLORS = {
+    1: { main: '#9B7B3E', soft: '#F5F0E4' },  // Kernel
+    2: { main: '#3E7D8A', soft: '#E4F0F2' },  // Modules
+    3: { main: '#5C6B9E', soft: '#ECEEF5' },  // Bundles
+    4: { main: '#5A7D5A', soft: '#E8F0E8' },  // Foundation
+    5: { main: '#7B6B8A', soft: '#F0ECF2' },  // Apps
+    6: { main: '#8A7B8A', soft: '#F2EEF2' }   // Ecosystem
+  };
+  var MM_MUTED_BORD  = '#E8E9EF';   // --border-light (muted layer stroke)
+  var MM_TEXT_MUT    = '#8B8D9C';   // --text-tertiary (all-layers mode text)
 
   function buildMinimapSVG(activeLayer, shownLayers) {
     var isAll = (activeLayer === 'all');
@@ -1931,13 +2018,14 @@ standards (see @project:standards.md).</code></pre>
     MINIMAP_LAYERS.forEach(function(L) {
       if (shownLayers.indexOf(L.n) === -1) return;
       var active = isAll || (L.n === activeLayer);
+      var lc = LAYER_COLORS[L.n] || { main: '#3E5C8A', soft: '#E4E9F2' };
       rects +=
         '<rect x="' + L.x + '" y="' + L.y +
         '" width="' + L.w + '" height="' + L.h +
         '" rx="' + L.rx + '"' +
-        ' fill="'   + (active ? MM_ACCENT_BG  : MM_MUTED_BG)   + '"' +
-        ' stroke="' + (active ? MM_ACCENT     : MM_MUTED_BORD)  + '"' +
-        ' stroke-width="1.5"/>';
+        ' fill="'         + (active ? lc.soft     : lc.soft + 'CC')  + '"' +
+        ' stroke="'       + (active ? lc.main      : MM_MUTED_BORD)   + '"' +
+        ' stroke-width="' + (active ? '2'          : '1')             + '"/>';
     });
 
     // Labels: active-layer label(s) only, positioned at the top-left of
@@ -1946,11 +2034,12 @@ standards (see @project:standards.md).</code></pre>
       if (shownLayers.indexOf(L.n) === -1) return;
       var active = isAll || (L.n === activeLayer);
       if (!active) return;
+      var lc = LAYER_COLORS[L.n] || { main: '#3E5C8A', soft: '#E4E9F2' };
       labels +=
         '<text' +
         ' x="' + (L.x + 5) + '"' +
         ' y="' + (L.y + 9) + '"' +
-        ' fill="' + (isAll ? MM_TEXT_MUT : MM_TEXT_ACC) + '"' +
+        ' fill="' + (isAll ? MM_TEXT_MUT : lc.main) + '"' +
         ' font-size="8.5"' +
         ' font-family="Inter,system-ui,sans-serif"' +
         ' font-weight="600">' +
