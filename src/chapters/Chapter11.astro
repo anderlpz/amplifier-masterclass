@@ -1,0 +1,14 @@
+---
+import ChapterEntry from '../components/blocks/ChapterEntry.astro';
+import Prose from '../components/blocks/Prose.astro';
+import type { Chapter } from '../data/chapters';
+
+type Props = Chapter;
+const { number, title, lead } = Astro.props;
+---
+
+<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+
+<Prose>
+  <p><em>Full chapter content coming soon.</em></p>
+</Prose>
