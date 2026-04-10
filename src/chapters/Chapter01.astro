@@ -4,11 +4,71 @@ import Prose from '../components/blocks/Prose.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Amplifier is a framework for building your AI harness."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    That sentence is deliberately simple, because the idea it describes is not.
+    A harness, in the traditional sense, takes raw power and gives it direction.
+    A climbing harness lets you use gravity safely. An electrical harness routes
+    power to the right places. An AI harness does the same for a model: it wraps
+    around the model and provides a controlled way to interact with the world.
+    Some harnesses built with Amplifier are conversational AI agents: programs
+    that can reason about a task, take actions, observe the results, and decide
+    what to do next. Others are pipeline runners with zero AI loops. The
+    framework does not prescribe what you build.
+  </p>
+
+  <p>
+    AI models are powerful, but raw power without structure is unpredictable.
+    The model itself handles reasoning. Everything around the model (what tools
+    it can use, what it remembers, what rules it follows, how it talks to the
+    outside world) needs structure. Amplifier provides that structure. Think of
+    it as a construction kit: it gives you the pieces, and you assemble the
+    harness that fits your use case.
+  </p>
+
+  <h3>The design borrows from operating systems.</h3>
+
+  <p>
+    If you've used a computer, you've used an operating system. An operating
+    system has a kernel at its center. The kernel is tiny relative to the whole
+    system. It handles the most fundamental things: managing memory, scheduling
+    tasks, letting programs talk to hardware. Everything else (the web browser,
+    the file manager, the apps) runs on top of the kernel, plugging into it
+    through well-defined interfaces.
+  </p>
+
+  <p>
+    Amplifier borrows this structure. At the center is a small core called
+    <code>amplifier-core</code>. It handles module loading, event dispatch, and
+    session lifecycle. Which AI model to use, what tools the agent can access,
+    how conversations are stored, what rules the agent follows: each of those is
+    a module that plugs in from the outside.
+  </p>
+
+  <p>
+    A new AI model comes out? Write a new provider module. Need the agent to
+    follow safety rules? Add a hook module. The core does not change. It
+    provides the infrastructure; the modules provide the behavior.
+  </p>
+
+  <h3>What this document covers</h3>
+
+  <ul>
+    <li>Architecture map</li>
+    <li>Design philosophy</li>
+    <li>The kernel (5 components)</li>
+    <li>Module system (6 types)</li>
+    <li>Tools vs Hooks</li>
+    <li>Sessions &amp; bundles</li>
+    <li>The complete picture</li>
+  </ul>
 </Prose>
