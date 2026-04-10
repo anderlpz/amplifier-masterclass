@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   output: 'static',
   base: '/masterclass-preview/',
+  compressHTML: false,
   devToolbar: { enabled: false },
   server: {
     host: '0.0.0.0',
