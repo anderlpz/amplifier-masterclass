@@ -1,14 +1,147 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import Diagram from '../components/blocks/Diagram.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Foundation is how we use the kernel. It is not the only way."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    Foundation (<code>amplifier-foundation</code>) turns text bundle files into
+    running sessions. It is the Amplifier team's reference implementation: their
+    opinions about how to use the kernel, packaged for others. The kernel does
+    not need it. You could build your own equivalent.
+  </p>
+
+  <p>
+    Think of Foundation as a convenience layer. The kernel accepts a raw
+    configuration dictionary and a set of module paths. Foundation saves you from
+    writing that dictionary yourself. It reads your bundle files, resolves your
+    module references, installs packages, and assembles the configuration the
+    kernel needs.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>PreparedBundle</h2>
+
+  <p>
+    Foundation's output has four parts: a mount plan (which modules to load, in
+    what slots, with what configuration), a resolver (maps module names to file
+    paths), the original bundle (preserved for reference), and package paths (for
+    cleanup at session end).
+  </p>
+
+  <h2>The preparation pipeline</h2>
+
+  <p>
+    Foundation handles all the practical mess between a text file and a running
+    session: creating isolated environments, downloading modules from registries,
+    resolving version constraints, assembling paths. Eight steps:
+  </p>
+
+  <ol>
+    <li>Compile mount plan from configuration</li>
+    <li>Set up environment</li>
+    <li>Install required Python packages</li>
+    <li>Collect module specifications</li>
+    <li>Download and install missing modules</li>
+    <li>Persist installation state (avoid re-downloading)</li>
+    <li>Create resolver function</li>
+    <li>Package into PreparedBundle</li>
+  </ol>
+
+  <p>
+    The kernel never sees any of it. It receives a clean mount plan and a
+    resolver.
+  </p>
+</Prose>
+
+<Diagram
+  src="/diagrams/preparation-pipeline.svg"
+  width="wide"
+  alt="The 8-step preparation pipeline from bundle text file to running session"
+  caption="Foundation's 8-step pipeline handles the mess. The kernel gets a clean mount plan."
+/>
+
+<Prose>
+  <p>
+    The kernel doesn't need Foundation. The kernel works with a raw configuration
+    dictionary and a set of module paths. Foundation is a user-experience layer.
+    It makes the system approachable by translating text files into running
+    sessions.
+  </p>
+
+  <h2>Foundation does not disappear after setup</h2>
+
+  <p>
+    Most preparation layers do their work and leave. Foundation registers two
+    callbacks during setup that remain active for the session's entire lifetime.
+    The kernel calls back into Foundation code at runtime, even though the kernel
+    has no dependency on Foundation.
+  </p>
+</Prose>
+
+<Prose>
+  <h2>System Prompt Factory</h2>
+
+  <p>
+    Called on every single turn. Every time the AI is about to think, Foundation
+    re-reads all @mention files, resolves nested @mentions up to three levels
+    deep, deduplicates content by SHA-256 hash, and rebuilds the complete system
+    prompt from the instruction text plus all resolved context.
+  </p>
+
+  <p>
+    This is why @mention files are live. The kernel calls a function and gets a
+    string back. Foundation is the one doing the file I/O, all on every turn.
+  </p>
+
+  <h2>BundleModuleResolver</h2>
+
+  <p>
+    Called on demand during module loading. When the kernel's Module Loader needs
+    to find a module (to resolve a module identifier like{' '}
+    <code>tool-filesystem</code> to an actual file path) it calls the resolver.
+    That resolver was created by Foundation during the preparation pipeline.
+  </p>
+
+  <p>
+    Foundation code is running inside the kernel's dispatch path, even though the
+    kernel has no dependency on Foundation and no knowledge of how the resolution
+    works.
+  </p>
+</Prose>
+
+<Diagram
+  src="/diagrams/two-callbacks.svg"
+  width="wide"
+  alt="System Prompt Factory and BundleModuleResolver as two persistent callback channels between Foundation and Kernel"
+  caption="Two persistent callbacks: System Prompt Factory (every turn) and BundleModuleResolver (on demand)."
+/>
+
+<Prose>
+  <h2>The runtime relationship</h2>
+
+  <p>
+    Foundation doesn't just set up a session. It sustains it. The kernel calls
+    into Foundation on every turn (system prompt) and during loading (module
+    resolution). Neither side has a code dependency on the other. The kernel
+    calls functions without knowing who provided them. Foundation calls the
+    kernel's API without accessing kernel internals.
+  </p>
+
+  <p>
+    Connected at runtime through callbacks. Independent at compile time through
+    interfaces.
+  </p>
 </Prose>
