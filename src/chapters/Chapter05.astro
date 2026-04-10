@@ -1,14 +1,129 @@
 ---
 import ChapterEntry from '../components/blocks/ChapterEntry.astro';
 import Prose from '../components/blocks/Prose.astro';
+import DataTable from '../components/blocks/DataTable.astro';
+import CodeBlock from '../components/blocks/CodeBlock.astro';
+import VignettePlaceholder from '../components/blocks/VignettePlaceholder.astro';
 import type { Chapter } from '../data/chapters';
 
 type Props = Chapter;
-const { number, title, lead } = Astro.props;
+const { number, title } = Astro.props;
 ---
 
-<ChapterEntry chapterNumber={number} title={title} lead={lead} />
+<ChapterEntry
+  chapterNumber={number}
+  title={title}
+  lead="Everything outside the kernel is a module."
+/>
 
 <Prose>
-  <p><em>Full chapter content coming soon.</em></p>
+  <p>
+    A module is a self-contained piece that plugs in through a standard interface
+    to add a specific capability. Six types, one universal contract, fixed loading
+    order. Remove one, add another. The rest of the system doesn't notice.
+  </p>
+
+  <p>
+    The six module types cover every capability an agent session needs: something
+    to drive the loop, something to connect to an AI model, actions the agent can
+    take, memory for context, event observers, and the infrastructure that finds
+    modules in the first place.
+  </p>
 </Prose>
+
+<DataTable caption="Module Types">
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Role</th>
+        <th>Required</th>
+        <th>Cardinality</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Orchestrator</strong></td>
+        <td>Drives the conversation. Decides what context the AI needs, which provider handles each request, how tool calls are handled, when to stop.</td>
+        <td>Yes</td>
+        <td>Exactly one</td>
+      </tr>
+      <tr>
+        <td><strong>Provider</strong></td>
+        <td>Connects to an AI model. Translates between Amplifier's format and the model's API. Claude, GPT, Gemini, local model.</td>
+        <td>No</td>
+        <td>Multiple allowed</td>
+      </tr>
+      <tr>
+        <td><strong>Tool</strong></td>
+        <td>An action the agent can take. Visible to the AI — it decides when to use tools. Listed in the model's instructions.</td>
+        <td>No</td>
+        <td>Multiple allowed</td>
+      </tr>
+      <tr>
+        <td><strong>Context Manager</strong></td>
+        <td>Keeps track of what's been said and decides what to include when the AI needs context. Manages the token budget.</td>
+        <td>Yes</td>
+        <td>Exactly one</td>
+      </tr>
+      <tr>
+        <td><strong>Hook Handler</strong></td>
+        <td>Reacts to events automatically. Invisible to the AI model — not listed in instructions, never chosen by it.</td>
+        <td>No</td>
+        <td>Multiple allowed</td>
+      </tr>
+      <tr>
+        <td><strong>Resolver</strong></td>
+        <td>Maps module names to file paths. Infrastructure plumbing; users rarely encounter it directly.</td>
+        <td>No</td>
+        <td>One</td>
+      </tr>
+    </tbody>
+  </table>
+</DataTable>
+
+<Prose>
+  <h2>One contract for all six</h2>
+
+  <p>
+    Every module type plugs in through the same function: <code>mount</code>. It
+    receives two things: the Coordinator and a configuration dictionary. The module
+    does whatever setup it needs, registers itself into the Coordinator at the
+    right slot, and optionally returns a cleanup function called when the session ends.
+  </p>
+
+  <p>
+    The Orchestrator follows this contract. Providers, Tools, Context Managers,
+    Hook Handlers, and Resolvers all follow this contract. The Module Loader does
+    not need to know what type of module it is loading. It calls <code>mount</code>,
+    and the module handles the rest.
+  </p>
+</Prose>
+
+<CodeBlock filename="mount contract" lang="python">
+{`async def mount(coordinator, config) -> Optional[cleanup_fn]`}
+</CodeBlock>
+
+<Prose>
+  <h2>Loading order</h2>
+
+  <p>
+    Modules are loaded in a fixed order: <strong>Orchestrator first</strong>, then
+    Context Manager, then Providers, then Tools, then Hook Handlers last. The
+    Orchestrator and Context Manager are required. If either fails to mount, the
+    session stops immediately with an error. The rest are optional.
+  </p>
+
+  <p>
+    The loading order is fixed, and the sequence matters. Orchestrator first,
+    because it's the conductor — everything else needs it in place. Context Manager
+    second, because the Orchestrator needs memory to work with. Hooks load last
+    because they observe everything else: they need the full system set up before
+    they start watching.
+  </p>
+</Prose>
+
+<VignettePlaceholder
+  rationale="Animating the mount lifecycle (discover, load, mount, register in Coordinator) would show the sequence that text describes linearly"
+  width="wide"
+/>
