@@ -363,6 +363,21 @@
 
     a:hover { color: var(--accent-hover); text-decoration-color: var(--accent); }
 
+    /* Cross-references */
+    a.xref {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: 500;
+      font-size: 0.92em;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 150ms;
+    }
+    a.xref:hover {
+      border-bottom-color: var(--accent);
+    }
+
     hr {
       border: none;
       border-top: 1px solid var(--border);
@@ -1085,9 +1100,9 @@
 
       <p>If you've used a computer, you've used an operating system. An operating system has a <span class="lt" data-l="kernel">kernel</span> at its center. The kernel is tiny relative to the whole system. It handles the most fundamental things: managing memory, scheduling tasks, letting programs talk to hardware. Everything else — the web browser, the file manager, the apps — runs on top of the kernel, plugging into it through well-defined interfaces.</p>
 
-      <p>Amplifier borrows this structure. At the center is a small core called <code>amplifier-core</code>. It handles module loading, event dispatch, and <span class="lt" data-l="kernel">session lifecycle</span>. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows: each of those is a <span class="lt" data-l="modules">module</span> that plugs in from the outside.</p>
+      <p>Amplifier borrows this structure. At the center is a small core called <code>amplifier-core</code>. It handles module loading, event dispatch, and <span class="lt" data-l="kernel">session lifecycle</span>. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows: each of those is a <span class="lt" data-l="modules">module</span> that plugs in from the outside *(the exact interface every module uses is the subject of <a href="#s5" class="xref">§5</a>)*.</p>
 
-      <p>A new AI model comes out? Write a new provider module. Need the agent to follow safety rules? Add a hook module. The core does not change. It provides the infrastructure; the modules provide the behavior.</p>
+      <p>A new AI model comes out? Write a new provider module. Need the agent to follow safety rules? Add a hook module. The core does not change. Hook modules are covered in depth in <a href="#s4-5" class="xref">§4.5</a> and <a href="#s7" class="xref">§7</a>. It provides the infrastructure; the modules provide the behavior.</p>
 
       <h3 id="s1-2">1.2 What this document covers</h3>
 
@@ -1150,16 +1165,16 @@
         <span class="legend-item" style="--lc: var(--layer-ecosystem)">Ecosystem</span>
       </div>
 
-      <p><strong>The center</strong> is the <span class="lt" data-l="kernel">kernel</span>. Inside it: the <span class="lt" data-l="kernel">Coordinator</span> (a registry storing modules), the Hook and Event system (a notification network), the Module Loader, and the Session lifecycle.</p>
+      <p><strong>The center</strong> is the <span class="lt" data-l="kernel">kernel</span>. Inside it: the <span class="lt" data-l="kernel">Coordinator</span> (a registry storing modules — <a href="#s4-4" class="xref">§4.4</a>), the Hook and Event system (a notification network), the Module Loader, and the Session lifecycle.</p>
 
-      <p><strong>The middle ring</strong> holds the <span class="lt" data-l="modules">modules</span>, the pluggable pieces that define how an agent behaves. The <span class="lt" data-l="modules">Orchestrator</span> drives the conversation. Providers connect to AI models. Tools give the agent actions. Context Managers handle memory. Hook Handlers enforce rules and react to events.</p>
+      <p><strong>The middle ring</strong> holds the <span class="lt" data-l="modules">modules</span>, the pluggable pieces that define how an agent behaves. The <span class="lt" data-l="modules">Orchestrator</span> drives the conversation. Its unique runtime privileges — and why no other module shares them — are the subject of <a href="#s6" class="xref">§6</a>. Providers connect to AI models. Tools give the agent actions. Context Managers handle memory. Hook Handlers enforce rules and react to events.</p>
 
       <p><strong>The outer ring</strong> is <span class="lt" data-l="foundation">Foundation</span> (which turns configuration files into running sessions) and the <span class="lt" data-l="ecosystem">ecosystem</span>: bundles, recipes, apps, community extensions.</p>
 
       <p>The most important cluster is at the center: <code>amplifier-core</code>. Everything else depends on it; it depends on nothing. That asymmetry is the architecture in one sentence.</p>
 
       <div class="callout">
-        <p>Don't try to memorize the diagram. Use it as a reference. As we walk through each piece in the sections that follow, this map will make more sense. By the time we reach the final section, every cluster will be familiar.</p>
+        <p>Don't try to memorize the diagram. Use it as a reference. As we walk through each piece in the sections that follow, this map will make more sense. <a href="#s4" class="xref">§4</a> covers the kernel, <a href="#s5" class="xref">§5</a> the module system, <a href="#s6" class="xref">§6</a> the Orchestrator, and <a href="#s7" class="xref">§7</a> the tools-versus-hooks distinction. By the time we reach the final section, every cluster will be familiar.</p>
       </div>
 
       <h3 id="s2-2">2.2 Reading the diagram</h3>
@@ -1206,7 +1221,7 @@
 
       <p>Consider what happens when you deploy an AI agent in a setting where certain operations need human approval. In a system without this separation, you would modify the tool-calling code itself: add an if-statement, check a config flag, pop up a dialog. The approval logic is now woven into the execution logic. Every future tool must remember to include the approval check. Miss one, and the policy has a hole.</p>
 
-      <p>In Amplifier, the kernel fires a <code>tool:pre</code> event before every tool call. A hook module registers for that event. When it sees a tool call that requires approval, it returns <code>ask_user</code>. The kernel pauses execution and waits for a human decision. The tool itself has no knowledge that approval was required. The hook module can be swapped, updated, or removed without touching any tool code. The policy lives in a module; the mechanism lives in the kernel.</p>
+      <p>In Amplifier, the kernel fires a <code>tool:pre</code> event before every tool call. A hook module registers for that event. When it sees a tool call that requires approval, it returns <code>ask_user</code> — one of five hook actions ranked by authority, defined in full in <a href="#s7-4" class="xref">§7.4</a>. The kernel pauses execution and waits for a human decision. The tool itself has no knowledge that approval was required. The hook module can be swapped, updated, or removed without touching any tool code. The policy lives in a module; the mechanism lives in the kernel.</p>
 
       <p>This pattern repeats at every level. Logging is a hook, not a kernel feature. Context injection is a hook response, not an API call. Safety rules are hook policies, not built-in constraints. Each policy can be independently developed, tested, and replaced.</p>
 
@@ -1227,9 +1242,9 @@
 
       <p><strong>Creation.</strong> Configuration goes in. Coordinator and Loader are created. Nothing loaded yet. The system knows what it needs, but hasn't started yet.</p>
 
-      <p><strong>Initialization.</strong> Modules load in fixed order: Orchestrator, Context Manager, Providers, Tools, Hooks. Orchestrator and Context Manager are required; failure to load either stops the session. The rest are optional (warn and continue).</p>
+      <p><strong>Initialization.</strong> Modules load in fixed order: Orchestrator, Context Manager, Providers, Tools, Hooks. (<a href="#s5-3" class="xref">§5.3</a> explains why this order was chosen and what happens if a required module fails) Orchestrator and Context Manager are required; failure to load either stops the session. The rest are optional (warn and continue).</p>
 
-      <p><strong>Execution.</strong> A prompt arrives, passes to the Orchestrator, and a response comes back. This phase is repeatable. Each <code>execute</code> call is one conversation turn. Between turns, all state is maintained.</p>
+      <p><strong>Execution.</strong> A prompt arrives, passes to the Orchestrator, and a response comes back. This phase is repeatable. Each <code>execute</code> call is one conversation turn. <a href="#s6-2" class="xref">§6.2</a> walks through the seven internal steps of a single turn. Between turns, all state is maintained.</p>
 
       <p><strong>Cleanup.</strong> A <code>session:end</code> event fires first (hooks get a final chance to process). Then Coordinator tears down modules. Then Loader cleans up. In a <code>finally</code> block. Always runs, even after errors.</p>
 
@@ -1252,14 +1267,14 @@
       <p>When a module mounts, it goes into the right slot. When something needs to find a module, it checks the <span class="lt" data-l="kernel">Coordinator</span>. No decisions. No message routing. No behavior.</p>
 
       <div class="callout" data-layer="kernel">
-        <p><strong>Despite its name, the Coordinator does not coordinate.</strong> It is a registry — a shelf with labeled slots. The actual coordinating is done by the Orchestrator, which is a module, not part of the kernel. Mechanism versus policy, once again.</p>
+        <p><strong>Despite its name, the Coordinator does not coordinate.</strong> It is a registry — a shelf with labeled slots. The actual coordinating is done by the Orchestrator (<a href="#s6" class="xref">§6</a>), which is a module, not part of the kernel. Mechanism versus policy (<a href="#s3-1" class="xref">§3.1</a>), once again.</p>
       </div>
 
       <h3 id="s4-5">4.5 Hooks</h3>
 
       <p><span class="lt" data-l="kernel">Hooks</span> let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.</p>
 
-      <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.</p>
+      <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. <a href="#s7-5" class="xref">§7.5</a> catalogs their names and firing conditions. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.</p>
 
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
@@ -1360,9 +1375,9 @@
         </table>
       </div>
 
-      <p><strong><span class="lt" data-l="modules">Tools</span></strong> are visible to the AI. Available tools are listed in the AI's system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally.</p>
+      <p><strong><span class="lt" data-l="modules">Tools</span></strong> are visible to the AI. Available tools are listed in the AI's system prompt. (the System Prompt Factory in <a href="#s10-4" class="xref">§10.4</a> assembles this prompt on every turn) The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally.</p>
 
-      <p><strong><span class="lt" data-l="modules">Hook Handlers</span></strong> are invisible to the AI. They do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer.</p>
+      <p><strong><span class="lt" data-l="modules">Hook Handlers</span></strong> are invisible to the AI. They do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer. <a href="#s7" class="xref">§7</a> covers the full distinction between tools and hooks.</p>
 
       <h3 id="s5-2">5.2 One contract for all six</h3>
 
@@ -1370,7 +1385,7 @@
 
 <pre data-layer="modules"><code>async def mount(coordinator: Coordinator, config: dict) -&gt; Optional[cleanup_fn]</code></pre>
 
-      <p>The contract is a function called <code>mount</code>. It receives two things: the Coordinator and a configuration dictionary. The module does whatever setup it needs, registers itself into the Coordinator at the right slot, and optionally returns a cleanup function that will be called when the session ends.</p>
+      <p>The contract is a function called <code>mount</code>. It receives two things: the Coordinator and a configuration dictionary. The module does whatever setup it needs, registers itself into the Coordinator (the registry from <a href="#s4-4" class="xref">§4.4</a>) at the right slot, and optionally returns a cleanup function that will be called when the session ends.</p>
 
       <p>The <span class="lt" data-l="modules">Orchestrator</span> follows this contract. <span class="lt" data-l="modules">Providers</span>, Tools, <span class="lt" data-l="modules">Context Managers</span>, Hook Handlers, and Resolvers all follow this contract. The Module Loader does not need to know what type of module it is loading. It calls <code>mount</code>, and the module handles the rest.</p>
 
@@ -1380,7 +1395,7 @@
 
       <p>Modules are loaded in a fixed order: <strong>Orchestrator first</strong>, then Context Manager, then Providers, then Tools, then Hook Handlers last. The Orchestrator and Context Manager are required. If either fails to mount, the session stops immediately with an error. The rest are optional.</p>
 
-      <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. They need the full system set up before they start watching.</p>
+      <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. <a href="#s7" class="xref">§7</a> explains why this separation is the most consequential design decision in the module system. They need the full system set up before they start watching.</p>
 
       <!-- Diagram: Module Loading Order -->
       <div class="flow-diagram">
@@ -1473,7 +1488,7 @@
 
       <h3 id="s6-1">6.1 The privilege gap</h3>
 
-      <p>Every module in Amplifier receives the Coordinator (the registry where modules are stored) once: at mount time. The module uses it to register itself, and then the Coordinator reference is gone.</p>
+      <p>Every module in Amplifier receives the Coordinator (the registry from <a href="#s4-4" class="xref">§4.4</a>) once: at mount time, following the <code>mount()</code> contract from <a href="#s5-2" class="xref">§5.2</a>. The module uses it to register itself, and then the Coordinator reference is gone.</p>
 
       <p>The <span class="lt" data-l="modules">Orchestrator</span> is the exception. It receives the Coordinator again, at runtime, <em>every time it's called.</em> This means the Orchestrator can, at any moment during execution, reach into the registry and access any module: the Context Manager, every Provider, every Tool, every Hook Handler.</p>
 
@@ -1558,8 +1573,8 @@
         <li><strong>Hooks fire; context monitoring begins.</strong> A context monitor hook might notice the conversation involves database queries and inject the relevant schema documentation.</li>
         <li><strong>Orchestrator fetches context.</strong> Calls the <span class="lt" data-l="modules">Context Manager</span> to get conversation history — what's been said, what tools have been used.</li>
         <li><strong>Provider calls the AI model.</strong> The Orchestrator calls a Provider. The Provider sends the assembled context to the AI model and waits for a response.</li>
-        <li><strong>If the AI wants a tool, hooks check first.</strong> Before the tool executes, an event fires. Hook Handlers can observe, modify, or block the call. A safety hook might say "that tool call is trying to delete system files. Denied." If no hook blocks the call, the tool executes.</li>
-        <li><strong>After the tool runs, hooks inject feedback.</strong> A code quality hook might run after a file-writing tool, find issues, and inject "The code checker found 3 issues in lines 12, 15, and 22." The AI reads this on its next iteration.</li>
+        <li><strong>If the AI wants a tool, hooks check first.</strong> Before the tool executes, an event fires. Hook Handlers can observe, modify, or block the call. (<a href="#s7-4" class="xref">§7.4</a> defines the full priority cascade — which action wins when multiple hooks respond) A safety hook might say "that tool call is trying to delete system files. Denied." If no hook blocks the call, the tool executes.</li>
+        <li><strong>After the tool runs, hooks inject feedback.</strong> A code quality hook — the same scenario from <a href="#s3-4" class="xref">§3.4</a> — might run after a file-writing tool, find issues, and inject "The code checker found 3 issues in lines 12, 15, and 22." The AI reads this on its next iteration.</li>
         <li><strong>The Orchestrator returns the response.</strong> Rich data — token usage, tool history — flows through the event system for any hooks that want to observe it.</li>
       </ol>
 
@@ -1569,7 +1584,7 @@
 
       <h3 id="s6-3">6.3 The loop lives outside the kernel</h3>
 
-      <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the <span class="lt" data-l="kernel">kernel</span>. It lives in an Orchestrator module. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
+      <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the <span class="lt" data-l="kernel">kernel</span>. It lives in an Orchestrator module. This is mechanism versus policy (<a href="#s3-1" class="xref">§3.1</a>) at its most literal: the kernel provides the execution contract; the loop itself is policy. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
 
       <p>The Orchestrator returns a plain string as its public response. Rich data — token usage, tool history, thinking blocks — exits through hook events. This keeps the Orchestrator loosely coupled to every consumer. New instrumentation means new hooks, not a changed Orchestrator interface.</p>
 
@@ -1617,7 +1632,7 @@
 
       <h3 id="s7-2">7.2 Hooks: code decides</h3>
 
-      <p><span class="lt" data-l="modules">Hook Handlers</span> respond to events in the system. When something happens, an event fires. Hook Handlers that have registered for that event run automatically. The AI model has <em>no idea</em> that hooks exist.</p>
+      <p><span class="lt" data-l="modules">Hook Handlers</span> respond to events in the system. When something happens, one of the 41 canonical events (from <a href="#s4-5" class="xref">§4.5</a>) fires. Hook Handlers that have registered for that event run automatically. The AI model has <em>no idea</em> that hooks exist.</p>
 
       <p>Hooks do not appear in the model's instructions. They are not listed in the system prompt. The model cannot see them, cannot call them, cannot choose to use them. Hooks operate entirely in the system layer.</p>
 
@@ -1672,7 +1687,7 @@ async def on_tool(event):
 
       <h3 id="s7-4">7.4 Priority cascade</h3>
 
-      <p>When multiple hooks respond to one event, their results are resolved in this order, from highest authority to lowest:</p>
+      <p>When multiple hooks respond to one event, their results are resolved in this order by the <code>HookRegistry.emit()</code> dispatch from <a href="#s4-5" class="xref">§4.5</a>, from highest authority to lowest:</p>
 
       <!-- Diagram: Hook Priority Cascade -->
       <div class="flow-diagram">
@@ -1791,7 +1806,7 @@ async def on_tool(event):
       <!-- ── Section 8 ── -->
       <h2 id="s8"><span class="section-num">8</span> Sessions</h2>
 
-      <p>A <span class="lt" data-l="kernel">session</span> is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a lifecycle.</p>
+      <p>A <span class="lt" data-l="kernel">session</span> is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and the four-phase lifecycle from <a href="#s4-1" class="xref">§4.1</a>.</p>
 
       <h3 id="s8-1">8.1 Four phases</h3>
 
@@ -1855,7 +1870,7 @@ async def on_tool(event):
             </tr>
             <tr>
               <td><strong>Initialize</strong></td>
-              <td>Module Loader loads modules in fixed order. If the Orchestrator or Context Manager fails to load, the session stops. Everything else is optional (warn and continue).</td>
+              <td>Module Loader loads modules in the fixed order from <a href="#s5-3" class="xref">§5.3</a>. If the Orchestrator or Context Manager fails to load, the session stops. Everything else is optional (warn and continue).</td>
             </tr>
             <tr>
               <td><strong>Execute</strong></td>
@@ -1903,7 +1918,7 @@ async def on_tool(event):
 
       <h3 id="s8-3">8.3 File output comes from modules</h3>
 
-      <p>When you see session files on disk — <code>transcript.jsonl</code>, <code>events.jsonl</code>, <code>metadata.json</code> — the kernel didn't write them. Hook modules did. Remove every hook, and the session still runs identically. No trace on disk, but the conversation works the same.</p>
+      <p>When you see session files on disk — <code>transcript.jsonl</code>, <code>events.jsonl</code>, <code>metadata.json</code> — the kernel didn't write them — as <a href="#s4-6" class="xref">§4.6</a> established, the kernel writes zero bytes to disk. Hook modules did. Remove every hook, and the session still runs identically. No trace on disk, but the conversation works the same.</p>
 
       <h3 id="s8-4">8.4 Cancellation</h3>
 
@@ -1960,7 +1975,7 @@ standards (see @project:standards.md).</code></pre>
     </div>
     <div class="code-annotation">
       <span class="ann-num" style="background:#5C6B9E">2</span>
-      <span><strong>model</strong> — Which AI model to use. The bundle declares intent; Foundation resolves it to a specific provider module at runtime.</span>
+      <span><strong>model</strong> — Which AI model to use. The bundle declares intent; Foundation resolves it to a specific provider module at runtime. The resolution process is in <a href="#s10-5" class="xref">§10.5</a>.</span>
     </div>
     <div class="code-annotation">
       <span class="ann-num" style="background:#5C6B9E">3</span>
@@ -2001,7 +2016,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s9-4">9.4 Live re-reading</h3>
 
-      <p>@mention files are re-read on every single turn of conversation through the System Prompt Factory. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required.</p>
+      <p>@mention files are re-read on every single turn of conversation through the System Prompt Factory — <a href="#s10-4" class="xref">§10.4</a> shows the mechanism behind this. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required.</p>
 
       <p>Context files are a continuous feed of current information, not snapshots taken at session start. Not loaded once, not cached — full re-read on every turn. Update a coding standards file, and every agent referencing it sees the change immediately.</p>
 
@@ -2045,7 +2060,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s10-4">10.4 System Prompt Factory</h3>
 
-      <p>Called on every single turn. Every time the AI is about to think — every single turn of conversation — Foundation re-reads all @mention files, resolves nested @mentions up to three levels deep, deduplicates content by SHA-256 hash, and rebuilds the complete system prompt from the instruction text plus all resolved context.</p>
+      <p>Called on every single turn. Every time the AI is about to think — every single turn of conversation — Foundation re-reads all @mention files (this is the mechanism behind the live re-reading from <a href="#s9-4" class="xref">§9.4</a>), resolves nested @mentions up to three levels deep, deduplicates content by SHA-256 hash, and rebuilds the complete system prompt from the instruction text plus all resolved context.</p>
 
       <p>This is why @mention files are live. The kernel calls a function and gets a string back. Foundation is the one doing the file I/O, all on every turn.</p>
 
@@ -2057,7 +2072,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s10-6">10.6 The runtime relationship</h3>
 
-      <p>Foundation doesn't just set up a session. It sustains it. The kernel calls into Foundation on every turn (system prompt) and during loading (module resolution). Neither side has a code dependency on the other. The kernel calls functions without knowing who provided them. Foundation calls the kernel's API without accessing kernel internals.</p>
+      <p>Foundation doesn't just set up a session. It sustains it. The kernel calls into Foundation on every turn (system prompt) and during loading (module resolution). Neither side has a code dependency on the other. The kernel calls functions without knowing who provided them. This is the center-stays-still principle from <a href="#s3-2" class="xref">§3.2</a> applied to Foundation itself. Foundation calls the kernel's API without accessing kernel internals.</p>
 
       <div class="callout" data-layer="boundary">
         <p><strong>Connected at runtime through callbacks. Independent at compile time through interfaces.</strong></p>
@@ -2077,7 +2092,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>One difference: the YAML frontmatter key. A bundle uses <code>bundle:</code>. An agent uses <code>meta:</code>. That's it. Everything else — how the file is read, how instructions are parsed, how modules load — is identical.</p>
 
-      <p>The kernel has no concept of "agents." It runs sessions with configurations. The naming is a semantic signal for humans: agent files represent complete autonomous entities, bundle files represent configuration fragments.</p>
+      <p>The kernel has no concept of "agents." It runs sessions with configurations. Sessions as the kernel understands them — four phases, one ID — were covered in <a href="#s8" class="xref">§8</a>. The naming is a semantic signal for humans: agent files represent complete autonomous entities, bundle files represent configuration fragments.</p>
 
       <h3 id="s11-2">11.2 Context files</h3>
 
@@ -2091,7 +2106,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Sometimes a task is too complex for a single agent conversation. It involves multiple steps, each requiring different capabilities, where the output of one step feeds into the next. Recipes handle this.</p>
 
-      <p>A <span class="lt" data-l="bundles">recipe</span> is a YAML file that defines a sequence of steps. Each step runs its own agent session with its own bundle, tools, and instructions. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
+      <p>A <span class="lt" data-l="bundles">recipe</span> is a YAML file that defines a sequence of steps. Each step runs its own agent session (<a href="#s8" class="xref">§8</a>) with its own bundle (<a href="#s9" class="xref">§9</a>), tools, and instructions. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
 
       <p><strong>Approval gates</strong> pause execution for human review. Between steps, a person can review the current output before the system continues. Automated work with human judgment at the critical junctions.</p>
 
@@ -2135,7 +2150,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>The result is efficient token budget management: the agent sees what expertise is available without paying the context cost until it actually needs the knowledge.</p>
 
-      <p>Skills can also run as isolated subagents — called <strong>fork execution</strong> — bridging the gap between passive knowledge and autonomous agents. A code review skill, for example, loads like a skill but spawns its own session with its own context window to do the work.</p>
+      <p>Skills can also run as isolated subagents — called <strong>fork execution</strong> — using the parent/child session relationship from <a href="#s8-2" class="xref">§8.2</a> — bridging the gap between passive knowledge and autonomous agents. A code review skill, for example, loads like a skill but spawns its own session with its own context window to do the work.</p>
 
       <div class="table-wrapper" data-layer="bundles">
         <table>
@@ -2152,7 +2167,7 @@ standards (see @project:standards.md).</code></pre>
 
       <h3 id="s11-5">11.5 Modes and model routing</h3>
 
-      <p><strong>Modes</strong> are runtime behavior overlays: a Markdown file that, when activated, injects guidance into the AI's system prompt and enforces tool-level policies. Each tool in the session can be set to <code>safe</code>, <code>warn</code>, <code>confirm</code>, or <code>block</code>. Modes compose into workflow pipelines — brainstorm, then plan, then execute, then verify — where each phase constrains the agent to the tools and mindset appropriate for that stage. The kernel has no concept of modes. They are built from hooks and context injection.</p>
+      <p><strong>Modes</strong> are runtime behavior overlays: a Markdown file that, when activated, injects guidance into the AI's system prompt and enforces tool-level policies. Each tool in the session can be set to <code>safe</code>, <code>warn</code>, <code>confirm</code>, or <code>block</code>. Modes compose into workflow pipelines — brainstorm, then plan, then execute, then verify — where each phase constrains the agent to the tools and mindset appropriate for that stage. The kernel has no concept of modes. They are built from hooks (<a href="#s4-5" class="xref">§4.5</a>) and the <code>inject_context</code> action (<a href="#s7-4" class="xref">§7.4</a>).</p>
 
       <p><strong>Model routing</strong> removes the need to hard-code which AI model handles each request. Instead, agents declare the <em>type of thinking</em> a task requires: <code>coding</code>, <code>reasoning</code>, <code>critique</code>, <code>fast</code>, <code>vision</code>. A routing matrix maps these semantic roles to concrete models. When better models arrive or costs change, only the matrix needs updating. Agents carry their role declaration in their frontmatter. The kernel routes through the Provider slot as it always has. The routing logic lives in <span class="lt" data-l="foundation">Foundation</span>.</p>
 
@@ -2198,7 +2213,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>A new AI model — say, one that processes video — goes at Layer 2. A provider module. Same interface, kernel unchanged.</p>
 
-      <p>A team wants to block file modifications in production directories: Layer 2. A hook module. Registers for <code>tool:pre</code>, checks the path, returns <code>deny</code>. The AI never knows.</p>
+      <p>A team wants to block file modifications in production directories: Layer 2. A hook module. Registers for <code>tool:pre</code> (one of the 41 events from <a href="#s7-5" class="xref">§7.5</a>), checks the path, returns <code>deny</code> (the highest-priority action from <a href="#s7-4" class="xref">§7.4</a>). The AI never knows.</p>
 
       <p>A standard agent configuration for the organization: Layer 3. A bundle. Lists modules, sets configuration, provides instruction text. Anyone can include it and customize further.</p>
 
@@ -2227,7 +2242,7 @@ standards (see @project:standards.md).</code></pre>
         <p>The kernel provides mechanism. Modules provide policy. You build the harness.</p>
       </div>
 
-      <p>That's why the <span class="lt" data-l="kernel">kernel</span> contains five things and not fifty. Why <span class="lt" data-l="modules">modules</span> follow a universal mount contract. Why <span class="lt" data-l="foundation">Foundation</span> is optional. Why <span class="lt" data-l="bundles">bundles</span> are text files. Why hooks are invisible to the AI. Every decision traces to this: keep the center simple and stable, push everything that changes to the outside.</p>
+      <p>That's why the <span class="lt" data-l="kernel">kernel</span> contains five things and not fifty (<a href="#s4" class="xref">§4</a>). Why <span class="lt" data-l="modules">modules</span> follow a universal mount contract (<a href="#s5-2" class="xref">§5.2</a>). Why <span class="lt" data-l="foundation">Foundation</span> is optional (<a href="#s10" class="xref">§10</a>). Why <span class="lt" data-l="bundles">bundles</span> are text files (<a href="#s9" class="xref">§9</a>). Why hooks are invisible to the AI. Every decision traces to this: keep the center simple and stable, push everything that changes to the outside.</p>
 
       <p>The most interesting parts of this system are the ones that haven't been built yet.</p>
 
