@@ -814,6 +814,32 @@
     .lt[data-l="apps"]:hover       { background-color: var(--layer-apps-soft); }
     .lt[data-l="ecosystem"]:hover  { background-color: var(--layer-ecosystem-soft); }
     .lt[data-l="boundary"]:hover   { background-color: var(--layer-boundary-soft); }
+
+    /* ── Flow diagrams — IKEA-style step sequences ───────────────────── */
+    .flow-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 24px 16px;
+      margin: 28px 0;
+      text-align: center;
+    }
+
+    .flow-diagram .flow-title {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .flow-diagram svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -1270,6 +1296,61 @@
 
       <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. They need the full system set up before they start watching.</p>
 
+      <!-- Diagram: Module Loading Order -->
+      <div class="flow-diagram">
+        <div class="flow-title">Module Loading Order</div>
+        <svg width="100%" viewBox="0 0 600 130" aria-label="Module loading order: Orchestrator, Context Manager, Providers, Tools, Hook Handlers">
+          <defs>
+            <marker id="arrow-s5" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#D8D9E3"/>
+            </marker>
+          </defs>
+
+          <!-- Required / Optional boundary annotations -->
+          <text x="120" y="15" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">session stops if fail</text>
+          <text x="420" y="15" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">warn and continue</text>
+
+          <!-- Vertical dashed separator: Required | Optional -->
+          <line x1="240" y1="22" x2="240" y2="113" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="4 3"/>
+
+          <!-- Arrows -->
+          <line x1="78" y1="55" x2="162" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s5)"/>
+          <line x1="198" y1="55" x2="282" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s5)"/>
+          <line x1="318" y1="55" x2="402" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s5)"/>
+          <line x1="438" y1="55" x2="522" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s5)"/>
+
+          <!-- Step 1: Orchestrator -->
+          <circle cx="60" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="60" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+          <text x="60" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Orchestrator</text>
+          <text x="60" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Required</text>
+
+          <!-- Step 2: Context Mgr -->
+          <circle cx="180" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="180" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+          <text x="180" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Context Mgr</text>
+          <text x="180" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Required</text>
+
+          <!-- Step 3: Providers -->
+          <circle cx="300" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="300" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+          <text x="300" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Providers</text>
+          <text x="300" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Optional</text>
+
+          <!-- Step 4: Tools -->
+          <circle cx="420" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="420" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+          <text x="420" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Tools</text>
+          <text x="420" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Optional</text>
+
+          <!-- Step 5: Hook Handlers -->
+          <circle cx="540" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="540" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
+          <text x="540" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Hook Handlers</text>
+          <text x="540" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Optional, last</text>
+        </svg>
+      </div>
+
       <div class="arch-diagram" data-layer="modules">
         <div class="arch-top">
           <div class="arch-top-label">Fixed Loading Order</div>
@@ -1315,6 +1396,76 @@
       <h3 id="s6-2">6.2 One common pattern: what happens when you send a message</h3>
 
       <p>This shows one commonly used orchestrator. Different orchestrators can implement completely different strategies.</p>
+
+      <!-- Diagram: One Conversation Turn -->
+      <div class="flow-diagram">
+        <div class="flow-title">One Conversation Turn</div>
+        <svg width="100%" viewBox="0 0 600 200" aria-label="One conversation turn: 7 steps from message in to response out">
+          <defs>
+            <marker id="arrow-s6" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#D8D9E3"/>
+            </marker>
+          </defs>
+
+          <!-- Loop dashed path: step 7 → step 1 (left side, rectangular) -->
+          <path d="M 59,145 L 35,145 L 35,50 L 59,50" fill="none" stroke="#D8D9E3" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-s6)"/>
+          <text transform="rotate(-90 20 97)" x="20" y="97" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">if tool called, loop</text>
+
+          <!-- Top row arrows (left → right) -->
+          <line x1="93" y1="50" x2="207" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <line x1="243" y1="50" x2="357" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <line x1="393" y1="50" x2="507" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+
+          <!-- Wrap arrow: step 4 (top-right) → step 5 (bottom-right) -->
+          <line x1="525" y1="68" x2="525" y2="127" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+
+          <!-- Bottom row arrows (right → left) -->
+          <line x1="507" y1="145" x2="318" y2="145" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <line x1="282" y1="145" x2="93" y2="145" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+
+          <!-- Step 1: Message in (kernel) -->
+          <circle cx="75" cy="50" r="16" fill="#9B7B3E"/>
+          <text x="75" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+          <text x="75" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Message in</text>
+          <text x="75" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Session receives</text>
+
+          <!-- Step 2: Hooks fire (modules) -->
+          <circle cx="225" cy="50" r="16" fill="#3E7D8A"/>
+          <text x="225" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+          <text x="225" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Hooks fire</text>
+          <text x="225" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Context injected</text>
+
+          <!-- Step 3: Fetch context (modules) -->
+          <circle cx="375" cy="50" r="16" fill="#3E7D8A"/>
+          <text x="375" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+          <text x="375" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Fetch context</text>
+          <text x="375" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">History assembled</text>
+
+          <!-- Step 4: Call LLM (modules) -->
+          <circle cx="525" cy="50" r="16" fill="#3E7D8A"/>
+          <text x="525" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+          <text x="525" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Call LLM</text>
+          <text x="525" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Provider → model</text>
+
+          <!-- Step 5: Tool check (modules) -->
+          <circle cx="525" cy="145" r="16" fill="#3E7D8A"/>
+          <text x="525" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
+          <text x="525" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Tool check</text>
+          <text x="525" y="187" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Hooks gate first</text>
+
+          <!-- Step 6: Tool runs (modules) -->
+          <circle cx="300" cy="145" r="16" fill="#3E7D8A"/>
+          <text x="300" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">6</text>
+          <text x="300" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Tool runs</text>
+          <text x="300" y="187" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Hooks inject after</text>
+
+          <!-- Step 7: Response out (kernel) -->
+          <circle cx="75" cy="145" r="16" fill="#9B7B3E"/>
+          <text x="75" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">7</text>
+          <text x="75" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Response out</text>
+          <text x="75" y="187" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Events emitted</text>
+        </svg>
+      </div>
 
       <ol>
         <li><strong>You send a message.</strong> The session receives it and hands it to the Orchestrator.</li>
@@ -1402,6 +1553,68 @@
 
       <p>When multiple hooks respond to one event, their results are resolved in this order, from highest authority to lowest:</p>
 
+      <!-- Diagram: Hook Priority Cascade -->
+      <div class="flow-diagram">
+        <div class="flow-title">Hook Priority Cascade</div>
+        <svg width="100%" viewBox="0 0 600 130" aria-label="Hook priority cascade: Deny, Ask User, Inject, Modify, Continue">
+          <defs>
+            <marker id="arrow-s7" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#D8D9E3"/>
+            </marker>
+          </defs>
+
+          <!-- Hard stops / Collaborative annotations -->
+          <text x="120" y="15" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">hard stops</text>
+          <text x="420" y="15" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">collaborative</text>
+
+          <!-- Vertical dashed separator: hard stops | collaborative -->
+          <line x1="240" y1="22" x2="240" y2="113" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="4 3"/>
+
+          <!-- Arrows -->
+          <line x1="78" y1="55" x2="162" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s7)"/>
+          <line x1="198" y1="55" x2="282" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s7)"/>
+          <line x1="318" y1="55" x2="402" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s7)"/>
+          <line x1="438" y1="55" x2="522" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s7)"/>
+
+          <!-- ✕ markers indicating hard-stop triggers -->
+          <text x="120" y="43" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">✕</text>
+          <text x="210" y="43" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">✕</text>
+
+          <!-- "accumulates" annotation between Inject and Modify -->
+          <text x="360" y="71" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">accumulates</text>
+
+          <!-- Step 1: Deny (kernel) -->
+          <circle cx="60" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="60" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+          <text x="60" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Deny</text>
+          <text x="60" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Blocks everything</text>
+
+          <!-- Step 2: Ask User (kernel) -->
+          <circle cx="180" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="180" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+          <text x="180" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Ask User</text>
+          <text x="180" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Pauses for human</text>
+
+          <!-- Step 3: Inject (modules) -->
+          <circle cx="300" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="300" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+          <text x="300" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Inject</text>
+          <text x="300" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Adds context</text>
+
+          <!-- Step 4: Modify (modules) -->
+          <circle cx="420" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="420" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+          <text x="420" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Modify</text>
+          <text x="420" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Transforms data</text>
+
+          <!-- Step 5: Continue (modules) -->
+          <circle cx="540" cy="55" r="16" fill="#3E7D8A"/>
+          <text x="540" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
+          <text x="540" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Continue</text>
+          <text x="540" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">No-op passthrough</text>
+        </svg>
+      </div>
+
       <div class="table-wrapper" data-layer="kernel">
         <table>
           <thead>
@@ -1460,6 +1673,54 @@
       <p>A <span class="lt" data-l="kernel">session</span> is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a lifecycle.</p>
 
       <h3 id="s8-1">8.1 Four phases</h3>
+
+      <!-- Diagram: Session Lifecycle -->
+      <div class="flow-diagram">
+        <div class="flow-title">Session Lifecycle</div>
+        <svg width="100%" viewBox="0 0 600 130" aria-label="Session lifecycle: Create, Initialize, Execute, Cleanup">
+          <defs>
+            <marker id="arrow-s8" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#D8D9E3"/>
+            </marker>
+          </defs>
+
+          <!-- Return dashed arc: step 4 → step 3 (Execute is repeatable) -->
+          <path d="M 525,39 C 525,18 375,18 375,39" fill="none" stroke="#D8D9E3" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-s8)"/>
+          <text x="450" y="13" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">repeatable</text>
+
+          <!-- Arrow 1→2 -->
+          <line x1="93" y1="55" x2="207" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s8)"/>
+          <!-- Arrow 2→3 with annotation -->
+          <line x1="243" y1="55" x2="357" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s8)"/>
+          <text x="300" y="70" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">required modules must mount</text>
+          <!-- Arrow 3→4 -->
+          <line x1="393" y1="55" x2="507" y2="55" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s8)"/>
+
+          <!-- Step 1: Create -->
+          <circle cx="75" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="75" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
+          <text x="75" y="83" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Create</text>
+          <text x="75" y="97" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Config + Coordinator</text>
+
+          <!-- Step 2: Initialize -->
+          <circle cx="225" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="225" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
+          <text x="225" y="83" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Initialize</text>
+          <text x="225" y="97" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Load modules in order</text>
+
+          <!-- Step 3: Execute -->
+          <circle cx="375" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="375" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
+          <text x="375" y="83" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Execute</text>
+          <text x="375" y="97" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Message → Response</text>
+
+          <!-- Step 4: Cleanup -->
+          <circle cx="525" cy="55" r="16" fill="#9B7B3E"/>
+          <text x="525" y="55" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
+          <text x="525" y="83" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Cleanup</text>
+          <text x="525" y="97" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Unload, always runs</text>
+        </svg>
+      </div>
 
       <div class="table-wrapper" data-layer="kernel">
         <table>
