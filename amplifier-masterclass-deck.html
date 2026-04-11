@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>All About Amplifier — Architecture, Modules, and Design</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
@@ -601,10 +601,121 @@
   }
 
   /* ── Responsive ── */
+
+  /* ─── 768px: tablet / large phones ────────────────────────────────── */
   @media (max-width: 768px) {
     .grid-2, .tvh-split { grid-template-columns: 1fr; }
     .grid-3, .module-grid { grid-template-columns: 1fr 1fr; }
-    .slide { padding: 24px; }
+
+    /* P0-B  Slide overflow — dense slides scroll instead of clipping.
+             justify-content:flex-start + auto margins on .slide-inner = centered
+             when content fits, top-anchored + scrollable when it overflows.
+             touch-action:pan-y is the critical iOS piece: without it, iOS
+             intercepts vertical touch for body rubber-band even when body is
+             overflow:hidden, so the slide's own scroll handler never fires. */
+    html, body { overscroll-behavior: none; }
+    .slide {
+      padding: 24px 20px calc(64px + env(safe-area-inset-bottom, 0px)) 20px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+      touch-action: pan-y;
+    }
+    .slide-inner {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    /* P1-I  Click zones cover 75px each side; swipe handles nav on mobile */
+    .click-zone { display: none; }
+
+    /* P1-J  iOS safe area — nav dots and counter clear the home indicator */
+    .nav-dots {
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+    .slide-counter {
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      right: 12px;
+      font-size: 11px;
+    }
+  }
+
+  /* ─── 480px: phones (375–428px) ────────────────────────────────────── */
+  @media (max-width: 480px) {
+
+    /* P0-A  Nav dot tap targets
+             8×8px buttons are untappable. Fix: transparent button is the tap
+             target (16×36px); visual dot rendered via ::before pseudo-element.
+             18 dots × 16px = 288px — fits 375px with room for counter. */
+    .nav-dots { gap: 0; }
+    .nav-dot {
+      width: 16px;
+      height: 36px;
+      background: transparent;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: none;
+    }
+    .nav-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      flex-shrink: 0;
+      transition: background 200ms, transform 200ms;
+    }
+    .nav-dot.active { background: transparent; transform: none; }
+    .nav-dot.active::before { background: var(--kernel); transform: scale(1.4); }
+    .nav-dot:hover::before { background: var(--text-tertiary); }
+
+    /* P0-C  Table (slide 17) — no overflow container; stacks to block layout */
+    .placement-table,
+    .placement-table thead,
+    .placement-table tbody,
+    .placement-table tr { display: block; }
+    .placement-table thead { display: none; }
+    .placement-table tr { padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .placement-table td { display: block; padding: 2px 0; font-size: 12px; border-bottom: none; }
+    .placement-table td:first-child { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+    /* P1-D  grid-3 / module-grid — 2-col is still ~157px/cell at 375px; go 1-col */
+    .grid-3, .module-grid { grid-template-columns: 1fr; }
+
+    /* P1-E  Layer bars and cascade: fixed min-widths push descriptions off screen */
+    .layer-bar .layer-name { min-width: unset; }
+    .layer-bar .layer-desc { min-width: unset; font-size: 11px; }
+    .cascade-name { min-width: 70px; }
+    .cascade-desc { font-size: 11px; }
+
+    /* P1-F  Loading flow (slide 8) — flex-wrap breaks arrow–step continuity;
+             go vertical with rotated arrows instead */
+    .loading-flow { flex-direction: column; align-items: center; gap: 0; }
+    .load-arrow { transform: rotate(90deg); margin-bottom: 0; font-size: 14px; line-height: 20px; }
+
+    /* P1-G  Phase flow (slide 13) — same wrap issue */
+    .phase-flow { flex-direction: column; align-items: center; gap: 4px; }
+    .phase-arrow { transform: rotate(90deg); }
+
+    /* P1-H  title-meta: gap:32px with no flex-wrap overflows on 320px phones */
+    .title-meta { gap: 8px 16px; flex-wrap: wrap; justify-content: center; }
+
+    /* P2-K  Code block: 12px monospace min is borderline illegible on glass screens */
+    .code-block { font-size: 13px; padding: 12px 14px; }
+
+    /* P2-L  Kernel diagram: 3-box row renders ~104px/cell at 375px — too tight */
+    .kernel-row { flex-wrap: wrap; gap: 6px; }
+    .kernel-box { max-width: unset; flex: 1 0 calc(50% - 3px); }
+
+    /* P2-M  Trim excess vertical margins to reclaim height on dense slides */
+    h2 { margin-bottom: 14px; }
+    .slide-label { margin-bottom: 8px; }
+    .layer-stack, .kernel-diagram, .module-grid, .cascade { margin-top: 12px; }
+    .grid-2, .grid-3 { margin-top: 14px; }
+    .pull-quote { margin: 12px 0; }
   }
 </style>
 </head>
@@ -1249,12 +1360,19 @@
     }
   });
 
-  // Touch support
+  // Touch/swipe support — tracks Y as well so vertical content scroll
+  // doesn't accidentally trigger slide navigation.
   let touchStartX = 0;
-  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  let touchStartY = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
   document.addEventListener('touchend', (e) => {
     const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) {
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    // Navigate only if horizontal movement is dominant AND ≥50px
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
       dx < 0 ? nextSlide() : prevSlide();
     }
   }, { passive: true });
