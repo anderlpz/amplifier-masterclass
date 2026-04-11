@@ -5,33 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>All About Amplifier — Architecture, Modules, and Design</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
 
   :root {
     --bg: #F4F5F9;
-    --surface-1: rgba(28,30,43,0.03);
-    --surface-2: rgba(28,30,43,0.05);
-    --surface-3: rgba(28,30,43,0.08);
+    --surface: #FFFFFF;
+    --surface-recessed: #EDEDF2;
     --text-primary: #1C1E2B;
     --text-secondary: #5C5E6E;
     --text-tertiary: #8B8D9C;
-    --text-dim: #B0B2BE;
+    --accent: #3E5C8A;
+    --accent-soft: #E4E9F2;
+    --code-bg: #F0F0F5;
     --border: #D8D9E3;
     --border-light: #E8E9EF;
 
     /* Semantic layer colors — same as the paper */
     --kernel: #9B7B3E;
     --kernel-soft: #F5F0E4;
-    --kernel-glow: rgba(155,123,62,0.15);
     --modules: #3E7D8A;
     --modules-soft: #E4F0F2;
-    --modules-glow: rgba(62,125,138,0.15);
     --bundles: #5C6B9E;
     --bundles-soft: #ECEEF5;
-    --bundles-glow: rgba(92,107,158,0.15);
     --foundation: #5A7D5A;
     --foundation-soft: #E8F0E8;
-    --foundation-glow: rgba(90,125,90,0.15);
     --boundary: #8A5A4A;
     --boundary-soft: #F2EAE6;
     --apps: #7B6B8A;
@@ -40,7 +37,13 @@
     --ecosystem-soft: #F2EEF2;
 
     --accent-green: #3D7A4A;
+    --accent-green-soft: #E8F0E8;
     --accent-red: #8A4A3E;
+    --accent-red-soft: #F2EAE6;
+
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --font-code: 'JetBrains Mono', 'SF Mono', monospace;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,10 +51,11 @@
   html, body {
     height: 100%;
     overflow: hidden;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-body);
     background: var(--bg);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* ── Slide container ── */
@@ -82,6 +86,7 @@
 
   /* ── Typography ── */
   .slide-label {
+    font-family: var(--font-heading);
     font-size: clamp(10px, 1.2vw, 13px);
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -90,14 +95,16 @@
   }
 
   .slide-title {
+    font-family: var(--font-heading);
     font-size: clamp(28px, 4.5vw, 56px);
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.1;
     letter-spacing: -0.025em;
     margin-bottom: 20px;
   }
 
   .slide-subtitle {
+    font-family: var(--font-body);
     font-size: clamp(16px, 2vw, 24px);
     font-weight: 400;
     line-height: 1.5;
@@ -106,14 +113,16 @@
   }
 
   h2 {
+    font-family: var(--font-heading);
     font-size: clamp(24px, 3.5vw, 44px);
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.02em;
     margin-bottom: 24px;
   }
 
   h3 {
+    font-family: var(--font-heading);
     font-size: clamp(16px, 2vw, 22px);
     font-weight: 600;
     line-height: 1.35;
@@ -121,6 +130,7 @@
   }
 
   p, li {
+    font-family: var(--font-body);
     font-size: clamp(14px, 1.5vw, 18px);
     line-height: 1.65;
     color: var(--text-secondary);
@@ -129,12 +139,12 @@
   strong { color: var(--text-primary); font-weight: 600; }
 
   code {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: 0.88em;
-    background: var(--surface-2);
+    background: var(--code-bg);
     padding: 2px 7px;
     border-radius: 4px;
-    color: var(--kernel);
+    color: var(--accent);
   }
 
   /* ── Layout helpers ── */
@@ -154,10 +164,11 @@
 
   /* ── Cards ── */
   .card {
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
     padding: clamp(16px, 2vw, 28px);
+    box-shadow: 0 1px 2px rgba(28,30,43,0.04);
   }
 
   .card-accent {
@@ -183,6 +194,7 @@
 
   /* ── Pull quote ── */
   .pull-quote {
+    font-family: var(--font-heading);
     font-size: clamp(20px, 2.8vw, 36px);
     font-weight: 500;
     line-height: 1.35;
@@ -210,9 +222,10 @@
   .kernel-box {
     background: var(--kernel-soft);
     border: 1.5px solid var(--kernel);
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 12px 20px;
     text-align: center;
+    font-family: var(--font-heading);
     font-size: clamp(12px, 1.3vw, 15px);
     font-weight: 600;
     color: var(--kernel);
@@ -223,9 +236,10 @@
   .event-bus {
     background: var(--modules-soft);
     border: 2px solid var(--modules);
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 8px 32px;
     text-align: center;
+    font-family: var(--font-heading);
     font-size: clamp(11px, 1.2vw, 14px);
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -246,13 +260,14 @@
     align-items: center;
     gap: 16px;
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1.5px solid;
+    font-family: var(--font-heading);
     font-size: clamp(12px, 1.3vw, 15px);
   }
 
   .layer-bar .layer-num {
-    font-weight: 700;
+    font-weight: 600;
     font-size: clamp(11px, 1.1vw, 13px);
     opacity: 0.7;
     min-width: 18px;
@@ -278,11 +293,12 @@
   }
 
   .module-card {
-    background: var(--surface-1);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
     padding: clamp(12px, 1.5vw, 20px);
     position: relative;
+    box-shadow: 0 1px 2px rgba(28,30,43,0.04);
   }
 
   .module-card.required {
@@ -291,6 +307,7 @@
   }
 
   .module-badge {
+    font-family: var(--font-heading);
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
@@ -316,8 +333,9 @@
     grid-template-columns: 1fr 1fr;
     gap: 0;
     margin-top: 24px;
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: hidden;
+    border: 1px solid var(--border-light);
   }
 
   .tvh-side {
@@ -330,6 +348,7 @@
   }
 
   .tvh-side .tvh-tagline {
+    font-family: var(--font-heading);
     font-size: clamp(12px, 1.2vw, 15px);
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -350,8 +369,8 @@
 
   .tvh-side li::before {
     margin-right: 8px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-family: var(--font-code);
   }
 
   /* ── Priority cascade ── */
@@ -367,19 +386,22 @@
     align-items: center;
     gap: 16px;
     padding: 10px 20px;
-    border-radius: 8px;
-    background: var(--surface-1);
-    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(28,30,43,0.04);
   }
 
   .cascade-num {
+    font-family: var(--font-heading);
     font-size: clamp(18px, 2vw, 26px);
-    font-weight: 700;
+    font-weight: 600;
     min-width: 40px;
     text-align: center;
   }
 
   .cascade-name {
+    font-family: var(--font-heading);
     font-weight: 600;
     font-size: clamp(14px, 1.4vw, 17px);
     min-width: 130px;
@@ -403,12 +425,13 @@
   .phase-box {
     background: var(--kernel-soft);
     border: 1.5px solid var(--kernel);
-    border-radius: 10px;
+    border-radius: 4px;
     padding: clamp(12px, 1.5vw, 20px) clamp(16px, 2vw, 28px);
     text-align: center;
   }
 
   .phase-box h3 {
+    font-family: var(--font-heading);
     color: var(--kernel);
     font-size: clamp(14px, 1.5vw, 18px);
     margin-bottom: 4px;
@@ -421,7 +444,7 @@
 
   .phase-arrow {
     font-size: 20px;
-    color: var(--text-dim);
+    color: var(--border);
   }
 
   /* ── Where things go table ── */
@@ -433,6 +456,7 @@
   }
 
   .placement-table th {
+    font-family: var(--font-heading);
     font-size: clamp(10px, 1.1vw, 12px);
     font-weight: 600;
     text-transform: uppercase;
@@ -453,11 +477,11 @@
 
   /* ── Bundle code block ── */
   .code-block {
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    background: var(--code-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
     padding: clamp(16px, 2vw, 24px);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-code);
     font-size: clamp(12px, 1.2vw, 14px);
     line-height: 1.7;
     color: var(--text-secondary);
@@ -465,9 +489,9 @@
     white-space: pre;
   }
 
-  .code-block .kw { color: var(--bundles); }
+  .code-block .kw { color: var(--accent); }
   .code-block .val { color: var(--foundation); }
-  .code-block .cmt { color: var(--text-dim); font-style: italic; }
+  .code-block .cmt { color: var(--text-tertiary); font-style: italic; }
   .code-block .str { color: var(--kernel); }
 
   /* ── Navigation ── */
@@ -485,16 +509,15 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--text-dim);
+    background: var(--border);
     border: none;
     cursor: pointer;
-    transition: background 200ms, transform 200ms;
+    transition: background 200ms;
     padding: 0;
   }
 
   .nav-dot.active {
-    background: var(--kernel);
-    transform: scale(1.3);
+    background: var(--accent);
   }
 
   .nav-dot:hover { background: var(--text-tertiary); }
@@ -503,9 +526,10 @@
     position: fixed;
     bottom: 24px;
     right: 32px;
+    font-family: var(--font-heading);
     font-size: 13px;
     font-weight: 500;
-    color: var(--text-dim);
+    color: var(--text-tertiary);
     z-index: 100;
     font-variant-numeric: tabular-nums;
   }
@@ -524,7 +548,7 @@
 
   /* ── Title slide special ── */
   .title-slide .slide-inner { text-align: center; }
-  .title-slide .slide-title { font-size: clamp(32px, 5vw, 64px); margin-bottom: 16px; }
+  .title-slide .slide-title { font-size: clamp(32px, 5vw, 64px); font-weight: 600; margin-bottom: 16px; }
   .title-slide .slide-subtitle { margin: 0 auto 32px; }
 
   .title-meta {
@@ -535,6 +559,7 @@
   }
 
   .title-meta span {
+    font-family: var(--font-heading);
     font-size: clamp(12px, 1.2vw, 14px);
     color: var(--text-tertiary);
   }
@@ -572,11 +597,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-heading);
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .load-name {
+    font-family: var(--font-heading);
     font-size: clamp(11px, 1.2vw, 14px);
     font-weight: 600;
     color: var(--modules);
@@ -590,12 +617,12 @@
 
   .load-arrow {
     font-size: 16px;
-    color: var(--text-dim);
+    color: var(--border);
     margin-bottom: 20px;
   }
 
   .required-line {
-    border-left: 2px dashed var(--text-dim);
+    border-left: 2px dashed var(--border);
     height: 20px;
     margin: 0 auto;
   }
@@ -664,12 +691,12 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--text-dim);
+      background: var(--border);
       flex-shrink: 0;
       transition: background 200ms, transform 200ms;
     }
     .nav-dot.active { background: transparent; transform: none; }
-    .nav-dot.active::before { background: var(--kernel); transform: scale(1.4); }
+    .nav-dot.active::before { background: var(--accent); transform: scale(1.3); }
     .nav-dot:hover::before { background: var(--text-tertiary); }
 
     /* P0-C  Table (slide 17) — no overflow container; stacks to block layout */
@@ -896,32 +923,32 @@
     <h2>Six module types. One contract. Fixed loading order.</h2>
     <div class="module-grid">
       <div class="module-card required">
-        <div class="module-badge" style="background: var(--modules-glow); color: var(--modules);">Required · Exactly 1</div>
+        <div class="module-badge" style="background: var(--modules-soft); color: var(--modules);">Required · Exactly 1</div>
         <h3 style="color: var(--modules);">Orchestrator</h3>
         <p>Drives the conversation. Decides context, routing, tool handling, when to stop.</p>
       </div>
       <div class="module-card">
-        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">Multiple allowed</div>
+        <div class="module-badge" style="background: var(--surface-recessed); color: var(--text-tertiary);">Multiple allowed</div>
         <h3>Provider</h3>
         <p>Connects to an AI model. Claude, GPT, Gemini, local. Translates formats.</p>
       </div>
       <div class="module-card">
-        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">Multiple allowed</div>
+        <div class="module-badge" style="background: var(--surface-recessed); color: var(--text-tertiary);">Multiple allowed</div>
         <h3>Tool</h3>
         <p>An action the agent can take. The AI <em>decides</em> when to use them.</p>
       </div>
       <div class="module-card required">
-        <div class="module-badge" style="background: var(--modules-glow); color: var(--modules);">Required · Exactly 1</div>
+        <div class="module-badge" style="background: var(--modules-soft); color: var(--modules);">Required · Exactly 1</div>
         <h3 style="color: var(--modules);">Context Manager</h3>
         <p>Manages conversation history. Decides what fits in the token window.</p>
       </div>
-      <div class="module-card" style="border-color: var(--accent-red); background: rgba(248,113,113,0.06);">
-        <div class="module-badge" style="background: rgba(248,113,113,0.15); color: var(--accent-red);">Multiple · Invisible to AI</div>
+      <div class="module-card" style="border-color: var(--boundary); background: var(--boundary-soft);">
+        <div class="module-badge" style="background: var(--accent-red-soft); color: var(--accent-red);">Multiple · Invisible to AI</div>
         <h3 style="color: var(--accent-red);">Hook Handler</h3>
         <p>Reacts to events. Fires automatically. Can observe, block, inject, or modify.</p>
       </div>
       <div class="module-card" style="opacity: 0.7;">
-        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">On demand</div>
+        <div class="module-badge" style="background: var(--surface-recessed); color: var(--text-tertiary);">On demand</div>
         <h3>Resolver</h3>
         <p>Maps module names to file paths. Infrastructure plumbing.</p>
       </div>
@@ -1015,31 +1042,31 @@
     <h2>What happens when you send a message.</h2>
     <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 20px;">
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--kernel); font-weight: 700; font-size: 18px; min-width: 24px;">1</span>
+        <span style="color: var(--kernel); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">1</span>
         <span><strong>Message in</strong> — the session receives it and hands it to the Orchestrator</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">2</span>
+        <span style="color: var(--modules); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">2</span>
         <span><strong>Hooks fire</strong> — context monitoring begins, schema/docs injected</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">3</span>
+        <span style="color: var(--modules); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">3</span>
         <span><strong>Fetch context</strong> — Orchestrator calls Context Manager for conversation history</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">4</span>
+        <span style="color: var(--modules); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">4</span>
         <span><strong>Call LLM</strong> — Provider sends assembled context to the AI model</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--accent-red); font-weight: 700; font-size: 18px; min-width: 24px;">5</span>
+        <span style="color: var(--accent-red); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">5</span>
         <span><strong>Tool check</strong> — if the AI wants a tool, hooks gate first (<code>tool:pre</code>)</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">6</span>
+        <span style="color: var(--modules); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">6</span>
         <span><strong>Tool runs</strong> — hooks inject feedback after (<code>tool:post</code>)</span>
       </div>
       <div style="display: flex; gap: 12px; align-items: baseline;">
-        <span style="color: var(--kernel); font-weight: 700; font-size: 18px; min-width: 24px;">7</span>
+        <span style="color: var(--kernel); font-family: var(--font-heading); font-weight: 600; font-size: 18px; min-width: 24px;">7</span>
         <span><strong>Response out</strong> — rich data flows through events; if tool called, loop back to step 2</span>
       </div>
     </div>
@@ -1057,26 +1084,26 @@
     <div class="slide-label" style="color: var(--boundary);">Chapter 7 · The Most Important Distinction</div>
     <h2>Tools vs Hooks</h2>
     <div class="tvh-split">
-      <div class="tvh-side" style="background: rgba(74,222,128,0.06);">
+      <div class="tvh-side" style="background: var(--accent-green-soft);">
         <h3 style="color: var(--accent-green);">Tools</h3>
         <div class="tvh-tagline" style="color: var(--accent-green);">The AI decides</div>
         <ul>
-          <li style="color: rgba(74,222,128,0.85);">✦ Listed in the system prompt</li>
-          <li style="color: rgba(74,222,128,0.85);">✦ AI sees name, description, schema</li>
-          <li style="color: rgba(74,222,128,0.85);">✦ AI <strong>chooses</strong> when to call</li>
-          <li style="color: rgba(74,222,128,0.85);">✦ Calls appear in conversation history</li>
-          <li style="color: rgba(74,222,128,0.85);">✦ <strong>Extend what the model can do</strong></li>
+          <li style="color: var(--accent-green);">✦ Listed in the system prompt</li>
+          <li style="color: var(--accent-green);">✦ AI sees name, description, schema</li>
+          <li style="color: var(--accent-green);">✦ AI <strong>chooses</strong> when to call</li>
+          <li style="color: var(--accent-green);">✦ Calls appear in conversation history</li>
+          <li style="color: var(--accent-green);">✦ <strong>Extend what the model can do</strong></li>
         </ul>
       </div>
-      <div class="tvh-side" style="background: rgba(248,113,113,0.06);">
+      <div class="tvh-side" style="background: var(--accent-red-soft);">
         <h3 style="color: var(--accent-red);">Hooks</h3>
         <div class="tvh-tagline" style="color: var(--accent-red);">Code decides</div>
         <ul>
-          <li style="color: rgba(248,113,113,0.85);">✦ <strong>Not</strong> in the system prompt</li>
-          <li style="color: rgba(248,113,113,0.85);">✦ AI <strong>cannot</strong> see or call them</li>
-          <li style="color: rgba(248,113,113,0.85);">✦ Fire <strong>automatically</strong> on events</li>
-          <li style="color: rgba(248,113,113,0.85);">✦ Can observe, block, inject, or modify</li>
-          <li style="color: rgba(248,113,113,0.85);">✦ <strong>Govern what the model may do</strong></li>
+          <li style="color: var(--accent-red);">✦ <strong>Not</strong> in the system prompt</li>
+          <li style="color: var(--accent-red);">✦ AI <strong>cannot</strong> see or call them</li>
+          <li style="color: var(--accent-red);">✦ Fire <strong>automatically</strong> on events</li>
+          <li style="color: var(--accent-red);">✦ Can observe, block, inject, or modify</li>
+          <li style="color: var(--accent-red);">✦ <strong>Govern what the model may do</strong></li>
         </ul>
       </div>
     </div>
@@ -1143,7 +1170,7 @@
       <div class="phase-box" style="position: relative;">
         <h3>Execute</h3>
         <p>Prompt → Response. Repeatable.</p>
-        <div style="position: absolute; top: -12px; right: -8px; font-size: 10px; background: var(--kernel); color: #000; padding: 2px 8px; border-radius: 10px; font-weight: 600;">LOOP</div>
+        <div style="position: absolute; top: -12px; right: -8px; font-family: var(--font-heading); font-size: 10px; background: var(--kernel-soft); color: var(--kernel); border: 1px solid var(--kernel); padding: 2px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.04em;">LOOP</div>
       </div>
       <div class="phase-arrow">→</div>
       <div class="phase-box">
@@ -1308,7 +1335,7 @@
       <span><strong>Edition</strong> First · April 2026</span>
     </div>
     <div style="text-align: center; margin-top: 16px;">
-      <span style="font-size: 13px; color: var(--text-dim);">Methodology: 37 verified claims via Parallax Discovery · 7 investigators · 805-line reconciliation document</span>
+      <span style="font-family: var(--font-heading); font-size: 13px; color: var(--text-tertiary);">Methodology: 37 verified claims via Parallax Discovery · 7 investigators · 805-line reconciliation document</span>
     </div>
   </div>
 </div>
