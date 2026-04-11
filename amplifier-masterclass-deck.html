@@ -534,32 +534,124 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .back-link {
+  /* Presentation control buttons */
+  .ctrl-btn {
     position: fixed;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 150ms, border-color 150ms, background 150ms;
+    touch-action: manipulation;
+  }
+  .ctrl-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+    background: var(--surface);
+  }
+
+  /* Back button — top left */
+  .ctrl-back {
     top: 20px;
     left: 20px;
-    z-index: 100;
-    font-family: var(--font-heading);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-    text-decoration: none;
-    padding: 8px 14px;
+  }
+
+  /* Prev/Next — vertically centered on left/right edges */
+  .ctrl-prev {
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+  }
+  .ctrl-next {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  /* Notes toggle — bottom left */
+  .ctrl-notes {
+    bottom: 24px;
+    left: 20px;
+  }
+
+  /* Notes panel — bottom drawer */
+  .notes-panel {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 20px 32px;
+    max-height: 30vh;
+    overflow-y: auto;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+  .notes-panel.visible { display: block; }
+
+  .notes-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
     border: 1px solid var(--border);
+    color: var(--text-tertiary);
+    font-size: 18px;
+    width: 28px;
+    height: 28px;
     border-radius: 4px;
-    background: var(--bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: color 150ms, border-color 150ms;
   }
-  .back-link:hover {
+  .notes-close:hover {
     color: var(--text-primary);
     border-color: var(--text-secondary);
   }
+
+  .notes-content p { margin-bottom: 8px; }
+
+  /* Mobile adjustments */
   @media (max-width: 768px) {
-    .back-link {
+    .ctrl-back {
       top: max(12px, env(safe-area-inset-top, 0px));
       left: 12px;
-      font-size: 12px;
-      padding: 6px 10px;
+      width: 36px;
+      height: 36px;
+    }
+    .ctrl-prev {
+      left: 8px;
+      width: 36px;
+      height: 36px;
+    }
+    .ctrl-next {
+      right: 8px;
+      width: 36px;
+      height: 36px;
+    }
+    .ctrl-notes {
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      left: 12px;
+      width: 36px;
+      height: 36px;
+    }
+    .notes-panel {
+      padding: 16px 20px calc(16px + env(safe-area-inset-bottom, 0px));
     }
   }
 
@@ -1368,12 +1460,30 @@
 
 </div><!-- /deck -->
 
-<!-- Back to masterclass -->
-<a href="amplifier-masterclass.html" class="back-link" id="backLink">Back to Masterclass</a>
+<!-- Presentation controls -->
+<a href="amplifier-masterclass.html" class="ctrl-btn ctrl-back" id="backLink" title="Back to Masterclass (Esc)">
+  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M10 13L5 8l5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+<button class="ctrl-btn ctrl-prev" onclick="prevSlide()" title="Previous slide">
+  <svg width="18" height="18" viewBox="0 0 18 18"><path d="M11 14L6 9l5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<button class="ctrl-btn ctrl-next" onclick="nextSlide()" title="Next slide">
+  <svg width="18" height="18" viewBox="0 0 18 18"><path d="M7 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<button class="ctrl-btn ctrl-notes" id="notesToggle" onclick="toggleNotes()" title="Speaker notes (N)">
+  <svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="5" x2="11" y2="5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="5" y1="11" x2="8" y2="11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+</button>
 
-<!-- Navigation -->
 <div class="nav-dots" id="navDots"></div>
 <div class="slide-counter" id="slideCounter">1 / 18</div>
+
+<!-- Notes panel -->
+<div class="notes-panel" id="notesPanel">
+  <button class="notes-close" onclick="toggleNotes()">&times;</button>
+  <div class="notes-content" id="notesContent">No speaker notes for this slide.</div>
+</div>
+
+<!-- Click zones for desktop (hidden on mobile) -->
 <div class="click-zone left" onclick="prevSlide()"></div>
 <div class="click-zone right" onclick="nextSlide()"></div>
 
@@ -1400,10 +1510,28 @@
     slides[currentSlide].classList.add('active');
     dotsContainer.children[currentSlide].classList.add('active');
     document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+    updateNotes();
   }
 
   window.nextSlide = () => goToSlide(currentSlide + 1);
   window.prevSlide = () => goToSlide(currentSlide - 1);
+
+  // Notes panel
+  window.toggleNotes = function() {
+    const panel = document.getElementById('notesPanel');
+    panel.classList.toggle('visible');
+    updateNotes();
+  };
+
+  function updateNotes() {
+    const content = document.getElementById('notesContent');
+    const noteText = slides[currentSlide]?.dataset?.notes;
+    if (noteText) {
+      content.innerHTML = noteText.split('\n').map(p => '<p>' + p + '</p>').join('');
+    } else {
+      content.innerHTML = 'No speaker notes for this slide.';
+    }
+  }
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
@@ -1413,6 +1541,17 @@
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
       e.preventDefault();
       prevSlide();
+    }
+    if (e.key === 'n' || e.key === 'N') {
+      toggleNotes();
+    }
+    if (e.key === 'Escape') {
+      const notesPanel = document.getElementById('notesPanel');
+      if (notesPanel.classList.contains('visible')) {
+        toggleNotes();
+      } else {
+        window.location.href = 'amplifier-masterclass.html';
+      }
     }
   });
 
