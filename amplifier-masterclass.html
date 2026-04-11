@@ -1128,6 +1128,7 @@
     /* Annotated code blocks — Stripe-style */
     .annotated-code {
       margin: 28px 0;
+      position: relative;
     }
 
     .annotated-code pre {
@@ -1135,9 +1136,17 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       border-bottom: none;
-      position: relative;
       padding-left: 32px;
-      overflow: visible;
+    }
+
+    .code-markers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .code-annotations {
@@ -1177,10 +1186,10 @@
       color: white;
     }
 
-    /* The circled numbers in the code — left gutter, hanging over the edge */
+    /* The circled numbers — left gutter, hanging over the pre border */
     .code-marker {
       position: absolute;
-      left: -11px;
+      left: -1px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1192,8 +1201,7 @@
       font-weight: 600;
       color: white;
       box-shadow: 0 1px 3px rgba(28,30,43,0.12);
-      margin-left: 8px;
-      line-height: 1;
+      pointer-events: auto;
     }
 
 
@@ -1588,10 +1596,16 @@
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
 <div class="annotated-code">
-<pre data-layer="kernel"><code><span class="code-marker" style="background:#9B7B3E">1</span>async def mount(
-<span class="code-marker" style="background:#9B7B3E">2</span>    coordinator: Coordinator,
-<span class="code-marker" style="background:#9B7B3E">3</span>    config: dict
-<span class="code-marker" style="background:#9B7B3E">4</span>) -&gt; Optional[cleanup_fn]:
+<div class="code-markers" data-lines="0,1,2,3">
+  <span class="code-marker" style="background:#9B7B3E">1</span>
+  <span class="code-marker" style="background:#9B7B3E">2</span>
+  <span class="code-marker" style="background:#9B7B3E">3</span>
+  <span class="code-marker" style="background:#9B7B3E">4</span>
+</div>
+<pre data-layer="kernel"><code>async def mount(
+    coordinator: Coordinator,
+    config: dict
+) -&gt; Optional[cleanup_fn]:
     # receive the registry + configuration
     # do your setup work
     # register yourself in the coordinator
@@ -1992,17 +2006,23 @@
       <p><strong>As a hook:</strong> You register a Hook Handler for the <code>tool:post</code> event, which fires after any tool completes. When the event fires for a file-writing tool, the hook runs the code checker. If it finds issues, it injects a message: "The code checker found 3 issues on lines 12, 15, and 22." The AI reads this on its next turn and fixes the issues. The check happens every single time, regardless of what the model decides.</p>
 
 <div class="annotated-code">
-<pre data-layer="modules"><code><span class="code-marker" style="background:#3E7D8A">1</span>async def mount(coordinator, config):
+<div class="code-markers" data-lines="0,2,5,10">
+  <span class="code-marker" style="background:#3E7D8A">1</span>
+  <span class="code-marker" style="background:#3E7D8A">2</span>
+  <span class="code-marker" style="background:#3E7D8A">3</span>
+  <span class="code-marker" style="background:#3E7D8A">4</span>
+</div>
+<pre data-layer="modules"><code>async def mount(coordinator, config):
     hooks = coordinator.hooks
-<span class="code-marker" style="background:#3E7D8A">2</span>    hooks.register("tool:post", on_tool)
+    hooks.register("tool:post", on_tool)
 
 async def on_tool(event):
-<span class="code-marker" style="background:#3E7D8A">3</span>    if event.tool not in FILE_WRITERS:
+    if event.tool not in FILE_WRITERS:
         return {"action": "continue"}
 
     issues = run_checker(event.result.path)
     if issues:
-<span class="code-marker" style="background:#3E7D8A">4</span>        return {
+        return {
             "action": "inject_context",
             "message": format_issues(issues)
         }</code></pre>
@@ -2317,17 +2337,23 @@ async def on_tool(event):
       <p>A minimal working bundle:</p>
 
 <div class="annotated-code">
-<pre data-layer="bundles"><code><span class="code-marker" style="background:#5C6B9E">1</span>---
+<div class="code-markers" data-lines="0,2,4,10">
+  <span class="code-marker" style="background:#5C6B9E">1</span>
+  <span class="code-marker" style="background:#5C6B9E">2</span>
+  <span class="code-marker" style="background:#5C6B9E">3</span>
+  <span class="code-marker" style="background:#5C6B9E">4</span>
+</div>
+<pre data-layer="bundles"><code>---
 bundle:
-<span class="code-marker" style="background:#5C6B9E">2</span>  model: anthropic/claude
+  model: anthropic/claude
   tools:
-<span class="code-marker" style="background:#5C6B9E">3</span>    - name: filesystem
+    - name: filesystem
     - name: web-search
   hooks:
     - name: safety-guard
 ---
 
-<span class="code-marker" style="background:#5C6B9E">4</span>You are a helpful coding assistant.
+You are a helpful coding assistant.
 You write clean, well-documented code.
 You follow the project's coding
 standards (see @project:standards.md).</code></pre>
@@ -2962,6 +2988,59 @@ standards (see @project:standards.md).</code></pre>
 
   window.addEventListener('scroll', updateTocButton, { passive: true });
   updateTocButton();
+
+  // ── Position code markers by measuring actual line positions ────────
+  document.querySelectorAll('.code-markers').forEach(container => {
+    const pre = container.nextElementSibling;
+    if (!pre || pre.tagName !== 'PRE') return;
+
+    const code = pre.querySelector('code');
+    if (!code) return;
+
+    const lineStr = container.getAttribute('data-lines');
+    if (!lineStr) return;
+
+    const lineNums = lineStr.split(',').map(Number);
+    const markers = container.querySelectorAll('.code-marker');
+    const text = code.textContent;
+    const lines = text.split('\n');
+
+    // Measure each target line's vertical center using a Range
+    const preRect = pre.getBoundingClientRect();
+
+    markers.forEach((marker, i) => {
+      if (i >= lineNums.length) return;
+      const lineIdx = lineNums[i];
+
+      // Find the character offset of the start of this line
+      let charOffset = 0;
+      for (let j = 0; j < lineIdx && j < lines.length; j++) {
+        charOffset += lines[j].length + 1; // +1 for the newline
+      }
+
+      // Walk the text nodes to find the right one and offset
+      const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+      let node, accum = 0, targetNode = null, targetOffset = 0;
+      while (node = walker.nextNode()) {
+        if (accum + node.length > charOffset) {
+          targetNode = node;
+          targetOffset = charOffset - accum;
+          break;
+        }
+        accum += node.length;
+      }
+
+      if (targetNode) {
+        const range = document.createRange();
+        range.setStart(targetNode, targetOffset);
+        range.setEnd(targetNode, Math.min(targetOffset + 1, targetNode.length));
+        const lineRect = range.getBoundingClientRect();
+        const top = lineRect.top - preRect.top + (lineRect.height / 2) - 11;
+        marker.style.top = top + 'px';
+        range.detach();
+      }
+    });
+  });
 </script>
 
 </body>
