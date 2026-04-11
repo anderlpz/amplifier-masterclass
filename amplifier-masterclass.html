@@ -96,13 +96,15 @@
     .sidebar-nav .nav-sub { list-style: none; padding-left: 10px; }
 
     .sidebar-nav a {
-      display: block;
+      display: flex;
+      align-items: center;
+      min-height: 44px;
       font-family: var(--font-heading);
       font-size: 13px;
       line-height: 1.4;
       color: var(--text-tertiary);
       text-decoration: none;
-      padding: 4px 8px;
+      padding: 0 8px;
       border-left: 2px solid transparent;
       border-radius: 0 3px 3px 0;
       transition: color 150ms, border-color 150ms, background 150ms;
@@ -121,19 +123,18 @@
       font-size: 13px;
       font-weight: 500;
       color: var(--text-secondary);
-      padding-top: 9px;
-      padding-bottom: 4px;
+      padding: 0 8px;
     }
 
-    .sidebar-nav .nav-sub a { font-size: 12px; padding: 3px 8px; }
+    .sidebar-nav .nav-sub a { font-size: 12px; padding: 0 8px 0 14px; min-height: 44px; }
 
     /* ── Mobile toggle ────────────────────────────────── */
 
     .toc-btn {
       display: flex;
       position: fixed;
-      top: 16px;
-      left: 16px;
+      top: max(16px, env(safe-area-inset-top));
+      left: max(16px, env(safe-area-inset-left));
       z-index: 200;
       background: var(--surface);
       border: 1px solid var(--border);
@@ -191,7 +192,7 @@
 
     @media (max-width: 768px) {
       .toc-chapter-title { display: none; }
-      .toc-btn { padding: 5px; border-radius: 50%; }
+      .toc-btn { padding: 8px; border-radius: 50%; }
     }
 
     .toc-overlay {
@@ -209,9 +210,10 @@
       top: 0;
       left: 0;
       bottom: 0;
-      width: 320px;
+      width: min(320px, calc(100vw - 44px));
       background: var(--surface);
       padding: 24px 20px 20px;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
       overflow-y: auto;
       z-index: 195;
       box-shadow: 4px 0 24px rgba(28,30,43,0.14);
@@ -400,6 +402,15 @@
 
     .abstract-block p { font-size: 16px; }
 
+    .abstract-block .realization {
+      font-size: 26px;
+      color: var(--text-primary);
+      margin-top: 12px;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
     /* ── Typography ─────────────────────────────────── */
 
     h2 {
@@ -465,9 +476,18 @@
       white-space: nowrap;
       border-bottom: 1px solid var(--accent-soft);
       transition: border-color 150ms;
+      padding: 4px 2px;
+      margin: -4px -2px;
     }
     a.xref:hover {
       border-bottom-color: var(--accent);
+    }
+
+    .toc-btn,
+    .sidebar-nav a,
+    .graph-close-btn,
+    .graph-expand-hint {
+      touch-action: manipulation;
     }
 
     hr {
@@ -704,6 +724,11 @@
       border-radius: 4px;
       padding: 4px;
       box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
+      background:
+        linear-gradient(to left, rgba(28,30,43,0.06) 0%, transparent 24px) right,
+        linear-gradient(to right, rgba(28,30,43,0.06) 0%, transparent 24px) left;
+      background-size: 24px 100%, 24px 100%;
+      background-repeat: no-repeat;
     }
 
     table {
@@ -780,6 +805,42 @@
       .feature-quote p { font-size: 16px; }
       h2 { margin-top: 40px; }
       h3 { margin-top: 32px; }
+      .page-wrapper {
+        padding-top: 72px;
+      }
+      .diff-sides {
+        flex-direction: column;
+      }
+      .diff-divider {
+        width: auto;
+        height: 1px;
+      }
+      .flow-diagram {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .flow-diagram svg {
+        min-width: 480px;
+      }
+      .arch-split {
+        flex-direction: column;
+      }
+      .arch-half + .arch-half {
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+      .pull-quote .realization {
+        font-size: 19px;
+      }
+      .pull-quote .resolution {
+        font-size: 16px;
+      }
+      .pull-quote {
+        padding: 28px 20px 24px;
+      }
+      .abstract-block .realization {
+        font-size: 21px;
+      }
     }
 
     /* ── Additive Layer Revelation (§2 diagram) ───────────────────────────── */
@@ -821,18 +882,6 @@
     .diagram .layer[data-layer].revealed > .layer-desc {
       opacity: 1;
       pointer-events: auto;
-    }
-
-    /* ── Mini-map "You Are Here" ──────────────────────────────────────────── */
-    .minimap {
-      display: flex;
-      justify-content: center;
-      margin: 16px auto 32px;
-    }
-
-    .minimap svg {
-      display: block;
-      overflow: visible;
     }
 
         /* ── Philosophy cards (§3) ──────────────────────────────── */
@@ -880,7 +929,7 @@
       margin: 0;
     }
     @media (max-width: 600px) {
-      .philosophy-cards { grid-template-columns: 1fr; }
+      .philosophy-cards { grid-template-columns: 1fr; margin: 20px -16px 32px; width: calc(100% + 32px); }
     }
     @keyframes phil-ring-spin {
       to { transform: rotate(360deg); }
@@ -897,6 +946,151 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .phil-ring-mid, .phil-ring-out { animation: none; }
+    }
+
+    /* ── Section opener component (§4–§12) ─────────────────────────────── */
+    .section-opener {
+      margin: 24px -80px 32px;
+      width: calc(100% + 160px);
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 32px 24px 28px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .section-opener-graphic {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .section-opener-graphic svg {
+      height: 160px;
+      width: auto;
+      display: block;
+      overflow: visible;
+    }
+    .section-opener-title {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .section-opener-desc {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    @media (max-width: 600px) {
+      .section-opener { margin: 20px -16px 24px; width: calc(100% + 32px); }
+    }
+
+    /* ── Dotgraph viewer (§2) ─────────────────────────────────────────── */
+    .graph-compact {
+      background: #080f1e;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      cursor: pointer;
+      position: relative;
+      margin: 24px -80px 24px;
+      min-height: 200px;
+      width: calc(100% + 160px);
+    }
+    .graph-compact svg { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
+    .graph-expand-hint {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-family: var(--font-heading);
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.04);
+      padding: 10px 14px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: background 250ms ease, color 250ms ease;
+      user-select: none;
+    }
+    .graph-expand-hint:hover { background: rgba(255,255,255,0.09); color: #4aade0; }
+    .graph-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .graph-loading p { font-family: var(--font-heading); font-size: 13px; color: rgba(255,255,255,0.4); margin: 0; }
+    .graph-spin { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.08); border-top-color: #4aade0; border-radius: 50%; animation: graph-spin 1s linear infinite; }
+    @keyframes graph-spin { to { transform: rotate(360deg); } }
+
+    #graph-overlay { position: fixed; inset: 0; z-index: 9000; background: #080f1e; display: none; }
+    #graph-overlay.active { display: flex; flex-direction: column; }
+    #graph-overlay-inner { flex: 1; position: relative; overflow: hidden; }
+    #graph-overlay-inner svg { width: 100%; height: 100%; }
+    .graph-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 9001;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      transition: background 200ms ease;
+    }
+    .graph-close-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .graph-overlay-header {
+      position: absolute;
+      top: 26px;
+      left: 24px;
+      z-index: 9001;
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .graph-hint-bar {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-heading);
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.04);
+      padding: 5px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.07);
+      white-space: nowrap;
+      z-index: 9001;
+    }
+    @media (max-width: 600px) {
+      .graph-compact { margin: 20px -16px 20px; width: calc(100% + 32px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .graph-spin { animation: none; }
     }
 
 /* ── Color legend ──────────────────────────────────────────────────── */
@@ -1270,6 +1464,8 @@
 
 
   </style>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-graphviz@5/build/d3-graphviz.min.js"></script>
 </head>
 <body>
 
@@ -1435,7 +1631,7 @@
       <!-- Abstract -->
       <div class="abstract-block" id="abstract">
 
-        <h2 class="realization" style="font-size: 26px; color: var(--text-primary); margin-top: 12px;">Amplifier is a framework for building your AI harness.</h2>
+        <h2 class="realization">Amplifier is a framework for building your AI harness.</h2>
 
         <p></p>
 
@@ -1485,34 +1681,19 @@
 
       <p>This section provides a map of every major component and how they connect. Think of it as a city map before you walk the streets. You don't need to know every building. You need the neighborhoods.</p>
 
-      <div class="diagram">
-        <div class="layer layer-outer" data-layer="6">
-          <div class="layer-label">Layer 6 — Community &amp; Ecosystem</div>
-          <div class="layer-desc">Third-party modules, bundles, recipes, integrations. Open at every level.</div>
-          <div class="layer layer-mid" data-layer="5">
-            <div class="layer-label">Layer 5 — Applications</div>
-            <div class="layer-desc">CLI, web interface, IDE integrations, voice assistants. The things people use.</div>
-            <div class="layer layer-mid" data-layer="4">
-              <div class="layer-label">Layer 4 — Foundation</div>
-              <div class="layer-desc">Turns bundle text files into running sessions. The Amplifier team's reference implementation.</div>
-              <div class="layer layer-mid" data-layer="3">
-                <div class="layer-label">Layer 3 — Bundles</div>
-                <div class="layer-desc">Text files. Combine modules into deployable agents. No code required.</div>
-                <div class="layer layer-mid" data-layer="2">
-                  <div class="layer-label">Layer 2 — Modules (middle ring)</div>
-                  <div class="layer-desc">Orchestrator · Providers · Tools · Context Managers · Hook Handlers · Resolvers</div>
-                  <div class="layer layer-inner revealed" data-layer="1">
-                    <div class="layer-label">Layer 1 — Kernel (center)</div>
-                    <div class="layer-desc"><strong>amplifier-core</strong> · Session Lifecycle · Contracts · Module Loader · Coordinator · Hooks</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- Dotgraph viewer — interactive architecture map, replaces progressive-reveal diagram -->
+      <div class="graph-compact" id="graph-compact-wrap" onclick="openGraphFullscreen()" role="button" aria-label="Open interactive architecture diagram">
+        <div id="graph-compact-loading" class="graph-loading">
+          <div class="graph-spin"></div>
+          <p>Rendering architecture diagram&hellip;</p>
+        </div>
+        <div id="graph-compact-inner" style="width:100%;height:100%;"></div>
+        <div class="graph-expand-hint" onclick="openGraphFullscreen();event.stopPropagation();">
+          &#x2922; Explore full diagram
         </div>
       </div>
 
-      <div class="color-legend">
+            <div class="color-legend">
         <span class="legend-item" style="--lc: var(--layer-kernel)">Kernel</span>
         <span class="legend-item" style="--lc: var(--layer-modules)">Modules</span>
         <span class="legend-item" style="--lc: var(--layer-bundles)">Bundles</span>
@@ -1677,6 +1858,30 @@
 
       <!-- ── Section 4 ── -->
       <h2 id="s4"><span class="section-num">4</span> The Kernel</h2>
+      <!-- Section opener ─ §4 The Kernel ─────────────────────────────── -->
+      <div class="section-opener" data-chapter="s4">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <line x1="8"  y1="80" x2="48"  y2="80" stroke="#D4D5DC" stroke-width="1" stroke-dasharray="3 5"/>
+            <line x1="432" y1="80" x2="472" y2="80" stroke="#D4D5DC" stroke-width="1" stroke-dasharray="3 5"/>
+            <rect x="60" y="42" width="360" height="76" rx="4" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="2.5"/>
+            <rect x="110" y="27" width="20" height="16" rx="2" fill="#9B7B3E"/>
+            <circle cx="120" cy="34" r="5" fill="rgba(255,255,255,0.32)"/>
+            <rect x="170" y="27" width="20" height="16" rx="2" fill="#9B7B3E"/>
+            <circle cx="180" cy="34" r="5" fill="rgba(255,255,255,0.32)"/>
+            <rect x="230" y="27" width="20" height="16" rx="2" fill="#9B7B3E"/>
+            <circle cx="240" cy="34" r="5" fill="rgba(255,255,255,0.32)"/>
+            <rect x="290" y="27" width="20" height="16" rx="2" fill="#9B7B3E"/>
+            <circle cx="300" cy="34" r="5" fill="rgba(255,255,255,0.32)"/>
+            <rect x="350" y="27" width="20" height="16" rx="2" fill="#9B7B3E"/>
+            <circle cx="360" cy="34" r="5" fill="rgba(255,255,255,0.32)"/>
+            <text x="240" y="97" font-family="Inter, sans-serif" font-size="38" font-weight="700" fill="#9B7B3E" text-anchor="middle" opacity="0.11">5</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Five components. Nothing else.</h4>
+        <p class="section-opener-desc">Session lifecycle &middot; Contracts &middot; Module loader &middot; Coordinator &middot; Hooks</p>
+      </div>
+
 
       <p>The kernel (<code>amplifier-core</code>) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.</p>
 
@@ -1779,6 +1984,40 @@
 
       <!-- ── Section 5 ── -->
       <h2 id="s5"><span class="section-num">5</span> The Module System</h2>
+      <!-- Section opener ─ §5 The Module System ──────────────────────── -->
+      <div class="section-opener" data-chapter="s5">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 560 145" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <line x1="54" y1="108" x2="506" y2="108" stroke="#3E7D8A" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="280" y="126" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#3E7D8A" text-anchor="middle" letter-spacing="0.6">mount()</text>
+            <rect x="64" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <line x1="78" y1="32" x2="112" y2="32" stroke="#3E7D8A" stroke-width="1.3"/><line x1="78" y1="46" x2="112" y2="46" stroke="#3E7D8A" stroke-width="1.3"/><line x1="78" y1="60" x2="112" y2="60" stroke="#3E7D8A" stroke-width="1.3"/><line x1="78" y1="74" x2="104" y2="74" stroke="#3E7D8A" stroke-width="1.3"/>
+            <rect x="79" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+            <rect x="138" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="156" cy="36" r="3.5" fill="#3E7D8A"/><circle cx="169" cy="36" r="3.5" fill="#3E7D8A"/><circle cx="182" cy="36" r="3.5" fill="#3E7D8A"/>
+            <circle cx="156" cy="52" r="3.5" fill="#3E7D8A"/><circle cx="169" cy="52" r="3.5" fill="#3E7D8A"/><circle cx="182" cy="52" r="3.5" fill="#3E7D8A"/>
+            <circle cx="156" cy="68" r="3.5" fill="#3E7D8A"/><circle cx="169" cy="68" r="3.5" fill="#3E7D8A"/><circle cx="182" cy="68" r="3.5" fill="#3E7D8A"/>
+            <rect x="153" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+            <rect x="212" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <line x1="243" y1="25" x2="243" y2="77" stroke="#3E7D8A" stroke-width="3" stroke-linecap="round"/><line x1="217" y1="51" x2="269" y2="51" stroke="#3E7D8A" stroke-width="3" stroke-linecap="round"/>
+            <rect x="227" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+            <rect x="286" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <path d="M308,26 C303,26 300,29 300,33 L300,40 C300,45 297,48 297,48 C297,48 300,51 300,56 L300,63 C300,67 303,70 308,70" stroke="#3E7D8A" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M326,26 C331,26 334,29 334,33 L334,40 C334,45 337,48 337,48 C337,48 334,51 334,56 L334,63 C334,67 331,70 326,70" stroke="#3E7D8A" stroke-width="1.6" stroke-linecap="round"/>
+            <rect x="301" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+            <rect x="360" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <path d="M391,22 L391,55 C391,65 382,72 373,72" stroke="#3E7D8A" stroke-width="2.2" stroke-linecap="round"/>
+            <polyline points="369,65 373,72 379,67" stroke="#3E7D8A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="375" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+            <rect x="434" y="10" width="62" height="82" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <polygon points="465,22 484,51 465,80 446,51" fill="rgba(62,125,138,0.12)" stroke="#3E7D8A" stroke-width="1.6"/>
+            <rect x="449" y="92" width="32" height="16" rx="2" fill="#3E7D8A"/>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Six types, one contract</h4>
+        <p class="section-opener-desc">Orchestrator &middot; Provider &middot; Tool &middot; Context Manager &middot; Hook Handler &middot; Resolver</p>
+      </div>
+
 
       <p>Everything outside the <span class="lt" data-l="kernel">kernel</span> is a module. A <span class="lt" data-l="modules">module</span> is a self-contained piece that plugs in through a standard interface to add a specific capability. Six types, one universal contract, fixed loading order. Remove one, add another. The rest of the system doesn't notice.</p>
 
@@ -1956,6 +2195,32 @@
 
       <!-- ── Section 6 ── -->
       <h2 id="s6"><span class="section-num">6</span> The Orchestrator</h2>
+      <!-- Section opener ─ §6 The Orchestrator ───────────────────────── -->
+      <div class="section-opener" data-chapter="s6">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 480 155" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <line x1="240" y1="75" x2="72"  y2="32" stroke="#3E7D8A" stroke-width="1" stroke-dasharray="4 5" opacity="0.6"/>
+            <line x1="240" y1="75" x2="155" y2="18" stroke="#3E7D8A" stroke-width="1" stroke-dasharray="4 5" opacity="0.6"/>
+            <line x1="240" y1="75" x2="240" y2="14" stroke="#3E7D8A" stroke-width="1" stroke-dasharray="4 5" opacity="0.6"/>
+            <line x1="240" y1="75" x2="325" y2="18" stroke="#3E7D8A" stroke-width="1" stroke-dasharray="4 5" opacity="0.6"/>
+            <line x1="240" y1="75" x2="408" y2="32" stroke="#3E7D8A" stroke-width="1" stroke-dasharray="4 5" opacity="0.6"/>
+            <circle cx="72"  cy="32" r="14" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="155" cy="18" r="14" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="240" cy="14" r="14" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="325" cy="18" r="14" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="408" cy="32" r="14" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <circle cx="240" cy="75" r="22" fill="#3E7D8A"/>
+            <circle cx="240" cy="75" r="7" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+            <line x1="240" y1="97" x2="240" y2="118" stroke="#3E7D8A" stroke-width="2.8" stroke-linecap="round"/>
+            <polygon points="234,114 240,122 246,114" fill="#3E7D8A"/>
+            <rect x="170" y="118" width="140" height="30" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.8"/>
+            <text x="240" y="137" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#3E7D8A" text-anchor="middle" letter-spacing="1">REGISTRY</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">The privilege gap</h4>
+        <p class="section-opener-desc">Every module connects once. The Orchestrator stays connected.</p>
+      </div>
+
 
       <p>One module gets live access to the full system at runtime. Every other module is isolated after setup.</p>
 
@@ -2077,6 +2342,30 @@
 
       <!-- ── Section 7 ── -->
       <h2 id="s7"><span class="section-num">7</span> Tools vs Hooks</h2>
+      <!-- Section opener ─ §7 Tools vs Hooks ─────────────────────────── -->
+      <div class="section-opener" data-chapter="s7">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 440 145" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="0" y="0" width="212" height="145" fill="rgba(27,122,61,0.07)"/>
+            <rect x="228" y="0" width="212" height="145" fill="rgba(185,28,28,0.07)"/>
+            <text x="106" y="20" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#1B7A3D" text-anchor="middle" letter-spacing="1.2">TOOLS</text>
+            <path d="M 81,60 C 93,44 117,44 129,60 C 117,76 93,76 81,60 Z" fill="rgba(27,122,61,0.12)" stroke="#1B7A3D" stroke-width="1.8"/>
+            <circle cx="105" cy="60" r="9" fill="#1B7A3D"/>
+            <circle cx="101" cy="56" r="2.5" fill="white"/>
+            <text x="106" y="98" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1B7A3D" text-anchor="middle" letter-spacing="1.5">VISIBLE</text>
+            <text x="106" y="116" font-family="Inter, sans-serif" font-size="9" fill="#1B7A3D" text-anchor="middle" opacity="0.8">the AI decides</text>
+            <text x="334" y="20" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#B91C1C" text-anchor="middle" letter-spacing="1.2">HOOKS</text>
+            <path d="M 309,60 C 321,44 345,44 357,60 C 345,76 321,76 309,60 Z" fill="rgba(185,28,28,0.08)" stroke="#B91C1C" stroke-width="1.8" opacity="0.6"/>
+            <circle cx="333" cy="60" r="9" fill="rgba(185,28,28,0.25)" stroke="#B91C1C" stroke-width="1" opacity="0.6"/>
+            <line x1="313" y1="42" x2="353" y2="78" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="334" y="98" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#B91C1C" text-anchor="middle" letter-spacing="1.5">INVISIBLE</text>
+            <text x="334" y="116" font-family="Inter, sans-serif" font-size="9" fill="#B91C1C" text-anchor="middle" opacity="0.8">code decides</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Tools vs Hooks</h4>
+        <p class="section-opener-desc">Tools: the AI decides. Hooks: code decides.</p>
+      </div>
+
 
       <p>Both are modules. Both plug in the same way. But they operate in fundamentally different realms, and using the wrong one for a task produces unreliable behavior.</p>
 
@@ -2319,6 +2608,37 @@ async def on_tool(event):
 
       <!-- ── Section 8 ── -->
       <h2 id="s8"><span class="section-num">8</span> Sessions</h2>
+      <!-- Section opener ─ §8 Sessions ───────────────────────────────── -->
+      <div class="section-opener" data-chapter="s8">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 520 155" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="18" y="12" width="484" height="78" rx="6" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="2"/>
+            <rect x="55" y="30" width="82" height="40" rx="3" fill="white" stroke="#9B7B3E" stroke-width="1.5"/>
+            <text x="96" y="55" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" text-anchor="middle" letter-spacing="0.3">CREATE</text>
+            <rect x="155" y="30" width="82" height="40" rx="3" fill="white" stroke="#9B7B3E" stroke-width="1.5"/>
+            <text x="196" y="55" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" text-anchor="middle" letter-spacing="0.3">INIT</text>
+            <rect x="269" y="30" width="82" height="40" rx="3" fill="white" stroke="#9B7B3E" stroke-width="1.5"/>
+            <text x="310" y="55" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" text-anchor="middle" letter-spacing="0.3">EXEC</text>
+            <rect x="379" y="30" width="82" height="40" rx="3" fill="white" stroke="#9B7B3E" stroke-width="1.5"/>
+            <text x="420" y="55" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" text-anchor="middle" letter-spacing="0.3">CLEANUP</text>
+            <line x1="139" y1="50" x2="153" y2="50" stroke="#9B7B3E" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="149,46 155,50 149,54" fill="#9B7B3E"/>
+            <line x1="239" y1="50" x2="267" y2="50" stroke="#9B7B3E" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="263,46 269,50 263,54" fill="#9B7B3E"/>
+            <line x1="353" y1="50" x2="377" y2="50" stroke="#9B7B3E" stroke-width="1.8" stroke-linecap="round"/>
+            <polygon points="373,46 379,50 373,54" fill="#9B7B3E"/>
+            <path d="M 351,37 L 363,37 L 363,20 L 269,20 L 269,37" stroke="#9B7B3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polygon points="265,33 269,40 273,33" fill="#9B7B3E"/>
+            <line x1="260" y1="90" x2="260" y2="116" stroke="#9B7B3E" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="275" y="106" font-family="Inter, sans-serif" font-size="8.5" fill="#9B7B3E" text-anchor="start" opacity="0.75">parent_id</text>
+            <rect x="128" y="116" width="264" height="32" rx="4" fill="rgba(245,240,228,0.5)" stroke="#9B7B3E" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="260" y="136" font-family="Inter, sans-serif" font-size="9" fill="#9B7B3E" text-anchor="middle" opacity="0.7">child session</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Container with a lifecycle</h4>
+        <p class="section-opener-desc">Create &rarr; Initialize &rarr; Execute &rarr; Cleanup. Each session is self-contained.</p>
+      </div>
+
 
       <p>A <span class="lt" data-l="kernel">session</span> is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and the four-phase lifecycle from <a href="#s4-1" class="xref">§4.1</a>.</p>
 
@@ -2456,6 +2776,33 @@ async def on_tool(event):
 
       <!-- ── Section 9 ── -->
       <h2 id="s9"><span class="section-num">9</span> Bundles and Configuration</h2>
+      <!-- Section opener ─ §9 Bundles and Configuration ─────────────── -->
+      <div class="section-opener" data-chapter="s9">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 480 148" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="22" y="80" width="192" height="52" rx="3" fill="#ECEEF5" stroke="#5C6B9E" stroke-width="1.5"/>
+            <rect x="35" y="67" width="192" height="52" rx="3" fill="#E8EAF2" stroke="#5C6B9E" stroke-width="1.5"/>
+            <text x="40" y="82" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="rgba(92,107,158,0.5)">@</text>
+            <rect x="48" y="54" width="192" height="52" rx="3" fill="#E4E6EF" stroke="#5C6B9E" stroke-width="1.8"/>
+            <line x1="60" y1="67" x2="228" y2="67" stroke="#5C6B9E" stroke-width="1" opacity="0.4" stroke-dasharray="3 3"/>
+            <text x="62" y="81" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#5C6B9E" opacity="0.6">@</text>
+            <line x1="80" y1="78" x2="218" y2="78" stroke="#5C6B9E" stroke-width="1.2" opacity="0.25"/>
+            <line x1="62" y1="91" x2="210" y2="91" stroke="#5C6B9E" stroke-width="1.2" opacity="0.25"/>
+            <line x1="62" y1="101" x2="195" y2="101" stroke="#5C6B9E" stroke-width="1.2" opacity="0.25"/>
+            <line x1="252" y1="90" x2="276" y2="90" stroke="#5C6B9E" stroke-width="2" stroke-linecap="round"/>
+            <polygon points="272,86 280,90 272,94" fill="#5C6B9E"/>
+            <rect x="284" y="58" width="164" height="64" rx="4" fill="rgba(92,107,158,0.08)" stroke="#5C6B9E" stroke-width="2"/>
+            <line x1="298" y1="76" x2="434" y2="76" stroke="#5C6B9E" stroke-width="1.2" opacity="0.3"/>
+            <line x1="298" y1="87" x2="420" y2="87" stroke="#5C6B9E" stroke-width="1.2" opacity="0.3"/>
+            <line x1="298" y1="98" x2="425" y2="98" stroke="#5C6B9E" stroke-width="1.2" opacity="0.3"/>
+            <line x1="298" y1="109" x2="408" y2="109" stroke="#5C6B9E" stroke-width="1.2" opacity="0.3"/>
+            <text x="298" y="71" font-family="Inter, sans-serif" font-size="8.5" font-weight="600" fill="#5C6B9E" opacity="0.6" letter-spacing="0.8">ASSEMBLED</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Text files. No code required.</h4>
+        <p class="section-opener-desc">YAML frontmatter &middot; Markdown instructions &middot; Composable includes</p>
+      </div>
+
 
       <p>If <span class="lt" data-l="modules">modules</span> are the building blocks, bundles are the packaging. A <span class="lt" data-l="bundles">bundle</span> is a text file that describes which modules to load, what context to give the AI, and how the session should behave. Bundles are language-agnostic: the definitions are YAML or Markdown. What you include can be anything.</p>
 
@@ -2556,6 +2903,51 @@ standards (see @project:standards.md).</code></pre>
 
       <!-- ── Section 10 ── -->
       <h2 id="s10"><span class="section-num">10</span> The Foundation Bridge</h2>
+      <!-- Section opener ─ §10 The Foundation Bridge ─────────────────── -->
+      <div class="section-opener" data-chapter="s10">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="24" y="32" width="52" height="68" rx="2" fill="#E8F0E8" stroke="#5A7D5A" stroke-width="1.5"/>
+            <path d="M 64,32 L 76,32 L 76,44 L 64,44 Z" fill="#B8D4B8" stroke="#5A7D5A" stroke-width="1.5"/>
+            <line x1="64" y1="32" x2="76" y2="44" stroke="#5A7D5A" stroke-width="1.5"/>
+            <line x1="34" y1="52" x2="70" y2="52" stroke="#5A7D5A" stroke-width="1" opacity="0.4"/>
+            <line x1="34" y1="62" x2="68" y2="62" stroke="#5A7D5A" stroke-width="1" opacity="0.4"/>
+            <line x1="34" y1="72" x2="72" y2="72" stroke="#5A7D5A" stroke-width="1" opacity="0.4"/>
+            <line x1="34" y1="82" x2="65" y2="82" stroke="#5A7D5A" stroke-width="1" opacity="0.4"/>
+            <line x1="76" y1="66" x2="88" y2="66" stroke="#5A7D5A" stroke-width="1.2" opacity="0.5"/>
+            <rect x="88" y="50" width="304" height="18" rx="4" fill="#E8F0E8" stroke="#5A7D5A" stroke-width="1.5"/>
+            <line x1="182" y1="68" x2="182" y2="85" stroke="#5A7D5A" stroke-width="1.5" opacity="0.4"/>
+            <line x1="298" y1="68" x2="298" y2="85" stroke="#5A7D5A" stroke-width="1.5" opacity="0.4"/>
+            <line x1="170" y1="85" x2="310" y2="85" stroke="#5A7D5A" stroke-width="1" opacity="0.3" stroke-dasharray="2 4"/>
+            <line x1="392" y1="66" x2="404" y2="66" stroke="#5A7D5A" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="420" cy="68" r="28" fill="#E8F0E8" stroke="#5A7D5A" stroke-width="1.5"/>
+            <g stroke="#5A7D5A" stroke-width="3" stroke-linecap="round">
+              <line x1="420" y1="38" x2="420" y2="33"/>
+              <line x1="440" y1="48" x2="443" y2="43"/>
+              <line x1="448" y1="68" x2="453" y2="68"/>
+              <line x1="440" y1="88" x2="443" y2="93"/>
+              <line x1="420" y1="96" x2="420" y2="101"/>
+              <line x1="400" y1="88" x2="397" y2="93"/>
+              <line x1="392" y1="68" x2="387" y2="68"/>
+              <line x1="400" y1="48" x2="397" y2="43"/>
+            </g>
+            <circle cx="420" cy="68" r="14" fill="white" stroke="#5A7D5A" stroke-width="1.2"/>
+            <path d="M 410,60 A 13,13 0 0 1 428,56" stroke="#5A7D5A" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <polygon points="425,52 430,57 424,59" fill="#5A7D5A" opacity="0.6"/>
+            <line x1="194" y1="68" x2="194" y2="110" stroke="#5A7D5A" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="145" y="100" font-family="Inter, sans-serif" font-size="7.5" fill="#5A7D5A" text-anchor="middle" opacity="0.7">Prompt</text>
+            <text x="145" y="110" font-family="Inter, sans-serif" font-size="7.5" fill="#5A7D5A" text-anchor="middle" opacity="0.7">Factory</text>
+            <line x1="286" y1="68" x2="286" y2="110" stroke="#5A7D5A" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="340" y="100" font-family="Inter, sans-serif" font-size="7.5" fill="#5A7D5A" text-anchor="middle" opacity="0.7">Module</text>
+            <text x="340" y="110" font-family="Inter, sans-serif" font-size="7.5" fill="#5A7D5A" text-anchor="middle" opacity="0.7">Resolver</text>
+            <rect x="148" y="110" width="184" height="32" rx="3" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="2"/>
+            <text x="240" y="130" font-family="Inter, sans-serif" font-size="9.5" font-weight="600" fill="#9B7B3E" text-anchor="middle" letter-spacing="0.8">KERNEL</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Configuration becomes execution</h4>
+        <p class="section-opener-desc">PreparedBundle &middot; System Prompt Factory &middot; Module Resolver</p>
+      </div>
+
 
       <p><span class="lt" data-l="foundation">Foundation</span> (<code>amplifier-foundation</code>) turns text <span class="lt" data-l="bundles">bundle</span> files into running sessions. It is the Amplifier team's reference implementation: their opinions about how to use the kernel, packaged for others. The kernel does not need it. You could build your own equivalent.</p>
 
@@ -2627,6 +3019,47 @@ standards (see @project:standards.md).</code></pre>
 
       <!-- ── Section 11 ── -->
       <h2 id="s11"><span class="section-num">11</span> Agents, Skills &amp; Recipes</h2>
+      <!-- Section opener ─ §11 Agents, Skills & Recipes ─────────────── -->
+      <div class="section-opener" data-chapter="s11">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 520 150" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="42" y="10" width="116" height="40" rx="4" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="2"/>
+            <text x="100" y="35" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#7B6B8A" text-anchor="middle" letter-spacing="0.5">AGENT</text>
+            <line x1="68"  y1="98" x2="100" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="126" y1="98" x2="100" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="100" y1="73" x2="100" y2="50" stroke="#7B6B8A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <polygon points="96,50 100,43 104,50" fill="#7B6B8A" opacity="0.7"/>
+            <rect x="42" y="98" width="52" height="30" rx="3" fill="#ECEEF5" stroke="#5C6B9E" stroke-width="1.3"/>
+            <text x="68" y="117" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#5C6B9E" text-anchor="middle">Bundle</text>
+            <rect x="106" y="98" width="52" height="30" rx="3" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="1.3"/>
+            <text x="132" y="117" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#9B7B3E" text-anchor="middle">Session</text>
+            <rect x="202" y="10" width="116" height="40" rx="4" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="2"/>
+            <text x="260" y="35" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#7B6B8A" text-anchor="middle" letter-spacing="0.5">SKILL</text>
+            <line x1="228" y1="98" x2="260" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="286" y1="98" x2="260" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="260" y1="73" x2="260" y2="50" stroke="#7B6B8A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <polygon points="256,50 260,43 264,50" fill="#7B6B8A" opacity="0.7"/>
+            <rect x="202" y="98" width="52" height="30" rx="3" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="1.3"/>
+            <text x="228" y="117" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#7B6B8A" text-anchor="middle">Markdown</text>
+            <rect x="266" y="98" width="52" height="30" rx="3" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="1.3"/>
+            <text x="292" y="110" font-family="Inter, sans-serif" font-size="8.5" font-weight="500" fill="#7B6B8A" text-anchor="middle">Progressive</text>
+            <text x="292" y="122" font-family="Inter, sans-serif" font-size="8.5" font-weight="500" fill="#7B6B8A" text-anchor="middle">Disclosure</text>
+            <rect x="362" y="10" width="116" height="40" rx="4" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="2"/>
+            <text x="420" y="35" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#7B6B8A" text-anchor="middle" letter-spacing="0.5">RECIPE</text>
+            <line x1="388" y1="98" x2="420" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="446" y1="98" x2="420" y2="73" stroke="#7B6B8A" stroke-width="1.3" opacity="0.5"/>
+            <line x1="420" y1="73" x2="420" y2="50" stroke="#7B6B8A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <polygon points="416,50 420,43 424,50" fill="#7B6B8A" opacity="0.7"/>
+            <rect x="362" y="98" width="52" height="30" rx="3" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="1.3"/>
+            <text x="388" y="117" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#9B7B3E" text-anchor="middle">Sessions</text>
+            <rect x="426" y="98" width="52" height="30" rx="3" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="1.3"/>
+            <text x="452" y="117" font-family="Inter, sans-serif" font-size="9" font-weight="500" fill="#7B6B8A" text-anchor="middle">Chain</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Built from what you&#8217;ve already seen</h4>
+        <p class="section-opener-desc">Agents = bundles &middot; Skills = knowledge &middot; Recipes = chained sessions</p>
+      </div>
+
 
       <p>Every feature in this section uses sessions, bundles, and modules. No new kernel support was added. Each feature was assembled from the primitives covered in the sections above.</p>
 
@@ -2725,6 +3158,33 @@ standards (see @project:standards.md).</code></pre>
 
       <!-- ── Section 12 ── -->
       <h2 id="s12"><span class="section-num">12</span> The Complete Picture</h2>
+      <!-- Section opener ─ §12 The Complete Picture ───────────────────── -->
+      <div class="section-opener" data-chapter="s12">
+        <div class="section-opener-graphic">
+          <svg viewBox="0 0 480 145" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
+            <rect x="11"  y="8"   width="458" height="17" rx="3" fill="#F2EEF2" stroke="#8A7B8A" stroke-width="1.5"/>
+            <text x="240" y="20" font-family="Inter, sans-serif" font-size="9.5" font-weight="500" fill="#8A7B8A" text-anchor="middle">Community</text>
+            <polygon points="237,27 240,32 243,27" fill="#8A7B8A" opacity="0.5"/>
+            <rect x="43"  y="31"  width="394" height="17" rx="3" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="1.5"/>
+            <text x="240" y="43" font-family="Inter, sans-serif" font-size="9.5" font-weight="500" fill="#7B6B8A" text-anchor="middle">Applications</text>
+            <polygon points="237,50 240,55 243,50" fill="#7B6B8A" opacity="0.5"/>
+            <rect x="75"  y="54"  width="330" height="17" rx="3" fill="#E8F0E8" stroke="#5A7D5A" stroke-width="1.5"/>
+            <text x="240" y="66" font-family="Inter, sans-serif" font-size="9.5" font-weight="500" fill="#5A7D5A" text-anchor="middle">Foundation</text>
+            <polygon points="237,73 240,78 243,73" fill="#5A7D5A" opacity="0.5"/>
+            <rect x="107" y="77"  width="266" height="17" rx="3" fill="#ECEEF5" stroke="#5C6B9E" stroke-width="1.5"/>
+            <text x="240" y="89" font-family="Inter, sans-serif" font-size="9.5" font-weight="500" fill="#5C6B9E" text-anchor="middle">Bundles</text>
+            <polygon points="237,96 240,101 243,96" fill="#5C6B9E" opacity="0.5"/>
+            <rect x="139" y="100" width="202" height="17" rx="3" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
+            <text x="240" y="112" font-family="Inter, sans-serif" font-size="9.5" font-weight="500" fill="#3E7D8A" text-anchor="middle">Modules</text>
+            <polygon points="237,119 240,124 243,119" fill="#3E7D8A" opacity="0.5"/>
+            <rect x="171" y="123" width="138" height="17" rx="3" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="2.5"/>
+            <text x="240" y="135" font-family="Inter, sans-serif" font-size="9.5" font-weight="700" fill="#9B7B3E" text-anchor="middle">Kernel</text>
+          </svg>
+        </div>
+        <h4 class="section-opener-title">Six layers, one ecosystem</h4>
+        <p class="section-opener-desc">Kernel &rarr; Modules &rarr; Bundles &rarr; Foundation &rarr; Applications &rarr; Community</p>
+      </div>
+
 
       <p>Each layer depends only on the one below it. Replace anything at one layer without affecting the others. A new <span class="lt" data-l="foundation">Foundation</span> implementation could be written without changing the <span class="lt" data-l="kernel">kernel</span>. A new <span class="lt" data-l="modules">module</span> could be published without any existing module knowing it exists. This is the literal code dependency structure.</p>
 
@@ -2845,6 +3305,747 @@ standards (see @project:standards.md).</code></pre>
     </main>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════
+     DOTGRAPH FULLSCREEN OVERLAY — position:fixed, body level
+     Activated by openGraphFullscreen() · Dismissed by Esc or ×
+  ═══════════════════════════════════════════════════════════════ -->
+<div id="graph-overlay">
+  <div class="graph-overlay-header">Amplifier Architecture Map</div>
+  <div id="graph-overlay-inner">
+    <div id="graph-full-loading" class="graph-loading" style="position:absolute;inset:0;background:#080f1e;z-index:2;">
+      <div class="graph-spin"></div>
+      <p>Rendering full diagram&hellip;</p>
+    </div>
+    <div id="graph-full-inner" style="width:100%;height:100%;"></div>
+  </div>
+  <button class="graph-close-btn" onclick="closeGraphFullscreen()" title="Close (Esc)">&#215;</button>
+  <div class="graph-hint-bar">Scroll to zoom &middot; Drag to pan &middot; Click node to highlight connections &middot; Click background to reset &middot; Esc to close</div>
+</div>
+
+<script type="text/x-dot" id="dot-src">
+// =============================================================================
+//  Amplifier AI Agent Framework — Complete Educational Overview (v4)
+//  Target audience: Non-engineers learning the system from scratch
+//  13 clusters covering every major concept, cross-linked with labeled edges.
+//  v4 UPDATES: Reconciled against code investigation findings (Wave 1).
+//  Every factual claim verified by 2+ independent code-reading agents.
+//  NOTE: This diagram intentionally exceeds normal line-count targets because
+//        it serves as a standalone, all-in-one educational reference.
+// =============================================================================
+
+digraph amplifier_ecosystem {
+
+    label="Amplifier AI Agent Framework\nComplete Educational Overview"
+    labelloc=t
+    rankdir=TB
+    compound=true
+    fontname="Helvetica"
+    fontsize=20
+    nodesep=0.55
+    ranksep=0.9
+    splines=spline
+    bgcolor="#FAFAFA"
+
+    // — Global defaults ————————————————————————————————————
+    node [fontname="Helvetica" fontsize=11 style="rounded,filled"
+          margin="0.22,0.12" penwidth=1.4]
+    edge [fontname="Helvetica" fontsize=10 color="#666666" penwidth=1.2]
+
+
+    // =========================================================================
+    // START HERE — Entry Point
+    // =========================================================================
+    start_here [label="START HERE\n\nAmplifier is a framework for building your AI harness. It brings\nstructure, rigor, and a metacognitive flow\nto AI-powered systems.\n\nRead clusters ①→⑬ in order.\nEach builds on the last."
+                shape=doubleoctagon fillcolor="#FFEB3B" color="#F57F17"
+                fontcolor="#E65100" fontsize=13 fontname="Helvetica-Bold"
+                penwidth=3 margin="0.3,0.2"]
+
+    start_here -> ph_mechanism [lhead=cluster_philosophy
+        label="begin with" color="#F57F17" fontcolor="#F57F17" penwidth=2]
+
+
+    // =========================================================================
+    // CLUSTER 1 — THE PHILOSOPHY  (NO CHANGES from V2)
+    // =========================================================================
+    subgraph cluster_philosophy {
+        label="① The Philosophy: Why Amplifier Is Built This Way"
+        style="filled,rounded"
+        fillcolor="#F5F5F5"
+        color="#9E9E9E"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=octagon fillcolor="#EEEEEE" color="#757575" fontcolor="#424242"]
+
+        ph_mechanism [label="Mechanism, Not Policy\n\nThe kernel gives you capabilities.\nModules decide how to use them.\n(Power without opinion.)"]
+
+        ph_center [label="The Center Stays Still\nSo The Edges Move Fast\n\nThe kernel never changes.\nEverything else can evolve freely."]
+
+        ph_linux [label="The Linux Kernel Analogy\n\nLinux kernel = Amplifier kernel\nLinux apps = Amplifier modules\nSame principle: tiny core, infinite ecosystem."]
+
+        ph_simplicity [label="Ruthless Simplicity\n\nAn intentionally tiny kernel.\nEvery extra line is a future constraint.\nDo less. Enable more."]
+
+        ph_lego [label="The LEGO Model\n\nBricks & Studs:\nAny piece connects to any other.\nSwap models, tools, and behaviors freely."]
+
+        // invisible layout guides
+        ph_mechanism -> ph_center    [style=invis]
+        ph_center    -> ph_linux     [style=invis]
+        ph_linux     -> ph_simplicity [style=invis]
+        ph_simplicity -> ph_lego     [style=invis]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 2 — THE KERNEL  (3 CHANGES: event bus rename, coordinator, zero I/O note)
+    // =========================================================================
+    subgraph cluster_kernel {
+        label="② The Kernel  (amplifier-core): The Unchanging Center"
+        style="filled,rounded"
+        fillcolor="#E3F2FD"
+        color="#1565C0"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [fillcolor="#BBDEFB" color="#1565C0" fontcolor="#0D47A1"]
+
+        k_core [label="amplifier-core\nIntentionally tiny kernel\n\nThe one piece that never changes.\nEverything else builds on top of it."
+                shape=box fillcolor="#90CAF9" penwidth=2.5]
+
+        k_contracts [label="Defines Contracts & Protocols\n\n6 sets of rules that every module\nmust follow to plug in.\n(Like a power-outlet standard:\nany plug that fits, works.)" shape=box]
+
+        k_loader [label="Loads Modules\n\nFinds, verifies, and starts\nevery piece of the system.\nYou declare what you want;\nthe kernel fetches it." shape=box]
+
+        k_lifecycle [label="Manages Session Lifecycle\n\nStart → Run → Stop\nThe kernel oversees the\nfull lifespan of every session." shape=box]
+
+        // CHANGE 1: Renamed from "The Event Bus" — events and hooks are the SAME system
+        k_events [label="The Hook/Event System\n\nEvents and hooks are the SAME system.\nThe HookRegistry dispatches events.\nHooks listen, and can watch,\nblock, or add information.\n(There is no separate event bus.)" shape=box]
+
+        // CHANGE 2: Added clarification about passive registry
+        k_coordinator [label="The Coordinator\n\nOne per session, shared by all modules.\nEvery module gets a reference to the same one.\n\n• Who am I?  (session ID, config)\n• How do I talk to others?  (hooks, capabilities)\n• What services are available?  (capability registry)\n• How do I shut down gracefully?  (cancellation)\n\nDespite the name, the Coordinator\nis a passive registry. It stores, not drives.\nThe Orchestrator is the actual coordinator."
+                        shape=component fillcolor="#42A5F5" fontcolor="#FFFFFF" penwidth=2]
+
+        // CHANGE 3: New note about zero I/O
+        k_zero_io [label="KEY FACT: The kernel does ZERO file I/O.\nNo transcript.jsonl, no events.jsonl.\nAll persistence is delegated to hook modules.\n(This IS 'mechanism vs policy' in action.)"
+                   shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#0D47A1" fontsize=9]
+
+        k_core -> k_contracts  [label="defines"]
+        k_core -> k_loader     [label="runs"]
+        k_core -> k_lifecycle  [label="manages"]
+        k_core -> k_events     [label="dispatches"]
+        k_core -> k_coordinator [label="creates one\nper session"]
+        k_coordinator -> k_zero_io [style=dashed label="remember:" fontcolor="#F9A825" color="#F9A825"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 3 — THE 6 MODULE TYPES  (2 CHANGES: orchestrator update, mount note)
+    // =========================================================================
+    subgraph cluster_modules {
+        label="③ The 6 Module Types: The Pluggable Building Blocks"
+        style="filled,rounded"
+        fillcolor="#E8F5E9"
+        color="#2E7D32"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box color="#2E7D32"]
+
+        m_provider [label="① PROVIDER\n\"The AI's Brain\"\n\nConnects Amplifier to AI models.\nClaude · GPT-4 · Gemini · Ollama\n\nSwap brains without rewriting anything."
+                    fillcolor="#C8E6C9"]
+
+        m_tool [label="② TOOL\n\"The AI's Hands\"\n\nGives the AI real-world actions:\nRead/write files · Run bash\nBrowse web · Search · Run tasks\n(Task tool spawns child agents)"
+                fillcolor="#C8E6C9"]
+
+        // CHANGE 1: Added orchestrator privilege details
+        m_orchestrator [label="③ ORCHESTRATOR\n\"The Engine\"\n\nTHE control surface of the agent.\nRuns the agent loop:\nthink → act → observe → repeat.\nThere is exactly one per session.\n\nTHE most privileged module:\nthe ONLY type that gets the Coordinator\nat runtime. Responsible for ALL\noperational events (tool, provider, context)."
+                        fillcolor="#43A047" fontcolor="#FFFFFF" penwidth=2.5 color="#1B5E20"]
+
+        m_context [label="④ CONTEXT MANAGER\n\"The AI's Memory\"\n\nStores and retrieves the\nconversation history.\nAlso handles compaction\n(summarizing to save space)."
+                   fillcolor="#C8E6C9"]
+
+        m_hook [label="⑤ HOOK\n\"The Sentinels\"\n\nWatches silently at lifecycle events.\nCan: Observe · Block · Inject · Approve\n\nCRITICAL: Code-decided, NOT AI-decided.\nThe AI has no idea hooks exist."
+                fillcolor="#EF9A9A" color="#C62828" fontcolor="#B71C1C"]
+
+        m_resolver [label="⑥ RESOLVER\n\"The Source Finder\"\n\nInfrastructure-level.\nResolves where modules come from:\ngit · file · http · zip\n(Users don't write these.)"
+                    fillcolor="#E0E0E0" color="#757575" fontcolor="#616161"
+                    style="rounded,filled,dashed" fontsize=10]
+
+        // CHANGE 2: New note about universal mount contract
+        m_mount_note [label="Universal mount contract (all 6 types):\nasync def mount(coordinator, config)\n→ Optional[cleanup_fn]\n\nLoading order is fixed:\nOrchestrator(required) → Context(required)\n→ Providers → Tools → Hooks"
+                      shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#1B5E20" fontsize=9]
+
+        // invisible rank-same separation
+        m_provider -> m_tool        [style=invis]
+        m_tool -> m_orchestrator    [style=invis]
+        m_orchestrator -> m_context [style=invis]
+        m_context -> m_hook         [style=invis]
+        m_hook -> m_resolver        [style=invis]
+        m_resolver -> m_mount_note  [style=invis]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 4 — THE ORCHESTRATOR LOOP  (1 CHANGE: updated note)
+    // =========================================================================
+    subgraph cluster_loop {
+        label="④ The Agent Loop: The Canonical Pattern for One Turn"
+        style="filled,rounded"
+        fillcolor="#F1F8E9"
+        color="#558B2F"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#DCEDC8" color="#33691E" fontcolor="#1B5E20"]
+
+        lp_user    [label="① User Sends a Message"
+                    shape=ellipse fillcolor="#A5D6A7" penwidth=2]
+
+        lp_history [label="② Orchestrator Fetches\nConversation History\nfrom the Context Manager\n(Everything said so far)"]
+
+        lp_emit    [label="③ Orchestrator Emits an Event\n(Hooks are listening here.\nThey may inject extra context\nbefore the AI sees anything.)"]
+
+        lp_think   [label="④ The AI Model Thinks\n(Provider is called.\nThe AI reads the history\nand decides what to do next.)"]
+
+        lp_decide  [label="⑤ Does the AI want\nto use a Tool?"
+                    shape=diamond fillcolor="#F9FBE7" color="#558B2F" fontcolor="#33691E"]
+
+        lp_hook_pre [label="⑥ Hook Fires: tool:pre\n\nApproval Gate. Hooks check\nwhat the AI is about to do.\nThey can BLOCK it here."
+                     fillcolor="#FFCCBC" color="#BF360C" fontcolor="#BF360C"]
+
+        lp_execute  [label="⑦ Tool Executes\n\nThe action happens in\nthe real world:\nfile written · bash runs · API called"]
+
+        lp_hook_post [label="⑧ Hook Fires: tool:post\n\nHooks see the result.\nThey can inject feedback:\ne.g. 'code checker found 2 issues'"
+                      fillcolor="#FFCCBC" color="#BF360C" fontcolor="#BF360C"]
+
+        lp_result  [label="⑨ Result Fed Back to AI\n(The AI now knows\nwhat happened)"]
+
+        lp_done    [label="⑩ Is the task complete?"
+                    shape=diamond fillcolor="#F9FBE7" color="#558B2F" fontcolor="#33691E"]
+
+        lp_loop    [label="↺ Loop Again\n(AI processes more steps)"
+                    shape=ellipse fillcolor="#DCEDC8"]
+
+        lp_deliver [label="✓ Response Delivered\nto the User"
+                    shape=ellipse fillcolor="#A5D6A7" penwidth=2]
+
+        // happy path
+        lp_user    -> lp_history  [label="starts"]
+        lp_history -> lp_emit     [label="history ready"]
+        lp_emit    -> lp_think    [label="context set"]
+        lp_think   -> lp_decide   [label="AI responds"]
+        lp_decide  -> lp_hook_pre [label="yes, use tool"]
+        lp_hook_pre -> lp_execute [label="approved ✓"]
+        lp_execute -> lp_hook_post
+        lp_hook_post -> lp_result
+        lp_result  -> lp_done     [label="result in"]
+        lp_decide  -> lp_done     [label="no tool needed"]
+        lp_done    -> lp_loop     [label="more to do"]
+        lp_done    -> lp_deliver  [label="finished ✓"]
+        lp_loop    -> lp_emit     [label="next iteration" style=dashed color="#558B2F"]
+
+        // blocked path
+        lp_hook_pre -> lp_deliver [label="BLOCKED ✗"
+                                   style=dashed color="#E53935" fontcolor="#E53935"]
+
+        // CHANGE: Updated note — biggest factual correction
+        lp_note [label="Note: This flow is INFERRED from\nthe Protocol interfaces.\nThe actual loop lives in an external Orchestrator module,\nNOT in the kernel.\nThe kernel provides the contract;\nthe module provides the implementation."
+                 shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#33691E" fontsize=9]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 5 — TOOLS vs HOOKS  (NO CHANGES from V2)
+    // =========================================================================
+    subgraph cluster_tvh {
+        label="⑤ Tools vs. Hooks: The Single Most Important Distinction"
+        style="filled,rounded"
+        fillcolor="#FFF8E1"
+        color="#F57F17"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box color="#F57F17"]
+
+        tvh_tools [label="TOOLS\n\n• The AI decides when to use them\n• The AI sees them listed in its instructions\n• The AI picks the right tool for the job\n• Visible & intentional"
+                   fillcolor="#C8E6C9" color="#2E7D32" fontcolor="#1B5E20"]
+
+        tvh_hooks [label="HOOKS\n\n• Code decides when they fire\n• The AI has no idea hooks exist\n• They trigger automatically at lifecycle events\n• Invisible & automatic"
+                   fillcolor="#FFCDD2" color="#C62828" fontcolor="#B71C1C"]
+
+        tvh_synergy [label="The inject_context Pattern\n\nHooks can teach the AI mid-session.\nA hook fires → sees what's happening →\ninjects context the AI reads next turn.\n\nExample: code checker hook sees bad code →\ninjects 'Hey, the code checker found these issues…'\n→ AI self-corrects without being told to."
+                     shape=note fillcolor="#FFFDE7" color="#F9A825" fontcolor="#E65100"]
+
+        tvh_tools -> tvh_synergy [style=invis]
+        tvh_hooks -> tvh_synergy [label="hooks can\ninject context"
+                                  style=dashed color="#F57F17" fontcolor="#F57F17"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 6 — SESSIONS  (3 CHANGES: lifecycle, parent-child, storage note)
+    // =========================================================================
+    subgraph cluster_sessions {
+        label="⑥ Sessions: One Conversation's Entire World"
+        style="filled,rounded"
+        fillcolor="#EDE7F6"
+        color="#4527A0"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [fillcolor="#D1C4E9" color="#4527A0" fontcolor="#311B92"]
+
+        s_what [label="A Session is a container.\n\nEach session gets its own:\n• Memory (context module)\n• Tools (tool modules)\n• Identity (session ID, model, personality)"
+                shape=box]
+
+        s_mount [label="The Mount Plan\n\nThe blueprint for a session.\nSpecifies exactly which modules to load:\nwhich Provider · which Tools · which Hooks.\n\n(Like a recipe card before cooking.)"
+                 shape=box fillcolor="#B39DDB" penwidth=2]
+
+        // CHANGE 1: Updated lifecycle to match verified code
+        subgraph cluster_lifecycle {
+            label="Session Lifecycle (verified from code)"
+            style="filled,rounded"
+            fillcolor="#F3E5F5"
+            color="#7B1FA2"
+            penwidth=1.5
+
+            node [shape=box fillcolor="#CE93D8" color="#6A1B9A" fontcolor="#4A148C" fontsize=10]
+
+            lc1 [label="① __init__()\n(Create Coordinator & Loader)"]
+            lc2 [label="② initialize()\n(Load modules in fixed order)"]
+            lc3 [label="③ execute(prompt)\n(Run the orchestrator)"]
+            lc4 [label="④ cleanup()\n(Graceful shutdown)"]
+
+            lc1 -> lc2 -> lc3 -> lc4
+        }
+
+        // CHANGE 2: Updated parent-child — no spawn() method, linked by parent_id
+        s_parentchild [label="Parent ↔ Child Sessions\n\nChild sessions are linked by parent_id\n(NOT by a spawn() method).\nThe caller constructs a new session\nwith parent_id set. No automatic\nconfig inheritance occurs."
+                       shape=component fillcolor="#B39DDB" penwidth=2]
+
+        // CHANGE 3: Strengthened storage note
+        subgraph cluster_storage {
+            label="Session Storage  (on disk)"
+            style="filled,rounded"
+            fillcolor="#F3E5F5"
+            color="#7B1FA2"
+            penwidth=1.5
+
+            node [shape=cylinder fontsize=10]
+
+            st_transcript [label="transcript.jsonl\nFull conversation" fillcolor="#CE93D8" color="#6A1B9A"]
+            st_events     [label="events.jsonl\nEverything that happened" fillcolor="#CE93D8" color="#6A1B9A"]
+            st_meta       [label="metadata.json\nSession identity & info" fillcolor="#CE93D8" color="#6A1B9A"]
+
+            st_note [label="CONFIRMED from code: The kernel writes\nNOTHING to disk. These files are written\nby the hooks-logging module.\n(Mechanism vs policy in action.)"
+                     shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#4A148C" fontsize=9]
+        }
+
+        s_what    -> s_mount        [label="needs a"]
+        s_mount   -> lc1            [label="drives" lhead=cluster_lifecycle]
+        lc3       -> s_parentchild  [label="may spawn"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 7 — BUNDLES  (1 CHANGE: composition detail)
+    // =========================================================================
+    subgraph cluster_bundles {
+        label="⑦ Bundles: Configuration Packages (just text files)"
+        style="filled,rounded"
+        fillcolor="#FFF3E0"
+        color="#E65100"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#FFE0B2" color="#E65100" fontcolor="#BF360C"]
+
+        b_what [label="A Bundle IS:\n\nA text file. No code required.\nTwo formats:\n• Markdown + YAML frontmatter (rich, with prose)\n• Pure YAML (thin bundles, config only)\n\nIt declares:\n• Which modules to load\n• What context to give the AI\n• How the session should behave"]
+
+        // CHANGE: Added composition merge strategy details
+        b_compose [label="Bundle Composition\n\nBundles stack on top of each other.\nA 'child' bundle extends a 'parent.'\n(Like CSS inheritance, but for AI agents.)\n\nComposition rule: includes first,\nthen current bundle on top (last-wins).\nMerge strategies vary:\nsession/spawn: deep merge\ntools/providers/hooks: merge by ID\nagents: dict.update (last wins)\ninstruction: later replaces earlier"]
+
+        b_thin [label="The 'Thin Bundle' Pattern\n\nA bundle that composes other bundles\nbut adds nothing itself.\nPure combiner: 'load X, Y, and Z together.'\n\nPowerful because it enables mix-and-match\nwithout duplication."
+                shape=note fillcolor="#FFF9C4" color="#F9A825"]
+
+        b_flow [label="The Flow:\nBundle  →  Foundation  →  Session\n\nBundle says WHAT to load.\nFoundation resolves everything and\nbuilds the Mount Plan.\nSession is what actually runs."
+                fillcolor="#FFCC80" penwidth=2]
+
+        b_at [label="The @mention System\n\nTwo ways to reference files:\n• @namespace:path/to/file.md  (in markdown)\n• namespace:path  (in YAML, no @ needed)\n\n@mentions load that file into the AI's memory.\nWhatever's in the file becomes part of\nwhat the AI knows."]
+
+        b_what    -> b_compose [label="can extend other bundles via"]
+        b_compose -> b_thin    [style=dashed label="extreme case:"]
+        b_what    -> b_flow    [label="becomes"]
+        b_what    -> b_at      [label="uses"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 8 — THE FOUNDATION BRIDGE  (3 ADDITIONS: system prompt factory,
+    //   persistent callbacks note, cross-cluster callback edge)
+    // =========================================================================
+    subgraph cluster_foundation {
+        label="⑧ The Foundation Bridge: How Bundles Become Running Sessions"
+        style="filled,rounded"
+        fillcolor="#E0F7FA"
+        color="#00838F"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#B2EBF2" color="#00838F" fontcolor="#006064"]
+
+        fb_prepared [label="PreparedBundle\n\nThe bridge between configuration\nand a running session. Takes a bundle,\nfinds all the pieces it needs,\nand assembles them into something that runs."
+                     fillcolor="#80DEEA" penwidth=2]
+
+        fb_pipeline [label="The Pipeline:\n\nBundle → Find the modules\n→ Merge the config → Start the session\n\nFoundation handles this\nwhole sequence for you."]
+
+        fb_resolver [label="BundleModuleResolver\n\nHelps the kernel find modules\nthat were listed in a bundle.\n(Foundation provides this helper\nto the kernel.)"]
+
+        // ADDITION 1: System Prompt Factory — the big new finding
+        fb_prompt_factory [label="The System Prompt Factory\n\nAn async closure created during\nsession setup, registered on the\nkernel's context manager.\n\nCalled EVERY LLM turn:\n• Re-reads all @mention files fresh\n• Rebuilds the system prompt\n• Returns instruction + context blocks\n\nFiles are live. Edits picked up\non the very next turn."
+                           shape=component fillcolor="#4DD0E1" fontcolor="#FFFFFF"
+                           penwidth=2.5 color="#006064"]
+
+        // ADDITION 2: Persistent callbacks note
+        fb_callback_note [label="KEY INSIGHT: The Foundation-to-Kernel\nrelationship is NOT one-shot.\n\nFoundation maintains two persistent\ncallback channels:\n① System Prompt Factory\n   (content, every turn)\n② BundleModuleResolver\n   (module paths, on demand)\n\nThe kernel calls BACK into\nfoundation code at runtime."
+                          shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#006064" fontsize=9]
+
+        fb_note [label="Note: Sessions CAN be created\nwithout bundles.\nThe kernel has zero dependency\non Foundation."
+                 shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#006064"]
+
+        fb_prepared -> fb_pipeline       [label="uses"]
+        fb_prepared -> fb_resolver       [label="needs"]
+        fb_prepared -> fb_prompt_factory [label="creates"]
+        fb_pipeline -> fb_note           [style=dashed]
+        fb_prompt_factory -> fb_callback_note [style=dashed color="#F9A825" fontcolor="#F9A825" label="why this\nmatters:"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 9 — AGENTS  (1 CHANGE: kernel has no concept of agents)
+    // =========================================================================
+    subgraph cluster_agents {
+        label="⑨ Agents: Specialist Workers"
+        style="filled,rounded"
+        fillcolor="#FBE9E7"
+        color="#BF360C"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#FFCCBC" color="#BF360C" fontcolor="#BF360C"]
+
+        ag_same [label="Agents ARE Bundles\n\nSame file format. Same YAML frontmatter.\nThe only difference? One small key:\nAgents say meta: at the top.\nBundles say bundle: at the top.\n\n(Same mechanism, different frontmatter key.)"
+                 fillcolor="#FF8A65" fontcolor="#FFFFFF" penwidth=2]
+
+        ag_parts [label="Every Agent Has:\n\n• Personality: who am I?\n• Instructions: how do I work?\n• Model: which AI brain?\n• Tools: what can I do?\n• Context: what do I know?"]
+
+        ag_task [label="The Task Tool\nSpawns Child Sessions\n\nAny agent can use the 'task' tool\nto delegate work to a specialist.\nThe specialist runs in its own session\nand returns a result."]
+
+        ag_sink [label="The Context Sink Pattern\n\nChild agents absorb token cost.\nLong, expensive analysis happens\nin the child session.\nParent stays lean and focused.\n\n(Like delegating to an intern\nso you can stay strategic.)"
+                 shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#BF360C"]
+
+        // CHANGE: Note about kernel ignorance of agents
+        ag_kernel_note [label="This distinction exists ONLY\nin the foundation layer.\nThe kernel has no concept of 'agents.'"
+                        shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#BF360C" fontsize=9]
+
+        ag_same  -> ag_parts [label="defines"]
+        ag_task  -> ag_sink  [label="enables" style=dashed]
+        ag_same  -> ag_kernel_note [style=dashed color="#F9A825" fontcolor="#F9A825"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 10 — CONTEXT FILES  (1 CHANGE: @mention regex details)
+    // =========================================================================
+    subgraph cluster_context {
+        label="⑩ Context Files: The AI's Briefing Documents"
+        style="filled,rounded"
+        fillcolor="#FFFDE7"
+        color="#F9A825"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#FFF9C4" color="#F57F17" fontcolor="#E65100"]
+
+        ctx_what [label="Context Files ARE:\n\nMarkdown documents loaded into\nthe AI's memory before it starts.\n\nThink: a briefing packet.\n'Here's everything you need to know.'"]
+
+        // CHANGE: Added regex parser details
+        ctx_syntax [label="@namespace:path Syntax\n\ne.g.  @myproject:docs/api-guide.md\n\nRegex-based parser (strips code blocks first).\nThree patterns:\n• @namespace:path (bundle context lookup)\n• @~/path (home directory)\n• @relative/path (relative to bundle)\n\nRecursive up to 3 levels deep.\nContent deduplication via SHA-256."]
+
+        ctx_sink [label="The Context Sink Pattern\n\nOne file = one source of truth.\nUpdate the file → every agent\nthat references it gets the update\nautomatically next time it runs.\n\n(No copy-paste drift. Ever.)"
+                  shape=note fillcolor="#FFF9C4" color="#F9A825"]
+
+        ctx_flow [label="How Context Files Load:\n\nBundle declares @mentions\n→ System resolves each path\n→ Reads the file\n→ Embeds content inline\n→ AI sees it as part of its context"]
+
+        ctx_what   -> ctx_syntax [label="referenced via"]
+        ctx_syntax -> ctx_sink   [style=dashed label="best practice:"]
+        ctx_what   -> ctx_flow   [label="loads via"]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 11 — THE EVENT SYSTEM  (3 CHANGES: rename, events update, JSONL update)
+    // =========================================================================
+    subgraph cluster_events {
+        label="⑪ The Hook/Event System: They Are The SAME System"
+        style="filled,rounded"
+        fillcolor="#FFEBEE"
+        color="#B71C1C"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [fillcolor="#FFCDD2" color="#C62828" fontcolor="#B71C1C"]
+
+        // CHANGE 1: Updated events — namespace:action format, 41 events, kernel vs orchestrator
+        ev_what [label="Events ARE:\nNamed Announcements\n\nFormat: namespace:action\n41 canonical events defined in the kernel.\nExamples:\n  session:start · tool:pre · tool:post\n  provider:request · context:injected\n\nThe kernel emits ONLY lifecycle events:\nsession:start/end/fork, cancel:completed.\nALL operational events come from\nthe orchestrator module."
+                 shape=box]
+
+        // CHANGE 2: Updated JSONL logging
+        ev_log [label="JSONL Logging\nSingle Source of Truth\n\nThe kernel writes NOTHING to disk.\nEvents are saved to events.jsonl\nby hook modules (like hooks-logging).\n\nEvery event auto-gets:\n• session_id and parent_id\n• UTC timestamp (infrastructure-stamped)"
+                shape=cylinder fillcolor="#EF9A9A" penwidth=2]
+
+        ev_priority [label="Hook Priority Resolution\nWhen multiple hooks respond to one event,\ntheir responses are resolved in this order:"
+                     shape=box fillcolor="#FFCDD2"]
+
+        subgraph cluster_priority {
+            label="Highest → Lowest Priority"
+            style="filled,rounded"
+            fillcolor="#FFEBEE"
+            color="#E53935"
+            penwidth=1.5
+
+            node [shape=box fontsize=10 fontcolor="#B71C1C"]
+
+            pr1 [label="① deny\nBlock everything. Nothing proceeds."        fillcolor="#EF9A9A" color="#C62828"]
+            pr2 [label="② ask_user\nPause and ask a human to decide."        fillcolor="#FFAB91" color="#E64A19"]
+            pr3 [label="③ inject_context\nTeach the AI something mid-turn."   fillcolor="#FFE0B2" color="#F57F17"]
+            pr4 [label="④ modify\nChange the data before it passes through." fillcolor="#FFF9C4" color="#F9A825"]
+            pr5 [label="⑤ continue\nDo nothing. Let it pass through."        fillcolor="#F1F8E9" color="#558B2F"]
+
+            pr1 -> pr2 -> pr3 -> pr4 -> pr5 [style=invis]
+        }
+
+        ev_what     -> ev_log      [label="written to"]
+        ev_priority -> pr1         [label="first wins" lhead=cluster_priority]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 12 — RECIPES  (NO CHANGES from V2)
+    // =========================================================================
+    subgraph cluster_recipes {
+        label="⑫ Recipes: Multi-Step Automated Workflows"
+        style="filled,rounded"
+        fillcolor="#F3E5F5"
+        color="#6A1B9A"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fillcolor="#E1BEE7" color="#6A1B9A" fontcolor="#4A148C"]
+
+        rc_what [label="Recipes ARE:\n\nYAML playbooks that run\nmultiple agent sessions in order.\nEach step passes results to the next.\n\n(Provided by the recipes bundle.\nNot built into the kernel.)"]
+
+        rc_sequential [label="Sequential Execution\n\nSteps run one after another.\nOutput from step N becomes\navailable to step N+1 via\n{{variable}} syntax."]
+
+        rc_approval [label="Approval Gates\n\nA human can be required to review\nthe output before the next step runs.\n\n'The AI drafted a PR. Approve to merge?'\n\nHuman-in-the-loop, built in."
+                     fillcolor="#CE93D8" penwidth=2]
+
+        rc_resume [label="Resumability\n\nCheckpoint is saved after each step.\nIf the workflow fails or is cancelled,\nit can resume from the last checkpoint.\nNo work is lost."]
+
+        rc_features [label="Also Supports:\n• foreach loops  (repeat for each item)\n• Conditions  (branch on results)\n• Error handling  (retry or skip on failure)\n• Parallel steps  (run multiple at once)"
+                     shape=note fillcolor="#EDE7F6" color="#7B1FA2"]
+
+        rc_what       -> rc_sequential [label="runs"]
+        rc_sequential -> rc_approval   [label="can pause at\nan approval gate"]
+        rc_sequential -> rc_resume     [label="saves checkpoints\nfor"]
+        rc_what       -> rc_features   [style=dashed]
+    }
+
+
+    // =========================================================================
+    // CLUSTER 13 — THE ECOSYSTEM LAYERS  (NO CHANGES from V2)
+    // =========================================================================
+    subgraph cluster_ecosystem {
+        label="⑬ The Ecosystem: How All the Layers Stack"
+        style="filled,rounded"
+        fillcolor="#E8EAF6"
+        color="#283593"
+        penwidth=2
+        fontname="Helvetica-Bold"
+        fontsize=14
+
+        node [shape=box fontname="Helvetica-Bold"]
+
+        eco1 [label="LAYER 1: Kernel  (amplifier-core)\nThe unchanging center. Intentionally tiny.\nProvides: contracts, loading, events, lifecycle.\n→ Detailed in Cluster ②"
+              fillcolor="#BBDEFB" color="#0D47A1" fontcolor="#0D47A1" penwidth=3]
+
+        eco2 [label="LAYER 2: Foundation  (amplifier-foundation)\nTurns bundles into running sessions.\nFinds modules, assembles config,\nand hands everything to the kernel.\n→ Detailed in Cluster ⑧"
+              fillcolor="#B3E5FC" color="#01579B" fontcolor="#01579B"]
+
+        eco3 [label="LAYER 3: Modules\nProviders · Tools · Hooks\nOrchestrators · Context Managers · Resolvers\nThe actual capabilities.\n→ Detailed in Cluster ③"
+              fillcolor="#C8E6C9" color="#2E7D32" fontcolor="#1B5E20"]
+
+        eco4 [label="LAYER 4: Bundles\nConfiguration packages.\nCombine modules into deployable agents.\nNo code required.\n→ Detailed in Cluster ⑦"
+              fillcolor="#FFE0B2" color="#E65100" fontcolor="#BF360C"]
+
+        eco5 [label="LAYER 5: Apps\nCLI · Web Interface · Voice · Community Apps\nEnd-user surfaces built on bundles."
+              fillcolor="#E1BEE7" color="#6A1B9A" fontcolor="#4A148C"]
+
+        eco6 [label="LAYER 6: Community\nThird-party modules, bundles, and apps.\nAnyone can extend the ecosystem.\nThe modular principle at scale."
+              fillcolor="#CFD8DC" color="#37474F" fontcolor="#263238"]
+
+        eco1 -> eco2 [label="powers"]
+        eco2 -> eco3 [label="used by"]
+        eco3 -> eco4 [label="composed into"]
+        eco4 -> eco5 [label="drives"]
+        eco5 -> eco6 [label="opens to"]
+    }
+
+
+    // =========================================================================
+    // CROSS-CLUSTER EDGES — The Connective Tissue
+    // =========================================================================
+
+    // — Philosophy shapes the Kernel ————————————————————————
+    ph_mechanism -> k_core
+        [ltail=cluster_philosophy lhead=cluster_kernel
+         label="these ideas\nshape the design of"
+         style=dashed color="#9E9E9E" fontcolor="#9E9E9E" penwidth=1.5]
+
+    // — Kernel → Modules ————————————————————————————————————
+    k_core -> m_orchestrator
+        [lhead=cluster_modules
+         label="loads, manages\n& coordinates all"
+         color="#1565C0" fontcolor="#1565C0" penwidth=2]
+
+    k_coordinator -> m_orchestrator
+        [lhead=cluster_modules
+         label="each module\nreceives one"
+         style=dashed color="#42A5F5" fontcolor="#42A5F5"]
+
+    // — Kernel dispatches events → Event System ————————————
+    k_events -> ev_what
+        [lhead=cluster_events
+         label="the kernel emits\nthese events"
+         color="#C62828" fontcolor="#C62828" penwidth=1.8]
+
+    // — Modules → Orchestrator Loop ———————————————————————
+    m_orchestrator -> lp_emit
+        [label="drives the\nagent loop"
+         color="#2E7D32" fontcolor="#1B5E20" penwidth=2.5 fontname="Helvetica-Bold"]
+
+    m_context -> lp_history
+        [label="supplies\nhistory to"
+         color="#2E7D32" fontcolor="#2E7D32"]
+
+    m_provider -> lp_think
+        [label="is called\nby orchestrator"
+         color="#2E7D32" fontcolor="#2E7D32"]
+
+    m_tool -> lp_execute
+        [label="performs the\naction"
+         color="#2E7D32" fontcolor="#2E7D32"]
+
+    m_hook -> lp_hook_pre
+        [label="hook fires\nbefore tool"
+         color="#C62828" fontcolor="#C62828"]
+
+    m_hook -> lp_hook_post
+        [label="hook fires\nafter tool"
+         color="#C62828" fontcolor="#C62828"]
+
+    // — Tools vs Hooks → Module Types ————————————————————
+    tvh_tools -> m_tool
+        [ltail=cluster_tvh lhead=cluster_modules
+         label="AI-decided:\nhow Tools work"
+         style=dashed color="#2E7D32" fontcolor="#2E7D32"]
+
+    tvh_hooks -> m_hook
+        [ltail=cluster_tvh lhead=cluster_modules
+         label="code-decided:\nhow Hooks work"
+         style=dashed color="#C62828" fontcolor="#C62828"]
+
+    // — Bundles → Foundation Bridge ——————————————————————
+    b_flow -> fb_prepared
+        [ltail=cluster_bundles lhead=cluster_foundation
+         label="bundles enter here"
+         color="#E65100" fontcolor="#E65100" penwidth=2]
+
+    // — Foundation Bridge → Sessions ————————————————————
+    fb_pipeline -> s_what
+        [ltail=cluster_foundation lhead=cluster_sessions
+         label="creates sessions"
+         color="#00838F" fontcolor="#00838F" penwidth=2]
+
+    // — Foundation Bridge → Kernel loader ————————————————
+    // NEW: Updated label to emphasize callback nature
+    fb_resolver -> k_loader
+        [label="loader calls resolver\nto find module paths"
+         color="#00838F" fontcolor="#00838F" style=dashed penwidth=1.5]
+
+    // — Mount Plan → Kernel loading ——————————————————————
+    s_mount -> k_loader
+        [label="tells kernel\nwhat to load"
+         color="#4527A0" fontcolor="#4527A0" penwidth=1.8]
+
+    // — Agents ↔ Bundles ——————————————————————————————————
+    ag_same -> b_what
+        [ltail=cluster_agents lhead=cluster_bundles
+         label="agents ARE\na type of bundle"
+         style=dashed color="#BF360C" fontcolor="#BF360C"]
+
+    // — Task Tool spawns → Child Sessions ———————————————
+    ag_task -> s_parentchild
+        [ltail=cluster_agents lhead=cluster_sessions
+         label="task tool\ncreates child sessions"
+         color="#BF360C" fontcolor="#BF360C" penwidth=1.8]
+
+    // — Context Files → Bundles (@mention) ——————————————
+    b_at -> ctx_syntax
+        [ltail=cluster_bundles lhead=cluster_context
+         label="@mentions resolved\nto context files"
+         style=dashed color="#F9A825" fontcolor="#F9A825"]
+
+    // — Events storage matches Session storage ——————————
+    ev_log -> st_events
+        [ltail=cluster_events lhead=cluster_sessions
+         label="same JSONL format\nlives here"
+         style=dashed color="#C62828" fontcolor="#C62828"]
+
+    // — Recipes run Sessions ——————————————————————————————
+    rc_sequential -> s_what
+        [ltail=cluster_recipes lhead=cluster_sessions
+         label="each recipe step\nruns a session"
+         color="#6A1B9A" fontcolor="#6A1B9A" penwidth=2]
+
+
+    // =========================================================================
+    // NEW CROSS-CLUSTER EDGES — v4 additions
+    // =========================================================================
+
+    // — THE KEY CALLBACK EDGE: System Prompt Factory ← Sessions cluster
+    //   This is the architectural surprise — the kernel calls BACK into foundation
+    fb_prompt_factory -> lc3
+        [ltail=cluster_foundation lhead=cluster_sessions
+         label="context manager calls\nfactory every LLM turn"
+         style=dashed color="#E65100" fontcolor="#E65100"
+         penwidth=2 fontname="Helvetica-Bold"]
+
+}
+
+</script>
+
 <script>
   // ── Scrollspy ──────────────────────────────────────────────────────────────
   // ── Smooth scroll (JS-based, avoids hash navigation / CSP issues) ────────
@@ -2952,113 +4153,6 @@ standards (see @project:standards.md).</code></pre>
     if (el) layerObserver.observe(el);
   });
 
-  // ── "You Are Here" Mini-Maps ──────────────────────────────────────────────
-  // Configuration per chapter: which layer is highlighted (active) and
-  // which layers are already revealed (shown in the minimap).
-  var MINIMAP_CFG = {
-    // s3 removed — replaced by philosophy-cards component
-    s4:  { active: 1,     shown: [1] },
-    s5:  { active: 2,     shown: [1, 2] },
-    s6:  { active: 2,     shown: [1, 2] },
-    s7:  { active: 2,     shown: [1, 2] },
-    s8:  { active: 1,     shown: [1, 2] },
-    s9:  { active: 3,     shown: [1, 2, 3] },
-    s10: { active: 4,     shown: [1, 2, 3, 4] },
-    s11: { active: 5,     shown: [1, 2, 3, 4, 5] },
-    s12: { active: 'all', shown: [1, 2, 3, 4, 5, 6] }
-  };
-
-  // Concentric-rectangle geometry for each layer (outermost → innermost).
-  var MINIMAP_LAYERS = [
-    { n: 6, x: 0,  y: 0,  w: 200, h: 120, rx: 4, label: 'Ecosystem' },
-    { n: 5, x: 16, y: 12, w: 168, h: 96,  rx: 3, label: 'Apps' },
-    { n: 4, x: 32, y: 24, w: 136, h: 72,  rx: 3, label: 'Foundation' },
-    { n: 3, x: 48, y: 36, w: 104, h: 48,  rx: 2, label: 'Bundles' },
-    { n: 2, x: 64, y: 44, w: 72,  h: 32,  rx: 2, label: 'Modules' },
-    { n: 1, x: 76, y: 50, w: 48,  h: 20,  rx: 2, label: 'Kernel' }
-  ];
-
-  // Hard-coded colour values — CSS custom properties are not resolved
-  // inside SVG attribute strings, so we inline the actual hex values.
-  // These must match the --layer-* CSS custom properties declared in :root.
-  var LAYER_COLORS = {
-    1: { main: '#9B7B3E', soft: '#F5F0E4' },  // Kernel
-    2: { main: '#3E7D8A', soft: '#E4F0F2' },  // Modules
-    3: { main: '#5C6B9E', soft: '#ECEEF5' },  // Bundles
-    4: { main: '#5A7D5A', soft: '#E8F0E8' },  // Foundation
-    5: { main: '#7B6B8A', soft: '#F0ECF2' },  // Apps
-    6: { main: '#8A7B8A', soft: '#F2EEF2' }   // Ecosystem
-  };
-  var MM_MUTED_BORD  = '#E8E9EF';   // --border-light (muted layer stroke)
-  var MM_TEXT_MUT    = '#8B8D9C';   // --text-tertiary (all-layers mode text)
-
-  function buildMinimapSVG(activeLayer, shownLayers) {
-    var isAll = (activeLayer === 'all');
-    var rects = '';
-    var labels = '';
-
-    // Draw rectangles from outermost to innermost (back → front).
-    MINIMAP_LAYERS.forEach(function(L) {
-      if (shownLayers.indexOf(L.n) === -1) return;
-      var active = isAll || (L.n === activeLayer);
-      var lc = LAYER_COLORS[L.n] || { main: '#3E5C8A', soft: '#E4E9F2' };
-      rects +=
-        '<rect x="' + L.x + '" y="' + L.y +
-        '" width="' + L.w + '" height="' + L.h +
-        '" rx="' + L.rx + '"' +
-        ' fill="'         + (active ? lc.soft     : lc.soft + 'CC')  + '"' +
-        ' stroke="'       + (active ? lc.main      : MM_MUTED_BORD)   + '"' +
-        ' stroke-width="' + (active ? '2'          : '1')             + '"/>';
-    });
-
-    // Labels: active-layer label(s) only, positioned at the top-left of
-    // each highlighted rect so the text sits in the visible ring band.
-    MINIMAP_LAYERS.forEach(function(L) {
-      if (shownLayers.indexOf(L.n) === -1) return;
-      var active = isAll || (L.n === activeLayer);
-      if (!active) return;
-      var lc = LAYER_COLORS[L.n] || { main: '#3E5C8A', soft: '#E4E9F2' };
-      labels +=
-        '<text' +
-        ' x="' + (L.x + 5) + '"' +
-        ' y="' + (L.y + 9) + '"' +
-        ' fill="' + (isAll ? MM_TEXT_MUT : lc.main) + '"' +
-        ' font-size="8.5"' +
-        ' font-family="Inter,system-ui,sans-serif"' +
-        ' font-weight="600">' +
-        L.label +
-        '</text>';
-    });
-
-    var ariaLabel = isAll
-      ? 'Architecture overview: all six layers'
-      : 'You are here: Layer ' + activeLayer;
-
-    return (
-      '<svg viewBox="0 0 200 120" width="200" height="120"' +
-      ' role="img" aria-label="' + ariaLabel + '">' +
-      rects + labels +
-      '</svg>'
-    );
-  }
-
-  function injectMinimaps() {
-    Object.keys(MINIMAP_CFG).forEach(function(id) {
-      var heading = document.getElementById(id);
-      if (!heading) return;
-      var cfg = MINIMAP_CFG[id];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'minimap';
-      wrapper.setAttribute('aria-hidden', 'true');
-      wrapper.innerHTML = buildMinimapSVG(cfg.active, cfg.shown);
-      // Insert directly after the <h2>, before the first paragraph.
-      heading.insertAdjacentElement('afterend', wrapper);
-    });
-  }
-
-  // The script tag sits at the bottom of <body>, so the DOM is already
-  // fully parsed — no DOMContentLoaded wrapper needed.
-  injectMinimaps();
 
   // ── Chapter data (shared by scrollspy + dynamic TOC button) ────────────────
   const CHAPTER_TITLES = {
@@ -3167,6 +4261,135 @@ standards (see @project:standards.md).</code></pre>
         range.detach();
       }
     });
+  });
+
+  // ── Dotgraph viewer ──────────────────────────────────────────────────────────
+  var graphDotSrc = '';
+  var graphRenderedCompact = false;
+  var graphRenderedFull = false;
+
+  (function initGraph() {
+    var srcEl = document.getElementById('dot-src');
+    if (srcEl) graphDotSrc = srcEl.textContent;
+
+    // Render compact preview
+    renderGraphCompact();
+
+    // Observe .graph-compact for reveal animation
+    if (typeof IntersectionObserver !== 'undefined') {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.05 });
+      var gc = document.getElementById('graph-compact-wrap');
+      if (gc) obs.observe(gc);
+    }
+  })();
+
+  function renderGraphCompact() {
+    var el = document.getElementById('graph-compact-inner');
+    if (!el || graphRenderedCompact || !window.d3) return;
+    graphRenderedCompact = true;
+    try {
+      d3.select('#graph-compact-inner').graphviz({ useWorker: false })
+        .fit(true).zoom(false)
+        .attributer(function(d) {
+          if (d.tag === 'svg') { d3.select(this).attr('width','100%').attr('height','100%'); }
+        })
+        .renderDot(graphDotSrc)
+        .on('end', function() {
+          var loader = document.getElementById('graph-compact-loading');
+          if (loader) loader.remove();
+        });
+    } catch(e) { console.error('Graph compact render error:', e); }
+  }
+
+  function openGraphFullscreen() {
+    var overlay = document.getElementById('graph-overlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (!graphRenderedFull) {
+      graphRenderedFull = true;
+      setTimeout(function() {
+        try {
+          d3.select('#graph-full-inner').graphviz({ useWorker: false })
+            .fit(true).zoom(true).zoomScaleExtent([0.05, 20])
+            .attributer(function(d) {
+              if (d.tag === 'svg') { d3.select(this).attr('width','100%').attr('height','100%'); }
+            })
+            .renderDot(graphDotSrc)
+            .on('end', function() {
+              setupGraphHighlight('#graph-full-inner');
+              var loader = document.getElementById('graph-full-loading');
+              if (loader) loader.remove();
+            });
+        } catch(e) { console.error('Graph full render error:', e); }
+      }, 100);
+    }
+  }
+
+  function closeGraphFullscreen() {
+    var overlay = document.getElementById('graph-overlay');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function setupGraphHighlight(containerId) {
+    var container = document.querySelector(containerId + ' svg');
+    if (!container) return;
+    var highlighted = false;
+    var allNodes = container.querySelectorAll('.node');
+    var allEdges = container.querySelectorAll('.edge');
+
+    function resetHighlight() {
+      allNodes.forEach(function(n) {
+        n.style.opacity = '1';
+        n.querySelectorAll('*').forEach(function(c) { if (c.style.stroke) c.style.stroke = ''; });
+      });
+      allEdges.forEach(function(e) { e.style.opacity = '1'; });
+      highlighted = false;
+    }
+
+    allNodes.forEach(function(node) {
+      node.style.cursor = 'pointer';
+      node.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (highlighted && node.classList.contains('highlighted-node')) { resetHighlight(); return; }
+        var nodeId = node.id;
+        allNodes.forEach(function(n) { n.style.opacity = '0.15'; n.classList.remove('highlighted-node'); });
+        allEdges.forEach(function(e) { e.style.opacity = '0.08'; });
+        node.style.opacity = '1'; node.classList.add('highlighted-node');
+        allEdges.forEach(function(edge) {
+          var title = edge.querySelector('title');
+          if (title && title.textContent.includes(nodeId)) {
+            edge.style.opacity = '1';
+            var parts = title.textContent.split('->');
+            var src = parts[0] ? parts[0].trim() : null;
+            var tgt = parts[1] ? parts[1].trim().split('[')[0].trim() : null;
+            [src, tgt].forEach(function(id) {
+              if (!id) return;
+              var n = container.querySelector('#' + CSS.escape(id));
+              if (n) n.style.opacity = '1';
+            });
+          }
+        });
+        highlighted = true;
+      });
+    });
+    container.addEventListener('click', function() { if (highlighted) resetHighlight(); });
+  }
+
+  // Esc key closes graph overlay
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var overlay = document.getElementById('graph-overlay');
+      if (overlay && overlay.classList.contains('active')) {
+        closeGraphFullscreen();
+        e.stopPropagation();
+      }
+    }
   });
 </script>
 
