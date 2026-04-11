@@ -1379,13 +1379,14 @@
 
         <p>AI models are powerful, but raw power without structure is unpredictable. The model itself handles reasoning. Everything around the model — what tools it can use, what it remembers, what rules it follows, how it talks to the outside world — needs structure. Amplifier provides that structure. Think of it as a construction kit: it gives you the pieces, and you assemble the harness that fits your use case.</p>
 
-        <p>This document describes Amplifier's architecture from the inside out: the unchanging kernel at the center, the module system that wraps it, the Orchestrator that drives the agent loop, the distinction between tools and hooks, how sessions work, how bundles package capabilities, how Foundation bridges configuration to execution, and how all six layers of the ecosystem compose into a complete picture.</p>
       </div>
 
       <!-- ── Section 1 ── -->
       <h2 id="s1"><span class="section-num">1</span> Introduction</h2>
 
       <p>Amplifier is a framework for building your AI harness. Some harnesses built with Amplifier are conversational AI agents: programs that can reason about a task, take actions, observe the results, and decide what to do next. Others are pipeline runners with zero AI loops. The framework does not prescribe what you build.</p>
+
+      <p>This document describes Amplifier's architecture from the inside out: the unchanging kernel at the center, the module system that wraps it, the Orchestrator that drives the agent loop, the distinction between tools and hooks, how sessions work, how bundles package capabilities, how Foundation bridges configuration to execution, and how all six layers of the ecosystem compose into a complete picture.</p>
 
       <h3 id="s1-1">1.1 The operating system analogy</h3>
 
