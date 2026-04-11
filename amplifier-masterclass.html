@@ -833,6 +833,147 @@
 
     .arch-diagram[data-layer="modules"] { border-top: 3px solid var(--layer-modules); }
     .arch-diagram[data-layer="kernel"]  { border-top: 3px solid var(--layer-kernel); }
+    .diff-compare[data-layer="modules"] { border-top: 3px solid var(--layer-modules); }
+
+    /* ── Diff-style comparison ────────────────────────────────────────────── */
+
+    .diff-compare {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      margin: 28px 0;
+      overflow: hidden;
+    }
+
+    .diff-shared {
+      background: var(--surface-recessed);
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .diff-shared-label {
+      font-family: var(--font-heading);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .diff-shared ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .diff-shared li {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      padding: 3px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .diff-shared li::before {
+      content: '=';
+      position: absolute;
+      left: 0;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      font-family: var(--font-code);
+      font-size: 13px;
+    }
+
+    .diff-sides {
+      display: flex;
+    }
+
+    .diff-side {
+      flex: 1;
+      padding: 16px 20px;
+    }
+
+    .diff-divider {
+      width: 1px;
+      background: var(--border-light);
+    }
+
+    .diff-side-label {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diff-badge {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    .diff-badge-tools {
+      background: #E4F0E8;
+      color: #3D6B4A;
+    }
+
+    .diff-badge-hooks {
+      background: #F2E6E4;
+      color: #8A4A3E;
+    }
+
+    .diff-side ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .diff-side li {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      padding: 3px 0;
+    }
+
+    .diff-add {
+      color: #3D6B4A;
+      font-weight: 700;
+      font-family: var(--font-code);
+      font-size: 13px;
+      margin-right: 6px;
+    }
+
+    .diff-remove {
+      color: #8A4A3E;
+      font-weight: 700;
+      font-family: var(--font-code);
+      font-size: 13px;
+      margin-right: 6px;
+    }
+
+    .diff-key {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .diff-left .diff-key {
+      color: #3D6B4A;
+    }
+
+    .diff-right .diff-key {
+      color: #8A4A3E;
+    }
 
     /* ── Semantic table-wrapper accents ────────────────────────────────── */
 
@@ -1679,30 +1820,41 @@
 
       <p>Both are modules. Both plug in the same way. But they operate in fundamentally different realms, and using the wrong one for a task produces unreliable behavior.</p>
 
-      <div class="arch-diagram" data-layer="modules">
-        <div class="arch-split" style="border-radius:4px;border:1px solid var(--border);">
-          <div class="arch-half">
-            <div class="arch-half-title">Tools — the AI decides</div>
-            <div class="arch-half-subtitle">Visible · Intentional · Traceable</div>
+      <div class="diff-compare" data-layer="modules">
+        <!-- Shared properties — what they have in common -->
+        <div class="diff-shared">
+          <div class="diff-shared-label">Shared</div>
+          <ul>
+            <li>Both are <strong>modules</strong> — loaded via the same <code>mount()</code> contract</li>
+            <li>Both are <strong>optional</strong> — the session continues without them</li>
+            <li>Both can <strong>use models internally</strong> — a tool or hook can call an LLM</li>
+            <li>Both are <strong>independently replaceable</strong> — swap one without touching others</li>
+          </ul>
+        </div>
+
+        <!-- Differences — what makes each unique -->
+        <div class="diff-sides">
+          <div class="diff-side diff-left">
+            <div class="diff-side-label">Tools <span class="diff-badge diff-badge-tools">AI decides</span></div>
             <ul>
-              <li>Listed in the system prompt</li>
-              <li>The AI sees name, description, schema</li>
-              <li>The AI chooses when to call them</li>
-              <li>Tool calls appear in conversation history</li>
-              <li>Results appear in conversation history</li>
-              <li><strong>Extend what the model can do</strong></li>
+              <li><span class="diff-add">+</span> Listed in the system prompt</li>
+              <li><span class="diff-add">+</span> AI sees name, description, schema</li>
+              <li><span class="diff-add">+</span> AI <strong>chooses</strong> when to call them</li>
+              <li><span class="diff-add">+</span> Calls appear in conversation history</li>
+              <li><span class="diff-add">+</span> Results appear in conversation history</li>
+              <li class="diff-key"><strong>Extend what the model can do</strong></li>
             </ul>
           </div>
-          <div class="arch-half">
-            <div class="arch-half-title">Hooks — code decides</div>
-            <div class="arch-half-subtitle">Invisible · Automatic · System-layer</div>
+          <div class="diff-divider"></div>
+          <div class="diff-side diff-right">
+            <div class="diff-side-label">Hooks <span class="diff-badge diff-badge-hooks">Code decides</span></div>
             <ul>
-              <li>Not in the system prompt</li>
-              <li>The AI cannot see or call them</li>
-              <li>Fire automatically on events</li>
-              <li>Can observe, block, inject, or modify</li>
-              <li>The model never knows they exist</li>
-              <li><strong>Govern what the model may do</strong></li>
+              <li><span class="diff-remove">−</span> <strong>Not</strong> in the system prompt</li>
+              <li><span class="diff-remove">−</span> AI <strong>cannot</strong> see or call them</li>
+              <li><span class="diff-remove">−</span> Fire <strong>automatically</strong> on events</li>
+              <li><span class="diff-remove">−</span> Can observe, block, inject, or modify</li>
+              <li><span class="diff-remove">−</span> The model <strong>never knows</strong> they exist</li>
+              <li class="diff-key"><strong>Govern what the model may do</strong></li>
             </ul>
           </div>
         </div>
