@@ -840,7 +840,8 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin: 32px 0 40px;
+      margin: 32px -80px 40px;
+      width: calc(100% + 160px);
     }
     .philosophy-card {
       background: var(--surface);
@@ -848,6 +849,11 @@
       border-radius: 6px;
       padding: 24px 20px;
       text-align: center;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .philosophy-graphic {
       display: flex;
@@ -855,8 +861,8 @@
       margin-bottom: 16px;
     }
     .philosophy-graphic svg {
-      width: 120px;
-      height: 120px;
+      width: 140px;
+      height: 140px;
     }
     .philosophy-title {
       font-family: var(--font-heading);
@@ -1540,12 +1546,9 @@
 
       <!-- ── Section 3 ── -->
       <h2 id="s3"><span class="section-num">3</span> Design Philosophy</h2>
-
-      <p>Three ideas shape how Amplifier is built. They weren't written on a whiteboard first. They emerged from the code, from decisions made repeatedly about what belongs in the kernel and what doesn't.</p>
-      <!-- Philosophy cards — 3-up summary of the three design principles -->
+      <!-- Philosophy cards — replaces minimap, wide layout -->
       <div class="philosophy-cards">
 
-        <!-- Card 1 · Mechanism, not policy -->
         <div class="philosophy-card" data-philosophy="mechanism">
           <div class="philosophy-graphic">
             <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
@@ -1563,7 +1566,6 @@
           <p class="philosophy-desc">The kernel fires events. Modules decide what happens.</p>
         </div>
 
-        <!-- Card 2 · The center stays still -->
         <div class="philosophy-card" data-philosophy="center">
           <div class="philosophy-graphic">
             <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
@@ -1581,7 +1583,6 @@
           <p class="philosophy-desc">New models, new tools, new rules — the kernel doesn't change.</p>
         </div>
 
-        <!-- Card 3 · Ruthless simplicity -->
         <div class="philosophy-card" data-philosophy="simplicity">
           <div class="philosophy-graphic">
             <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
@@ -1619,7 +1620,10 @@
       </div>
 
 
-      <h3 id="s3-1">3.1 Mechanism, not policy</h3>
+      <p>Three ideas shape how Amplifier is built. They weren't written on a whiteboard first. They emerged from the code, from decisions made repeatedly about what belongs in the kernel and what doesn't.</p>
+      <!-- Philosophy cards — 3-up summary of the three design principles -->
+
+<h3 id="s3-1">3.1 Mechanism, not policy</h3>
 
       <p>The kernel fires a <code>tool:pre</code> event before every tool call. A safety module decides whether to block it. A logging module records it. The kernel has no opinion about what should happen. It fires events and collects results. This separation has a name: <span class="lt" data-l="boundary">mechanism</span> versus <span class="lt" data-l="boundary">policy</span>.</p>
 
@@ -2952,7 +2956,7 @@ standards (see @project:standards.md).</code></pre>
   // Configuration per chapter: which layer is highlighted (active) and
   // which layers are already revealed (shown in the minimap).
   var MINIMAP_CFG = {
-    s3:  { active: 1,     shown: [1] },
+    // s3 removed — replaced by philosophy-cards component
     s4:  { active: 1,     shown: [1] },
     s5:  { active: 2,     shown: [1, 2] },
     s6:  { active: 2,     shown: [1, 2] },
@@ -3151,11 +3155,14 @@ standards (see @project:standards.md).</code></pre>
       }
 
       if (targetNode) {
+        // Range across the full line content for a stable bounding rect
+        const lineLen = (lines[lineIdx] || '').length || 1;
+        const endOffset = Math.min(charOffset + lineLen, targetNode.length);
         const range = document.createRange();
         range.setStart(targetNode, targetOffset);
-        range.setEnd(targetNode, Math.min(targetOffset + 1, targetNode.length));
+        range.setEnd(targetNode, Math.max(targetOffset + 1, endOffset));
         const lineRect = range.getBoundingClientRect();
-        const top = lineRect.top - preRect.top + (lineRect.height / 2) - 11;
+        const top = Math.round(lineRect.top - preRect.top + (lineRect.height / 2) - 14);
         marker.style.top = top + 'px';
         range.detach();
       }
