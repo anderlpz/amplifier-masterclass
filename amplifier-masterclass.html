@@ -160,6 +160,9 @@
     .toc-progress-ring {
       flex-shrink: 0;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .toc-progress-ring .ring-bg {
@@ -174,9 +177,10 @@
 
     .toc-chapter-num {
       position: absolute;
-      left: 0;
-      width: 38px;
-      text-align: center;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 11px;
       font-weight: 600;
       color: var(--accent);
@@ -197,10 +201,7 @@
         padding: 5px 12px 5px 5px;
       }
       .toc-chapter-title { font-size: 12px; }
-      .toc-chapter-num {
-        left: 0;
-        width: 28px;
-      }
+
     }
 
     .toc-overlay {
@@ -1479,13 +1480,15 @@
 
 <!-- TOC toggle button -->
 <button class="toc-btn" id="tocBtn" aria-label="Toggle table of contents">
-  <svg class="toc-progress-ring" width="28" height="28" viewBox="0 0 28 28">
-    <circle class="ring-bg" cx="14" cy="14" r="11" fill="none" stroke-width="2"/>
-    <circle class="ring-fill" id="tocRingFill" cx="14" cy="14" r="11" fill="none" stroke-width="2"
-            stroke-dasharray="69.12" stroke-dashoffset="69.12"
-            transform="rotate(-90 14 14)"/>
-  </svg>
-  <span class="toc-chapter-num" id="tocChapterNum">1</span>
+  <span class="toc-progress-ring">
+    <svg width="28" height="28" viewBox="0 0 28 28">
+      <circle class="ring-bg" cx="14" cy="14" r="11" fill="none" stroke-width="2"/>
+      <circle class="ring-fill" id="tocRingFill" cx="14" cy="14" r="11" fill="none" stroke-width="2"
+              stroke-dasharray="69.12" stroke-dashoffset="69.12"
+              transform="rotate(-90 14 14)"/>
+    </svg>
+    <span class="toc-chapter-num" id="tocChapterNum">1</span>
+  </span>
   <span class="toc-chapter-title" id="tocChapterTitle">Introduction</span>
 </button>
 
