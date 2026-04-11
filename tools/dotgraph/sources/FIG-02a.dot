@@ -1,0 +1,346 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// FIG.02a — Six-Layer Architecture
+// Amplifier Masterclass — Chapter 2
+//
+// Proves: Amplifier's architecture is six concentric layers where each layer
+// depends only on the one below it. The kernel at center depends on nothing.
+//
+// Diagram type:  Architecture / Nested containment  (§2.2 Aesthetic Guide)
+// Layout engine: dot (rankdir=TB)
+//
+// Three-color palette: Ink #1A1815 | Blueprint #0082EB | White #FFFFFF
+//   Ring fills alternate: structure wash #F7F5F0 / white #FFFFFF
+//   Kernel fill: #EBF5FD — blueprint wash ≈ rgba(0,130,235,0.08) on white
+//   Kernel border: 2px ink — EMPHASIS STROKE (most important boundary)
+//   All other rings: 1px ink borders, progressively lighter toward outside
+//
+// Edges: outer → inner  (dependency flows inward — arrows point inward)
+//   Solid:                primary load-bearing dependency
+//   Dashed + constraint=false:  secondary dependencies — drawn but do not
+//                         influence rank order (prevents module row-2 nodes
+//                         from collapsing into the kernel's rank band)
+//
+// Rank strategy for cluster_modules:
+//   All 5 module nodes share ONE rank=same group. Only one visible edge
+//   (orchestrator→session_lifecycle) drives the rank separation between the
+//   modules ring and the kernel ring. All other module→kernel arrows carry
+//   constraint=false so they don't pull secondary nodes into the kernel band.
+// ─────────────────────────────────────────────────────────────────────────────
+
+digraph fig_02a {
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // GRAPH GLOBALS
+  // ─────────────────────────────────────────────────────────────────────────
+
+  graph [
+    label     = "FIG.02a — SIX-LAYER ARCHITECTURE"
+    labelloc  = t
+    labeljust = l
+    fontname  = "Helvetica Neue"
+    fontsize  = 13
+    fontcolor = "#1A1815"
+    bgcolor   = "#FFFFFF"
+    rankdir   = TB
+    compound  = true
+    nodesep   = 0.50
+    ranksep   = 0.70
+    splines   = polyline
+    pad       = "0.7,0.5"
+  ]
+
+  // Default node: white box, 1px ink border — component rectangle
+  node [
+    fontname  = "Helvetica Neue"
+    fontsize  = 10
+    fontcolor = "#1A1815"
+    style     = filled
+    fillcolor = "#FFFFFF"
+    color     = "#1A1815"
+    penwidth  = 1.0
+    shape     = box
+    margin    = "0.18,0.08"
+  ]
+
+  // Default edge: blueprint line 1.5px — "flow stroke" per Aesthetic Guide
+  edge [
+    fontname  = "Helvetica Neue"
+    fontsize  = 8
+    fontcolor = "#6B6560"
+    color     = "#0082EB99"
+    penwidth  = 1.5
+    arrowsize = 0.65
+    arrowhead = vee
+  ]
+
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LAYER 6 — COMMUNITY  (outermost ring)
+  // Fill: structure wash | Border: lightest muted ink
+  // ─────────────────────────────────────────────────────────────────────────
+
+  subgraph cluster_community {
+    label     = "COMMUNITY"
+    labeljust = l
+    style     = filled
+    fillcolor = "#F7F5F0"
+    color     = "#C8C4BC"
+    penwidth  = 1.0
+    fontname  = "Helvetica Neue"
+    fontsize  = 10
+    fontcolor = "#6B6560"
+    margin    = 18
+
+    // Annotation node — sits above the inner cluster in TB rank order
+    community_ann [
+      label     = "Third-party modules, bundles, recipes"
+      shape     = plaintext
+      fontsize  = 9
+      fontcolor = "#9C9590"
+    ]
+
+    // ───────────────────────────────────────────────────────────────────────
+    // LAYER 5 — APPLICATIONS
+    // Fill: white | Border: muted ink
+    // ───────────────────────────────────────────────────────────────────────
+
+    subgraph cluster_applications {
+      label     = "APPLICATIONS"
+      labeljust = l
+      style     = filled
+      fillcolor = "#FFFFFF"
+      color     = "#C8C4BC"
+      penwidth  = 1.0
+      fontname  = "Helvetica Neue"
+      fontsize  = 10
+      fontcolor = "#6B6560"
+      margin    = 16
+
+      apps_ann [
+        label     = "CLI, web, IDE, voice"
+        shape     = plaintext
+        fontsize  = 9
+        fontcolor = "#9C9590"
+      ]
+
+      // ─────────────────────────────────────────────────────────────────────
+      // LAYER 4 — FOUNDATION
+      // Fill: structure wash | Border: ink light
+      // ─────────────────────────────────────────────────────────────────────
+
+      subgraph cluster_foundation {
+        label     = "FOUNDATION"
+        labeljust = l
+        style     = filled
+        fillcolor = "#F7F5F0"
+        color     = "#9C9590"
+        penwidth  = 1.0
+        fontname  = "Helvetica Neue"
+        fontsize  = 10
+        fontcolor = "#6B6560"
+        margin    = 14
+
+        foundation_ann [
+          label     = "Turns bundles into running sessions"
+          shape     = plaintext
+          fontsize  = 9
+          fontcolor = "#9C9590"
+        ]
+
+        // ───────────────────────────────────────────────────────────────────
+        // LAYER 3 — BUNDLES
+        // Fill: white | Border: ink light
+        // ───────────────────────────────────────────────────────────────────
+
+        subgraph cluster_bundles {
+          label     = "BUNDLES"
+          labeljust = l
+          style     = filled
+          fillcolor = "#FFFFFF"
+          color     = "#9C9590"
+          penwidth  = 1.0
+          fontname  = "Helvetica Neue"
+          fontsize  = 10
+          fontcolor = "#6B6560"
+          margin    = 12
+
+          bundles_ann [
+            label     = "Text files. No code required."
+            shape     = plaintext
+            fontsize  = 9
+            fontcolor = "#9C9590"
+          ]
+
+          // ─────────────────────────────────────────────────────────────────
+          // LAYER 2 — MODULES
+          // Fill: structure wash | Border: ink (heavier — nearer to kernel)
+          //
+          // Rank strategy: all 5 module nodes share ONE rank=same group.
+          // Horizontal order set by invis edges. Only the primary dependency
+          // edge (orchestrator→session_lifecycle) drives the rank gap between
+          // this cluster and cluster_kernel. All other module→kernel edges
+          // use constraint=false to prevent secondary nodes pulling into the
+          // kernel rank band (which caused them to render inside the kernel box).
+          // ─────────────────────────────────────────────────────────────────
+
+          subgraph cluster_modules {
+            label     = "MODULES"
+            labeljust = l
+            style     = filled
+            fillcolor = "#F7F5F0"
+            color     = "#6B6560"
+            penwidth  = 1.0
+            fontname  = "Helvetica Neue"
+            fontsize  = 10
+            fontcolor = "#1A1815"
+            margin    = 10
+
+            // All five module types in a single rank — avoids rank collisions
+            // with kernel nodes when secondary dependency edges use constraint=false
+            { rank = same
+              orchestrator     [label = "ORCHESTRATOR"]
+              providers        [label = "PROVIDERS"]
+              tools            [label = "TOOLS"]
+              context_managers [label = "CONTEXT MANAGERS"]
+              hook_handlers    [label = "HOOK HANDLERS"]
+            }
+
+            // Horizontal ordering within the module row (invisible)
+            orchestrator -> providers        [style = invis]
+            providers    -> tools            [style = invis]
+            tools        -> context_managers [style = invis]
+            context_managers -> hook_handlers [style = invis]
+
+            // ───────────────────────────────────────────────────────────────
+            // LAYER 1 — KERNEL  (innermost — the still center)
+            //
+            // Fill: #EBF5FD — blueprint wash (≈ rgba(0,130,235,0.08) on white)
+            // Border: 2px full ink — EMPHASIS STROKE (Aesthetic Guide §2.1)
+            // "The single most important boundary in the entire diagram."
+            // ───────────────────────────────────────────────────────────────
+
+            subgraph cluster_kernel {
+              label     = "KERNEL"
+              labeljust = l
+              style     = filled
+              fillcolor = "#EBF5FD"
+              color     = "#1A1815"
+              penwidth  = 2.0
+              fontname  = "Helvetica Neue"
+              fontsize  = 10
+              fontcolor = "#1A1815"
+              margin    = 10
+
+              // Kernel row 1 — three wider-label components
+              { rank = same
+                session_lifecycle [label = "SESSION LIFECYCLE"]
+                contracts         [label = "CONTRACTS"]
+                module_loader     [label = "MODULE LOADER"]
+              }
+
+              // Kernel row 2 — two shorter-label components
+              { rank = same
+                coordinator [label = "COORDINATOR"]
+                hooks       [label = "HOOKS"]
+              }
+
+              // Horizontal ordering for row 1 (invisible)
+              contracts     -> session_lifecycle [style = invis]
+              module_loader -> contracts         [style = invis]
+
+              // Horizontal ordering for row 2 (invisible)
+              hooks -> coordinator [style = invis]
+
+              // Vertical: row 1 above row 2 (invisible)
+              session_lifecycle -> coordinator [style = invis]
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // EDGES — Dependency arrows pointing inward
+  //
+  // ── L2 → L1: Modules depend on Kernel ─────────────────────────────────
+  //   One primary solid edge drives the rank gap (orchestrator → kernel).
+  //   Four secondary dashed edges carry constraint=false — they draw arrows
+  //   without affecting the rank algorithm, keeping module nodes in their row.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Primary: ORCHESTRATOR → SESSION LIFECYCLE  [rank-driving, labeled]
+  orchestrator -> session_lifecycle [
+    label = "depend on"
+    style = solid
+  ]
+
+  // Secondary: PROVIDERS → CONTRACTS  [constraint=false — no rank effect]
+  providers -> contracts [
+    style      = dashed
+    penwidth   = 1.0
+    color      = "#0082EB66"
+    constraint = false
+  ]
+
+  // Secondary: TOOLS → MODULE LOADER  [constraint=false]
+  tools -> module_loader [
+    style      = dashed
+    penwidth   = 1.0
+    color      = "#0082EB66"
+    constraint = false
+  ]
+
+  // Secondary: CONTEXT MANAGERS → COORDINATOR  [constraint=false]
+  context_managers -> coordinator [
+    style      = dashed
+    penwidth   = 1.0
+    color      = "#0082EB66"
+    constraint = false
+  ]
+
+  // Secondary: HOOK HANDLERS → HOOKS  [constraint=false]
+  hook_handlers -> hooks [
+    style      = dashed
+    penwidth   = 1.0
+    color      = "#0082EB66"
+    constraint = false
+  ]
+
+  // ── L3 → L2: Bundles reference Modules ────────────────────────────────
+  bundles_ann -> orchestrator [
+    label  = "reference"
+    style  = dashed
+  ]
+
+  // ── L4 → L3: Foundation reads Bundles ─────────────────────────────────
+  foundation_ann -> bundles_ann [
+    label  = "reads"
+    style  = dashed
+  ]
+
+  // ── L4 → L1: Foundation depends on Kernel  (cross-layer skip) ──────────
+  // Key architectural insight: Foundation bypasses Modules+Bundles to Kernel.
+  // constraint=false so this long-range edge doesn't distort the layout.
+  foundation_ann -> session_lifecycle [
+    label      = "depends on"
+    style      = solid
+    color      = "#0082EB66"
+    fontcolor  = "#9C9590"
+    constraint = false
+  ]
+
+  // ── L5 → L4: Applications use Foundation ──────────────────────────────
+  apps_ann -> foundation_ann [
+    label  = "use"
+    style  = dashed
+  ]
+
+  // ── L6 → L5: Community accesses all inner layers ──────────────────────
+  community_ann -> apps_ann [
+    label  = "access"
+    style  = dashed
+  ]
+
+}

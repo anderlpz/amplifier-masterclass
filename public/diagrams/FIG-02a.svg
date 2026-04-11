@@ -1,0 +1,455 @@
+<svg
+  width="1049"
+  height="980"
+  viewBox="0 0 1049 980"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  role="img"
+  aria-label="Amplifier six-layer architecture diagram showing nested layers from kernel at center to community ecosystem at edge">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FIG. 02 — SIX-LAYER ARCHITECTURE
+       Amplifier Masterclass · Chapter 2
+       Art direction: AESTHETIC-GUIDE-DIAGRAMS.md
+       Source: FIG-02a.raw.svg (Graphviz 14.1.4)
+       ═══════════════════════════════════════════════════════════════ -->
+
+  <title>FIG. 02 — Amplifier Six-Layer Architecture</title>
+  <desc>Architecture diagram showing six concentric nested rectangular layers of the Amplifier system. At the center, the KERNEL layer contains five components: Coordinator, Hooks, Session Lifecycle, Contracts, and Module Loader. Surrounding it is the MODULES layer with Orchestrator, Providers, Tools, Context Managers, and Hook Handlers. Further out is BUNDLES (text configuration files requiring no code), then FOUNDATION (turns bundles into running sessions), then APPLICATIONS (CLI, web, IDE, voice interfaces), and at the outermost ring, COMMUNITY (third-party modules, bundles, and recipes). Dependency arrows flow inward — each layer depends only on the layers below it. The kernel at center depends on nothing.</desc>
+
+  <defs>
+    <!-- Fine dot grid: 16px intervals, rgba(0,0,0,0.04) — blueprint diagram treatment -->
+    <pattern id="dotgrid" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.75" fill="rgba(0,0,0,0.04)"/>
+    </pattern>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&amp;family=Inter:wght@400;500&amp;display=swap');
+
+    /*
+     * Typography split — AESTHETIC-GUIDE-DIAGRAMS.md §3:
+     *   .lbl  → Space Grotesk 500 UPPERCASE  — names things (nodes, rings, title)
+     *   .ann  → Inter 400 sentence case       — explains things (annotations, edge labels)
+     */
+    .lbl {
+      font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+    .ann {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+    .fig-num {
+      font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      fill: #9C9590;
+    }
+    .caption-fig {
+      font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      fill: #9C9590;
+    }
+    .caption-body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      fill: #6B6560;
+    }
+  </style>
+
+  <!-- ── White card background ─────────────────────────────────── -->
+  <rect x="0" y="0" width="1049" height="980" fill="#ffffff"/>
+
+  <!-- ── Dot grid background within frame area ─────────────────── -->
+  <rect x="8" y="26" width="1033" height="886" fill="url(#dotgrid)"/>
+
+  <!-- ── Figure number — outside dotted frame, top-left ─────────── -->
+  <!-- Space Grotesk 400, 11px, #9C9590, letter-spacing 0.08em, UPPERCASE -->
+  <text x="12" y="20" class="fig-num" font-size="11">FIG. 02</text>
+
+  <!-- ── Dotted engineering frame ───────────────────────────────── -->
+  <!-- stroke: rgba(0,0,0,0.12), dasharray: 4 4, rx: 0 (sharp), fill: none -->
+  <rect x="8" y="26" width="1033" height="886"
+        fill="none"
+        stroke="rgba(0,0,0,0.12)"
+        stroke-width="1"
+        stroke-dasharray="4 4"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DIAGRAM CONTENT
+       Original transform: translate(50.4 876.25)
+       Production transform: translate(50.4 896.25)  (+20px Y shift)
+         — shifts content down 20px to sit cleanly inside the frame
+         — content occupies approx. viewBox Y 72–888, frame Y 26–912
+       ═══════════════════════════════════════════════════════════════ -->
+  <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(50.4 896.25)">
+
+    <title>Six-Layer Architecture — FIG. 02</title>
+
+    <!-- ── Diagram title (inside frame, upper-left area) ─────────── -->
+    <!-- Space Grotesk 500, 13px, #1a1815, letter-spacing 0.06em -->
+    <text xml:space="preserve" text-anchor="middle" x="125.75" y="-823.9"
+          class="lbl" font-size="13.00" fill="#1a1815">SIX-LAYER ARCHITECTURE</text>
+
+    <!-- ────────────────────────────────────────────────────────────
+         CONTAINMENT RINGS — outermost to innermost
+         Fill: alternating #F7F5F0 (structure wash) / #FFFFFF (white)
+         Kernel: #EBF5FD (blueprint wash ≈ rgba(0,130,235,0.08))
+         Stroke: lightest rings use warm gray; kernel uses 2px ink emphasis
+         ──────────────────────────────────────────────────────────── -->
+
+    <!-- ── Ring 1: COMMUNITY (outermost) ────────────────────────── -->
+    <!-- fill: #F7F5F0 (structure wash), stroke: #C8C4BC (muted border) -->
+    <g id="clust1" class="cluster">
+      <title>cluster_community</title>
+      <polygon fill="#f7f5f0" stroke="#c8c4bc" stroke-width="1"
+               points="8,-8 8,-808.5 940,-808.5 940,-8 8,-8"/>
+      <text xml:space="preserve" text-anchor="middle" x="47.5" y="-795"
+            class="lbl" font-size="10.00" fill="#6b6560">COMMUNITY</text>
+    </g>
+
+    <!-- ── Ring 2: APPLICATIONS ──────────────────────────────────── -->
+    <!-- fill: #FFFFFF (white), stroke: #C8C4BC -->
+    <g id="clust2" class="cluster">
+      <title>cluster_applications</title>
+      <polygon fill="#ffffff" stroke="#c8c4bc" stroke-width="1"
+               points="26,-26 26,-691 922,-691 922,-26 26,-26"/>
+      <text xml:space="preserve" text-anchor="middle" x="69.25" y="-677.5"
+            class="lbl" font-size="10.00" fill="#6b6560">APPLICATIONS</text>
+    </g>
+
+    <!-- ── Ring 3: FOUNDATION ────────────────────────────────────── -->
+    <!-- fill: #F7F5F0 (structure wash), stroke: #9C9590 (ink muted) -->
+    <g id="clust3" class="cluster">
+      <title>cluster_foundation</title>
+      <polygon fill="#f7f5f0" stroke="#9c9590" stroke-width="1"
+               points="42,-42 42,-575.5 906,-575.5 906,-42 42,-42"/>
+      <text xml:space="preserve" text-anchor="middle" x="81.88" y="-562"
+            class="lbl" font-size="10.00" fill="#6b6560">FOUNDATION</text>
+    </g>
+
+    <!-- ── Ring 4: BUNDLES ───────────────────────────────────────── -->
+    <!-- fill: #FFFFFF (white), stroke: #9C9590 -->
+    <g id="clust4" class="cluster">
+      <title>cluster_bundles</title>
+      <polygon fill="#ffffff" stroke="#9c9590" stroke-width="1"
+               points="56,-56 56,-462 876,-462 876,-56 56,-56"/>
+      <text xml:space="preserve" text-anchor="middle" x="87.25" y="-448.5"
+            class="lbl" font-size="10.00" fill="#6b6560">BUNDLES</text>
+    </g>
+
+    <!-- ── Ring 5: MODULES ───────────────────────────────────────── -->
+    <!-- fill: #F7F5F0 (structure wash), stroke: #6B6560 (ink secondary) -->
+    <g id="clust5" class="cluster">
+      <title>cluster_modules</title>
+      <polygon fill="#f7f5f0" stroke="#6b6560" stroke-width="1"
+               points="68,-68 68,-350.5 864,-350.5 864,-68 68,-68"/>
+      <text xml:space="preserve" text-anchor="middle" x="100.38" y="-337"
+            class="lbl" font-size="10.00" fill="#1a1815">MODULES</text>
+    </g>
+
+    <!-- ── Ring 6: KERNEL (innermost) ───────────────────────────── -->
+    <!-- fill: #EBF5FD (blueprint wash), stroke: 2px #1A1815 (emphasis) -->
+    <!-- The kernel boundary gets the emphasis stroke — most important boundary -->
+    <g id="clust7" class="cluster">
+      <title>cluster_kernel</title>
+      <polygon fill="#ebf5fd" stroke="#1a1815" stroke-width="2"
+               points="78,-78 78,-241 564,-241 564,-78 78,-78"/>
+      <text xml:space="preserve" text-anchor="middle" x="105.12" y="-227.5"
+            class="lbl" font-size="10.00" fill="#1a1815">KERNEL</text>
+    </g>
+
+    <!-- ────────────────────────────────────────────────────────────
+         ANNOTATION NODES — left-column callouts describing each ring
+         Inter 400, sentence case, #9C9590 (ink muted)
+         No border (stroke="none"), white fill
+         ──────────────────────────────────────────────────────────── -->
+
+    <!-- ── Annotation: COMMUNITY ring ───────────────────────────── -->
+    <g id="node1" class="node">
+      <title>community_ann</title>
+      <polygon fill="#ffffff" stroke="none"
+               points="230.71,-770.5 53.29,-770.5 53.29,-734.5 230.71,-734.5 230.71,-770.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="142" y="-749.58"
+            class="ann" font-size="9.00" fill="#9c9590">Third-party modules, bundles, recipes</text>
+    </g>
+
+    <!-- ── Annotation: APPLICATIONS ring ────────────────────────── -->
+    <g id="node2" class="node">
+      <title>apps_ann</title>
+      <polygon fill="#ffffff" stroke="none"
+               points="194.34,-655 89.66,-655 89.66,-619 194.34,-619 194.34,-655"/>
+      <text xml:space="preserve" text-anchor="middle" x="142" y="-634.08"
+            class="ann" font-size="9.00" fill="#9c9590">CLI, web, IDE, voice</text>
+    </g>
+
+    <!-- ── Edge: community_ann → apps_ann ───────────────────────── -->
+    <!-- Blueprint line, 1.5px, dasharray 5/2, 60% opacity -->
+    <g id="edge18" class="edge">
+      <title>community_ann&#45;&gt;apps_ann</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.6"
+            d="M142,-734.75C142,-715.81 142,-684.76 142,-662.96"/>
+      <polygon fill="#0082eb" fill-opacity="0.6"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+               points="142,-656.64 144.93,-663.14 142.25,-658.07 142.25,-663.14 142,-663.14 141.75,-663.14 141.75,-658.07 139.08,-663.14 142,-656.64"/>
+      <text xml:space="preserve" text-anchor="middle" x="154.75" y="-701.9"
+            class="ann" font-size="8.00" fill="#6b6560">access</text>
+    </g>
+
+    <!-- ── Annotation: FOUNDATION ring ──────────────────────────── -->
+    <g id="node3" class="node">
+      <title>foundation_ann</title>
+      <polygon fill="#ffffff" stroke="none"
+               points="227.71,-541.5 56.29,-541.5 56.29,-505.5 227.71,-505.5 227.71,-541.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="142" y="-520.58"
+            class="ann" font-size="9.00" fill="#9c9590">Turns bundles into running sessions</text>
+    </g>
+
+    <!-- ── Edge: apps_ann → foundation_ann ─────────────────────── -->
+    <g id="edge17" class="edge">
+      <title>apps_ann&#45;&gt;foundation_ann</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.6"
+            d="M142,-619.07C142,-600.54 142,-570.66 142,-549.45"/>
+      <polygon fill="#0082eb" fill-opacity="0.6"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+               points="142,-543.06 144.93,-549.56 142.25,-544.48 142.25,-549.56 142,-549.56 141.75,-549.56 141.75,-544.48 139.08,-549.56 142,-543.06"/>
+      <text xml:space="preserve" text-anchor="middle" x="148.38" y="-586.4"
+            class="ann" font-size="8.00" fill="#6b6560">use</text>
+    </g>
+
+    <!-- ── Annotation: BUNDLES ring ─────────────────────────────── -->
+    <g id="node4" class="node">
+      <title>bundles_ann</title>
+      <polygon fill="#ffffff" stroke="none"
+               points="207.08,-430 70.92,-430 70.92,-394 207.08,-394 207.08,-430"/>
+      <text xml:space="preserve" text-anchor="middle" x="139" y="-409.07"
+            class="ann" font-size="9.00" fill="#9c9590">Text files. No code required.</text>
+    </g>
+
+    <!-- ── Edge: foundation_ann → bundles_ann ───────────────────── -->
+    <g id="edge15" class="edge">
+      <title>foundation_ann&#45;&gt;bundles_ann</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.6"
+            d="M141.54,-505.87C141.05,-487.78 140.25,-458.67 139.68,-437.86"/>
+      <polygon fill="#0082eb" fill-opacity="0.6"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+               points="139.51,-431.61 142.61,-438.03 139.8,-433.03 139.94,-438.1 139.69,-438.11 139.44,-438.12 139.3,-433.04 136.76,-438.19 139.51,-431.61"/>
+      <text xml:space="preserve" text-anchor="middle" x="150.52" y="-472.9"
+            class="ann" font-size="8.00" fill="#6b6560">reads</text>
+    </g>
+
+    <!-- ────────────────────────────────────────────────────────────
+         KERNEL NODES — inner components, white fill, 1px ink border
+         Space Grotesk 500, UPPERCASE, #1A1815
+         ──────────────────────────────────────────────────────────── -->
+
+    <!-- ── Node: SESSION LIFECYCLE ──────────────────────────────── -->
+    <g id="node10" class="node">
+      <title>session_lifecycle</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="554.46,-211 429.54,-211 429.54,-175 554.46,-175 554.46,-211"/>
+      <text xml:space="preserve" text-anchor="middle" x="492" y="-189.5"
+            class="lbl" font-size="10.00" fill="#1a1815">SESSION LIFECYCLE</text>
+    </g>
+
+    <!-- ── Edge: foundation_ann → session_lifecycle ─────────────── -->
+    <!-- Long arc — foundation depends on session lifecycle in kernel -->
+    <!-- Blueprint line, 1.5px, 40% opacity (de-emphasized structural dep.) -->
+    <g id="edge16" class="edge">
+      <title>foundation_ann&#45;&gt;session_lifecycle</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+            d="M227.5,-510.18C350.3,-492.49 562,-462 562,-462 562,-462 873,-350.5 873,-350.5 873,-350.5 873,-284.5 873,-284.5 873,-284.5 672.85,-236.96 562.69,-210.79"/>
+      <polygon fill="#0082eb" fill-opacity="0.4"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+               points="556.69,-209.37 563.69,-208.02 558.13,-209.45 563.07,-210.63 563.02,-210.87 562.96,-211.11 558.02,-209.94 562.34,-213.71 556.69,-209.37"/>
+      <text xml:space="preserve" text-anchor="middle" x="870.29" y="-361.4"
+            class="ann" font-size="8.00" fill="#9c9590">depends on</text>
+    </g>
+
+    <!-- ────────────────────────────────────────────────────────────
+         MODULE NODES — white fill, 1px ink border, MODULES ring
+         ──────────────────────────────────────────────────────────── -->
+
+    <!-- ── Node: ORCHESTRATOR ───────────────────────────────────── -->
+    <g id="node5" class="node">
+      <title>orchestrator</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="184.09,-320.5 77.91,-320.5 77.91,-284.5 184.09,-284.5 184.09,-320.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="131" y="-299"
+            class="lbl" font-size="10.00" fill="#1a1815">ORCHESTRATOR</text>
+    </g>
+
+    <!-- ── Edge: bundles_ann → orchestrator ─────────────────────── -->
+    <!-- Bundles are referenced by Orchestrator — dashed blueprint 1.5px 60% -->
+    <g id="edge14" class="edge">
+      <title>bundles_ann&#45;&gt;orchestrator</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.6"
+            d="M128.03,-394.4C120.28,-382.66 111.25,-369 111.25,-369 111.25,-369 111.25,-358.5 111.25,-358.5 111.25,-358.5 116.84,-342.92 122.08,-328.34"/>
+      <polygon fill="#0082eb" fill-opacity="0.6"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+               points="124.13,-322.62 124.69,-329.73 123.89,-324.05 122.17,-328.82 121.94,-328.74 121.7,-328.66 123.42,-323.88 119.18,-327.75 124.13,-322.62"/>
+      <text xml:space="preserve" text-anchor="middle" x="128.12" y="-361.4"
+            class="ann" font-size="8.00" fill="#6b6560">reference</text>
+    </g>
+
+    <!-- ── Node: PROVIDERS ──────────────────────────────────────── -->
+    <g id="node6" class="node">
+      <title>providers</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="336.71,-320.5 255.29,-320.5 255.29,-284.5 336.71,-284.5 336.71,-320.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="296" y="-299"
+            class="lbl" font-size="10.00" fill="#1a1815">PROVIDERS</text>
+    </g>
+
+    <!-- ── Edge: orchestrator → session_lifecycle ────────────────── -->
+    <!-- Modules depend on kernel — solid blueprint line, 1.5px, 60% opacity -->
+    <g id="edge9" class="edge">
+      <title>orchestrator&#45;&gt;session_lifecycle</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+            d="M184.46,-288.3C256.55,-270.5 376,-241 376,-241 376,-241 410.36,-227.08 441.68,-214.39"/>
+      <polygon fill="#0082eb" fill-opacity="0.6"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.6"
+               points="447.44,-212.05 442.52,-217.21 446.22,-212.82 441.51,-214.73 441.42,-214.49 441.32,-214.26 446.03,-212.36 440.32,-211.78 447.44,-212.05"/>
+      <text xml:space="preserve" text-anchor="middle" x="359.56" y="-251.9"
+            class="ann" font-size="8.00" fill="#6b6560">depend on</text>
+    </g>
+
+    <!-- ── Node: TOOLS ───────────────────────────────────────────── -->
+    <g id="node7" class="node">
+      <title>tools</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="467.46,-320.5 408.54,-320.5 408.54,-284.5 467.46,-284.5 467.46,-320.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="438" y="-299"
+            class="lbl" font-size="10.00" fill="#1a1815">TOOLS</text>
+    </g>
+
+    <!-- ── Node: CONTRACTS (kernel) ─────────────────────────────── -->
+    <g id="node11" class="node">
+      <title>contracts</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="358.08,-211 269.92,-211 269.92,-175 358.08,-175 358.08,-211"/>
+      <text xml:space="preserve" text-anchor="middle" x="314" y="-189.5"
+            class="lbl" font-size="10.00" fill="#1a1815">CONTRACTS</text>
+    </g>
+
+    <!-- ── Edge: providers → contracts ──────────────────────────── -->
+    <!-- Dashed, 1.5px, 40% opacity — structural dependency, de-emphasized -->
+    <g id="edge10" class="edge">
+      <title>providers&#45;&gt;contracts</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.4"
+            d="M298.89,-284.23C301.86,-266.52 306.5,-238.81 309.85,-218.76"/>
+      <polygon fill="#0082eb" fill-opacity="0.4"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+               points="310.91,-212.43 312.73,-219.32 310.58,-214.43 309.84,-218.84 309.84,-218.84 309.84,-218.84 310.58,-214.43 306.96,-218.36 310.91,-212.43"/>
+    </g>
+
+    <!-- ── Node: CONTEXT MANAGERS ───────────────────────────────── -->
+    <g id="node8" class="node">
+      <title>context_managers</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="671.21,-320.5 538.79,-320.5 538.79,-284.5 671.21,-284.5 671.21,-320.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="605" y="-299"
+            class="lbl" font-size="10.00" fill="#1a1815">CONTEXT MANAGERS</text>
+    </g>
+
+    <!-- ── Node: MODULE LOADER (kernel) ─────────────────────────── -->
+    <g id="node12" class="node">
+      <title>module_loader</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="197.96,-211 88.04,-211 88.04,-175 197.96,-175 197.96,-211"/>
+      <text xml:space="preserve" text-anchor="middle" x="143" y="-189.5"
+            class="lbl" font-size="10.00" fill="#1a1815">MODULE LOADER</text>
+    </g>
+
+    <!-- ── Edge: tools → module_loader ──────────────────────────── -->
+    <!-- Dashed, 1.5px, 40% opacity -->
+    <g id="edge11" class="edge">
+      <title>tools&#45;&gt;module_loader</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.4"
+            d="M408.12,-291.78C355.54,-274.68 252,-241 252,-241 252,-241 219.71,-227.08 190.28,-214.39"/>
+      <polygon fill="#0082eb" fill-opacity="0.4"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+               points="184.4,-211.85 191.52,-211.74 186.26,-212.65 190.37,-214.42 190.37,-214.42 190.37,-214.42 186.26,-212.65 189.21,-217.11 184.4,-211.85"/>
+    </g>
+
+    <!-- ── Node: HOOK HANDLERS ───────────────────────────────────── -->
+    <g id="node9" class="node">
+      <title>hook_handlers</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="853.71,-320.5 742.29,-320.5 742.29,-284.5 853.71,-284.5 853.71,-320.5"/>
+      <text xml:space="preserve" text-anchor="middle" x="798" y="-299"
+            class="lbl" font-size="10.00" fill="#1a1815">HOOK HANDLERS</text>
+    </g>
+
+    <!-- ── Node: COORDINATOR (kernel) ───────────────────────────── -->
+    <g id="node13" class="node">
+      <title>coordinator</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="540.59,-124 443.42,-124 443.42,-88 540.59,-88 540.59,-124"/>
+      <text xml:space="preserve" text-anchor="middle" x="492" y="-102.5"
+            class="lbl" font-size="10.00" fill="#1a1815">COORDINATOR</text>
+    </g>
+
+    <!-- ── Edge: context_managers → coordinator ─────────────────── -->
+    <!-- Dashed, 1.5px, 40% opacity — long routing arc through diagram -->
+    <g id="edge12" class="edge">
+      <title>context_managers&#45;&gt;coordinator</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.4"
+            d="M540.61,-284.05C498.03,-272.51 450,-259.5 450,-259.5 450,-259.5 450,-249 450,-249 450,-249 572,-241 572,-241 572,-241 572,-175 572,-175 572,-175 541.31,-148.91 517.95,-129.05"/>
+      <polygon fill="#0082eb" fill-opacity="0.4"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+               points="513.12,-124.95 519.96,-126.93 514.66,-126.26 518.07,-129.16 518.07,-129.16 518.07,-129.16 514.66,-126.26 516.17,-131.39 513.12,-124.95"/>
+    </g>
+
+    <!-- ── Node: HOOKS (kernel) ──────────────────────────────────── -->
+    <g id="node14" class="node">
+      <title>hooks</title>
+      <polygon fill="#ffffff" stroke="#1a1815" stroke-width="1"
+               points="371.96,-124 310.04,-124 310.04,-88 371.96,-88 371.96,-124"/>
+      <text xml:space="preserve" text-anchor="middle" x="341" y="-102.5"
+            class="lbl" font-size="10.00" fill="#1a1815">HOOKS</text>
+    </g>
+
+    <!-- ── Edge: hook_handlers → hooks ──────────────────────────── -->
+    <!-- Dashed, 1.5px, 40% opacity — long arc from module ring to kernel -->
+    <g id="edge13" class="edge">
+      <title>hook_handlers&#45;&gt;hooks</title>
+      <path fill="none" stroke="#0082eb" stroke-width="1.5"
+            stroke-dasharray="5,2" stroke-opacity="0.4"
+            d="M767.05,-284.18C705.15,-249.53 572,-175 572,-175 572,-175 445.17,-137.67 379.47,-118.32"/>
+      <polygon fill="#0082eb" fill-opacity="0.4"
+               stroke="#0082eb" stroke-width="1.5" stroke-opacity="0.4"
+               points="373.32,-116.51 380.38,-115.54 375.27,-117.09 379.56,-118.35 379.56,-118.35 379.56,-118.35 375.27,-117.09 378.73,-121.16 373.32,-116.51"/>
+    </g>
+
+    <!-- Suppressed edges (defined in DOT source, not rendered in this view):
+         orchestrator  → providers
+         providers     → tools
+         tools         → context_managers
+         context_managers → hook_handlers
+         session_lifecycle → coordinator
+         contracts     → session_lifecycle
+         module_loader → contracts
+         hooks         → coordinator                                    -->
+
+  </g><!-- end #graph0 -->
+
+  <!-- ── Caption ──────────────────────────────────────────────────── -->
+  <!-- Inter 400, 12px, #6B6560 — below dotted frame -->
+  <text x="12" y="948" font-size="12">
+    <tspan class="caption-fig" font-size="11">FIG. 02</tspan><tspan class="caption-body"> &#8212; The architecture as concentric layers. Each layer depends only on the one below it. The kernel at center depends on nothing.</tspan>
+  </text>
+
+</svg>
