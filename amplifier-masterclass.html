@@ -137,17 +137,61 @@
       z-index: 200;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 8px 14px;
+      border-radius: 20px;
+      padding: 5px 14px 5px 5px;
       font-family: var(--font-heading);
       font-size: 13px;
       font-weight: 500;
       color: var(--text-primary);
       cursor: pointer;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       line-height: 1;
-      box-shadow: 0 1px 4px rgba(28,30,43,0.08);
+      box-shadow: 0 1px 6px rgba(28,30,43,0.1);
+      transition: box-shadow 150ms, border-color 150ms, opacity 200ms ease;
+    }
+
+    .toc-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(28,30,43,0.14);
+    }
+
+    .toc-progress-ring {
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .toc-progress-ring .ring-bg {
+      stroke: var(--border-light);
+    }
+
+    .toc-progress-ring .ring-fill {
+      stroke: var(--accent);
+      stroke-linecap: round;
+      transition: stroke-dashoffset 150ms ease;
+    }
+
+    .toc-chapter-num {
+      position: absolute;
+      left: 5px;
+      width: 28px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      pointer-events: none;
+    }
+
+    .toc-chapter-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .toc-chapter-title { display: none; }
+      .toc-btn { padding: 5px; border-radius: 50%; }
     }
 
     .toc-overlay {
@@ -167,12 +211,60 @@
       bottom: 0;
       width: 280px;
       background: var(--surface);
-      padding: 60px 20px 20px;
+      padding: 24px 20px 20px;
       overflow-y: auto;
       z-index: 195;
       box-shadow: 4px 0 24px rgba(28,30,43,0.14);
       transform: translateX(-100%);
       transition: transform 250ms ease;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .toc-drawer::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .toc-drawer::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .toc-drawer::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .toc-drawer::-webkit-scrollbar-thumb:hover {
+      background: var(--text-tertiary);
+    }
+
+    .drawer-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .drawer-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .drawer-wordmark {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .drawer-subtitle {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     .toc-overlay.open {
@@ -1099,117 +1191,32 @@
       line-height: 1;
     }
 
-    /* ── Sticky progress indicator ──────────────────────────────────────── */
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 36px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border-light);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      transform: translateY(-100%);
-      transition: transform 250ms ease;
-    }
 
-    .progress-bar.visible {
-      transform: translateY(0);
-    }
-
-    .progress-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 100ms linear;
-      z-index: 1;
-    }
-
-    .progress-chapters {
-      display: flex;
-      gap: 0;
-      flex: 1;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 2;
-      max-width: 600px;
-    }
-
-    .progress-marker {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      font-family: var(--font-heading);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 150ms;
-      padding: 0;
-      line-height: 1;
-    }
-
-    .progress-marker:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-soft);
-    }
-
-    .progress-marker.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-
-    .progress-marker.past {
-      border-color: var(--accent-soft);
-      color: var(--accent);
-      background: var(--accent-soft);
-    }
-
-    .progress-label {
-      font-family: var(--font-heading);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-left: 16px;
-      white-space: nowrap;
-      min-width: 200px;
-    }
-
-    @media (max-width: 768px) {
-      .progress-label { display: none; }
-      .progress-chapters { max-width: 100%; }
-      .progress-marker { width: 20px; height: 20px; font-size: 9px; }
-    }
   </style>
 </head>
 <body>
 
 <!-- TOC toggle button -->
 <button class="toc-btn" id="tocBtn" aria-label="Toggle table of contents">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-    <line x1="1" y1="3.5" x2="13" y2="3.5"/>
-    <line x1="1" y1="7" x2="10" y2="7"/>
-    <line x1="1" y1="10.5" x2="13" y2="10.5"/>
+  <svg class="toc-progress-ring" width="28" height="28" viewBox="0 0 28 28">
+    <circle class="ring-bg" cx="14" cy="14" r="11" fill="none" stroke-width="2"/>
+    <circle class="ring-fill" id="tocRingFill" cx="14" cy="14" r="11" fill="none" stroke-width="2"
+            stroke-dasharray="69.12" stroke-dashoffset="69.12"
+            transform="rotate(-90 14 14)"/>
   </svg>
-  Contents
+  <span class="toc-chapter-num" id="tocChapterNum">1</span>
+  <span class="toc-chapter-title" id="tocChapterTitle">Introduction</span>
 </button>
 
 <!-- TOC overlay + drawer -->
 <div class="toc-overlay" id="tocOverlay">
   <div class="toc-drawer" id="tocDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <span class="drawer-wordmark">Amplifier</span>
+        <span class="drawer-subtitle">Masterclass</span>
+      </div>
+    </div>
     <p class="sidebar-label">Contents</p>
     <nav>
       <ul class="sidebar-nav" id="tocDrawerNav">
@@ -1332,25 +1339,6 @@
   </div>
 </div>
 
-<div class="progress-bar" id="progressBar">
-  <div class="progress-fill" id="progressFill"></div>
-  <div class="progress-chapters" id="progressChapters">
-    <button class="progress-marker" data-target="s1" aria-label="§1 Introduction">1</button>
-    <button class="progress-marker" data-target="s2" aria-label="§2 Architecture Map">2</button>
-    <button class="progress-marker" data-target="s3" aria-label="§3 Design Philosophy">3</button>
-    <button class="progress-marker" data-target="s4" aria-label="§4 The Kernel">4</button>
-    <button class="progress-marker" data-target="s5" aria-label="§5 The Module System">5</button>
-    <button class="progress-marker" data-target="s6" aria-label="§6 The Orchestrator">6</button>
-    <button class="progress-marker" data-target="s7" aria-label="§7 Tools vs Hooks">7</button>
-    <button class="progress-marker" data-target="s8" aria-label="§8 Sessions">8</button>
-    <button class="progress-marker" data-target="s9" aria-label="§9 Bundles &amp; Configuration">9</button>
-    <button class="progress-marker" data-target="s10" aria-label="§10 The Foundation Bridge">10</button>
-    <button class="progress-marker" data-target="s11" aria-label="§11 Agents, Skills &amp; Recipes">11</button>
-    <button class="progress-marker" data-target="s12" aria-label="§12 Complete Picture">12</button>
-    <button class="progress-marker" data-target="appendix-a" aria-label="Appendix">A</button>
-  </div>
-  <div class="progress-label" id="progressLabel"></div>
-</div>
 
 <div class="page-wrapper">
 
@@ -2745,11 +2733,15 @@ standards (see @project:standards.md).</code></pre>
 
   function closeToc() {
     tocOverlay.classList.remove('open');
+    tocBtn.style.opacity = '';
+    tocBtn.style.pointerEvents = '';
     document.body.style.overflow = '';
   }
 
   tocBtn.addEventListener('click', () => {
     tocOverlay.classList.add('open');
+    tocBtn.style.opacity = '0';
+    tocBtn.style.pointerEvents = 'none';
     document.body.style.overflow = 'hidden';
   });
 
@@ -2913,12 +2905,7 @@ standards (see @project:standards.md).</code></pre>
   // fully parsed — no DOMContentLoaded wrapper needed.
   injectMinimaps();
 
-  // ── Sticky Progress Bar ────────────────────────────────────────────────
-  const progressBar     = document.getElementById('progressBar');
-  const progressFill    = document.getElementById('progressFill');
-  const progressLabel   = document.getElementById('progressLabel');
-  const progressMarkers = document.querySelectorAll('.progress-marker');
-
+  // ── Chapter data (shared by scrollspy + dynamic TOC button) ────────────────
   const CHAPTER_TITLES = {
     's1':         'Introduction',
     's2':         'Architecture Map',
@@ -2937,22 +2924,22 @@ standards (see @project:standards.md).</code></pre>
 
   const CHAPTER_IDS = Object.keys(CHAPTER_TITLES);
 
-  function updateProgressBar() {
-    const scrollY      = window.scrollY;
-    const docHeight    = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPct    = Math.min(scrollY / docHeight, 1);
+  // ── Dynamic TOC Button ──────────────────────────────────────────────────────
+  const tocRingFill    = document.getElementById('tocRingFill');
+  const tocChapterNum  = document.getElementById('tocChapterNum');
+  const tocChapterTitle = document.getElementById('tocChapterTitle');
+  const CIRCUMFERENCE  = 2 * Math.PI * 11; // matches SVG r=11
 
-    // Show/hide bar based on scroll depth
-    if (scrollY > 400) {
-      progressBar.classList.add('visible');
-    } else {
-      progressBar.classList.remove('visible');
-    }
+  function updateTocButton() {
+    const scrollY    = window.scrollY;
+    const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = Math.min(scrollY / docHeight, 1);
 
-    // Drive the fill line
-    progressFill.style.width = (scrollPct * 100) + '%';
+    // Update ring fill
+    const offset = CIRCUMFERENCE * (1 - scrollPercent);
+    tocRingFill.style.strokeDashoffset = offset;
 
-    // Determine which chapter the viewport is currently in
+    // Find active chapter (reuse CHAPTER_IDS + CHAPTER_TITLES)
     let activeChapterId = CHAPTER_IDS[0];
     const threshold = scrollY + 120;
 
@@ -2961,27 +2948,15 @@ standards (see @project:standards.md).</code></pre>
       if (el && el.offsetTop <= threshold) activeChapterId = id;
     }
 
-    // Style each marker: active / past / default
-    const activeIndex = CHAPTER_IDS.indexOf(activeChapterId);
-    progressMarkers.forEach((marker, i) => {
-      marker.classList.remove('active', 'past');
-      if (i === activeIndex)      marker.classList.add('active');
-      else if (i < activeIndex)   marker.classList.add('past');
-    });
-
-    // Update the chapter label
-    progressLabel.textContent = CHAPTER_TITLES[activeChapterId];
+    // Update chapter number and title
+    const chapterIndex = CHAPTER_IDS.indexOf(activeChapterId);
+    const displayNum = activeChapterId === 'appendix-a' ? 'A' : String(chapterIndex + 1);
+    tocChapterNum.textContent = displayNum;
+    tocChapterTitle.textContent = CHAPTER_TITLES[activeChapterId];
   }
 
-  window.addEventListener('scroll', updateProgressBar, { passive: true });
-  updateProgressBar();
-
-  // Marker click → smooth scroll to section
-  progressMarkers.forEach(marker => {
-    marker.addEventListener('click', () => {
-      scrollToSection(marker.getAttribute('data-target'));
-    });
-  });
+  window.addEventListener('scroll', updateTocButton, { passive: true });
+  updateTocButton();
 </script>
 
 </body>
