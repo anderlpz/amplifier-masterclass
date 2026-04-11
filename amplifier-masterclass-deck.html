@@ -5,42 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All About Amplifier — Architecture, Modules, and Design</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
 
   :root {
-    --bg: #0A0A0F;
-    --surface-1: rgba(255,255,255,0.04);
-    --surface-2: rgba(255,255,255,0.07);
-    --surface-3: rgba(255,255,255,0.10);
-    --text-primary: rgba(255,255,255,0.95);
-    --text-secondary: rgba(255,255,255,0.7);
-    --text-tertiary: rgba(255,255,255,0.45);
-    --text-dim: rgba(255,255,255,0.3);
-    --border: rgba(255,255,255,0.08);
-    --border-light: rgba(255,255,255,0.05);
+    --bg: #F4F5F9;
+    --surface-1: rgba(28,30,43,0.03);
+    --surface-2: rgba(28,30,43,0.05);
+    --surface-3: rgba(28,30,43,0.08);
+    --text-primary: #1C1E2B;
+    --text-secondary: #5C5E6E;
+    --text-tertiary: #8B8D9C;
+    --text-dim: #B0B2BE;
+    --border: #D8D9E3;
+    --border-light: #E8E9EF;
 
-    /* Semantic layer colors from the paper */
-    --kernel: #C9A84C;
-    --kernel-soft: rgba(201,168,76,0.12);
-    --kernel-glow: rgba(201,168,76,0.25);
-    --modules: #4FA8B8;
-    --modules-soft: rgba(79,168,184,0.12);
-    --modules-glow: rgba(79,168,184,0.25);
-    --bundles: #7B8ABE;
-    --bundles-soft: rgba(123,138,190,0.12);
-    --bundles-glow: rgba(123,138,190,0.25);
-    --foundation: #6DA06D;
-    --foundation-soft: rgba(109,160,109,0.12);
-    --foundation-glow: rgba(109,160,109,0.25);
-    --boundary: #B07060;
-    --boundary-soft: rgba(176,112,96,0.12);
-    --apps: #9E8EB0;
-    --apps-soft: rgba(158,142,176,0.12);
-    --ecosystem: #A899A8;
-    --ecosystem-soft: rgba(168,153,168,0.12);
+    /* Semantic layer colors — same as the paper */
+    --kernel: #9B7B3E;
+    --kernel-soft: #F5F0E4;
+    --kernel-glow: rgba(155,123,62,0.15);
+    --modules: #3E7D8A;
+    --modules-soft: #E4F0F2;
+    --modules-glow: rgba(62,125,138,0.15);
+    --bundles: #5C6B9E;
+    --bundles-soft: #ECEEF5;
+    --bundles-glow: rgba(92,107,158,0.15);
+    --foundation: #5A7D5A;
+    --foundation-soft: #E8F0E8;
+    --foundation-glow: rgba(90,125,90,0.15);
+    --boundary: #8A5A4A;
+    --boundary-soft: #F2EAE6;
+    --apps: #7B6B8A;
+    --apps-soft: #F0ECF2;
+    --ecosystem: #8A7B8A;
+    --ecosystem-soft: #F2EEF2;
 
-    --accent-green: #4ADE80;
-    --accent-red: #F87171;
+    --accent-green: #3D7A4A;
+    --accent-red: #8A4A3E;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

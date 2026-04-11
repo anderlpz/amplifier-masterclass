@@ -344,6 +344,32 @@
       letter-spacing: 0.06em;
     }
 
+    .drawer-formats {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .drawer-format-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 150ms;
+    }
+
+    .drawer-format-btn:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+
     .toc-overlay.open {
       opacity: 1;
       pointer-events: auto;
@@ -1543,6 +1569,12 @@
       <div class="drawer-brand">
         <span class="drawer-wordmark">Amplifier</span>
         <span class="drawer-subtitle">Masterclass</span>
+      </div>
+      <div class="drawer-formats">
+        <a href="amplifier-masterclass-deck.html" target="_blank" class="drawer-format-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Present
+        </a>
       </div>
     </div>
     <p class="sidebar-label">Contents</p>
