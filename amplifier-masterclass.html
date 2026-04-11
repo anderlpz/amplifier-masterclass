@@ -787,6 +787,42 @@
     .feature-quote[data-layer="foundation"] { border-left-color: var(--layer-foundation); }
     .feature-quote[data-layer="boundary"]   { border-left-color: var(--layer-boundary); }
 
+    /* ── Design Decision callout — the WHY layer ──────────────────────────── */
+
+    .design-decision {
+      border-left: 3px solid var(--layer-boundary);
+      background: var(--layer-boundary-soft);
+      border-radius: 0 4px 4px 0;
+      padding: 16px 20px;
+      margin: 28px 0;
+    }
+
+    .dd-label {
+      font-family: var(--font-heading);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--layer-boundary);
+      margin-bottom: 8px;
+    }
+
+    .dd-verdict {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin: 0 0 6px;
+    }
+
+    .dd-reason {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
     /* ── Semantic code block accents ───────────────────────────────────── */
 
     pre[data-layer="kernel"]  { border-left: 3px solid var(--layer-kernel); }
@@ -1201,6 +1237,12 @@
 
       <p>The consequence is that when rules change — new safety requirements, new compliance needs — you change modules. The kernel stays the same.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>The kernel provides mechanism only — never policy.</strong></p>
+        <p class="dd-reason">When rules change — new safety requirements, new compliance needs — you change modules. The kernel stays the same. Weaving policy into mechanism means every policy change risks breaking the mechanism.</p>
+      </div>
+
       <h3 id="s3-2">3.2 The center stays still</h3>
 
       <p>A new AI model ships. Someone writes a provider module. The kernel does not know or care which model it talks to. New tools, new paradigms, new safety requirements: all handled at the edges. The center does not move.</p>
@@ -1217,11 +1259,23 @@
 
       <p>Every line in the kernel is a line that every module depends on. Every line is a potential constraint on the future. So the kernel is aggressive about exclusion. A logging hook writes logs. A persistence module saves conversations. A configuration layer reads settings. Each one is a module.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>The kernel writes zero bytes to disk.</strong></p>
+        <p class="dd-reason">Every kernel line constrains every module's future. Logging, persistence, and configuration are policy — they live in modules, where they can be independently replaced.</p>
+      </div>
+
       <h3 id="s3-4">3.4 Why mechanism over policy matters in practice</h3>
 
       <p>Consider what happens when you deploy an AI agent in a setting where certain operations need human approval. In a system without this separation, you would modify the tool-calling code itself: add an if-statement, check a config flag, pop up a dialog. The approval logic is now woven into the execution logic. Every future tool must remember to include the approval check. Miss one, and the policy has a hole.</p>
 
       <p>In Amplifier, the kernel fires a <code>tool:pre</code> event before every tool call. A hook module registers for that event. When it sees a tool call that requires approval, it returns <code>ask_user</code> — one of five hook actions ranked by authority, defined in full in <a href="#s7-4" class="xref">§7.4</a>. The kernel pauses execution and waits for a human decision. The tool itself has no knowledge that approval was required. The hook module can be swapped, updated, or removed without touching any tool code. The policy lives in a module; the mechanism lives in the kernel.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Tool approval is a hook, not an if-statement in the tool.</strong></p>
+        <p class="dd-reason">If approval is inside the tool, every future tool must remember to include the check. Miss one, and the policy has a hole. As a hook, the policy is centralized — swap, update, or remove it without touching tool code.</p>
+      </div>
 
       <p>This pattern repeats at every level. Logging is a hook, not a kernel feature. Context injection is a hook response, not an API call. Safety rules are hook policies, not built-in constraints. Each policy can be independently developed, tested, and replaced.</p>
 
@@ -1275,6 +1329,12 @@
       <p><span class="lt" data-l="kernel">Hooks</span> let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.</p>
 
       <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. <a href="#s7-5" class="xref">§7.5</a> catalogs their names and firing conditions. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Events and hooks are one system — a single dispatch mechanism.</strong></p>
+        <p class="dd-reason">Two systems would mean two surfaces to maintain and debug. One <code>HookRegistry.emit()</code> handles both, implemented in Rust because event dispatch is the hottest path in the system.</p>
+      </div>
 
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
@@ -1391,11 +1451,23 @@
 
       <p>Amplifier uses structural subtyping. If your class has the right methods with the right signatures, it qualifies as that module type. You don't need to inherit from a base class. You don't need to declare "I am a Tool." The structure of your code determines its type.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Structural subtyping — no base class required.</strong></p>
+        <p class="dd-reason">If your class has the right methods with the right signatures, it qualifies. No inheritance, no "I am a Tool" declaration. Contracts are small and stable; base classes accumulate baggage.</p>
+      </div>
+
       <h3 id="s5-3">5.3 Loading order</h3>
 
       <p>Modules are loaded in a fixed order: <strong>Orchestrator first</strong>, then Context Manager, then Providers, then Tools, then Hook Handlers last. The Orchestrator and Context Manager are required. If either fails to mount, the session stops immediately with an error. The rest are optional.</p>
 
       <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. <a href="#s7" class="xref">§7</a> explains why this separation is the most consequential design decision in the module system. They need the full system set up before they start watching.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Hooks load last in the module loading order.</strong></p>
+        <p class="dd-reason">Hooks observe everything else — they need the full system mounted before they start watching. Loading hooks before tools would mean registering for events from modules that haven't mounted yet.</p>
+      </div>
 
       <!-- Diagram: Module Loading Order -->
       <div class="flow-diagram">
@@ -1494,6 +1566,12 @@
 
       <p>No other module can do this. A <span class="lt" data-l="modules">Provider</span> can't look up which <span class="lt" data-l="modules">Tools</span> are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system at runtime. This is by design, not by accident.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Only the Orchestrator receives the Coordinator at runtime.</strong></p>
+        <p class="dd-reason">Every other module gets the Coordinator once, at mount time. Arbitrary inter-module discovery would create invisible coupling. Constraining live system access to one replaceable module makes every cross-module interaction explicit.</p>
+      </div>
+
       <h3 id="s6-2">6.2 One common pattern: what happens when you send a message</h3>
 
       <p>This shows one commonly used orchestrator. Different orchestrators can implement completely different strategies.</p>
@@ -1585,6 +1663,12 @@
       <h3 id="s6-3">6.3 The loop lives outside the kernel</h3>
 
       <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the <span class="lt" data-l="kernel">kernel</span>. It lives in an Orchestrator module. This is mechanism versus policy (<a href="#s3-1" class="xref">§3.1</a>) at its most literal: the kernel provides the execution contract; the loop itself is policy. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>The agent loop lives in a module, not the kernel.</strong></p>
+        <p class="dd-reason">The "think → act → observe → repeat" cycle is policy. A different Orchestrator could implement parallel provider calls, multi-step planning, or a debate between models — without the kernel changing.</p>
+      </div>
 
       <p>The Orchestrator returns a plain string as its public response. Rich data — token usage, tool history, thinking blocks — exits through hook events. This keeps the Orchestrator loosely coupled to every consumer. New instrumentation means new hooks, not a changed Orchestrator interface.</p>
 
@@ -1680,6 +1764,12 @@ async def on_tool(event):
     </div>
   </div>
 </div>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Use hooks for guaranteed outcomes; tools for intentional AI actions.</strong></p>
+        <p class="dd-reason">A tool instruction is probabilistic — the AI might forget or be distracted. A hook fires automatically on every matching event. Tools extend what the model can do; hooks govern what it may do.</p>
+      </div>
 
       <div class="callout" data-layer="boundary">
         <p><strong>The distinction in one sentence:</strong> Tools are capabilities you hand to the AI. Hooks are policies you enforce around it. Use tools when you want the AI to decide. Use hooks when you need the outcome to be guaranteed.</p>
@@ -1792,6 +1882,12 @@ async def on_tool(event):
       </div>
 
       <p><strong>Deny is first for a reason.</strong> It doesn't matter if ten hooks say allow. One deny stops it. Circuit breaker. <strong>InjectContext is where hooks collaborate rather than compete.</strong> A code checker hook can inject "3 syntax errors" while a style hook simultaneously injects "naming conventions violated." The AI sees both. <strong>Modify is a pipeline</strong>: each transformation feeds the next.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>One <code>deny</code> blocks everything — fail-closed security.</strong></p>
+        <p class="dd-reason">It doesn't matter if ten hooks say allow. One policy violation is enough. A vote-based alternative would let permissive hooks override safety — the opposite of what a security posture requires.</p>
+      </div>
 
       <h3 id="s7-5">7.5 Events and dispatch</h3>
 
@@ -1916,6 +2012,12 @@ async def on_tool(event):
 
       <p>This is deliberately minimal. Automatic inheritance creates hidden dependencies; changes to the parent's conversation would affect the child unpredictably. Explicit is better: pass what you need, share nothing by default. Each session is self-contained and predictable.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Parent-child sessions share only an ID — no automatic inheritance.</strong></p>
+        <p class="dd-reason">Automatic inheritance creates hidden dependencies — changes to the parent's conversation would affect the child unpredictably. Explicit is better: pass what you need, share nothing by default.</p>
+      </div>
+
       <h3 id="s8-3">8.3 File output comes from modules</h3>
 
       <p>When you see session files on disk — <code>transcript.jsonl</code>, <code>events.jsonl</code>, <code>metadata.json</code> — the kernel didn't write them — as <a href="#s4-6" class="xref">§4.6</a> established, the kernel writes zero bytes to disk. Hook modules did. Remove every hook, and the session still runs identically. No trace on disk, but the conversation works the same.</p>
@@ -2020,6 +2122,12 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Context files are a continuous feed of current information, not snapshots taken at session start. Not loaded once, not cached — full re-read on every turn. Update a coding standards file, and every agent referencing it sees the change immediately.</p>
 
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Context files are re-read on every turn — never cached.</strong></p>
+        <p class="dd-reason">Edit a coding standards file while the agent runs; it sees the change on its next turn without a restart. The cost of a stale instruction is higher than a disk read.</p>
+      </div>
+
       <hr>
 
       <!-- ── Section 10 ── -->
@@ -2031,6 +2139,12 @@ standards (see @project:standards.md).</code></pre>
 
       <div class="feature-quote" data-layer="foundation">
         <p>The kernel doesn't need Foundation. The kernel works with a raw configuration dictionary and a set of module paths. Foundation is a user-experience layer. It makes the system approachable by translating text files into running sessions.</p>
+      </div>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Foundation is optional — the kernel works without it.</strong></p>
+        <p class="dd-reason">The kernel needs only a configuration dictionary and module paths. Baking Foundation into the kernel would couple it to one opinionated way of doing configuration — contradicting the center-stays-still principle.</p>
       </div>
 
       <h3 id="s10-1">10.1 PreparedBundle</h3>
@@ -2073,6 +2187,12 @@ standards (see @project:standards.md).</code></pre>
       <h3 id="s10-6">10.6 The runtime relationship</h3>
 
       <p>Foundation doesn't just set up a session. It sustains it. The kernel calls into Foundation on every turn (system prompt) and during loading (module resolution). Neither side has a code dependency on the other. The kernel calls functions without knowing who provided them. This is the center-stays-still principle from <a href="#s3-2" class="xref">§3.2</a> applied to Foundation itself. Foundation calls the kernel's API without accessing kernel internals.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Foundation connects via runtime callbacks — zero compile-time coupling.</strong></p>
+        <p class="dd-reason">A completely different preparation layer could inject different callbacks, and the kernel would not know or care. Connected at runtime through interfaces; independent at build time through boundaries.</p>
+      </div>
 
       <div class="callout" data-layer="boundary">
         <p><strong>Connected at runtime through callbacks. Independent at compile time through interfaces.</strong></p>
@@ -2149,6 +2269,12 @@ standards (see @project:standards.md).</code></pre>
       </div>
 
       <p>The result is efficient token budget management: the agent sees what expertise is available without paying the context cost until it actually needs the knowledge.</p>
+
+      <div class="design-decision">
+        <div class="dd-label">Design Decision</div>
+        <p class="dd-verdict"><strong>Skills use three-level progressive disclosure for token budget.</strong></p>
+        <p class="dd-reason">The agent sees what expertise is available (~100 tokens) without paying the full context cost (~5k tokens) until it needs the knowledge. Dumping all skill content on every turn would exhaust the token budget.</p>
+      </div>
 
       <p>Skills can also run as isolated subagents — called <strong>fork execution</strong> — using the parent/child session relationship from <a href="#s8-2" class="xref">§8.2</a> — bridging the gap between passive knowledge and autonomous agents. A code review skill, for example, loads like a skill but spawns its own session with its own context window to do the work.</p>
 
