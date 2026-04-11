@@ -534,6 +534,35 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    transition: color 150ms, border-color 150ms;
+  }
+  .back-link:hover {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+  }
+  @media (max-width: 768px) {
+    .back-link {
+      top: max(12px, env(safe-area-inset-top, 0px));
+      left: 12px;
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  }
+
   .click-zone {
     position: fixed;
     top: 0;
@@ -843,17 +872,14 @@
     <p style="margin-bottom: 28px;">They emerged from the code, from decisions made repeatedly about what belongs in the kernel and what doesn't.</p>
     <div class="grid-3">
       <div class="card" style="border-top: 3px solid var(--kernel); text-align: center;">
-        <div style="font-size: 36px; margin-bottom: 12px;">⚙️</div>
         <h3 style="color: var(--kernel);">Mechanism, not policy</h3>
         <p>The kernel fires events. Modules decide what happens. When rules change, you change modules. The kernel stays the same.</p>
       </div>
       <div class="card" style="border-top: 3px solid var(--kernel); text-align: center;">
-        <div style="font-size: 36px; margin-bottom: 12px;">🎯</div>
         <h3 style="color: var(--kernel);">The center stays still</h3>
         <p>New models, new tools, new paradigms — all handled at the edges. The center does not move. So the edges can move at any speed.</p>
       </div>
       <div class="card" style="border-top: 3px solid var(--boundary); text-align: center;">
-        <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
         <h3 style="color: var(--boundary);">Ruthless simplicity</h3>
         <p>Zero file I/O in the kernel. If it can live in a module, it must. Every kernel line constrains every module's future.</p>
       </div>
@@ -1088,22 +1114,22 @@
         <h3 style="color: var(--accent-green);">Tools</h3>
         <div class="tvh-tagline" style="color: var(--accent-green);">The AI decides</div>
         <ul>
-          <li style="color: var(--accent-green);">✦ Listed in the system prompt</li>
-          <li style="color: var(--accent-green);">✦ AI sees name, description, schema</li>
-          <li style="color: var(--accent-green);">✦ AI <strong>chooses</strong> when to call</li>
-          <li style="color: var(--accent-green);">✦ Calls appear in conversation history</li>
-          <li style="color: var(--accent-green);">✦ <strong>Extend what the model can do</strong></li>
+          <li style="color: var(--accent-green);">- Listed in the system prompt</li>
+          <li style="color: var(--accent-green);">- AI sees name, description, schema</li>
+          <li style="color: var(--accent-green);">- AI <strong>chooses</strong> when to call</li>
+          <li style="color: var(--accent-green);">- Calls appear in conversation history</li>
+          <li style="color: var(--accent-green);">- <strong>Extend what the model can do</strong></li>
         </ul>
       </div>
       <div class="tvh-side" style="background: var(--accent-red-soft);">
         <h3 style="color: var(--accent-red);">Hooks</h3>
         <div class="tvh-tagline" style="color: var(--accent-red);">Code decides</div>
         <ul>
-          <li style="color: var(--accent-red);">✦ <strong>Not</strong> in the system prompt</li>
-          <li style="color: var(--accent-red);">✦ AI <strong>cannot</strong> see or call them</li>
-          <li style="color: var(--accent-red);">✦ Fire <strong>automatically</strong> on events</li>
-          <li style="color: var(--accent-red);">✦ Can observe, block, inject, or modify</li>
-          <li style="color: var(--accent-red);">✦ <strong>Govern what the model may do</strong></li>
+          <li style="color: var(--accent-red);">- <strong>Not</strong> in the system prompt</li>
+          <li style="color: var(--accent-red);">- AI <strong>cannot</strong> see or call them</li>
+          <li style="color: var(--accent-red);">- Fire <strong>automatically</strong> on events</li>
+          <li style="color: var(--accent-red);">- Can observe, block, inject, or modify</li>
+          <li style="color: var(--accent-red);">- <strong>Govern what the model may do</strong></li>
         </ul>
       </div>
     </div>
@@ -1341,6 +1367,9 @@
 </div>
 
 </div><!-- /deck -->
+
+<!-- Back to masterclass -->
+<a href="amplifier-masterclass.html" class="back-link" id="backLink">Back to Masterclass</a>
 
 <!-- Navigation -->
 <div class="nav-dots" id="navDots"></div>
