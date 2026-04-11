@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All About Amplifier — Architecture, Modules, and Design</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0A0A0F;
+    --surface-1: rgba(255,255,255,0.04);
+    --surface-2: rgba(255,255,255,0.07);
+    --surface-3: rgba(255,255,255,0.10);
+    --text-primary: rgba(255,255,255,0.95);
+    --text-secondary: rgba(255,255,255,0.7);
+    --text-tertiary: rgba(255,255,255,0.45);
+    --text-dim: rgba(255,255,255,0.3);
+    --border: rgba(255,255,255,0.08);
+    --border-light: rgba(255,255,255,0.05);
+
+    /* Semantic layer colors from the paper */
+    --kernel: #C9A84C;
+    --kernel-soft: rgba(201,168,76,0.12);
+    --kernel-glow: rgba(201,168,76,0.25);
+    --modules: #4FA8B8;
+    --modules-soft: rgba(79,168,184,0.12);
+    --modules-glow: rgba(79,168,184,0.25);
+    --bundles: #7B8ABE;
+    --bundles-soft: rgba(123,138,190,0.12);
+    --bundles-glow: rgba(123,138,190,0.25);
+    --foundation: #6DA06D;
+    --foundation-soft: rgba(109,160,109,0.12);
+    --foundation-glow: rgba(109,160,109,0.25);
+    --boundary: #B07060;
+    --boundary-soft: rgba(176,112,96,0.12);
+    --apps: #9E8EB0;
+    --apps-soft: rgba(158,142,176,0.12);
+    --ecosystem: #A899A8;
+    --ecosystem-soft: rgba(168,153,168,0.12);
+
+    --accent-green: #4ADE80;
+    --accent-red: #F87171;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide container ── */
+  .deck { position: relative; width: 100%; height: 100%; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(32px, 5vw, 80px) clamp(32px, 8vw, 120px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* ── Typography ── */
+  .slide-label {
+    font-size: clamp(10px, 1.2vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .slide-title {
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+
+  .slide-subtitle {
+    font-size: clamp(16px, 2vw, 24px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    max-width: 800px;
+  }
+
+  h2 {
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+
+  p, li {
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--surface-2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--kernel);
+  }
+
+  /* ── Layout helpers ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(16px, 3vw, 40px);
+    margin-top: 24px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(12px, 2vw, 24px);
+    margin-top: 24px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(16px, 2vw, 28px);
+  }
+
+  .card-accent {
+    border-top: 3px solid var(--accent-color, var(--kernel));
+  }
+
+  .card h3 {
+    font-size: clamp(14px, 1.5vw, 18px);
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: clamp(13px, 1.3vw, 16px);
+  }
+
+  /* ── Accent bars ── */
+  .accent-bar {
+    width: 48px;
+    height: 4px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Pull quote ── */
+  .pull-quote {
+    font-size: clamp(20px, 2.8vw, 36px);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    border-left: 4px solid;
+    padding-left: clamp(16px, 2vw, 28px);
+    margin: 24px 0;
+  }
+
+  /* ── Kernel diagram ── */
+  .kernel-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .kernel-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .kernel-box {
+    background: var(--kernel-soft);
+    border: 1.5px solid var(--kernel);
+    border-radius: 8px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: clamp(12px, 1.3vw, 15px);
+    font-weight: 600;
+    color: var(--kernel);
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .event-bus {
+    background: var(--modules-soft);
+    border: 2px solid var(--modules);
+    border-radius: 8px;
+    padding: 8px 32px;
+    text-align: center;
+    font-size: clamp(11px, 1.2vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--modules);
+    text-transform: uppercase;
+  }
+
+  /* ── Layer stack ── */
+  .layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .layer-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1.5px solid;
+    font-size: clamp(12px, 1.3vw, 15px);
+  }
+
+  .layer-bar .layer-num {
+    font-weight: 700;
+    font-size: clamp(11px, 1.1vw, 13px);
+    opacity: 0.7;
+    min-width: 18px;
+  }
+
+  .layer-bar .layer-name {
+    font-weight: 600;
+    min-width: 120px;
+  }
+
+  .layer-bar .layer-desc {
+    font-weight: 400;
+    opacity: 0.7;
+    font-size: clamp(11px, 1.2vw, 14px);
+  }
+
+  /* ── Module cartridges ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(8px, 1.5vw, 16px);
+    margin-top: 20px;
+  }
+
+  .module-card {
+    background: var(--surface-1);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(12px, 1.5vw, 20px);
+    position: relative;
+  }
+
+  .module-card.required {
+    border-color: var(--modules);
+    background: var(--modules-soft);
+  }
+
+  .module-badge {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .module-card h3 {
+    font-size: clamp(13px, 1.4vw, 17px);
+  }
+
+  .module-card p {
+    font-size: clamp(12px, 1.2vw, 14px);
+    margin-top: 4px;
+  }
+
+  /* ── Tools vs Hooks split ── */
+  .tvh-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .tvh-side {
+    padding: clamp(20px, 2.5vw, 36px);
+  }
+
+  .tvh-side h3 {
+    font-size: clamp(18px, 2.2vw, 28px);
+    margin-bottom: 4px;
+  }
+
+  .tvh-side .tvh-tagline {
+    font-size: clamp(12px, 1.2vw, 15px);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .tvh-side ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .tvh-side li {
+    font-size: clamp(13px, 1.3vw, 16px);
+    padding: 4px 0;
+    color: var(--text-secondary);
+  }
+
+  .tvh-side li::before {
+    margin-right: 8px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Priority cascade ── */
+  .cascade {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .cascade-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+  }
+
+  .cascade-num {
+    font-size: clamp(18px, 2vw, 26px);
+    font-weight: 700;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .cascade-name {
+    font-weight: 600;
+    font-size: clamp(14px, 1.4vw, 17px);
+    min-width: 130px;
+  }
+
+  .cascade-desc {
+    font-size: clamp(12px, 1.2vw, 15px);
+    color: var(--text-secondary);
+  }
+
+  /* ── Session phases ── */
+  .phase-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .phase-box {
+    background: var(--kernel-soft);
+    border: 1.5px solid var(--kernel);
+    border-radius: 10px;
+    padding: clamp(12px, 1.5vw, 20px) clamp(16px, 2vw, 28px);
+    text-align: center;
+  }
+
+  .phase-box h3 {
+    color: var(--kernel);
+    font-size: clamp(14px, 1.5vw, 18px);
+    margin-bottom: 4px;
+  }
+
+  .phase-box p {
+    font-size: clamp(11px, 1.1vw, 13px);
+    color: var(--text-tertiary);
+  }
+
+  .phase-arrow {
+    font-size: 20px;
+    color: var(--text-dim);
+  }
+
+  /* ── Where things go table ── */
+  .placement-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: clamp(12px, 1.3vw, 15px);
+  }
+
+  .placement-table th {
+    font-size: clamp(10px, 1.1vw, 12px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: 8px 16px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .placement-table td {
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .placement-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+  /* ── Bundle code block ── */
+  .code-block {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(16px, 2vw, 24px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.2vw, 14px);
+    line-height: 1.7;
+    color: var(--text-secondary);
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .code-block .kw { color: var(--bundles); }
+  .code-block .val { color: var(--foundation); }
+  .code-block .cmt { color: var(--text-dim); font-style: italic; }
+  .code-block .str { color: var(--kernel); }
+
+  /* ── Navigation ── */
+  .nav-dots {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    border: none;
+    cursor: pointer;
+    transition: background 200ms, transform 200ms;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: var(--kernel);
+    transform: scale(1.3);
+  }
+
+  .nav-dot:hover { background: var(--text-tertiary); }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    z-index: 100;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .click-zone {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    z-index: 50;
+    cursor: pointer;
+  }
+
+  .click-zone.left { left: 0; }
+  .click-zone.right { right: 0; }
+
+  /* ── Title slide special ── */
+  .title-slide .slide-inner { text-align: center; }
+  .title-slide .slide-title { font-size: clamp(32px, 5vw, 64px); margin-bottom: 16px; }
+  .title-slide .slide-subtitle { margin: 0 auto 32px; }
+
+  .title-meta {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .title-meta span {
+    font-size: clamp(12px, 1.2vw, 14px);
+    color: var(--text-tertiary);
+  }
+
+  .title-meta strong {
+    color: var(--text-secondary);
+  }
+
+  /* ── CTA slide ── */
+  .cta-slide .slide-inner { text-align: center; }
+
+  /* ── Loading order flow ── */
+  .loading-flow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .load-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .load-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--modules);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .load-name {
+    font-size: clamp(11px, 1.2vw, 14px);
+    font-weight: 600;
+    color: var(--modules);
+    text-align: center;
+  }
+
+  .load-req {
+    font-size: clamp(10px, 1vw, 12px);
+    color: var(--text-tertiary);
+  }
+
+  .load-arrow {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+
+  .required-line {
+    border-left: 2px dashed var(--text-dim);
+    height: 20px;
+    margin: 0 auto;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .grid-2, .tvh-split { grid-template-columns: 1fr; }
+    .grid-3, .module-grid { grid-template-columns: 1fr 1fr; }
+    .slide { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide title-slide active" data-slide="0">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--kernel);">Amplifier Masterclass</div>
+    <h1 class="slide-title">All About Amplifier</h1>
+    <p class="slide-subtitle">Architecture, Modules, and Design — a technical deep-dive into the AI harness framework</p>
+    <div class="title-meta">
+      <span><strong>Edition</strong> First</span>
+      <span><strong>Date</strong> April 2026</span>
+      <span><strong>Chapters</strong> 12</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 2 — WHAT IS AMPLIFIER
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="1">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--kernel);">Chapter 1 · Introduction</div>
+    <h2>Amplifier is a framework for building your AI harness.</h2>
+    <p style="margin-top: 16px; max-width: 800px;">A harness takes raw power and gives it direction. An AI model handles reasoning. Everything around the model — tools, memory, rules, communication — needs structure. Amplifier provides that structure.</p>
+    <div class="pull-quote" style="border-color: var(--kernel); margin-top: 32px;">
+      Think of it as a construction kit: it gives you the pieces, and you assemble the harness that fits your use case.
+    </div>
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="card" style="--accent-color: var(--kernel); border-top: 3px solid var(--kernel);">
+        <h3 style="color: var(--kernel);">The OS Analogy</h3>
+        <p>Like an operating system has a tiny kernel at its center — managing memory, scheduling tasks — with everything else plugging in through well-defined interfaces. Amplifier borrows this structure.</p>
+      </div>
+      <div class="card" style="--accent-color: var(--modules); border-top: 3px solid var(--modules);">
+        <h3 style="color: var(--modules);">Modular by Design</h3>
+        <p>New AI model? Write a provider module. Need safety rules? Add a hook module. The core does not change. It provides infrastructure; the modules provide behavior.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 3 — 6-LAYER ARCHITECTURE
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="2">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--modules);">Chapter 2 · Architecture Map</div>
+    <h2>Six layers. Each depends only on the one below it.</h2>
+    <div class="layer-stack">
+      <div class="layer-bar" style="background: var(--ecosystem-soft); border-color: var(--ecosystem); color: var(--ecosystem);">
+        <span class="layer-num">6</span>
+        <span class="layer-name">Community</span>
+        <span class="layer-desc">Third-party modules, bundles, recipes</span>
+      </div>
+      <div class="layer-bar" style="background: var(--apps-soft); border-color: var(--apps); color: var(--apps);">
+        <span class="layer-num">5</span>
+        <span class="layer-name">Applications</span>
+        <span class="layer-desc">CLI · Web · IDE · Voice · API</span>
+      </div>
+      <div class="layer-bar" style="background: var(--foundation-soft); border-color: var(--foundation); color: var(--foundation);">
+        <span class="layer-num">4</span>
+        <span class="layer-name">Foundation</span>
+        <span class="layer-desc">Turns bundles into running sessions</span>
+      </div>
+      <div class="layer-bar" style="background: var(--bundles-soft); border-color: var(--bundles); color: var(--bundles);">
+        <span class="layer-num">3</span>
+        <span class="layer-name">Bundles</span>
+        <span class="layer-desc">Text files · Tools · Hooks · Prompts · Context</span>
+      </div>
+      <div class="layer-bar" style="background: var(--modules-soft); border-color: var(--modules); color: var(--modules);">
+        <span class="layer-num">2</span>
+        <span class="layer-name">Modules</span>
+        <span class="layer-desc">Orchestrator · Providers · Tools · Context · Hooks</span>
+      </div>
+      <div class="layer-bar" style="background: var(--kernel-soft); border-color: var(--kernel); color: var(--kernel); border-width: 3px;">
+        <span class="layer-num">1</span>
+        <span class="layer-name">Kernel</span>
+        <span class="layer-desc">amplifier-core · The unchanging center · ~2,600 lines</span>
+      </div>
+    </div>
+    <p style="margin-top: 24px; text-align: center; font-size: clamp(13px, 1.3vw, 16px);">The most important cluster is at the center: <code>amplifier-core</code>. Everything else depends on it; it depends on nothing.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 4 — DESIGN PHILOSOPHY
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="3">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--boundary);">Chapter 3 · Design Philosophy</div>
+    <h2>Three ideas shape how Amplifier is built.</h2>
+    <p style="margin-bottom: 28px;">They emerged from the code, from decisions made repeatedly about what belongs in the kernel and what doesn't.</p>
+    <div class="grid-3">
+      <div class="card" style="border-top: 3px solid var(--kernel); text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 12px;">⚙️</div>
+        <h3 style="color: var(--kernel);">Mechanism, not policy</h3>
+        <p>The kernel fires events. Modules decide what happens. When rules change, you change modules. The kernel stays the same.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--kernel); text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 12px;">🎯</div>
+        <h3 style="color: var(--kernel);">The center stays still</h3>
+        <p>New models, new tools, new paradigms — all handled at the edges. The center does not move. So the edges can move at any speed.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--boundary); text-align: center;">
+        <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
+        <h3 style="color: var(--boundary);">Ruthless simplicity</h3>
+        <p>Zero file I/O in the kernel. If it can live in a module, it must. Every kernel line constrains every module's future.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 5 — THE KERNEL
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="4">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--kernel);">Chapter 4 · The Kernel</div>
+    <h2>Five things live in the kernel. Nothing else.</h2>
+    <p style="margin-bottom: 8px;">The kernel (<code>amplifier-core</code>) is a Rust and Python package — ~2,600 lines, zero file I/O.</p>
+    <div class="kernel-diagram">
+      <div class="kernel-row">
+        <div class="kernel-box">Session Lifecycle</div>
+        <div class="kernel-box">Contracts</div>
+        <div class="kernel-box">Module Loader</div>
+      </div>
+      <div class="event-bus">Event Bus · Hook Registry</div>
+      <div class="kernel-row">
+        <div class="kernel-box">Coordinator<br><span style="font-size:0.8em;font-weight:400;opacity:0.7;">passive registry</span></div>
+        <div class="kernel-box">Hooks<br><span style="font-size:0.8em;font-weight:400;opacity:0.7;">41 canonical events</span></div>
+      </div>
+    </div>
+    <p style="margin-top: 20px; text-align: center; font-size: clamp(13px, 1.3vw, 16px); color: var(--text-tertiary);">Despite its name, the Coordinator does not coordinate. It is a registry — a shelf with labeled slots.<br>The actual coordinating is done by the Orchestrator, which is a <em>module</em>, not part of the kernel.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 6 — THE MOUNT CONTRACT
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="5">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--kernel);">Chapter 4 · The Universal Contract</div>
+    <h2>One contract for every module type.</h2>
+    <div class="code-block" style="margin-top: 24px; border-left: 3px solid var(--kernel);">
+<span class="kw">async def</span> <span class="val">mount</span>(
+    coordinator: Coordinator,
+    config: dict
+) -> Optional[cleanup_fn]:
+    <span class="cmt"># receive the registry + configuration</span>
+    <span class="cmt"># do your setup work</span>
+    <span class="cmt"># register yourself in the coordinator</span>
+    <span class="cmt"># optionally return a cleanup function</span></div>
+    <div class="grid-2" style="margin-top: 24px;">
+      <div>
+        <h3 style="color: var(--kernel);">Structural subtyping</h3>
+        <p>No base class required. If your class has the right methods with the right signatures, it qualifies. Contracts are small and stable.</p>
+      </div>
+      <div>
+        <h3 style="color: var(--boundary);">Zero file I/O</h3>
+        <p>Search the entire <code>amplifier-core</code> codebase for file-writing operations: zero matches. Logging, persistence, configuration — all live in modules.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 7 — THE MODULE SYSTEM
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="6">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--modules);">Chapter 5 · The Module System</div>
+    <h2>Six module types. One contract. Fixed loading order.</h2>
+    <div class="module-grid">
+      <div class="module-card required">
+        <div class="module-badge" style="background: var(--modules-glow); color: var(--modules);">Required · Exactly 1</div>
+        <h3 style="color: var(--modules);">Orchestrator</h3>
+        <p>Drives the conversation. Decides context, routing, tool handling, when to stop.</p>
+      </div>
+      <div class="module-card">
+        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">Multiple allowed</div>
+        <h3>Provider</h3>
+        <p>Connects to an AI model. Claude, GPT, Gemini, local. Translates formats.</p>
+      </div>
+      <div class="module-card">
+        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">Multiple allowed</div>
+        <h3>Tool</h3>
+        <p>An action the agent can take. The AI <em>decides</em> when to use them.</p>
+      </div>
+      <div class="module-card required">
+        <div class="module-badge" style="background: var(--modules-glow); color: var(--modules);">Required · Exactly 1</div>
+        <h3 style="color: var(--modules);">Context Manager</h3>
+        <p>Manages conversation history. Decides what fits in the token window.</p>
+      </div>
+      <div class="module-card" style="border-color: var(--accent-red); background: rgba(248,113,113,0.06);">
+        <div class="module-badge" style="background: rgba(248,113,113,0.15); color: var(--accent-red);">Multiple · Invisible to AI</div>
+        <h3 style="color: var(--accent-red);">Hook Handler</h3>
+        <p>Reacts to events. Fires automatically. Can observe, block, inject, or modify.</p>
+      </div>
+      <div class="module-card" style="opacity: 0.7;">
+        <div class="module-badge" style="background: var(--surface-2); color: var(--text-tertiary);">On demand</div>
+        <h3>Resolver</h3>
+        <p>Maps module names to file paths. Infrastructure plumbing.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 8 — LOADING ORDER
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="7">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--modules);">Chapter 5 · Loading Order</div>
+    <h2>Fixed sequence. The order matters.</h2>
+    <div class="loading-flow">
+      <div class="load-step">
+        <div class="load-num">1</div>
+        <div class="load-name">Orchestrator</div>
+        <div class="load-req" style="color: var(--modules);">Required</div>
+      </div>
+      <div class="load-arrow">→</div>
+      <div class="load-step">
+        <div class="load-num">2</div>
+        <div class="load-name">Context Mgr</div>
+        <div class="load-req" style="color: var(--modules);">Required</div>
+      </div>
+      <div class="load-arrow">→</div>
+      <div class="load-step">
+        <div class="load-num">3</div>
+        <div class="load-name">Providers</div>
+        <div class="load-req">Optional</div>
+      </div>
+      <div class="load-arrow">→</div>
+      <div class="load-step">
+        <div class="load-num">4</div>
+        <div class="load-name">Tools</div>
+        <div class="load-req">Optional</div>
+      </div>
+      <div class="load-arrow">→</div>
+      <div class="load-step">
+        <div class="load-num">5</div>
+        <div class="load-name">Hook Handlers</div>
+        <div class="load-req">Optional, last</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="card" style="border-top: 3px solid var(--modules);">
+        <h3 style="color: var(--modules);">Required: session stops without these</h3>
+        <p>Orchestrator and Context Manager must mount successfully. No Orchestrator means no agent loop. No Context Manager means no memory.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--text-tertiary);">
+        <h3>Optional: warn and continue</h3>
+        <p>Providers, Tools, Hook Handlers — if any fail, the session continues. One failed tool out of twenty? The agent still has nineteen others.</p>
+      </div>
+    </div>
+    <p style="margin-top: 20px; text-align: center; color: var(--text-tertiary); font-size: clamp(13px, 1.3vw, 15px);">Hooks load last because they observe everything else — they need the full system mounted before they start watching.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 9 — THE ORCHESTRATOR
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="8">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--modules);">Chapter 6 · The Orchestrator</div>
+    <h2>The one module with runtime access to everything.</h2>
+    <div class="grid-2" style="margin-top: 20px;">
+      <div>
+        <h3 style="color: var(--modules);">The privilege gap</h3>
+        <p>Every module gets the Coordinator once, at mount time. The Orchestrator gets it again, at runtime, <strong>every time it's called</strong>. It can reach into the registry and access any module: Context Manager, Provider, Tool, Hook Handler.</p>
+        <p style="margin-top: 12px;">No other module can do this. A Provider can't look up which Tools are available. A Tool can't check which Provider is being used. <strong>By design, not accident.</strong></p>
+      </div>
+      <div>
+        <h3 style="color: var(--boundary);">The loop lives outside the kernel</h3>
+        <p>The agent loop — "think, act, observe, repeat" — is not in the kernel. It lives in an Orchestrator module. The kernel provides the execution contract; the loop itself is policy.</p>
+        <p style="margin-top: 12px;">A different Orchestrator module could implement parallel provider calls, multi-step planning, or debate between models — <strong>without the kernel changing.</strong></p>
+      </div>
+    </div>
+    <div class="pull-quote" style="border-color: var(--modules); margin-top: 28px; font-size: clamp(16px, 2vw, 24px);">
+      Every module connects once at mount. The Orchestrator stays connected at runtime.
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 10 — ONE CONVERSATION TURN
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="9">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--modules);">Chapter 6 · One Conversation Turn</div>
+    <h2>What happens when you send a message.</h2>
+    <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 20px;">
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--kernel); font-weight: 700; font-size: 18px; min-width: 24px;">1</span>
+        <span><strong>Message in</strong> — the session receives it and hands it to the Orchestrator</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">2</span>
+        <span><strong>Hooks fire</strong> — context monitoring begins, schema/docs injected</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">3</span>
+        <span><strong>Fetch context</strong> — Orchestrator calls Context Manager for conversation history</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">4</span>
+        <span><strong>Call LLM</strong> — Provider sends assembled context to the AI model</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--accent-red); font-weight: 700; font-size: 18px; min-width: 24px;">5</span>
+        <span><strong>Tool check</strong> — if the AI wants a tool, hooks gate first (<code>tool:pre</code>)</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--modules); font-weight: 700; font-size: 18px; min-width: 24px;">6</span>
+        <span><strong>Tool runs</strong> — hooks inject feedback after (<code>tool:post</code>)</span>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: baseline;">
+        <span style="color: var(--kernel); font-weight: 700; font-size: 18px; min-width: 24px;">7</span>
+        <span><strong>Response out</strong> — rich data flows through events; if tool called, loop back to step 2</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 20px; border-left: 3px solid var(--boundary); border-top: none;">
+      <p><strong style="color: var(--boundary);">inject_context</strong> is the most powerful hook action. A hook places a message into the conversation that the AI reads on its next turn, as if it were part of the natural flow. The AI does what language models do: read text and respond to it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 11 — TOOLS vs HOOKS
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="10">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--boundary);">Chapter 7 · The Most Important Distinction</div>
+    <h2>Tools vs Hooks</h2>
+    <div class="tvh-split">
+      <div class="tvh-side" style="background: rgba(74,222,128,0.06);">
+        <h3 style="color: var(--accent-green);">Tools</h3>
+        <div class="tvh-tagline" style="color: var(--accent-green);">The AI decides</div>
+        <ul>
+          <li style="color: rgba(74,222,128,0.85);">✦ Listed in the system prompt</li>
+          <li style="color: rgba(74,222,128,0.85);">✦ AI sees name, description, schema</li>
+          <li style="color: rgba(74,222,128,0.85);">✦ AI <strong>chooses</strong> when to call</li>
+          <li style="color: rgba(74,222,128,0.85);">✦ Calls appear in conversation history</li>
+          <li style="color: rgba(74,222,128,0.85);">✦ <strong>Extend what the model can do</strong></li>
+        </ul>
+      </div>
+      <div class="tvh-side" style="background: rgba(248,113,113,0.06);">
+        <h3 style="color: var(--accent-red);">Hooks</h3>
+        <div class="tvh-tagline" style="color: var(--accent-red);">Code decides</div>
+        <ul>
+          <li style="color: rgba(248,113,113,0.85);">✦ <strong>Not</strong> in the system prompt</li>
+          <li style="color: rgba(248,113,113,0.85);">✦ AI <strong>cannot</strong> see or call them</li>
+          <li style="color: rgba(248,113,113,0.85);">✦ Fire <strong>automatically</strong> on events</li>
+          <li style="color: rgba(248,113,113,0.85);">✦ Can observe, block, inject, or modify</li>
+          <li style="color: rgba(248,113,113,0.85);">✦ <strong>Govern what the model may do</strong></li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 20px; text-align: center; font-size: clamp(14px, 1.5vw, 17px);"><strong>Tools</strong> are capabilities you hand to the AI. <strong>Hooks</strong> are policies you enforce around it.<br>Use tools when you want the AI to decide. Use hooks when the outcome must be guaranteed.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 12 — PRIORITY CASCADE
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="11">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--boundary);">Chapter 7 · Hook Priority Cascade</div>
+    <h2>When multiple hooks respond, priority resolves.</h2>
+    <div class="cascade">
+      <div class="cascade-item" style="border-left: 4px solid var(--accent-red);">
+        <div class="cascade-num" style="color: var(--accent-red);">1</div>
+        <div class="cascade-name" style="color: var(--accent-red);"><code>deny</code></div>
+        <div class="cascade-desc">Blocks everything. One deny stops the operation. Fail-closed security.</div>
+      </div>
+      <div class="cascade-item" style="border-left: 4px solid var(--kernel);">
+        <div class="cascade-num" style="color: var(--kernel);">2</div>
+        <div class="cascade-name" style="color: var(--kernel);"><code>ask_user</code></div>
+        <div class="cascade-desc">Pauses execution for a human decision. First one wins.</div>
+      </div>
+      <div class="cascade-item" style="border-left: 4px solid var(--modules);">
+        <div class="cascade-num" style="color: var(--modules);">3</div>
+        <div class="cascade-name" style="color: var(--modules);"><code>inject_context</code></div>
+        <div class="cascade-desc">Accumulates. Multiple hooks can all inject messages. All merged into conversation.</div>
+      </div>
+      <div class="cascade-item" style="border-left: 4px solid var(--bundles);">
+        <div class="cascade-num" style="color: var(--bundles);">4</div>
+        <div class="cascade-name" style="color: var(--bundles);"><code>modify</code></div>
+        <div class="cascade-desc">Transforms data. Multiple modify hooks chain — each sees the previous output.</div>
+      </div>
+      <div class="cascade-item" style="border-left: 4px solid var(--text-tertiary);">
+        <div class="cascade-num" style="color: var(--text-tertiary);">5</div>
+        <div class="cascade-name" style="color: var(--text-tertiary);"><code>continue</code></div>
+        <div class="cascade-desc">No-op passthrough. "I've seen this event and have nothing to add."</div>
+      </div>
+    </div>
+    <p style="margin-top: 16px; color: var(--text-tertiary); font-size: clamp(13px, 1.3vw, 15px); text-align: center;">Deny is first for a reason — it doesn't matter if ten hooks say allow. One deny stops it. Circuit breaker.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 13 — SESSIONS
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="12">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--kernel);">Chapter 8 · Sessions</div>
+    <h2>Four phases. Self-contained.</h2>
+    <div class="phase-flow">
+      <div class="phase-box">
+        <h3>Create</h3>
+        <p>Config in. Coordinator created.</p>
+      </div>
+      <div class="phase-arrow">→</div>
+      <div class="phase-box">
+        <h3>Initialize</h3>
+        <p>Modules load in order.</p>
+      </div>
+      <div class="phase-arrow">→</div>
+      <div class="phase-box" style="position: relative;">
+        <h3>Execute</h3>
+        <p>Prompt → Response. Repeatable.</p>
+        <div style="position: absolute; top: -12px; right: -8px; font-size: 10px; background: var(--kernel); color: #000; padding: 2px 8px; border-radius: 10px; font-weight: 600;">LOOP</div>
+      </div>
+      <div class="phase-arrow">→</div>
+      <div class="phase-box">
+        <h3>Cleanup</h3>
+        <p><code>finally { }</code> — always runs.</p>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top: 28px;">
+      <div class="card" style="border-top: 3px solid var(--kernel);">
+        <h3 style="color: var(--kernel);">Parent ↔ Child</h3>
+        <p>Child sessions linked by <code>parent_id</code> only. No shared modules, no shared memory, no automatic inheritance. Each session is fully self-contained.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--boundary);">
+        <h3 style="color: var(--boundary);">File output comes from modules</h3>
+        <p>When you see <code>transcript.jsonl</code> or <code>events.jsonl</code> — the kernel didn't write them. Hook modules did. Remove every hook, and the session still runs identically.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 14 — BUNDLES
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="13">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--bundles);">Chapter 9 · Bundles and Configuration</div>
+    <h2>Text files. No code required.</h2>
+    <div class="grid-2">
+      <div>
+        <div class="code-block" style="border-left: 3px solid var(--bundles); font-size: clamp(11px, 1.1vw, 13px);">
+<span class="kw">---</span>
+<span class="kw">bundle:</span>
+  <span class="kw">model:</span> <span class="val">anthropic/claude</span>
+  <span class="kw">tools:</span>
+    - <span class="kw">name:</span> <span class="val">filesystem</span>
+    - <span class="kw">name:</span> <span class="val">web-search</span>
+  <span class="kw">hooks:</span>
+    - <span class="kw">name:</span> <span class="val">safety-guard</span>
+<span class="kw">---</span>
+
+<span class="str">You are a helpful coding assistant.</span>
+<span class="str">You write clean, well-documented code.</span>
+<span class="str">You follow the project's coding</span>
+<span class="str">standards (see @project:standards.md).</span></div>
+      </div>
+      <div>
+        <h3 style="color: var(--bundles);">Composition</h3>
+        <p>Bundles stack via <code>include:</code>. Last wins. Session settings deep-merge. Module lists merge by key. Instruction text replaces entirely.</p>
+        <h3 style="color: var(--bundles); margin-top: 16px;">@mentions</h3>
+        <p>Reference external files with <code>@namespace:path/to/file.md</code>. Recursive up to 3 levels. Deduplicated by SHA-256 hash.</p>
+        <h3 style="color: var(--boundary); margin-top: 16px;">Live re-reading</h3>
+        <p>Context files are re-read on every turn. Edit while an agent runs — it sees the change on its next turn. No restart required.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 15 — FOUNDATION BRIDGE
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="14">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--foundation);">Chapter 10 · The Foundation Bridge</div>
+    <h2>How text files become running sessions.</h2>
+    <p style="margin-bottom: 20px;">Foundation (<code>amplifier-foundation</code>) is optional. The kernel works without it. It's a convenience layer that translates bundles into the raw configuration dictionary the kernel needs.</p>
+    <div class="grid-3">
+      <div class="card" style="border-top: 3px solid var(--foundation);">
+        <h3 style="color: var(--foundation);">8-Step Pipeline</h3>
+        <p>Compile mount plan → setup environment → install packages → collect module specs → download modules → persist state → create resolver → package bundle</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--modules);">
+        <h3 style="color: var(--modules);">System Prompt Factory</h3>
+        <p>Called on <strong>every turn</strong>. Re-reads all @mention files, resolves nested references, deduplicates, rebuilds the complete system prompt. This is why @mentions are live.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--boundary);">
+        <h3 style="color: var(--boundary);">Runtime callbacks</h3>
+        <p>Foundation doesn't disappear after setup. Two persistent channels remain active: System Prompt Factory (every turn) and BundleModuleResolver (on demand).</p>
+      </div>
+    </div>
+    <p style="margin-top: 20px; text-align: center; font-size: clamp(13px, 1.3vw, 16px); color: var(--text-tertiary);">Connected at runtime through callbacks. Independent at compile time through interfaces.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 16 — AGENTS, SKILLS, RECIPES
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="15">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--apps);">Chapter 11 · Higher-Order Primitives</div>
+    <h2>Agents, Skills &amp; Recipes</h2>
+    <p style="margin-bottom: 20px;">No new kernel support. Built entirely from sessions, bundles, and modules.</p>
+    <div class="grid-3">
+      <div class="card" style="border-top: 3px solid var(--bundles);">
+        <h3 style="color: var(--bundles);">Agents <em>are</em> bundles</h3>
+        <p>Same file format, same parser. Only difference: YAML key is <code>meta:</code> instead of <code>bundle:</code>. The kernel has no concept of "agents" — it runs sessions with configurations.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--foundation);">
+        <h3 style="color: var(--foundation);">Skills</h3>
+        <p>Markdown files the agent discovers on demand. Three-level progressive disclosure: metadata (~100 tokens), full content (~1–5k), companion files (0 until read).</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--apps);">
+        <h3 style="color: var(--apps);">Recipes</h3>
+        <p>YAML playbooks: chained sessions with approval gates and checkpoint resumability. Output from step N becomes input to step N+1.</p>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top: 16px;">
+      <div class="card" style="border-left: 3px solid var(--bundles); border-top: none;">
+        <h3>Modes</h3>
+        <p>Runtime behavior overlays. Each tool can be set to <code>safe</code>, <code>warn</code>, <code>confirm</code>, or <code>block</code>. Built from hooks and <code>inject_context</code>.</p>
+      </div>
+      <div class="card" style="border-left: 3px solid var(--foundation); border-top: none;">
+        <h3>Model routing</h3>
+        <p>Agents declare the <em>type of thinking</em> needed: <code>coding</code>, <code>reasoning</code>, <code>fast</code>, <code>vision</code>. A routing matrix maps roles to concrete models.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 17 — WHERE NEW THINGS GO
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="16">
+  <div class="slide-inner">
+    <div class="slide-label" style="color: var(--boundary);">Chapter 12 · The Complete Picture</div>
+    <h2>Where new things go.</h2>
+    <p style="margin-bottom: 16px;">The architecture tells you where things belong. The kernel doesn't change.</p>
+    <table class="placement-table">
+      <thead>
+        <tr>
+          <th>If you want to…</th>
+          <th>Layer</th>
+          <th>As a…</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Add a new AI model</td><td style="color: var(--modules);">Layer 2</td><td>Provider module</td></tr>
+        <tr><td>Add a new tool (file ops, web search, API)</td><td style="color: var(--modules);">Layer 2</td><td>Tool module</td></tr>
+        <tr><td>Enforce a safety rule</td><td style="color: var(--modules);">Layer 2</td><td>Hook Handler module</td></tr>
+        <tr><td>Add memory / conversation management</td><td style="color: var(--modules);">Layer 2</td><td>Context Manager module</td></tr>
+        <tr><td>Package a reusable configuration</td><td style="color: var(--bundles);">Layer 3</td><td>Bundle</td></tr>
+        <tr><td>Create a multi-step automated workflow</td><td style="color: var(--bundles);">Layer 3</td><td>Recipe</td></tr>
+        <tr><td>Build a chat interface or IDE plugin</td><td style="color: var(--apps);">Layer 5</td><td>Application</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 18 — CLOSING
+     ════════════════════════════════════════════════════════════════ -->
+<div class="slide cta-slide" data-slide="17">
+  <div class="slide-inner">
+    <div class="pull-quote" style="border-color: var(--kernel); text-align: center; border-left: none; border-bottom: 4px solid var(--kernel); padding-bottom: 32px; padding-left: 0; font-size: clamp(24px, 3.5vw, 48px);">
+      The kernel provides mechanism.<br>Modules provide policy.<br>You build the harness.
+    </div>
+    <p style="margin-top: 32px; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto;">That's why the kernel contains five things and not fifty. Why modules follow a universal mount contract. Why Foundation is optional. Why bundles are text files. Why hooks are invisible to the AI. Every decision traces to this: keep the center simple and stable, push everything that changes to the outside.</p>
+    <div style="text-align: center; margin-top: 32px;">
+      <p style="color: var(--text-tertiary); font-size: clamp(13px, 1.3vw, 16px);">The most interesting parts of this system are the ones that haven't been built yet.</p>
+    </div>
+    <div class="title-meta" style="margin-top: 40px;">
+      <span><strong>Source</strong> All About Amplifier: Architecture, Modules, and Design</span>
+      <span><strong>Edition</strong> First · April 2026</span>
+    </div>
+    <div style="text-align: center; margin-top: 16px;">
+      <span style="font-size: 13px; color: var(--text-dim);">Methodology: 37 verified claims via Parallax Discovery · 7 investigators · 805-line reconciliation document</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav-dots" id="navDots"></div>
+<div class="slide-counter" id="slideCounter">1 / 18</div>
+<div class="click-zone left" onclick="prevSlide()"></div>
+<div class="click-zone right" onclick="nextSlide()"></div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+
+  // Build nav dots
+  const dotsContainer = document.getElementById('navDots');
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goToSlide(n) {
+    if (n < 0 || n >= totalSlides) return;
+    slides[currentSlide].classList.remove('active');
+    dotsContainer.children[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active');
+    dotsContainer.children[currentSlide].classList.add('active');
+    document.getElementById('slideCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  }
+
+  window.nextSlide = () => goToSlide(currentSlide + 1);
+  window.prevSlide = () => goToSlide(currentSlide - 1);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      dx < 0 ? nextSlide() : prevSlide();
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>

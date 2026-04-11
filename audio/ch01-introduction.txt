@@ -1,0 +1,13 @@
+Welcome to the Amplifier Masterclass. Over the next thirteen chapters, we're going to walk through the complete architecture of Amplifier — a framework for building your AI harness. We'll start at the philosophical core, work our way through the kernel, the module system, sessions, bundles, and all the way out to the ecosystem that ties it all together. Everything you'll hear is drawn directly from the source architecture document. No guesswork. Let's begin.
+
+Amplifier is a framework for building your AI harness. That sentence is deliberately simple, because the idea it describes is not. A harness, in the traditional sense, takes raw power and gives it direction. A climbing harness lets you use gravity safely. An electrical harness routes power to the right places. An AI harness does the same thing for a language model: it wraps around the model and provides a controlled way to interact with the world.
+
+AI models are powerful, but raw power without structure is unpredictable. The model itself handles reasoning. Everything around the model — what tools it can use, what it remembers, what rules it follows, how it talks to the outside world — needs structure. Amplifier provides that structure. Think of it as a construction kit: it gives you the pieces, and you assemble the harness that fits your use case.
+
+Some harnesses built with Amplifier are conversational AI agents — programs that can reason about a task, take actions, observe the results, and decide what to do next. Others are pipeline runners with zero AI loops. The framework does not prescribe what you build.
+
+The best analogy is an operating system. An operating system has a kernel at its center. The kernel is tiny relative to the whole system. It handles the most fundamental things: managing memory, scheduling tasks, letting programs talk to hardware. Everything else — the web browser, the file manager, the apps — runs on top of the kernel, plugging into it through well-defined interfaces.
+
+Amplifier borrows this structure. At the center is a small core called amplifier-core. It handles module loading, event dispatch, and session lifecycle. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows — each of those is a module that plugs in from the outside.
+
+A new AI model comes out? Write a new provider module. Need the agent to follow safety rules? Add a hook module. The core does not change.

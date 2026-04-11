@@ -1,0 +1,15 @@
+A note on how the facts in this document were established. The architecture described throughout this masterclass was documented through a structured, multi-pass investigation of the Amplifier source code using a method called Parallax Discovery.
+
+Seven independent investigators across four teams each examined different aspects of the codebase. Their findings were reconciled into a single eight-hundred-and-five-line document. Each claim is backed by at least two independent confirmations with file-and-line evidence, drawn from the amplifier-core and amplifier-foundation source repositories.
+
+The investigation produced thirty-seven verified claims — each confirmed by two or more investigators. Four identified discrepancies where investigators reached different conclusions — all documented with conflicting evidence and impact assessments, though none affected the architectural claims presented here. And eight consolidated unknowns — questions the investigation couldn't answer from source code alone, requiring runtime tracing to resolve.
+
+Every factual statement you've heard across the twelve main chapters traces back to a line in that reconciliation document. This isn't a theoretical architecture paper. It's a description of code that exists — verified by multiple independent readers against the actual source files of amplifier-core and amplifier-foundation.
+
+The methodology matters because of what it prevents: a single author's misunderstanding being presented as fact. When seven investigators independently confirm the same behavior with file-and-line evidence, the result is a description you can trust.
+
+That's the complete Amplifier architecture — from the philosophical core all the way out to the ecosystem. The kernel provides mechanism. Modules provide policy. Bundles make it approachable. Foundation makes it practical. And as the original document puts it: the most interesting parts of this system are the ones that haven't been built yet.
+
+If you want to go deeper, the original written document includes interactive architecture diagrams, annotated code examples, and detailed tables for every concept we've covered. And for a hands-on walkthrough covering installation, your first conversation, and practical usage of every concept you've heard today, check out the Amplifier Tutorial at ramparte.github.io.
+
+Thank you for listening.

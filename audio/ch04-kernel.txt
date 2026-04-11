@@ -1,0 +1,13 @@
+The kernel — amplifier-core — is implemented in Rust and Python, roughly twenty-six hundred lines of code, and it writes zero bytes to disk. Inside it are five components. Each exists because every module in the system depends on it. Five things live in the kernel. Nothing else.
+
+First: Session Lifecycle. A session is the container around a particular instance of the system running. Four phases — Create, Initialize, Execute, Cleanup — in a fixed order. During Creation, configuration goes in, and the Coordinator and Loader are created. During Initialization, modules load in a fixed order. During Execution, prompts arrive and responses come back — this phase is repeatable, one call per conversation turn. During Cleanup, a session-end event fires, modules are torn down, and resources are released. Cleanup runs in a finally block. Always. Even after errors.
+
+Second: Contracts. Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.
+
+Third: Module Loader. Discovers available modules, loads them, and gives each one a chance to set itself up. The loader doesn't need to know what type of module it's loading. It calls mount, and the module takes care of the rest.
+
+Fourth: the Coordinator. Despite its name, the Coordinator does not coordinate anything. It's a passive registry — think of it as a phone book. Three operations: mount, get, unmount. When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator. No decisions. No message routing. No behavior. The actual coordinating is done by the Orchestrator, which is a module, not part of the kernel.
+
+Fifth: Hooks. Hooks are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. There are forty-one canonical events, organized by category. Events and hooks are one system — a single dispatch mechanism implemented in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.
+
+And finally, the defining constraint: zero file I/O. No log files, no transcripts, no configuration files. Logging happens through hook modules. Persistence happens through context managers. Configuration loading happens in the Foundation layer, entirely outside the kernel.

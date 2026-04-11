@@ -201,7 +201,73 @@
         padding: 5px 12px 5px 5px;
       }
       .toc-chapter-title { font-size: 12px; }
+      .toc-audio-btn {
+        width: 24px;
+        height: 24px;
+      }
+    }
 
+    /* ── Audio controls in TOC pill ─────────────────────────────────────── */
+
+    .toc-audio-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 150ms, color 150ms;
+      margin-left: 4px;
+    }
+
+    .toc-audio-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .toc-audio-btn.playing {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* ── Drawer play buttons ─────────────────────────────────────────────── */
+
+    .drawer-play-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-left: auto;
+      padding: 0;
+      transition: all 150ms;
+    }
+
+    .drawer-play-btn:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .drawer-play-btn.playing {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .sidebar-nav .nav-section > a {
+      justify-content: flex-start;
+      gap: 0;
     }
 
     .toc-overlay {
@@ -1464,6 +1530,10 @@
     <span class="toc-chapter-num" id="tocChapterNum">1</span>
   </span>
   <span class="toc-chapter-title" id="tocChapterTitle">Introduction</span>
+  <span class="toc-audio-btn" id="tocAudioBtn" role="button" aria-label="Play chapter audio" tabindex="0">
+    <svg class="audio-icon-play" width="16" height="16" viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14" fill="currentColor"/></svg>
+    <svg class="audio-icon-pause" width="16" height="16" viewBox="0 0 16 16" style="display:none"><rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
+  </span>
 </button>
 
 <!-- TOC overlay + drawer -->
@@ -4745,6 +4815,8 @@ digraph amplifier_ecosystem {
 
 </script>
 
+<audio id="chapterAudio" preload="none"></audio>
+
 <script>
   // ── Scrollspy ──────────────────────────────────────────────────────────────
   // ── Smooth scroll (JS-based, avoids hash navigation / CSP issues) ────────
@@ -4793,7 +4865,9 @@ digraph amplifier_ecosystem {
     document.body.style.overflow = '';
   }
 
-  tocBtn.addEventListener('click', () => {
+  tocBtn.addEventListener('click', (e) => {
+    // Don't open drawer if audio button was clicked
+    if (e.target.closest('.toc-audio-btn')) return;
     tocOverlay.classList.add('open');
     tocBtn.style.opacity = '0';
     tocBtn.style.pointerEvents = 'none';
@@ -4905,6 +4979,172 @@ digraph amplifier_ecosystem {
 
   window.addEventListener('scroll', updateTocButton, { passive: true });
   updateTocButton();
+
+  // ── Audio Playback System ───────────────────────────────────────────────
+  const AUDIO_FILES = {
+    's1':         'audio/ch01-introduction.mp3',
+    's2':         'audio/ch02-architecture.mp3',
+    's3':         'audio/ch03-philosophy.mp3',
+    's4':         'audio/ch04-kernel.mp3',
+    's5':         'audio/ch05-modules.mp3',
+    's6':         'audio/ch06-orchestrator.mp3',
+    's7':         'audio/ch07-tools-hooks.mp3',
+    's8':         'audio/ch08-sessions.mp3',
+    's9':         'audio/ch09-bundles.mp3',
+    's10':        'audio/ch10-foundation.mp3',
+    's11':        'audio/ch11-agents-skills.mp3',
+    's12':        'audio/ch12-complete-picture.mp3',
+    'appendix-a': 'audio/ch13-appendix.mp3'
+  };
+
+  const chapterAudio = document.getElementById('chapterAudio');
+  const tocAudioBtn  = document.getElementById('tocAudioBtn');
+  const iconPlay     = tocAudioBtn.querySelector('.audio-icon-play');
+  const iconPause    = tocAudioBtn.querySelector('.audio-icon-pause');
+
+  let currentAudioChapter = null;
+  let isPlaying = false;
+  let audioScrollSyncEnabled = true; // pause scroll→audio sync while audio is driving
+
+  // Get the current active chapter ID (mirrors updateTocButton logic)
+  function getActiveChapterId() {
+    let activeId = CHAPTER_IDS[0];
+    const threshold = window.scrollY + 120;
+    for (const id of CHAPTER_IDS) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= threshold) activeId = id;
+    }
+    return activeId;
+  }
+
+  // Load and play a chapter's audio
+  function playChapter(chapterId) {
+    const src = AUDIO_FILES[chapterId];
+    if (!src) return;
+    if (currentAudioChapter !== chapterId) {
+      chapterAudio.src = src;
+      currentAudioChapter = chapterId;
+    }
+    chapterAudio.play();
+    isPlaying = true;
+    updateAudioUI();
+  }
+
+  // Pause audio
+  function pauseAudio() {
+    chapterAudio.pause();
+    isPlaying = false;
+    updateAudioUI();
+  }
+
+  // Toggle play/pause for the pill button
+  function toggleAudio() {
+    if (isPlaying) {
+      pauseAudio();
+    } else {
+      // If nothing loaded yet, queue the current visible chapter
+      if (!currentAudioChapter) {
+        currentAudioChapter = getActiveChapterId();
+      }
+      playChapter(currentAudioChapter);
+    }
+  }
+
+  // Sync icons + drawer buttons to current state
+  function updateAudioUI() {
+    if (isPlaying) {
+      iconPlay.style.display  = 'none';
+      iconPause.style.display = 'block';
+      tocAudioBtn.classList.add('playing');
+    } else {
+      iconPlay.style.display  = 'block';
+      iconPause.style.display = 'none';
+      tocAudioBtn.classList.remove('playing');
+    }
+
+    // Update every drawer play button
+    document.querySelectorAll('.drawer-play-btn').forEach(btn => {
+      if (btn.dataset.chapter === currentAudioChapter && isPlaying) {
+        btn.classList.add('playing');
+        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="6" y="1" width="3" height="8" rx="0.5" fill="currentColor"/></svg>';
+      } else {
+        btn.classList.remove('playing');
+        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9" fill="currentColor"/></svg>';
+      }
+    });
+  }
+
+  // When a chapter ends, auto-advance to the next one
+  chapterAudio.addEventListener('ended', () => {
+    const idx = CHAPTER_IDS.indexOf(currentAudioChapter);
+    if (idx < CHAPTER_IDS.length - 1) {
+      const nextId = CHAPTER_IDS[idx + 1];
+      audioScrollSyncEnabled = false;
+      scrollToSection(nextId);
+      setTimeout(() => {
+        playChapter(nextId);
+        audioScrollSyncEnabled = true;
+      }, 600);
+    } else {
+      // Last chapter — stop
+      isPlaying = false;
+      updateAudioUI();
+    }
+  });
+
+  // Pill play/pause click — stop propagation so the drawer doesn't open
+  tocAudioBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleAudio();
+  });
+
+  // Keyboard support on the audio span
+  tocAudioBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleAudio();
+    }
+  });
+
+  // Scroll → audio sync: if scrolling while playing, switch track; otherwise
+  // just silently queue the right chapter so the next Play hits the right one.
+  let lastScrollChapter = null;
+  function syncAudioToScroll() {
+    if (!audioScrollSyncEnabled) return;
+    const activeId = getActiveChapterId();
+    if (activeId !== lastScrollChapter) {
+      lastScrollChapter = activeId;
+      if (isPlaying && activeId !== currentAudioChapter) {
+        playChapter(activeId);
+      } else if (!isPlaying) {
+        currentAudioChapter = activeId;
+      }
+    }
+  }
+  window.addEventListener('scroll', syncAudioToScroll, { passive: true });
+
+  // Inject play buttons into each TOC drawer chapter link
+  document.querySelectorAll('.sidebar-nav .nav-section > a[data-target]').forEach(link => {
+    const chapterId = link.getAttribute('data-target');
+    if (!AUDIO_FILES[chapterId]) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'drawer-play-btn';
+    btn.dataset.chapter = chapterId;
+    btn.setAttribute('aria-label', 'Play ' + link.textContent.trim());
+    btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9" fill="currentColor"/></svg>';
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      playChapter(chapterId);
+      closeToc();
+      setTimeout(() => scrollToSection(chapterId), 50);
+    });
+
+    link.appendChild(btn);
+  });
 
   // ── Position code markers by measuring actual line positions ────────
   document.querySelectorAll('.code-markers').forEach(container => {

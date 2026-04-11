@@ -1,0 +1,292 @@
+AMPLIFIER MASTERCLASS — PODCAST SCRIPT
+All About Amplifier: Architecture, Modules, and Design
+A narrated chapter-by-chapter walkthrough
+Target: ~35–40 minutes of narration
+
+
+================================================================================
+INTRO (~30 seconds)
+================================================================================
+
+Welcome to the Amplifier Masterclass. Over the next thirteen chapters, we're going to walk through the complete architecture of Amplifier — a framework for building your AI harness. We'll start at the philosophical core, work our way through the kernel, the module system, sessions, bundles, and all the way out to the ecosystem that ties it all together. Everything you'll hear is drawn directly from the source architecture document. No guesswork. Let's begin.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 1 — INTRODUCTION
+================================================================================
+
+Amplifier is a framework for building your AI harness. That sentence is deliberately simple, because the idea it describes is not. A harness, in the traditional sense, takes raw power and gives it direction. A climbing harness lets you use gravity safely. An electrical harness routes power to the right places. An AI harness does the same thing for a language model: it wraps around the model and provides a controlled way to interact with the world.
+
+AI models are powerful, but raw power without structure is unpredictable. The model itself handles reasoning. Everything around the model — what tools it can use, what it remembers, what rules it follows, how it talks to the outside world — needs structure. Amplifier provides that structure. Think of it as a construction kit: it gives you the pieces, and you assemble the harness that fits your use case.
+
+Some harnesses built with Amplifier are conversational AI agents — programs that can reason about a task, take actions, observe the results, and decide what to do next. Others are pipeline runners with zero AI loops. The framework does not prescribe what you build.
+
+The best analogy is an operating system. An operating system has a kernel at its center. The kernel is tiny relative to the whole system. It handles the most fundamental things: managing memory, scheduling tasks, letting programs talk to hardware. Everything else — the web browser, the file manager, the apps — runs on top of the kernel, plugging into it through well-defined interfaces.
+
+Amplifier borrows this structure. At the center is a small core called amplifier-core. It handles module loading, event dispatch, and session lifecycle. Which AI model to use, what tools the agent can access, how conversations are stored, what rules the agent follows — each of those is a module that plugs in from the outside.
+
+A new AI model comes out? Write a new provider module. Need the agent to follow safety rules? Add a hook module. The core does not change.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 2 — ARCHITECTURE MAP
+================================================================================
+
+Before we walk the streets, let's look at the map. This chapter gives you a bird's-eye view of every major component and how they connect. Think of it as a city map before a walking tour. You don't need to know every building. You need the neighborhoods.
+
+The center is the kernel. Inside it you'll find the Coordinator — which is a registry that stores modules — the Hooks system, which is the event dispatch mechanism, the Module Loader, and the Session lifecycle manager.
+
+The middle ring holds the modules — the pluggable pieces that define how an agent behaves. The Orchestrator drives the conversation. Providers connect to AI models. Tools give the agent actions it can take. Context Managers handle memory. Hook Handlers enforce rules and react to events.
+
+The outer ring is Foundation — which turns configuration files into running sessions — and the ecosystem: bundles, recipes, apps, and community extensions.
+
+The most important cluster is at the center: amplifier-core. Everything else depends on it; it depends on nothing. That asymmetry is the architecture in one sentence.
+
+Here's how to read the relationships: arrow direction equals dependency direction. Each layer depends only on the one below it. Outer layers can be replaced without touching inner ones. The layers are like concentric rings, and by the time we finish this walkthrough, every ring will be familiar.
+
+There's a color legend worth noting. The kernel is rendered in warm amber — it's the core. Modules are teal — pluggable capabilities. Bundles are muted indigo — configuration. Foundation is sage green — the bridge between configuration and execution. Applications are muted purple. And the ecosystem is dusty mauve. These colors aren't just decoration — they encode the dependency structure. Each color depends only on the colors closer to the center.
+
+Don't try to memorize the map now. Use it as a reference. As we walk through each piece in the chapters that follow, it will make more and more sense.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 3 — DESIGN PHILOSOPHY
+================================================================================
+
+Three ideas shape how Amplifier is built. They weren't written on a whiteboard first. They emerged from the code, from decisions made repeatedly about what belongs in the kernel and what doesn't.
+
+The first principle is "mechanism, not policy." The kernel fires events. Modules decide what happens. For example, the kernel fires a tool-pre event before every tool call. A safety module might decide to block it. A logging module might record it. The kernel has no opinion about what should happen. It fires events and collects results. This separation comes straight from operating system design. The Linux kernel provides process scheduling and memory management without deciding how programs use those mechanisms. Amplifier does the same: it provides module loading, event dispatch, and session lifecycle. It never decides which modules matter or what should happen during a session. The consequence is that when rules change — new safety requirements, new compliance needs — you change modules. The kernel stays the same.
+
+The second principle is "the center stays still." A new AI model ships. Someone writes a provider module. The kernel does not know or care which model it talks to — whether it's Claude, GPT, Gemini, or a model that doesn't exist yet. New tools, new paradigms, new safety requirements: all handled at the edges. The center does not move. The center stays still so the edges can move at any speed.
+
+The third principle is "ruthless simplicity." Search the entire amplifier-core codebase for file-writing operations: zero matches. The kernel does not write logs, save transcripts, or persist configuration. If something can live in a module, it must. Every line in the kernel is a line that every module depends on. Every line is a potential constraint on the future. So the kernel is aggressive about exclusion.
+
+These three principles come to life in a practical example. Consider what happens when you need human approval for certain operations. In a system without this separation, you'd modify the tool-calling code itself — add an if-statement, check a config flag. The approval logic gets woven into the execution logic. In Amplifier, the kernel fires a tool-pre event. A hook module catches it. If approval is needed, it returns "ask user." The tool itself has no knowledge that approval was required. The policy lives in a module; the mechanism lives in the kernel.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 4 — THE KERNEL
+================================================================================
+
+The kernel — amplifier-core — is implemented in Rust and Python, roughly twenty-six hundred lines of code, and it writes zero bytes to disk. Inside it are five components. Each exists because every module in the system depends on it. Five things live in the kernel. Nothing else.
+
+First: Session Lifecycle. A session is the container around a particular instance of the system running. Four phases — Create, Initialize, Execute, Cleanup — in a fixed order. During Creation, configuration goes in, and the Coordinator and Loader are created. During Initialization, modules load in a fixed order. During Execution, prompts arrive and responses come back — this phase is repeatable, one call per conversation turn. During Cleanup, a session-end event fires, modules are torn down, and resources are released. Cleanup runs in a finally block. Always. Even after errors.
+
+Second: Contracts. Six module types, each defined as a contract. If a module has the right methods, it satisfies the contract. No base class required. No explicit registration. Small, stable contracts that rarely change.
+
+Third: Module Loader. Discovers available modules, loads them, and gives each one a chance to set itself up. The loader doesn't need to know what type of module it's loading. It calls mount, and the module takes care of the rest.
+
+Fourth: the Coordinator. Despite its name, the Coordinator does not coordinate anything. It's a passive registry — think of it as a phone book. Three operations: mount, get, unmount. When a module mounts, it goes into the right slot. When something needs to find a module, it checks the Coordinator. No decisions. No message routing. No behavior. The actual coordinating is done by the Orchestrator, which is a module, not part of the kernel.
+
+Fifth: Hooks. Hooks are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. There are forty-one canonical events, organized by category. Events and hooks are one system — a single dispatch mechanism implemented in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.
+
+And finally, the defining constraint: zero file I/O. No log files, no transcripts, no configuration files. Logging happens through hook modules. Persistence happens through context managers. Configuration loading happens in the Foundation layer, entirely outside the kernel.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 5 — THE MODULE SYSTEM
+================================================================================
+
+Everything outside the kernel is a module. A module is a self-contained piece that plugs in through a standard interface to add a specific capability. Six types, one universal contract, fixed loading order. Remove one, add another. The rest of the system doesn't notice.
+
+Let's walk through the six types. The Orchestrator drives the conversation — it decides context, routing, tool handling, and when to stop. There's exactly one, and it's required. Providers connect to AI models — Claude, GPT, Gemini, a local model — translating between Amplifier's format and the model's API. Multiple are allowed. Tools are actions the agent can take: read a file, search the web, run a command. The AI decides when to use them. Tools are visible to the AI — they're listed in the system prompt. The Context Manager keeps track of what's been said and manages the token budget. There's exactly one, and it's required. Hook Handlers react to events, fire automatically, and are completely invisible to the AI. They can observe, block, inject information, or modify data. And finally, Resolvers map module names to file paths — infrastructure plumbing that users rarely encounter directly.
+
+Here's the key distinction: Tools are visible to the AI. Hook Handlers are invisible. This separation is the most consequential design decision in the module system, and we'll explore it fully in Chapter Seven.
+
+All six module types plug in through the same function: an async mount function that receives the Coordinator and a configuration dictionary. The module does its setup, registers itself in the Coordinator at the right slot, and optionally returns a cleanup function. Amplifier uses structural subtyping — if your class has the right methods with the right signatures, it qualifies. No inheritance required.
+
+Modules load in a fixed order: Orchestrator first, then Context Manager, then Providers, then Tools, then Hook Handlers, then Resolvers on demand. Orchestrator and Context Manager are required — if either fails to mount, the session stops immediately. The rest are optional: the system warns and continues. Hooks load last because hooks observe everything else. They need the full system set up before they start watching.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 6 — THE ORCHESTRATOR
+================================================================================
+
+One module gets live access to the full system at runtime. Every other module is isolated after setup.
+
+Every module in Amplifier receives the Coordinator once, at mount time. The module uses it to register itself, and then the reference is gone. The Orchestrator is the exception. It receives the Coordinator again at runtime, every time it's called. This means the Orchestrator can, at any moment during execution, reach into the registry and access any module — the Context Manager, every Provider, every Tool, every Hook Handler.
+
+No other module can do this. A Provider can't look up which Tools are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system. This is by design — constraining live system access to one replaceable module makes every cross-module interaction explicit.
+
+Let's walk through what happens when you send a message in one commonly used orchestrator pattern. Step one: the session receives your message and hands it to the Orchestrator. Step two: hooks fire — a context monitor hook might notice the conversation involves database queries and inject relevant schema documentation. Step three: the Orchestrator fetches context from the Context Manager — conversation history, what's been said, what tools have been used. Step four: the Orchestrator calls a Provider, which sends the assembled context to the AI model. Step five: if the AI wants to use a tool, hooks check first — a safety hook might block a dangerous operation. Step six: if no hook blocks the call, the tool executes, and afterward hooks can inject feedback. Step seven: the Orchestrator returns the response.
+
+One of the most powerful hook actions is called inject-context. A hook places a message into the conversation that the AI reads on its next turn, as if it were part of the natural flow. The AI doesn't know a hook was involved. It just reads text and responds to it.
+
+And here's a crucial architectural point: the agent loop — the "think, act, observe, repeat" cycle — is not in the kernel. It lives in the Orchestrator module. A different Orchestrator could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 7 — TOOLS VS HOOKS
+================================================================================
+
+This is the most important design distinction in the entire system. Tools and Hooks are both modules. Both plug in the same way. But they operate in fundamentally different realms.
+
+Tools are visible to the AI. They're listed in the system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally. Tool calls appear in conversation history. Results appear in conversation history. Everything is visible, traceable, and explainable. Tools extend what the model can do.
+
+Hooks are invisible to the AI. They don't appear in the model's instructions. The model cannot see them, call them, or choose to use them. They fire automatically when events occur — one of those forty-one canonical events we mentioned earlier. Hooks can observe, block, inject context, or modify data flowing through the system. The AI never knows they exist. Hooks govern what the model is allowed to do.
+
+Here's a concrete example that makes the distinction crystal clear. You want every file the AI writes to pass a code quality check. As a tool: you give the AI a run-code-checker tool and tell it in its instructions to always use it. The problem? The AI might forget. It might decide the check isn't needed. You're relying on probabilistic compliance with an instruction.
+
+As a hook: you register for the tool-post event, which fires after any tool completes. When a file-writing tool finishes, the hook runs the code checker automatically. If it finds issues, it injects a message — "The code checker found three issues on lines twelve, fifteen, and twenty-two." The AI reads this on its next turn and fixes the problems. The check happens every single time, regardless of what the model decides.
+
+When multiple hooks respond to the same event, their results are resolved through a priority cascade with five levels. Deny is the highest — one deny blocks everything, like a circuit breaker. Then Ask User, which pauses for a human decision. Then Inject Context, which accumulates — multiple hooks can all inject messages into the same turn. Then Modify, which transforms data in a pipeline where each hook sees the output of the previous one. And finally Continue, the no-op default.
+
+The distinction in one sentence: tools are capabilities you hand to the AI. Hooks are policies you enforce around it.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 8 — SESSIONS
+================================================================================
+
+A session is the container around one instance of the system running. In the CLI, a session is a conversation. In a pipeline runner, a session is a single batch execution. In the kernel, a session is just an ID and a four-phase lifecycle.
+
+The four phases are Create, Initialize, Execute, and Cleanup. Create sets up the configuration and creates the Coordinator and Module Loader — nothing has been loaded yet. Initialize loads modules in the fixed order we discussed in Chapter Five — if the Orchestrator or Context Manager fails, the session stops; everything else is optional. Execute receives a message, passes it to the Orchestrator, and gets a response back — this phase is repeatable, one call per conversation turn. Between turns, all state is maintained. And Cleanup fires a session-end event, then tears down modules and resources. It runs in a finally block, always, even after errors.
+
+Amplifier supports parent and child sessions, but probably not the way you'd expect. The core provides a parent-ID field that links one session to another. That's the extent of what the kernel does. There are no shared modules, no shared memory, no shared configuration. Each session is fully self-contained.
+
+This is deliberately minimal. Automatic inheritance would create hidden dependencies — changes to the parent's conversation would affect the child unpredictably. Amplifier's approach is explicit: pass what you need, share nothing by default. How parent-child relationships are actually used — delegation, sub-agents, task decomposition — is decided by Foundation and applications built on top of it, not by the kernel.
+
+When you see session files on disk — transcripts, event logs, metadata — the kernel didn't write them. Remember: the kernel writes zero bytes to disk. Hook modules created those files. Remove every hook, and the session still runs identically — there's just no trace on disk.
+
+Cancellation is cooperative, not preemptive. The kernel can't forcibly stop an Orchestrator mid-work. It sets a flag with three states: no cancellation, graceful cancellation — finish what you're doing, then stop — and immediate cancellation. The Orchestrator must check this flag periodically. If it ignores the flag, cancellation doesn't happen.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 9 — BUNDLES AND CONFIGURATION
+================================================================================
+
+If modules are the building blocks, bundles are the packaging. A bundle is a text file that describes which modules to load, what context to give the AI, and how the session should behave. Bundles are language-agnostic — the definitions are YAML or Markdown. No code required.
+
+Think of bundles like npm packages for AI capabilities. A bundle packages modules, tools, hooks, instructions, and context files together. The simplest bundle is a single file: a few lines of configuration and a paragraph of instructions. That is enough to create an AI agent.
+
+Most users will never write a module. They'll write a bundle — a text file. This is the payoff of all the architecture: the kernel, the module system, the mount contract, all exist so that this file can be this simple.
+
+There are two formats. The more common one is Markdown with YAML frontmatter: structured configuration at the top between triple-dash markers, and a Markdown body below that becomes the AI's system instruction — its personality, its rules, its sense of purpose. The second format is pure YAML, used when a bundle provides configuration but doesn't need to tell the AI anything directly.
+
+Bundles compose through an includes mechanism. A bundle can include other bundles; the system loads included bundles first, then applies the current bundle's configuration on top. Last wins. Session settings are deep-merged. Module lists merge by key — same name replaces, others are preserved. Instruction text is replaced entirely, because merging prose produces incoherent output.
+
+Inside a bundle's instruction body, you can reference external files using at-mentions — at-namespace-colon-path-to-file. The system resolves the reference, reads the file, and includes its content in the system prompt. Resolution is recursive up to three levels, and content is deduplicated by hash.
+
+And here's a powerful detail: at-mention files are re-read on every single turn of conversation. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required. The cost of a stale instruction is higher than a disk read.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 10 — THE FOUNDATION BRIDGE
+================================================================================
+
+Foundation — amplifier-foundation — turns text bundle files into running sessions. It is the Amplifier team's reference implementation: their opinions about how to use the kernel, packaged for others. But here's the key: the kernel does not need it. You could build your own equivalent.
+
+Think of Foundation as a convenience layer. The kernel accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.
+
+Foundation's output is called a PreparedBundle, and it has four parts: a mount plan saying which modules to load in what slots with what configuration, a resolver that maps module names to file paths, the original bundle preserved for reference, and package paths for cleanup.
+
+The preparation pipeline handles all the practical mess between a text file and a running session: creating isolated environments, downloading modules from registries, resolving version constraints, assembling paths. Eight steps from source file to running session — compile a mount plan from the configuration, set up the environment including virtual environment creation, install required Python packages, collect module specifications, download and install missing modules, persist installation state to avoid re-downloading, create the resolver function, and package everything into the PreparedBundle. The kernel never sees any of this work. It receives a clean mount plan and a resolver.
+
+But Foundation doesn't just set up a session and disappear. It registers two callbacks that remain active for the session's entire lifetime. The System Prompt Factory is called on every single turn — it re-reads all at-mention files, resolves nested references up to three levels deep, deduplicates content by hash, and rebuilds the complete system prompt. This is the mechanism behind the live re-reading we discussed in the previous chapter. The BundleModuleResolver is called on demand during module loading, mapping module identifiers to actual file paths.
+
+Neither Foundation nor the kernel has a code dependency on the other. The kernel calls functions without knowing who provided them. Foundation calls the kernel's API without accessing kernel internals. Connected at runtime through callbacks. Independent at compile time through interfaces.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 11 — AGENTS, SKILLS, AND RECIPES
+================================================================================
+
+Every feature in this chapter uses sessions, bundles, and modules. No new kernel support was added. Each feature was assembled from the primitives we've already covered.
+
+Agents are bundles. Same file format. Same parser. Same composition, at-mentions, and merge rules. One difference: the YAML frontmatter key. A bundle uses "bundle." An agent uses "meta." That's it. The kernel has no concept of agents — it runs sessions with configurations. The naming is a semantic signal for humans: agent files represent complete autonomous entities, bundle files represent configuration fragments.
+
+Context files are Markdown documents loaded into the AI's working memory at the start of each conversation turn. Instead of cramming every piece of background knowledge into one enormous instruction file, you put each topic in its own file. One file for coding standards. One for the API reference. One for the team's workflow. Update a file once, and every agent that references it picks up the change.
+
+Recipes handle multi-step tasks that are too complex for a single agent conversation. A recipe is a YAML file defining a sequence of steps. Each step runs its own agent session with its own bundle, tools, and instructions. Output from step N becomes input to step N plus one. Approval gates can pause execution for human review between steps. And resumability via checkpoints means that if something fails at step four of a seven-step recipe, you resume from the last checkpoint. No work lost.
+
+Skills fill the knowledge role. A skill is a Markdown file with YAML frontmatter that the agent can discover and load on demand. Loading follows a three-level progressive disclosure pattern. Level one is metadata — the skill name and a one-line description, about a hundred tokens, always visible. Level two is full content — the complete skill knowledge, one to five thousand tokens, loaded on demand when the agent decides the skill is relevant. Level three is companion files — code examples, templates, and reference data that cost zero tokens until explicitly accessed. Skills can even run as isolated sub-agents through fork execution, bridging the gap between passive knowledge and autonomous agents.
+
+Modes are runtime behavior overlays — when activated, they inject guidance into the system prompt and enforce tool-level policies. Each tool in the session can be set to safe, warn, confirm, or block. Modes compose into workflow pipelines — brainstorm, then plan, then execute, then verify — where each phase constrains the agent to the tools and mindset appropriate for that stage. The kernel has no concept of modes. They're built entirely from hooks and inject-context, the same primitives we've already covered.
+
+Model routing removes the need to hard-code which AI model handles each request. Instead, agents declare the type of thinking a task requires — coding, reasoning, critique, fast, vision. A routing matrix maps these semantic roles to concrete models. When better models arrive or costs change, only the matrix needs updating. The routing logic lives in Foundation, and the kernel routes through the Provider slot as it always has.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 12 — THE COMPLETE PICTURE
+================================================================================
+
+Now we can see the whole system. Six layers, stacked. Each depends only on the one below it.
+
+Layer one is the Kernel — amplifier-core. Contracts, module loading, event dispatch, session lifecycle. The unchanging center, about twenty-six hundred lines of code. Everything above depends on it. Nothing here depends on anything above.
+
+Layer two is Modules. Orchestrators, Providers, Tools, Context Managers, Hook Handlers, Resolvers. The actual capabilities. They depend on kernel contracts. They don't depend on Foundation.
+
+Layer three is Bundles. Configuration packages. Text files that combine modules into deployable agents. No code required. They reference modules by name but don't depend on module code.
+
+Layer four is Foundation. It turns bundles into running sessions. Finds modules, assembles config, stays connected at runtime. It depends on the kernel. The kernel does not depend on Foundation.
+
+Layer five is Applications. The CLI, web interfaces, IDE integrations, voice assistants, API servers. The things people actually use. They create sessions through Foundation or directly through the kernel API.
+
+Layer six is the Community and Ecosystem. Third-party modules, bundles, recipes, integrations. Open at every level. Anyone can build here.
+
+The pattern across all six layers is the same: replace anything at one layer without affecting the others. A new Foundation implementation could be written without changing the kernel. A new module could be published without any existing module knowing it exists.
+
+The architecture tells you where things belong. A new AI model? Layer two — a provider module. Want to block file modifications in production? Layer two — a hook module that registers for tool-pre and returns deny. A standard agent configuration for your organization? Layer three — a bundle. A chat interface or IDE plugin? Layer five — an application.
+
+That's why the kernel contains five things and not fifty. Why modules follow a universal mount contract. Why Foundation is optional. Why bundles are text files. Why hooks are invisible to the AI. Every decision traces to the same idea: keep the center simple and stable, push everything that changes to the outside.
+
+The kernel provides mechanism. Modules provide policy. You build the harness.
+
+[PAUSE]
+
+
+================================================================================
+CHAPTER 13 — RESEARCH METHODOLOGY (APPENDIX A)
+================================================================================
+
+A note on how the facts in this document were established. The architecture described throughout this masterclass was documented through a structured, multi-pass investigation of the Amplifier source code using a method called Parallax Discovery.
+
+Seven independent investigators across four teams each examined different aspects of the codebase. Their findings were reconciled into a single eight-hundred-and-five-line document. Each claim is backed by at least two independent confirmations with file-and-line evidence, drawn from the amplifier-core and amplifier-foundation source repositories.
+
+The investigation produced thirty-seven verified claims — each confirmed by two or more investigators. Four identified discrepancies where investigators reached different conclusions — all documented with conflicting evidence and impact assessments, though none affected the architectural claims presented here. And eight consolidated unknowns — questions the investigation couldn't answer from source code alone, requiring runtime tracing to resolve.
+
+Every factual statement you've heard across the twelve main chapters traces back to a line in that reconciliation document. This isn't a theoretical architecture paper. It's a description of code that exists — verified by multiple independent readers against the actual source files of amplifier-core and amplifier-foundation.
+
+The methodology matters because of what it prevents: a single author's misunderstanding being presented as fact. When seven investigators independently confirm the same behavior with file-and-line evidence, the result is a description you can trust.
+
+[PAUSE]
+
+
+================================================================================
+CLOSING (~30 seconds)
+================================================================================
+
+That's the complete Amplifier architecture — from the philosophical core all the way out to the ecosystem. The kernel provides mechanism. Modules provide policy. Bundles make it approachable. Foundation makes it practical. And as the original document puts it: the most interesting parts of this system are the ones that haven't been built yet.
+
+If you want to go deeper, the original written document includes interactive architecture diagrams, annotated code examples, and detailed tables for every concept we've covered. And for a hands-on walkthrough covering installation, your first conversation, and practical usage of every concept you've heard today, check out the Amplifier Tutorial at ramparte.github.io.
+
+Thank you for listening.
+
+
+================================================================================
+END OF SCRIPT
+================================================================================

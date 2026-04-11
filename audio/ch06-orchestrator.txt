@@ -1,0 +1,11 @@
+One module gets live access to the full system at runtime. Every other module is isolated after setup.
+
+Every module in Amplifier receives the Coordinator once, at mount time. The module uses it to register itself, and then the reference is gone. The Orchestrator is the exception. It receives the Coordinator again at runtime, every time it's called. This means the Orchestrator can, at any moment during execution, reach into the registry and access any module — the Context Manager, every Provider, every Tool, every Hook Handler.
+
+No other module can do this. A Provider can't look up which Tools are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system. This is by design — constraining live system access to one replaceable module makes every cross-module interaction explicit.
+
+Let's walk through what happens when you send a message in one commonly used orchestrator pattern. Step one: the session receives your message and hands it to the Orchestrator. Step two: hooks fire — a context monitor hook might notice the conversation involves database queries and inject relevant schema documentation. Step three: the Orchestrator fetches context from the Context Manager — conversation history, what's been said, what tools have been used. Step four: the Orchestrator calls a Provider, which sends the assembled context to the AI model. Step five: if the AI wants to use a tool, hooks check first — a safety hook might block a dangerous operation. Step six: if no hook blocks the call, the tool executes, and afterward hooks can inject feedback. Step seven: the Orchestrator returns the response.
+
+One of the most powerful hook actions is called inject-context. A hook places a message into the conversation that the AI reads on its next turn, as if it were part of the natural flow. The AI doesn't know a hook was involved. It just reads text and responds to it.
+
+And here's a crucial architectural point: the agent loop — the "think, act, observe, repeat" cycle — is not in the kernel. It lives in the Orchestrator module. A different Orchestrator could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.

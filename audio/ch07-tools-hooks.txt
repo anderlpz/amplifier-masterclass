@@ -1,0 +1,13 @@
+This is the most important design distinction in the entire system. Tools and Hooks are both modules. Both plug in the same way. But they operate in fundamentally different realms.
+
+Tools are visible to the AI. They're listed in the system prompt. The model sees each tool's name, description, and input schema. When it decides to take an action, it generates a tool call intentionally. Tool calls appear in conversation history. Results appear in conversation history. Everything is visible, traceable, and explainable. Tools extend what the model can do.
+
+Hooks are invisible to the AI. They don't appear in the model's instructions. The model cannot see them, call them, or choose to use them. They fire automatically when events occur — one of those forty-one canonical events we mentioned earlier. Hooks can observe, block, inject context, or modify data flowing through the system. The AI never knows they exist. Hooks govern what the model is allowed to do.
+
+Here's a concrete example that makes the distinction crystal clear. You want every file the AI writes to pass a code quality check. As a tool: you give the AI a run-code-checker tool and tell it in its instructions to always use it. The problem? The AI might forget. It might decide the check isn't needed. You're relying on probabilistic compliance with an instruction.
+
+As a hook: you register for the tool-post event, which fires after any tool completes. When a file-writing tool finishes, the hook runs the code checker automatically. If it finds issues, it injects a message — "The code checker found three issues on lines twelve, fifteen, and twenty-two." The AI reads this on its next turn and fixes the problems. The check happens every single time, regardless of what the model decides.
+
+When multiple hooks respond to the same event, their results are resolved through a priority cascade with five levels. Deny is the highest — one deny blocks everything, like a circuit breaker. Then Ask User, which pauses for a human decision. Then Inject Context, which accumulates — multiple hooks can all inject messages into the same turn. Then Modify, which transforms data in a pipeline where each hook sees the output of the previous one. And finally Continue, the no-op default.
+
+The distinction in one sentence: tools are capabilities you hand to the AI. Hooks are policies you enforce around it.

@@ -1,0 +1,15 @@
+Before we walk the streets, let's look at the map. This chapter gives you a bird's-eye view of every major component and how they connect. Think of it as a city map before a walking tour. You don't need to know every building. You need the neighborhoods.
+
+The center is the kernel. Inside it you'll find the Coordinator — which is a registry that stores modules — the Hooks system, which is the event dispatch mechanism, the Module Loader, and the Session lifecycle manager.
+
+The middle ring holds the modules — the pluggable pieces that define how an agent behaves. The Orchestrator drives the conversation. Providers connect to AI models. Tools give the agent actions it can take. Context Managers handle memory. Hook Handlers enforce rules and react to events.
+
+The outer ring is Foundation — which turns configuration files into running sessions — and the ecosystem: bundles, recipes, apps, and community extensions.
+
+The most important cluster is at the center: amplifier-core. Everything else depends on it; it depends on nothing. That asymmetry is the architecture in one sentence.
+
+Here's how to read the relationships: arrow direction equals dependency direction. Each layer depends only on the one below it. Outer layers can be replaced without touching inner ones. The layers are like concentric rings, and by the time we finish this walkthrough, every ring will be familiar.
+
+There's a color legend worth noting. The kernel is rendered in warm amber — it's the core. Modules are teal — pluggable capabilities. Bundles are muted indigo — configuration. Foundation is sage green — the bridge between configuration and execution. Applications are muted purple. And the ecosystem is dusty mauve. These colors aren't just decoration — they encode the dependency structure. Each color depends only on the colors closer to the center.
+
+Don't try to memorize the map now. Use it as a reference. As we walk through each piece in the chapters that follow, it will make more and more sense.
