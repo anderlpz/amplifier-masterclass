@@ -174,8 +174,8 @@
 
     .toc-chapter-num {
       position: absolute;
-      left: 5px;
-      width: 28px;
+      left: 0;
+      width: 38px;
       text-align: center;
       font-size: 11px;
       font-weight: 600;
@@ -191,8 +191,16 @@
     }
 
     @media (max-width: 768px) {
-      .toc-chapter-title { display: none; }
-      .toc-btn { padding: 8px; border-radius: 50%; }
+      .toc-btn {
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 5px 12px 5px 5px;
+      }
+      .toc-chapter-title { font-size: 12px; }
+      .toc-chapter-num {
+        left: 0;
+        width: 28px;
+      }
     }
 
     .toc-overlay {
