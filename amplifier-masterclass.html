@@ -1135,6 +1135,9 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       border-bottom: none;
+      position: relative;
+      padding-left: 32px;
+      overflow: visible;
     }
 
     .code-annotations {
@@ -1174,19 +1177,21 @@
       color: white;
     }
 
-    /* The circled numbers in the code itself */
+    /* The circled numbers in the code — left gutter, hanging over the edge */
     .code-marker {
-      display: inline-flex;
+      position: absolute;
+      left: -11px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       font-family: var(--font-heading);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       color: white;
-      vertical-align: middle;
+      box-shadow: 0 1px 3px rgba(28,30,43,0.12);
       margin-left: 8px;
       line-height: 1;
     }
@@ -1583,10 +1588,10 @@
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
 
 <div class="annotated-code">
-<pre data-layer="kernel"><code>async def mount(                            <span class="code-marker" style="background:#9B7B3E">1</span>
-    coordinator: Coordinator,               <span class="code-marker" style="background:#9B7B3E">2</span>
-    config: dict                            <span class="code-marker" style="background:#9B7B3E">3</span>
-) -&gt; Optional[cleanup_fn]:                 <span class="code-marker" style="background:#9B7B3E">4</span>
+<pre data-layer="kernel"><code><span class="code-marker" style="background:#9B7B3E">1</span>async def mount(
+<span class="code-marker" style="background:#9B7B3E">2</span>    coordinator: Coordinator,
+<span class="code-marker" style="background:#9B7B3E">3</span>    config: dict
+<span class="code-marker" style="background:#9B7B3E">4</span>) -&gt; Optional[cleanup_fn]:
     # receive the registry + configuration
     # do your setup work
     # register yourself in the coordinator
@@ -1987,17 +1992,17 @@
       <p><strong>As a hook:</strong> You register a Hook Handler for the <code>tool:post</code> event, which fires after any tool completes. When the event fires for a file-writing tool, the hook runs the code checker. If it finds issues, it injects a message: "The code checker found 3 issues on lines 12, 15, and 22." The AI reads this on its next turn and fixes the issues. The check happens every single time, regardless of what the model decides.</p>
 
 <div class="annotated-code">
-<pre data-layer="modules"><code>async def mount(coordinator, config):       <span class="code-marker" style="background:#3E7D8A">1</span>
+<pre data-layer="modules"><code><span class="code-marker" style="background:#3E7D8A">1</span>async def mount(coordinator, config):
     hooks = coordinator.hooks
-    hooks.register("tool:post", on_tool)    <span class="code-marker" style="background:#3E7D8A">2</span>
+<span class="code-marker" style="background:#3E7D8A">2</span>    hooks.register("tool:post", on_tool)
 
 async def on_tool(event):
-    if event.tool not in FILE_WRITERS:      <span class="code-marker" style="background:#3E7D8A">3</span>
+<span class="code-marker" style="background:#3E7D8A">3</span>    if event.tool not in FILE_WRITERS:
         return {"action": "continue"}
 
     issues = run_checker(event.result.path)
     if issues:
-        return {                            <span class="code-marker" style="background:#3E7D8A">4</span>
+<span class="code-marker" style="background:#3E7D8A">4</span>        return {
             "action": "inject_context",
             "message": format_issues(issues)
         }</code></pre>
@@ -2312,17 +2317,17 @@ async def on_tool(event):
       <p>A minimal working bundle:</p>
 
 <div class="annotated-code">
-<pre data-layer="bundles"><code>---                                         <span class="code-marker" style="background:#5C6B9E">1</span>
+<pre data-layer="bundles"><code><span class="code-marker" style="background:#5C6B9E">1</span>---
 bundle:
-  model: anthropic/claude                   <span class="code-marker" style="background:#5C6B9E">2</span>
+<span class="code-marker" style="background:#5C6B9E">2</span>  model: anthropic/claude
   tools:
-    - name: filesystem                      <span class="code-marker" style="background:#5C6B9E">3</span>
+<span class="code-marker" style="background:#5C6B9E">3</span>    - name: filesystem
     - name: web-search
   hooks:
     - name: safety-guard
 ---
 
-You are a helpful coding assistant.          <span class="code-marker" style="background:#5C6B9E">4</span>
+<span class="code-marker" style="background:#5C6B9E">4</span>You are a helpful coding assistant.
 You write clean, well-documented code.
 You follow the project's coding
 standards (see @project:standards.md).</code></pre>
