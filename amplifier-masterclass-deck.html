@@ -1461,7 +1461,7 @@
 </div><!-- /deck -->
 
 <!-- Presentation controls -->
-<a href="amplifier-masterclass.html" class="ctrl-btn ctrl-back" id="backLink" title="Back to Masterclass (Esc)">
+<a href="javascript:void(0)" onclick="history.back()" class="ctrl-btn ctrl-back" id="backLink" title="Back to Masterclass (Esc)">
   <svg width="16" height="16" viewBox="0 0 16 16"><path d="M10 13L5 8l5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </a>
 <button class="ctrl-btn ctrl-prev" onclick="prevSlide()" title="Previous slide">
@@ -1550,7 +1550,7 @@
       if (notesPanel.classList.contains('visible')) {
         toggleNotes();
       } else {
-        window.location.href = 'amplifier-masterclass.html';
+        history.back();
       }
     }
   });
