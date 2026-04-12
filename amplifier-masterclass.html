@@ -1557,7 +1557,7 @@
   </span>
   <span class="toc-chapter-title" id="tocChapterTitle">Introduction</span>
   <span class="toc-audio-btn" id="tocAudioBtn" role="button" aria-label="Play chapter audio" tabindex="0">
-    <svg class="audio-icon-play" width="16" height="16" viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14" fill="currentColor"/></svg>
+    <svg class="audio-icon-play" width="16" height="16" viewBox="0 0 16 16"><polygon points="5.5,2 14,8 5.5,14" fill="currentColor"/></svg>
     <svg class="audio-icon-pause" width="16" height="16" viewBox="0 0 16 16" style="display:none"><rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
   </span>
 </button>
@@ -5101,7 +5101,7 @@ digraph amplifier_ecosystem {
         btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="3" height="8" rx="0.5" fill="currentColor"/><rect x="6" y="1" width="3" height="8" rx="0.5" fill="currentColor"/></svg>';
       } else {
         btn.classList.remove('playing');
-        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9" fill="currentColor"/></svg>';
+        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="3,1 9,5 3,9" fill="currentColor"/></svg>';
       }
     });
   }
@@ -5165,7 +5165,7 @@ digraph amplifier_ecosystem {
     btn.className = 'drawer-play-btn';
     btn.dataset.chapter = chapterId;
     btn.setAttribute('aria-label', 'Play ' + link.textContent.trim());
-    btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9" fill="currentColor"/></svg>';
+    btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="3,1 9,5 3,9" fill="currentColor"/></svg>';
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
