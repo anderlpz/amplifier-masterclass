@@ -1522,6 +1522,39 @@
       }
     }
 
+    /* Connected flow diagram + table unit */
+    .flow-table-unit {
+      margin: 28px 0;
+    }
+    @media (min-width: 840px) {
+      .flow-table-unit {
+        width: 840px;
+        max-width: calc(100vw - 48px);
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      /* Override individual breakouts inside the unit */
+      .flow-table-unit .flow-diagram,
+      .flow-table-unit .table-wrapper {
+        width: auto;
+        max-width: none;
+        left: auto;
+        transform: none;
+      }
+    }
+    .flow-table-unit .flow-diagram {
+      margin: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom: none;
+    }
+    .flow-table-unit .table-wrapper {
+      margin: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
     .code-markers {
       position: absolute;
       top: 0;
@@ -2924,6 +2957,7 @@ async def on_tool(event):
       <p>When multiple hooks respond to one event, their results are resolved in this order by the <code>HookRegistry.emit()</code> dispatch from <a href="#s4-5" class="xref">§4.5</a>, from highest authority to lowest:</p>
 
       <!-- Diagram: Hook Priority Cascade -->
+      <div class="flow-table-unit">
       <div class="flow-diagram">
         <div class="flow-title">Hook Priority Cascade</div>
         <svg width="100%" viewBox="0 0 600 130" aria-label="Hook priority cascade: Deny, Ask User, Inject, Modify, Continue">
@@ -3024,6 +3058,7 @@ async def on_tool(event):
           </tbody>
         </table>
       </div>
+      </div><!-- /flow-table-unit -->
 
       <p><strong>Deny is first for a reason.</strong> It doesn't matter if ten hooks say allow. One deny stops it. Circuit breaker. <strong>InjectContext is where hooks collaborate rather than compete.</strong> A code checker hook can inject "3 syntax errors" while a style hook simultaneously injects "naming conventions violated." The AI sees both. <strong>Modify is a pipeline</strong>: each transformation feeds the next.</p>
 
@@ -3169,6 +3204,7 @@ async def on_tool(event):
       <h3 id="s8-1">8.1 Four phases</h3>
 
       <!-- Diagram: Session Lifecycle -->
+      <div class="flow-table-unit">
       <div class="flow-diagram">
         <div class="flow-title">Session Lifecycle</div>
         <svg width="100%" viewBox="0 0 600 130" aria-label="Session lifecycle: Create, Initialize, Execute, Cleanup">
@@ -3241,6 +3277,7 @@ async def on_tool(event):
           </tbody>
         </table>
       </div>
+      </div><!-- /flow-table-unit -->
 
       <div class="callout" data-layer="kernel">
         <p><strong>Required:</strong> Orchestrator + Context Manager must mount successfully during Initialize. If either fails, the session stops immediately. No Orchestrator means no agent loop — hard error. One failed tool out of twenty? The agent still has nineteen others.</p>
