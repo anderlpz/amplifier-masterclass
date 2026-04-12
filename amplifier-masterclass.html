@@ -1472,10 +1472,48 @@
       padding-left: 32px;
     }
 
+    /* Wide side-by-side variant: code left, annotations right */
+    .annotated-code.wide {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .annotated-code.wide .code-markers {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .annotated-code.wide pre {
+      grid-column: 1;
+      grid-row: 1;
+      border-radius: 4px 0 0 4px;
+      border-bottom: 1px solid var(--border-light);
+      border-right: none;
+    }
+    .annotated-code.wide .code-annotations {
+      grid-column: 2;
+      grid-row: 1;
+      border-top: 1px solid var(--border-light);
+      border-radius: 0 4px 4px 0;
+    }
+    @media (max-width: 768px) {
+      .annotated-code.wide {
+        display: block;
+      }
+      .annotated-code.wide pre {
+        border-radius: 4px 4px 0 0;
+        border-right: 1px solid var(--border-light);
+        border-bottom: none;
+      }
+      .annotated-code.wide .code-annotations {
+        border-radius: 0 0 4px 4px;
+        border-top: none;
+      }
+    }
+
     .code-markers {
       position: absolute;
       top: 0;
-      left: 0;
+      left: -10px;
       width: 32px;
       height: 100%;
       pointer-events: none;
@@ -3350,7 +3388,7 @@ async def on_tool(event):
 
       <p>A minimal working bundle:</p>
 
-<div class="annotated-code">
+<div class="annotated-code wide">
 <div class="code-markers" data-lines="0,2,4,10">
   <span class="code-marker" style="background:#5C6B9E">1</span>
   <span class="code-marker" style="background:#5C6B9E">2</span>
