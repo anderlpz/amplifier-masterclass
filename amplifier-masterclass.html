@@ -760,6 +760,7 @@
          the container handles the breakout instead */
       .flow-table-unit > .flow-diagram,
       .flow-table-unit > .table-wrapper,
+      .flow-table-unit > .arch-diagram,
       .annotated-code > pre {
         width: auto;
         max-width: none;
@@ -1530,6 +1531,8 @@
     /* Connected flow diagram + table unit */
     .flow-table-unit {
       margin: 28px 0;
+      border-radius: 4px;
+      overflow: hidden;
     }
     @media (min-width: 840px) {
       .flow-table-unit {
@@ -1547,7 +1550,8 @@
       border-bottom-right-radius: 0;
       border-bottom: none;
     }
-    .flow-table-unit .table-wrapper {
+    .flow-table-unit .table-wrapper,
+    .flow-table-unit .arch-diagram {
       margin: 0;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -2449,6 +2453,7 @@
       </div>
 
       <!-- Diagram: Module Loading Order -->
+      <div class="flow-table-unit">
       <div class="flow-diagram">
         <div class="flow-title">Module Loading Order</div>
         <svg width="100%" viewBox="0 0 600 130" aria-label="Module loading order: Orchestrator, Context Manager, Providers, Tools, Hook Handlers">
@@ -2530,6 +2535,7 @@
         </div>
         <div class="arch-bottom">Orchestrator is required — no agent loop without it · Context Manager is required — no memory without it</div>
       </div>
+      </div><!-- /flow-table-unit -->
 
       <hr>
 
