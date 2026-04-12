@@ -1,0 +1,3218 @@
+WEBVTT
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-0
+00:00:03.478 --> 00:00:06.903
+<v Brian Krabach>And I was like, that's an easy one,
+I'll just tell it yes,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/91-0
+00:00:03.998 --> 00:00:04.558
+<v Alex Lopez>Yes.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-1
+00:00:06.903 --> 00:00:11.431
+<v Brian Krabach>or go look over there, or try that again.
+And then other ones were like, yep,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/109-0
+00:00:07.518 --> 00:00:08.358
+<v Alex Lopez>Yep, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-2
+00:00:11.431 --> 00:00:15.959
+<v Brian Krabach>that's thinking, that comes Monday, maybe.
+But there were so many interesting</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/118-0
+00:00:11.918 --> 00:00:12.478
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-3
+00:00:15.959 --> 00:00:20.544
+<v Brian Krabach>announcements though. So Mistral released,
+and I'm actually just late to this,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-4
+00:00:20.544 --> 00:00:23.737
+<v Brian Krabach>like it was released over a week ago,
+Mistral Small 4.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/137-0
+00:00:21.598 --> 00:00:21.998
+<v Alex Lopez>Oh.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/148-5
+00:00:23.737 --> 00:00:25.478
+<v Brian Krabach>And like supposedly it's like.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/192-0
+00:00:25.638 --> 00:00:30.084
+<v Brian Krabach>killer at one model that does reasoning
+agents, visual and something else,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/192-1
+00:00:30.084 --> 00:00:33.877
+<v Brian Krabach>but does coding well.
+Like they basically what they did is they</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/192-2
+00:00:33.877 --> 00:00:37.492
+<v Brian Krabach>combined all their models together,
+kind of like GPT-54 did.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/192-3
+00:00:37.492 --> 00:00:40.337
+<v Brian Krabach>And like this is their bump up for all of
+them.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/172-0
+00:00:38.518 --> 00:00:38.998
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/192-4
+00:00:40.337 --> 00:00:45.078
+<v Brian Krabach>So like they like stop using each of the
+individual ones, use this one instead.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/239-0
+00:00:45.478 --> 00:00:49.239
+<v Brian Krabach>And so I'm trying to get it working and
+my stupid Alienware is like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/190-0
+00:00:45.918 --> 00:00:46.078
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/239-1
+00:00:49.239 --> 00:00:53.055
+<v Brian Krabach>I can't see the GPU right now.
+So I got to figure out an actual legit</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/239-2
+00:00:53.055 --> 00:00:56.979
+<v Brian Krabach>hardware issue on that machine.
+But I tried to put it on the Sparks and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/212-0
+00:00:54.718 --> 00:00:55.518
+<v Alex Lopez>Ohh.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/239-3
+00:00:56.979 --> 00:01:01.176
+<v Brian Krabach>without the GPU, it's like, yeah,
+we can get you a couple tokens per second.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/239-4
+00:01:01.176 --> 00:01:05.318
+<v Brian Krabach>I'm like, no, it's a non-starter.
+And even though they built it for NVIDIA.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/224-0
+00:01:01.438 --> 00:01:01.918
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/230-0
+00:01:03.678 --> 00:01:04.638
+<v Alex Lopez>Very, very slow.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-0
+00:01:05.518 --> 00:01:10.299
+<v Brian Krabach>They didn't build it for Nvidia ARM,
+they built it for Nvidia Intel.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-1
+00:01:10.299 --> 00:01:15.079
+<v Brian Krabach>So I was like, so anyways,
+like there's been a lot of great releases</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/246-0
+00:01:11.038 --> 00:01:11.078
+<v Alex Lopez>Ah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-2
+00:01:15.079 --> 00:01:18.265
+<v Brian Krabach>recently of new models that are local
+models.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-3
+00:01:18.265 --> 00:01:23.530
+<v Brian Krabach>So I think that we're really getting
+close and being able to like run with,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-4
+00:01:23.530 --> 00:01:26.925
+<v Brian Krabach>you know,
+agenic workflows where we break things</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/287-5
+00:01:26.925 --> 00:01:28.518
+<v Brian Krabach>down to simplest terms.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-0
+00:01:29.238 --> 00:01:32.521
+<v Brian Krabach>And I just got out of the LT meeting
+where, you know, Sam was kind of,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-1
+00:01:32.521 --> 00:01:35.388
+<v Brian Krabach>you know, growing, hey,
+I'm just going to be a cranky old man</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-2
+00:01:35.388 --> 00:01:37.654
+<v Brian Krabach>kind of griping, like,
+none of this is you guys.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-3
+00:01:37.654 --> 00:01:41.122
+<v Brian Krabach>But he was talking about, you know,
+some of the challenges that he's still</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-4
+00:01:41.122 --> 00:01:44.682
+<v Brian Krabach>having with the overall process and
+things he has to do that he doesn't want</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/322-0
+00:01:44.558 --> 00:01:44.718
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-5
+00:01:44.682 --> 00:01:47.826
+<v Brian Krabach>to have to do and so on.
+And a lot of it comes down to getting the.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/333-6
+00:01:47.826 --> 00:01:47.918
+<v Brian Krabach>..</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-0
+00:01:49.558 --> 00:01:51.971
+<v Brian Krabach>input into the system now,
+the right shape,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-1
+00:01:51.971 --> 00:01:55.920
+<v Brian Krabach>broken down the right way and so on.
+And what was fascinating was like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/348-0
+00:01:55.678 --> 00:01:56.078
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-2
+00:01:55.920 --> 00:02:00.307
+<v Brian Krabach>I think a lot of the stuff we've been
+doing recently around like leveraging dot</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-3
+00:02:00.307 --> 00:02:04.749
+<v Brian Krabach>graph and things like that is one of the
+key missing pieces that we have because</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-4
+00:02:04.749 --> 00:02:07.381
+<v Brian Krabach>we've never gotten to the point yet.
+He's like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/371-0
+00:02:05.558 --> 00:02:06.038
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/392-5
+00:02:07.381 --> 00:02:09.958
+<v Brian Krabach>you still have to be a good software
+engineer.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-0
+00:02:10.358 --> 00:02:13.459
+<v Brian Krabach>You know, to build with these things,
+and we're like, "Yes,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-1
+00:02:13.459 --> 00:02:17.491
+<v Brian Krabach>but now you're building as an architect
+and as a systems designer, and so on,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-2
+00:02:17.491 --> 00:02:19.765
+<v Brian Krabach>like we're not writing code
+implementation,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/411-0
+00:02:18.238 --> 00:02:18.718
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-3
+00:02:19.765 --> 00:02:22.142
+<v Brian Krabach>like that's pretty much solved at this
+point,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-4
+00:02:22.142 --> 00:02:26.587
+<v Brian Krabach>unless you write crappy system designs on,
+in which case your code is like a monster,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-5
+00:02:26.587 --> 00:02:29.585
+<v Brian Krabach>which is, I think,
+where a dev machine is is like tipping</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/442-6
+00:02:29.585 --> 00:02:29.998
+<v Brian Krabach>over at.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-0
+00:02:30.518 --> 00:02:34.269
+<v Brian Krabach>And I'm going, I think the next part,
+and this is where we're all kind of like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/435-0
+00:02:30.798 --> 00:02:31.278
+<v Alex Lopez>Mmh.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-1
+00:02:34.269 --> 00:02:37.686
+<v Brian Krabach>leaning in on, is going like,
+if we can design better at the system and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-2
+00:02:37.686 --> 00:02:40.677
+<v Brian Krabach>architecture level by using tools like
+the Dot Graph approach,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-3
+00:02:40.677 --> 00:02:44.474
+<v Brian Krabach>where it's forcing us to think in boxes
+and connections and isolated pieces and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-4
+00:02:44.474 --> 00:02:46.990
+<v Brian Krabach>all that.
+And we're not like one big bucket that we,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/475-0
+00:02:44.878 --> 00:02:45.118
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/501-5
+00:02:46.990 --> 00:02:49.838
+<v Brian Krabach>like, here's my thing,
+which is what your traditional spec.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-0
+00:02:49.918 --> 00:02:52.698
+<v Brian Krabach>can turn into, like just a laundry list,
+and then be like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/497-0
+00:02:51.118 --> 00:02:51.678
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-1
+00:02:52.698 --> 00:02:56.090
+<v Brian Krabach>build me the laundry list thing.
+And it's like, I will. Here's your 50,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-2
+00:02:56.090 --> 00:02:58.916
+<v Brian Krabach>000 line code file, you know,
+and then it like falls apart.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-3
+00:02:58.916 --> 00:03:02.167
+<v Brian Krabach>And so like this forces it,
+because if you take like the design that</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-4
+00:03:02.167 --> 00:03:05.888
+<v Brian Krabach>you had the other day and was showing me,
+like if I said like go build each of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-5
+00:03:05.888 --> 00:03:08.950
+<v Brian Krabach>those parts in isolation,
+or actually go build me a subgraph for</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/554-6
+00:03:08.950 --> 00:03:09.798
+<v Brian Krabach>each one of those.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/599-0
+00:03:10.398 --> 00:03:13.945
+<v Brian Krabach>and then build code for each one of those
+pieces and so on.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/547-0
+00:03:10.558 --> 00:03:10.798
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/599-1
+00:03:13.945 --> 00:03:18.261
+<v Brian Krabach>Like you keep breaking it down.
+And then now we're basically just forced</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/599-2
+00:03:18.261 --> 00:03:22.931
+<v Brian Krabach>that Lego modular mindset to build with.
+And then if you now flip it around in</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/599-3
+00:03:22.931 --> 00:03:27.069
+<v Brian Krabach>advance and go code's written,
+now draw the graph representation only</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/599-4
+00:03:27.069 --> 00:03:29.078
+<v Brian Krabach>back up. Now compare those graphs.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-0
+00:03:29.878 --> 00:03:33.540
+<v Brian Krabach>Are they close enough to be saying like
+we built that thing? Or, you know,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-1
+00:03:33.540 --> 00:03:36.470
+<v Brian Krabach>and then you know,
+we've also seen like when it writes from</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-2
+00:03:36.470 --> 00:03:39.057
+<v Brian Krabach>the code, it's like, oh wait,
+we got this dead code,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-3
+00:03:39.057 --> 00:03:43.012
+<v Brian Krabach>or we got this code that doesn't connect
+here, we got this piece that's missing.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-4
+00:03:43.012 --> 00:03:46.625
+<v Brian Krabach>So I think going down and then back up
+with this approach might be just a</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-5
+00:03:46.625 --> 00:03:49.897
+<v Brian Krabach>technique that we're not leveraging,
+we've never leveraged before,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/674-6
+00:03:49.897 --> 00:03:53.558
+<v Brian Krabach>that might help us to like break into
+that side of it a little bit better.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/681-0
+00:03:54.198 --> 00:04:00.998
+<v Brian Krabach>So, this is hot on the LT's, you know,
+group mind, um, and um, the um...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-0
+00:04:02.918 --> 00:04:05.079
+<v Brian Krabach>Yeah, getting,
+so getting the plumbing for this thing,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-1
+00:04:05.079 --> 00:04:08.025
+<v Brian Krabach>getting the plumbing in for what we're
+doing at the digital twin universe,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-2
+00:04:08.025 --> 00:04:09.753
+<v Brian Krabach>so that like, great, you built a thing.
+No,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-3
+00:04:09.753 --> 00:04:12.070
+<v Brian Krabach>I don't want to be on the hook to test it
+as a user. Like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/707-0
+00:04:11.918 --> 00:04:12.238
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-4
+00:04:12.070 --> 00:04:14.663
+<v Brian Krabach>so making sure that that's all solid.
+So we're getting that part.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-5
+00:04:14.663 --> 00:04:17.019
+<v Brian Krabach>And then of course,
+the context intelligence and being able</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-6
+00:04:17.019 --> 00:04:19.690
+<v Brian Krabach>to kind of like look across all these
+things and go like, you know,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-7
+00:04:19.690 --> 00:04:22.086
+<v Brian Krabach>where's the system errors at that we need
+to like lean into?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/749-8
+00:04:22.086 --> 00:04:24.678
+<v Brian Krabach>Where are the places where we're like,
+sure, we got the job done.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-0
+00:04:24.718 --> 00:04:28.180
+<v Brian Krabach>but it took like 20 times as many steps
+as it should have taken.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-1
+00:04:28.180 --> 00:04:31.909
+<v Brian Krabach>Like we spent in a loop for it,
+eventually got lucky and then exited.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-2
+00:04:31.909 --> 00:04:36.116
+<v Brian Krabach>Like, you know, we gotta figure those.
+So like, that's the other part of that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-3
+00:04:36.116 --> 00:04:39.525
+<v Brian Krabach>So I think that this,
+how this loops back to the comment on the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-4
+00:04:39.525 --> 00:04:42.933
+<v Brian Krabach>local model stuff is,
+because I think that at that point there,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/801-5
+00:04:42.933 --> 00:04:44.158
+<v Brian Krabach>like if we can do that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-0
+00:04:44.358 --> 00:04:46.940
+<v Brian Krabach>Well,
+then it's just a matter now of going like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-1
+00:04:46.940 --> 00:04:49.310
+<v Brian Krabach>great,
+now how do you just either apply this</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-2
+00:04:49.310 --> 00:04:52.524
+<v Brian Krabach>first on simpler things,
+but now that you've got all of this</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/816-0
+00:04:51.118 --> 00:04:51.598
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-3
+00:04:52.524 --> 00:04:55.158
+<v Brian Krabach>structure,
+like it'll just work and you can build</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-4
+00:04:55.158 --> 00:04:59.320
+<v Brian Krabach>small apps in a way that more reliable
+way than ever before with local models.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-5
+00:04:59.320 --> 00:05:01.901
+<v Brian Krabach>Or it's more of a like, that's fine,
+this works,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/851-6
+00:05:01.901 --> 00:05:04.798
+<v Brian Krabach>you just have to break it down way,
+way more granular.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-0
+00:05:06.278 --> 00:05:10.094
+<v Brian Krabach>Can we use something like the bigger
+models to do, like we do with dev machine?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-1
+00:05:10.094 --> 00:05:12.526
+<v Brian Krabach>Like say the way dev machine works is you
+go, hey,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-2
+00:05:12.526 --> 00:05:16.342
+<v Brian Krabach>it's really hard to make the general like
+pipeline for software factory kind of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-3
+00:05:16.342 --> 00:05:19.442
+<v Brian Krabach>thing for any software,
+but it's a lot easier to make a software</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-4
+00:05:19.442 --> 00:05:22.685
+<v Brian Krabach>factory that makes Word because it's a
+very much more narrow scope.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/905-5
+00:05:22.685 --> 00:05:26.118
+<v Brian Krabach>There's certain things that you need,
+you know, all that kind of stuff.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/896-0
+00:05:26.398 --> 00:05:26.798
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/934-0
+00:05:26.518 --> 00:05:29.808
+<v Brian Krabach>And so, like going,
+if we can build it so that even as</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/934-1
+00:05:29.808 --> 00:05:33.277
+<v Brian Krabach>another next step,
+like you have to use Opus to build the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/934-2
+00:05:33.277 --> 00:05:37.883
+<v Brian Krabach>dev machine for your particular need,
+but then the dev machine itself can be</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/934-3
+00:05:37.883 --> 00:05:39.318
+<v Brian Krabach>run off of local models.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/931-0
+00:05:40.238 --> 00:05:40.718
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-0
+00:05:40.798 --> 00:05:43.258
+<v Brian Krabach>And we got that working really,
+really well. Like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-1
+00:05:43.258 --> 00:05:46.875
+<v Brian Krabach>that's another good step progress-wise.
+So I think that that's kind of the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/948-0
+00:05:45.998 --> 00:05:47.278
+<v Alex Lopez>Yep, yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-2
+00:05:46.875 --> 00:05:49.720
+<v Brian Krabach>direction that I think we're going to see
+more of a, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-3
+00:05:49.720 --> 00:05:53.626
+<v Brian Krabach>if we wanted to look across and go, like,
+are we all working on something that's</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-4
+00:05:53.626 --> 00:05:56.423
+<v Brian Krabach>kind of coming together?
+I think that that's probably the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/970-0
+00:05:55.118 --> 00:05:55.358
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/984-5
+00:05:56.423 --> 00:05:59.798
+<v Brian Krabach>direction where we're kind of like loops
+in a lot of the bears needs.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/989-0
+00:06:01.598 --> 00:06:04.718
+<v Brian Krabach>And then the live OS and other stuff has
+another different role.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/982-0
+00:06:01.678 --> 00:06:02.238
+<v Alex Lopez>Cool.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/992-0
+00:06:05.518 --> 00:06:05.918
+<v Alex Lopez>Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/993-0
+00:06:05.558 --> 00:06:07.038
+<v Brian Krabach>But so it's part of our bigger picture.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/994-0
+00:06:07.758 --> 00:06:08.238
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1012-0
+00:06:09.518 --> 00:06:14.310
+<v Alex Lopez>Yeah, that's cool. I mean,
+I'm definitely been thinking about how we</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1012-1
+00:06:14.310 --> 00:06:18.338
+<v Alex Lopez>break that down in my view.
+But as you were saying, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1012-2
+00:06:18.338 --> 00:06:19.518
+<v Alex Lopez>how do you teach?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1039-0
+00:06:20.558 --> 00:06:27.377
+<v Alex Lopez>Someone to be this architect, I think,
+is the is some of the focus with the like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1039-1
+00:06:27.377 --> 00:06:31.838
+<v Alex Lopez>how we work, right? I think that that's,
+yeah, good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1024-0
+00:06:27.878 --> 00:06:28.278
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1028-0
+00:06:29.478 --> 00:06:29.878
+<v Brian Krabach>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-0
+00:06:31.478 --> 00:06:35.897
+<v Brian Krabach>And I think superpowers is the answer.
+Like superpowers already demonstrated.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1042-0
+00:06:34.158 --> 00:06:34.398
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-1
+00:06:35.897 --> 00:06:39.182
+<v Brian Krabach>You don't teach them.
+You guide them through the process.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-2
+00:06:39.182 --> 00:06:41.731
+<v Brian Krabach>You pull the information you need from
+them.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1054-0
+00:06:39.918 --> 00:06:40.158
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-3
+00:06:41.731 --> 00:06:45.413
+<v Brian Krabach>Superpowers is the one that knows how to
+do the thing and so on.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1065-0
+00:06:44.038 --> 00:06:44.398
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-4
+00:06:45.413 --> 00:06:49.152
+<v Brian Krabach>Like that's what you teach.
+You teach the system to build a thing</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1077-0
+00:06:47.798 --> 00:06:48.078
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1086-5
+00:06:49.152 --> 00:06:49.718
+<v Brian Krabach>like that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1081-0
+00:06:50.318 --> 00:06:50.718
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1091-0
+00:06:50.998 --> 00:06:53.238
+<v Brian Krabach>Because otherwise, yes,
+how do you scale the teaching, right?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1096-0
+00:06:53.918 --> 00:06:55.438
+<v Alex Lopez>Yeah, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1138-0
+00:06:55.078 --> 00:06:58.494
+<v Brian Krabach>So if we provide tools that are more
+accessible, visual, like I,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1138-1
+00:06:58.494 --> 00:07:02.014
+<v Brian Krabach>this is why I really like what I'm having
+you working on with the,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1138-2
+00:07:02.014 --> 00:07:05.903
+<v Brian Krabach>like making the core and everything
+understandable is because like you're</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1118-0
+00:07:05.238 --> 00:07:05.718
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1138-3
+00:07:05.903 --> 00:07:08.898
+<v Brian Krabach>going through the pains of it,
+like you're feeling that,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1138-4
+00:07:08.898 --> 00:07:12.838
+<v Brian Krabach>but you're also coming up with some
+techniques too, like being able to go.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-0
+00:07:13.478 --> 00:07:15.481
+<v Brian Krabach>from, you know,
+because you're lazy enough,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-1
+00:07:15.481 --> 00:07:19.260
+<v Brian Krabach>which is the thing we want to go, like,
+I did that, I figured out that pain point,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-2
+00:07:19.260 --> 00:07:21.399
+<v Brian Krabach>but like this needs to be automated and
+so on.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1156-0
+00:07:21.358 --> 00:07:21.598
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-3
+00:07:21.399 --> 00:07:24.130
+<v Brian Krabach>And you try to automate early and it's
+like, no, you can't.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-4
+00:07:24.130 --> 00:07:27.681
+<v Brian Krabach>But that's fine because then you're like,
+all right, now I'm going to though,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1167-0
+00:07:25.238 --> 00:07:25.518
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-5
+00:07:27.681 --> 00:07:30.913
+<v Brian Krabach>I'm going to figure that out.
+And so like the trick of like the going,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1180-0
+00:07:29.278 --> 00:07:29.758
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1193-6
+00:07:30.913 --> 00:07:32.278
+<v Brian Krabach>hey, the graph is useful, but.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-0
+00:07:32.678 --> 00:07:36.362
+<v Brian Krabach>getting the graph to a place where like
+is generally accessible and useful for</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-1
+00:07:36.362 --> 00:07:39.673
+<v Brian Krabach>others, like that's magic, you know?
+And like that technique that you,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1200-0
+00:07:36.398 --> 00:07:36.718
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-2
+00:07:39.673 --> 00:07:42.098
+<v Brian Krabach>you know,
+if we try like the pickrell thing even is</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-3
+00:07:42.098 --> 00:07:45.876
+<v Brian Krabach>just enough like that, that's a good win.
+And so now imagine like the brainstorm</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-4
+00:07:45.876 --> 00:07:49.746
+<v Brian Krabach>session is like working at that level and
+it's drawing those kinds of pictures and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1248-5
+00:07:49.746 --> 00:07:51.238
+<v Brian Krabach>that's what you're working with.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1240-0
+00:07:50.718 --> 00:07:51.118
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1295-0
+00:07:51.718 --> 00:07:55.384
+<v Brian Krabach>Like that's teaching system design.
+It's teaching. It's not really teaching.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1255-0
+00:07:54.558 --> 00:07:55.038
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1295-1
+00:07:55.384 --> 00:07:59.193
+<v Brian Krabach>It's just more like it's a you're but
+you're you've now created a constraint if</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1295-2
+00:07:59.193 --> 00:08:03.001
+<v Brian Krabach>that's what you're working through the
+system or the the user experience you're</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1275-0
+00:08:01.038 --> 00:08:01.438
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1295-3
+00:08:03.001 --> 00:08:05.763
+<v Brian Krabach>working through.
+So therefore you don't have to learn it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1287-0
+00:08:04.718 --> 00:08:04.998
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1295-4
+00:08:05.763 --> 00:08:07.238
+<v Brian Krabach>It's just what you what you do.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1296-0
+00:08:07.998 --> 00:08:10.478
+<v Alex Lopez>Right, right. Yeah, true.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1314-0
+00:08:11.998 --> 00:08:16.365
+<v Alex Lopez>Speaking of that graph,
+I'm actually having it generate another</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1303-0
+00:08:14.198 --> 00:08:14.318
+Yeah.
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1341-0
+00:08:15.718 --> 00:08:18.682
+<v Brian Krabach>And then by the way, real quick,
+and then you can make the cool UX version</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1314-1
+00:08:16.365 --> 00:08:16.638
+<v Alex Lopez>one.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1318-0
+00:08:17.838 --> 00:08:18.158
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1341-1
+00:08:18.682 --> 00:08:20.500
+<v Brian Krabach>of it.
+Like we'll have this scrappier version</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1341-2
+00:08:20.500 --> 00:08:22.832
+<v Brian Krabach>here that's like,
+you're seeing dot graphs and like you're</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1329-0
+00:08:21.118 --> 00:08:21.598
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1341-3
+00:08:22.832 --> 00:08:24.570
+<v Brian Krabach>talking that way.
+And then you can go like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1336-0
+00:08:23.758 --> 00:08:24.158
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1341-4
+00:08:24.570 --> 00:08:25.558
+<v Brian Krabach>now I'll make it awesome.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1342-0
+00:08:26.078 --> 00:08:28.158
+<v Alex Lopez>Yeah, yeah, true.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1345-0
+00:08:29.598 --> 00:08:30.318
+<v Brian Krabach>Start, go ahead.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1360-0
+00:08:30.398 --> 00:08:33.873
+<v Alex Lopez>Well, before I launch into the Salil,
+is there anything you wanted to cover</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1360-1
+00:08:33.873 --> 00:08:36.158
+<v Alex Lopez>today? Like,
+I took up a bunch of time last time.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1416-0
+00:08:36.798 --> 00:08:39.907
+<v Salil Das>Oh, that's okay.
+I'm glad you keep taking time.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1367-0
+00:08:37.758 --> 00:08:38.638
+<v Alex Lopez>I'm happy to.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1416-1
+00:08:39.907 --> 00:08:44.247
+<v Salil Das>But here's what I'll say.
+I kicked off the whole audit process and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1369-0
+00:08:40.198 --> 00:08:40.438
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1373-0
+00:08:40.558 --> 00:08:41.038
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1416-2
+00:08:44.247 --> 00:08:48.457
+<v Salil Das>started fixing things.
+So my goal for the first half of the week</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1387-0
+00:08:47.958 --> 00:08:48.278
+<v Brian Krabach>Good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1416-3
+00:08:48.457 --> 00:08:53.379
+<v Salil Das>is to complete the audit and get
+everything up to date. So that then I can,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1401-0
+00:08:52.238 --> 00:08:53.638
+<v Brian Krabach>Great, OK.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1416-4
+00:08:53.379 --> 00:08:57.718
+<v Salil Das>I was going to Alex earlier this morning,
+then I'll dive into the.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1464-0
+00:08:58.238 --> 00:09:03.247
+<v Salil Das>dynamic context ingestion as Alex has
+slightly pivoted to understanding what</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1464-1
+00:09:03.247 --> 00:09:08.451
+<v Salil Das>the work is. And I'll focus on the how,
+like what are the advantages of dynamic</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1427-0
+00:09:03.918 --> 00:09:04.438
+<v Brian Krabach>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1464-2
+00:09:08.451 --> 00:09:12.809
+<v Salil Das>context and all the things we've talked
+about in the last weekend.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1446-0
+00:09:09.758 --> 00:09:11.398
+<v Brian Krabach>Great, thank you. Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1464-3
+00:09:12.809 --> 00:09:17.817
+<v Salil Das>So the actual implementation of it,
+one thing that I wanted to do was in the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1464-4
+00:09:17.817 --> 00:09:19.118
+<v Salil Das>verification recipe.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1502-0
+00:09:20.238 --> 00:09:23.865
+<v Salil Das>add how many tokens are being used if
+it's not already there,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1502-1
+00:09:23.865 --> 00:09:28.193
+<v Salil Das>so that we can start tackling it from a
+bunch of angles. So conceptually,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1472-0
+00:09:23.878 --> 00:09:24.198
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1502-2
+00:09:28.193 --> 00:09:30.942
+<v Salil Das>that's my plan for the first half of the
+week,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1483-0
+00:09:28.518 --> 00:09:28.758
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1502-3
+00:09:30.942 --> 00:09:34.158
+<v Salil Das>and I'll build a plan for the latter half
+of the week.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1520-0
+00:09:34.598 --> 00:09:37.224
+<v Brian Krabach>Okay,
+I think it'd be good if we get a</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1520-1
+00:09:37.224 --> 00:09:41.532
+<v Brian Krabach>experimental bundle into Foundation in
+the experimental folder.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1520-2
+00:09:41.532 --> 00:09:45.638
+<v Brian Krabach>That is a stripped down one that you
+start building up from.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1525-0
+00:09:47.358 --> 00:09:48.238
+<v Salil Das>Yeah, that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1550-0
+00:09:47.438 --> 00:09:50.877
+<v Brian Krabach>And then that way you can start to kind
+of transition while not disrupting the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1550-1
+00:09:50.877 --> 00:09:53.053
+<v Brian Krabach>other one,
+but then making it available as you're</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1550-2
+00:09:53.053 --> 00:09:55.186
+<v Brian Krabach>doing it.
+So it could be like it's really crappy</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1550-3
+00:09:55.186 --> 00:09:57.318
+<v Brian Krabach>today, but at least it's there.
+And then we can.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1560-0
+00:09:55.958 --> 00:10:01.038
+<v Salil Das>And when you say in the foundation,
+is it like...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1570-0
+00:10:04.478 --> 00:10:04.878
+<v Salil Das>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-0
+00:10:04.918 --> 00:10:07.334
+<v Brian Krabach>there already.
+One is the delegate only one.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-1
+00:10:07.334 --> 00:10:10.232
+<v Brian Krabach>And what's nice is like that's how I did,
+I mean, oh,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1577-0
+00:10:08.398 --> 00:10:08.718
+<v Salil Das>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-2
+00:10:10.232 --> 00:10:14.151
+<v Brian Krabach>that's how I did the delegate tool.
+Like I experimented with it first by</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-3
+00:10:14.151 --> 00:10:17.800
+<v Brian Krabach>putting a version in there that used that
+instead of the task tool.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-4
+00:10:17.800 --> 00:10:22.256
+<v Brian Krabach>And it allowed me to like swap out all of
+the context files and everything else so</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1609-0
+00:10:22.238 --> 00:10:22.798
+<v Salil Das>Perfect.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1613-5
+00:10:22.256 --> 00:10:23.758
+<v Brian Krabach>that I could try everything.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-0
+00:10:24.798 --> 00:10:28.034
+<v Brian Krabach>apart without messing any of the other
+stuff or around with the other stuff.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-1
+00:10:28.034 --> 00:10:30.639
+<v Brian Krabach>And so it was really handy for that.
+So I would say try that,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-2
+00:10:30.639 --> 00:10:32.530
+<v Brian Krabach>see how much mileage you can get from
+there,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1631-0
+00:10:32.238 --> 00:10:32.558
+<v Salil Das>What?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-3
+00:10:32.530 --> 00:10:35.556
+<v Brian Krabach>because I think if you can start with a
+clean, literally a clean slate,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-4
+00:10:35.556 --> 00:10:38.623
+<v Brian Krabach>like then it allows you to go like,
+what do we actually need these days?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1659-5
+00:10:38.623 --> 00:10:41.438
+<v Brian Krabach>Because I suspect we don't need nearly as
+much as we used to need.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1658-0
+00:10:42.718 --> 00:10:43.038
+<v Salil Das>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1673-0
+00:10:45.118 --> 00:10:48.324
+<v Salil Das>Perfect.
+That gives me a place to get started with</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1667-0
+00:10:47.998 --> 00:10:48.398
+<v Brian Krabach>Awesome!</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1673-1
+00:10:48.324 --> 00:10:51.278
+<v Salil Das>as well.
+The only other thing I will add is...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1694-0
+00:10:55.678 --> 00:11:00.524
+<v Salil Das>I might be in and out a little this week.
+My sister,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1694-1
+00:11:00.524 --> 00:11:05.278
+<v Salil Das>she just got admitted to the hospital
+this morning.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1692-0
+00:11:05.838 --> 00:11:06.318
+<v Brian Krabach>Sorry.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1718-0
+00:11:06.478 --> 00:11:11.652
+<v Salil Das>And so I'll have to help out with the
+house and the chores a little bit.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1718-1
+00:11:11.652 --> 00:11:14.558
+<v Salil Das>So I'll be here just randomly in and out.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1719-0
+00:11:11.838 --> 00:11:15.918
+<v Brian Krabach>Yeah, okay. No problem. Yep, nope,
+that's priority. Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1724-0
+00:11:19.078 --> 00:11:21.038
+<v Salil Das>Alright, Alex, it's all you again.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1723-0
+00:11:20.478 --> 00:11:20.958
+<v Alex Lopez>Cool.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1734-0
+00:11:21.838 --> 00:11:28.638
+<v Alex Lopez>Okay, so share my screen.
+I'm having it generate another.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1768-0
+00:11:29.838 --> 00:11:35.218
+<v Alex Lopez>Go at this dot graph.
+So I'll tell the story of like what's</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1768-1
+00:11:35.218 --> 00:11:40.238
+<v Alex Lopez>happened so far. So we, well,
+we did the one on Friday.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1780-0
+00:11:39.198 --> 00:11:42.361
+<v Brian Krabach>And by the way, for context,
+I have not read your message on the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1780-1
+00:11:42.361 --> 00:11:43.918
+<v Brian Krabach>weekend. It was one of two left.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1786-0
+00:11:42.718 --> 00:11:45.038
+<v Alex Lopez>I wouldn't have expected you to, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1794-0
+00:11:44.878 --> 00:11:47.598
+<v Brian Krabach>It was one of two left I had before my
+9:00 hit and I was like, no,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1794-1
+00:11:47.598 --> 00:11:48.358
+<v Brian Krabach>I didn't get to it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1802-0
+00:11:47.758 --> 00:11:50.558
+<v Alex Lopez>Oh, it's fine, it's fine.
+We'll just cover it now.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1818-0
+00:11:49.118 --> 00:11:51.543
+<v Salil Das>Hey,
+all I will say is I'm glad Brian was</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1818-1
+00:11:51.543 --> 00:11:55.758
+<v Salil Das>reading my messages because he was fixing
+bugs. That's all I care about.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1826-0
+00:11:55.998 --> 00:11:59.518
+<v Alex Lopez>You know, that's the priority. I'm not,
+you know, it doesn't hurt my feelings.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-0
+00:11:58.158 --> 00:12:01.576
+<v Brian Krabach>By the way, I've got the GitOps task done.
+I just need to like thumbs up it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-1
+00:12:01.576 --> 00:12:04.638
+<v Brian Krabach>It tried to put it all into its
+instruction and it made this massive</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-2
+00:12:04.638 --> 00:12:07.035
+<v Brian Krabach>instruction file like, no, no, no,
+you can't do that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-3
+00:12:07.035 --> 00:12:10.629
+<v Brian Krabach>Like we're going the opposite direction.
+So it went back and it cleaned all that</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-4
+00:12:10.629 --> 00:12:13.736
+<v Brian Krabach>up and it's waiting for me to review it,
+but it looks like it's good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1880-5
+00:12:13.736 --> 00:12:16.798
+<v Brian Krabach>So that should solve that issue.
+That made perfect sense once David.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1882-0
+00:12:16.918 --> 00:12:17.518
+<v Brian Krabach>chimed in with.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1879-0
+00:12:18.318 --> 00:12:18.638
+<v Salil Das>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1884-0
+00:12:18.718 --> 00:12:19.318
+<v Brian Krabach>The same, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1886-0
+00:12:20.278 --> 00:12:20.718
+<v Alex Lopez>Nice.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1901-0
+00:12:20.638 --> 00:12:24.445
+<v Salil Das>And Alex, before you start,
+can you share the screenshot of your that</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1901-1
+00:12:24.445 --> 00:12:27.598
+<v Salil Das>little error that you had showed me
+earlier this morning?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1931-0
+00:12:29.558 --> 00:12:34.178
+<v Alex Lopez>Which one? Oh.
+I don't know where it is now.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1907-0
+00:12:32.718 --> 00:12:33.678
+<v Salil Das>You know which one?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1931-1
+00:12:34.178 --> 00:12:41.158
+<v Alex Lopez>I don't think I took a screenshot of it.
+I should have. Let me see.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1916-0
+00:12:35.998 --> 00:12:36.638
+<v Brian Krabach>Good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1919-0
+00:12:37.278 --> 00:12:37.758
+<v Salil Das>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1934-0
+00:12:40.558 --> 00:12:43.518
+<v Salil Das>Alex is the one who's going to cost us a
+**** ton of money.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1958-0
+00:12:43.198 --> 00:12:48.360
+<v Alex Lopez>No, no, no, no,
+I'm not because it stopped. It stopped,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1945-0
+00:12:44.598 --> 00:12:46.238
+<v Brian Krabach>Yeah, he's got a high bar to reach.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1958-1
+00:12:48.360 --> 00:12:51.678
+<v Alex Lopez>it stopped. So, no, no, no, hold on.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1963-0
+00:12:49.038 --> 00:12:53.358
+<v Salil Das>He tried to send 10 million tokens in a
+single request.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1986-0
+00:12:53.438 --> 00:12:58.690
+<v Alex Lopez>I did not try. I did not try.
+It tried on my behalf and I don't know</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1965-0
+00:12:53.518 --> 00:12:54.158
+<v Brian Krabach>Nice.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1986-1
+00:12:58.690 --> 00:13:01.278
+<v Alex Lopez>why it did, but it was like, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1999-0
+00:13:00.478 --> 00:13:02.757
+<v Brian Krabach>And it, and it, well,
+and it may have done it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1999-1
+00:13:02.757 --> 00:13:06.103
+<v Brian Krabach>but it'll only get it'll come back with
+an immediate error of, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/1999-2
+00:13:06.103 --> 00:13:06.878
+<v Brian Krabach>that's too many.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2043-0
+00:13:07.598 --> 00:13:13.929
+<v Alex Lopez>Yeah, that's the error that I got.
+So it was 9,700,000 something.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2002-0
+00:13:09.238 --> 00:13:09.358
+<v Salil Das>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2014-0
+00:13:11.158 --> 00:13:13.998
+<v Brian Krabach>Yeah, so it tried. It sent it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2043-1
+00:13:13.929 --> 00:13:19.684
+<v Alex Lopez>And I was showing,
+I was showing Kenny's like, no, no, not.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2043-2
+00:13:19.684 --> 00:13:26.398
+<v Alex Lopez>That's 900,000. I'm like, no, dude,
+check it. It's almost 10 million.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2039-0
+00:13:21.718 --> 00:13:22.398
+<v Brian Krabach>It's off by 10.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2040-0
+00:13:24.358 --> 00:13:24.838
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2045-0
+00:13:26.718 --> 00:13:26.838
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2087-0
+00:13:28.158 --> 00:13:31.735
+<v Alex Lopez>So,
+but like this is the stuff that confounds</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2087-1
+00:13:31.735 --> 00:13:36.167
+<v Alex Lopez>me sometime. I'm like,
+this is a very simple, I thought,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2087-2
+00:13:36.167 --> 00:13:42.077
+<v Alex Lopez>a very simple ask and it was like,
+let's go deep. Like, wait, why? So yeah,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2066-0
+00:13:38.558 --> 00:13:38.678
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2087-3
+00:13:42.077 --> 00:13:44.798
+<v Alex Lopez>so anyway, sorry, sorry, not sorry.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2098-0
+00:13:43.678 --> 00:13:48.280
+<v Brian Krabach>That's all Salil's area now. All the why?
+Why does it do this? Why does it do that?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2108-0
+00:13:46.078 --> 00:13:53.118
+<v Alex Lopez>Okay, well, the why, okay. Yeah,
+it's a little, why did it do that?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2098-1
+00:13:48.280 --> 00:13:49.758
+<v Brian Krabach>It's on Salil's plate, man.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2108-1
+00:13:53.118 --> 00:13:54.878
+<v Alex Lopez>Back to you, man.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2120-0
+00:13:54.878 --> 00:13:56.581
+<v Brian Krabach>He,
+he didn't realize that's what he</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2120-1
+00:13:56.581 --> 00:13:58.928
+<v Brian Krabach>inherited. Every, every,
+why is Amplified do this?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2112-0
+00:13:57.198 --> 00:13:57.678
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2120-2
+00:13:58.928 --> 00:14:00.078
+<v Brian Krabach>Why is Amplified do that?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2130-0
+00:13:59.758 --> 00:14:02.718
+<v Alex Lopez>Yeah, you got you, you've got it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-0
+00:14:01.318 --> 00:14:04.002
+<v Brian Krabach>Honestly, no,
+we need to get people to investigate</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-1
+00:14:04.002 --> 00:14:06.685
+<v Brian Krabach>themselves.
+Because like your log actually will be</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2137-0
+00:14:05.278 --> 00:14:05.758
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-2
+00:14:06.685 --> 00:14:09.841
+<v Brian Krabach>why. It has the why.
+If you find the term that it did that,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2144-0
+00:14:08.238 --> 00:14:08.398
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-3
+00:14:09.841 --> 00:14:13.945
+<v Brian Krabach>getting that raw log in and then maybe
+that's one of our requirements is like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-4
+00:14:13.945 --> 00:14:16.470
+<v Brian Krabach>we're going to ask people,
+this is a good idea.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-5
+00:14:16.470 --> 00:14:19.732
+<v Brian Krabach>When anybody comes up with a like,
+why did Amplifier do this?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2177-6
+00:14:19.732 --> 00:14:22.678
+<v Brian Krabach>Have them go find the log for that
+request that did it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2179-0
+00:14:23.198 --> 00:14:24.238
+<v Brian Krabach>and send you that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2211-0
+00:14:25.758 --> 00:14:28.113
+<v Brian Krabach>That raw,
+and then that way you can start building</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2183-0
+00:14:26.478 --> 00:14:26.958
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2211-1
+00:14:28.113 --> 00:14:30.190
+<v Brian Krabach>up a,
+because you can then start mining that</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2211-2
+00:14:30.190 --> 00:14:33.099
+<v Brian Krabach>with session analyst to figure out, like,
+what in the context,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2211-3
+00:14:33.099 --> 00:14:35.545
+<v Brian Krabach>what combination of things created this
+environment,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2211-4
+00:14:35.545 --> 00:14:38.638
+<v Brian Krabach>and that'll help you for what you're
+working on. Sorry, go though.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2206-0
+00:14:35.998 --> 00:14:36.478
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2216-0
+00:14:39.478 --> 00:14:43.198
+<v Alex Lopez>No, you're good. Well, now I want to...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2224-0
+00:14:44.318 --> 00:14:48.238
+<v Alex Lopez>I need to, I'll do that after this call,
+because I have...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2247-0
+00:14:48.798 --> 00:14:50.653
+<v Brian Krabach>Well,
+typically we've run into these things</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2247-1
+00:14:50.653 --> 00:14:52.634
+<v Brian Krabach>over and over again,
+so like if things happen,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2247-2
+00:14:52.634 --> 00:14:55.332
+<v Brian Krabach>like if it doesn't ever happen again,
+great, it doesn't matter.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2243-0
+00:14:54.798 --> 00:14:55.278
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2247-3
+00:14:55.332 --> 00:14:56.638
+<v Brian Krabach>So it's more of like next time.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2301-0
+00:14:57.678 --> 00:15:01.083
+<v Alex Lopez>All right, well, the issue was like,
+and you might, well, no,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2301-1
+00:15:01.083 --> 00:15:05.365
+<v Alex Lopez>I won't get into doing debugging issues
+here. I'll figure it out later. Okay,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2301-2
+00:15:05.365 --> 00:15:09.044
+<v Alex Lopez>so this was the first one,
+and then remember we were reviewing and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2279-0
+00:15:08.878 --> 00:15:09.198
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2301-3
+00:15:09.044 --> 00:15:12.393
+<v Alex Lopez>we got to this coordinator object,
+you're like, what's what?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2283-0
+00:15:10.318 --> 00:15:10.718
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2287-0
+00:15:11.918 --> 00:15:12.318
+<v Brian Krabach>Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2301-4
+00:15:12.393 --> 00:15:15.358
+<v Alex Lopez>And so I had to go do another one,
+and then, and I...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-0
+00:15:17.198 --> 00:15:19.974
+<v Alex Lopez>Like,
+I don't know when I context poison or not,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-1
+00:15:19.974 --> 00:15:22.637
+<v Alex Lopez>but it was, I mean,
+I think this one was fine,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-2
+00:15:22.637 --> 00:15:26.262
+<v Alex Lopez>but as I was reviewing this one,
+it started to feel like, well,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-3
+00:15:26.262 --> 00:15:29.774
+<v Alex Lopez>there was a couple of things. One,
+it was like, actually, oh,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-4
+00:15:29.774 --> 00:15:34.136
+<v Alex Lopez>this is what happened. So it said,
+do you want me to pull like the latest of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2352-5
+00:15:34.136 --> 00:15:36.798
+<v Alex Lopez>the, you know, core? And I'm like, yeah,
+yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2344-0
+00:15:35.758 --> 00:15:36.158
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2399-0
+00:15:37.118 --> 00:15:41.805
+<v Alex Lopez>It said the one I'm assessing is from
+January 25th. And I'm like, no,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2359-0
+00:15:41.558 --> 00:15:41.678
+<v Brian Krabach>The.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2399-1
+00:15:41.805 --> 00:15:46.492
+<v Alex Lopez>go look at the latest one, please.
+And so it did. And I was like, oh,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2399-2
+00:15:46.492 --> 00:15:50.376
+<v Alex Lopez>this has changed a lot, right?
+And I'm like, yes, it has.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2382-0
+00:15:48.038 --> 00:15:48.718
+<v Brian Krabach>What do you think?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2399-3
+00:15:50.376 --> 00:15:55.598
+<v Alex Lopez>And so this is where it started, like,
+instead of giving me like the updated.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2448-0
+00:15:56.158 --> 00:15:59.288
+<v Alex Lopez>dot graph,
+like it's notating a lot of stuff in here.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2448-1
+00:15:59.288 --> 00:16:03.462
+<v Alex Lopez>And this is where I'm like, okay,
+now this is starting to feel a little</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2448-2
+00:16:03.462 --> 00:16:07.925
+<v Alex Lopez>foreign to me. Like it's, you know,
+called out like now you've got this Rust</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2425-0
+00:16:06.078 --> 00:16:06.318
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2448-3
+00:16:07.925 --> 00:16:12.562
+<v Alex Lopez>core and you've got this Python layer.
+And I love this. It said like, you know,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2448-4
+00:16:12.562 --> 00:16:15.518
+<v Alex Lopez>you say it's like a really small 2600
+line kernel.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-0
+00:16:15.918 --> 00:16:19.198
+<v Alex Lopez>It's like, yeah,
+if you were to look at like this much of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-1
+00:16:19.198 --> 00:16:22.534
+<v Alex Lopez>it, it is. Yeah, yeah.
+And it just makes me think of like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2461-0
+00:16:19.918 --> 00:16:22.318
+<v Brian Krabach>It was that at one point, right?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-2
+00:16:22.534 --> 00:16:26.774
+<v Alex Lopez>I don't know, there's this like,
+it's probably a meme or something of like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-3
+00:16:26.774 --> 00:16:30.619
+<v Alex Lopez>Homer Simpson where like,
+he looks really skinny and then you go to</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-4
+00:16:30.619 --> 00:16:33.502
+<v Alex Lopez>the backside of him and it's like all
+tucked back.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2494-5
+00:16:33.502 --> 00:16:35.198
+<v Alex Lopez>Everything's like tucked back.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2486-0
+00:16:34.478 --> 00:16:34.798
+<v Brian Krabach>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2514-0
+00:16:36.958 --> 00:16:41.638
+<v Alex Lopez>So it's like, actually, it's, you know,
+near 70,000 lines of code. I'm like, oh,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2514-1
+00:16:41.638 --> 00:16:44.238
+<v Alex Lopez>okay, all right, well,
+this is good to know.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2521-0
+00:16:43.518 --> 00:16:46.008
+<v Brian Krabach>By the way,
+a lot of those lines of code are</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2521-1
+00:16:46.008 --> 00:16:49.217
+<v Brian Krabach>auto-generated,
+which is the thing that keeps not calling</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2521-2
+00:16:49.217 --> 00:16:49.438
+<v Brian Krabach>out.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-0
+00:16:50.558 --> 00:16:52.951
+<v Brian Krabach>If you actually go look at the actual
+source directory,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2523-0
+00:16:50.718 --> 00:16:50.878
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-1
+00:16:52.951 --> 00:16:56.198
+<v Brian Krabach>it's actually much smaller because Paul
+had a thing that did it. He's like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2533-0
+00:16:54.558 --> 00:16:54.958
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-2
+00:16:56.198 --> 00:16:58.249
+<v Brian Krabach>this is ridiculous, it's massive.
+And I'm like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-3
+00:16:58.249 --> 00:17:01.497
+<v Brian Krabach>that's a problem if it is that big.
+And I went and I looked and I was like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-4
+00:17:01.497 --> 00:17:04.488
+<v Brian Krabach>this file's clean, this file's clean,
+this file's clean. All of like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2562-0
+00:17:02.318 --> 00:17:02.798
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-5
+00:17:04.488 --> 00:17:08.119
+<v Brian Krabach>there's a dozen files, they are all clean.
+And then I found the generated folder and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-6
+00:17:08.119 --> 00:17:11.495
+<v Brian Krabach>I was like, oh, this file's massive,
+this file's massive. And so I'm like, oh,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2606-7
+00:17:11.495 --> 00:17:13.118
+<v Brian Krabach>but it's not working with those files.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2634-0
+00:17:13.358 --> 00:17:15.591
+<v Brian Krabach>What it's doing is like from the source
+code,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2597-0
+00:17:13.678 --> 00:17:14.158
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2634-1
+00:17:15.591 --> 00:17:19.231
+<v Brian Krabach>this is how it's handling the bindings
+for all the other languages and the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2634-2
+00:17:19.231 --> 00:17:21.997
+<v Brian Krabach>bridges and things like that.
+That's all generated code.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2627-0
+00:17:20.878 --> 00:17:22.398
+<v Alex Lopez>Got it. Got it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2634-3
+00:17:21.997 --> 00:17:23.598
+<v Brian Krabach>And like that's totally fine. So.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2694-0
+00:17:23.918 --> 00:17:26.695
+<v Alex Lopez>Okay,
+so this then became a graph to call out</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2694-1
+00:17:26.695 --> 00:17:30.740
+<v Alex Lopez>like issues and divergences.
+And so that's where I was like, okay,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2646-0
+00:17:30.478 --> 00:17:30.878
+<v Brian Krabach>Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2694-2
+00:17:30.740 --> 00:17:34.482
+<v Alex Lopez>this morning, well,
+actually this morning I said, well, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2694-3
+00:17:34.482 --> 00:17:39.312
+<v Alex Lopez>this is educational, like this is useful,
+but this is not what I'm looking for.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2694-4
+00:17:39.312 --> 00:17:43.718
+<v Alex Lopez>I'm looking for more of an educational
+version because it's saying like.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2683-0
+00:17:41.918 --> 00:17:42.158
+<v Brian Krabach>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2724-0
+00:17:44.238 --> 00:17:46.797
+<v Alex Lopez>you know,
+architecture transition and process,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2724-1
+00:17:46.797 --> 00:17:49.954
+<v Alex Lopez>these are not fully aligned. So I'm like,
+this is really,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2703-0
+00:17:48.318 --> 00:17:48.718
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2724-2
+00:17:49.954 --> 00:17:53.220
+<v Alex Lopez>this could be really useful,
+but not for me at this moment.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2755-0
+00:17:53.198 --> 00:17:57.065
+<v Brian Krabach>So for this,
+you definitely are probably going to want</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2724-3
+00:17:53.220 --> 00:17:54.798
+<v Alex Lopez>And then like this alignment.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2755-1
+00:17:57.065 --> 00:18:02.478
+<v Brian Krabach>to do that steering because all of the
+non-Python part and whatever is being</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2755-2
+00:18:02.478 --> 00:18:07.188
+<v Brian Krabach>called by the Python part is all work in
+progress and a very slow,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2755-3
+00:18:07.188 --> 00:18:12.038
+<v Brian Krabach>like when we have time in the background,
+chip away at a little bit.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2752-0
+00:18:12.798 --> 00:18:13.278
+<v Alex Lopez>Got it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2794-0
+00:18:12.878 --> 00:18:16.452
+<v Brian Krabach>And it's going to be that way because
+like it's not our priority,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2794-1
+00:18:16.452 --> 00:18:19.375
+<v Brian Krabach>but it's the direction we're going.
+And so therefore,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2764-0
+00:18:16.598 --> 00:18:16.878
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2794-2
+00:18:19.375 --> 00:18:23.923
+<v Brian Krabach>like for the things that you're creating,
+like it should largely just ignore all of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2782-0
+00:18:23.918 --> 00:18:24.478
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2794-3
+00:18:23.923 --> 00:18:27.659
+<v Brian Krabach>that. It does need to understand the,
+how the Python wraps the Rust,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2794-4
+00:18:27.659 --> 00:18:28.958
+<v Brian Krabach>but that's all it needs.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2841-0
+00:18:29.998 --> 00:18:35.036
+<v Alex Lopez>Okay, all right. So yeah, I'll, well,
+even probably from the one I'm doing</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2841-1
+00:18:35.036 --> 00:18:40.611
+<v Alex Lopez>right now, I'll have to steer some more.
+But so I had it create a new one and with</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2808-0
+00:18:37.918 --> 00:18:38.238
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2841-2
+00:18:40.611 --> 00:18:45.111
+<v Alex Lopez>the feedback that I gave and I'm like,
+okay, this is looking good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2841-3
+00:18:45.111 --> 00:18:49.678
+<v Alex Lopez>And then I started looking at it again
+and I'm like, wait a second.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-0
+00:18:50.038 --> 00:18:52.703
+<v Alex Lopez>Like, what did you do? Like,
+it's almost like it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2849-0
+00:18:52.238 --> 00:18:52.438
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-1
+00:18:52.703 --> 00:18:56.061
+<v Alex Lopez>I didn't tell it to give me the first one.
+I said, okay, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-2
+00:18:56.061 --> 00:18:58.566
+<v Alex Lopez>let's just make sure like this is
+educational.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-3
+00:18:58.566 --> 00:19:01.923
+<v Alex Lopez>So like any of the issues that are,
+and it just, I don't know,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2867-0
+00:19:01.038 --> 00:19:01.278
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-4
+00:19:01.923 --> 00:19:05.654
+<v Alex Lopez>I haven't looked at this one,
+the difference between this one and the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2895-5
+00:19:05.654 --> 00:19:08.318
+<v Alex Lopez>other one,
+but that's actually what I was having.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2890-0
+00:19:08.718 --> 00:19:09.198
+<v Brian Krabach>OK.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2899-0
+00:19:09.198 --> 00:19:11.598
+<v Alex Lopez>It look at again was to generate a dot
+graph that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2925-0
+00:19:13.198 --> 00:19:15.918
+<v Alex Lopez>rooted in education,
+like with some of this feedback,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2925-1
+00:19:15.918 --> 00:19:19.797
+<v Alex Lopez>but what you just gave makes me think
+I'll probably have to generate another</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2915-0
+00:19:18.078 --> 00:19:18.478
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2925-2
+00:19:19.797 --> 00:19:19.998
+<v Alex Lopez>one.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-0
+00:19:20.718 --> 00:19:24.211
+<v Brian Krabach>That's one of the things I'm learning is
+because of the fact that we left it</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-1
+00:19:24.211 --> 00:19:26.933
+<v Brian Krabach>somewhat open-ended,
+because there's so many different ways</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-2
+00:19:26.933 --> 00:19:29.700
+<v Brian Krabach>that we can use it,
+is that you kind of have to tell it what</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-3
+00:19:29.700 --> 00:19:32.286
+<v Brian Krabach>your intent is.
+And part of that might be like also like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2947-0
+00:19:29.838 --> 00:19:30.398
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-4
+00:19:32.286 --> 00:19:36.096
+<v Brian Krabach>what areas to focus on and what to ignore,
+because I don't think we've really baked</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-5
+00:19:36.096 --> 00:19:38.863
+<v Brian Krabach>anything in for that.
+It's more we've given it the tools and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2983-6
+00:19:38.863 --> 00:19:41.358
+<v Brian Krabach>been like, hey, you can make that graphs.
+It's useful.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3022-0
+00:19:41.758 --> 00:19:44.428
+<v Brian Krabach>But we've not taught it the how or why or
+what, you know,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3022-1
+00:19:44.428 --> 00:19:47.419
+<v Brian Krabach>or these kinds of ideas of like, like,
+yeah, ignore all of that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3022-2
+00:19:47.419 --> 00:19:50.365
+<v Brian Krabach>That's not relevant for the kind of thing
+that I'm doing. Like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/2997-0
+00:19:48.078 --> 00:19:48.238
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3022-3
+00:19:50.365 --> 00:19:53.403
+<v Brian Krabach>I think it tries to go like, go,
+I'm going to wrap my arms around</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3022-4
+00:19:53.403 --> 00:19:57.038
+<v Brian Krabach>everything and make sure you've got it
+all, no matter what it is you're, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3017-0
+00:19:55.838 --> 00:19:56.238
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3035-0
+00:19:58.238 --> 00:20:05.198
+<v Alex Lopez>Got it. So, so yeah, I think the thing is,
+I'm yeah, go ahead.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3088-0
+00:20:05.598 --> 00:20:09.870
+<v Brian Krabach>I have another repo that I will be
+sharing shortly, which is called docs.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3088-1
+00:20:09.870 --> 00:20:12.987
+<v Brian Krabach>And what it is,
+is this might be a pattern that might</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3088-2
+00:20:12.987 --> 00:20:16.219
+<v Brian Krabach>work well for what you're doing here.
+Where what it is,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3057-0
+00:20:14.798 --> 00:20:15.198
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3088-3
+00:20:16.219 --> 00:20:20.375
+<v Brian Krabach>is it's kind of like an overlay.
+It's kind of like a higher level thing</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3066-0
+00:20:17.518 --> 00:20:17.918
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3088-4
+00:20:20.375 --> 00:20:23.838
+<v Brian Krabach>that is like what I'm trying to do.
+I'm trying to document.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3091-0
+00:20:24.958 --> 00:20:26.238
+<v Brian Krabach>My repo does.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-0
+00:20:27.278 --> 00:20:29.946
+<v Brian Krabach>And so this is different than the other
+one, which is like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3094-0
+00:20:27.518 --> 00:20:28.078
+<v Alex Lopez>Got it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-1
+00:20:29.946 --> 00:20:33.235
+<v Brian Krabach>I'm making general graph tools.
+It's like that's useful more generically.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3105-0
+00:20:31.598 --> 00:20:31.998
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-2
+00:20:33.235 --> 00:20:36.836
+<v Brian Krabach>This one is like, I want to use those,
+but I also want to use some of this other</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-3
+00:20:36.836 --> 00:20:38.837
+<v Brian Krabach>thing,
+like some bits of parallax discovery.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-4
+00:20:38.837 --> 00:20:41.282
+<v Brian Krabach>I want to use some parts of this other
+part over here,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-5
+00:20:41.282 --> 00:20:43.949
+<v Brian Krabach>like make me a bundle that like borrowing
+all these pieces,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3139-0
+00:20:43.678 --> 00:20:43.998
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3154-6
+00:20:43.949 --> 00:20:46.038
+<v Brian Krabach>and then it's building its own way to
+connect.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-0
+00:20:46.118 --> 00:20:49.773
+<v Brian Krabach>parts of each one together. Like,
+it's not using all the parallax discovery,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-1
+00:20:49.773 --> 00:20:53.285
+<v Brian Krabach>it's just reaching in and grabbing some
+of the parts. And then from that,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-2
+00:20:53.285 --> 00:20:56.560
+<v Brian Krabach>it's building a very specific tool that
+is like, point me at a repo,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-3
+00:20:56.560 --> 00:20:59.788
+<v Brian Krabach>and I will build you out a documentation
+set that is some diagrams,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-4
+00:20:59.788 --> 00:21:03.063
+<v Brian Krabach>some markdown files, and so on.
+And it's used in the technique that,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3208-5
+00:21:03.063 --> 00:21:05.198
+<v Brian Krabach>you know,
+we've kind of negotiated for that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-0
+00:21:05.318 --> 00:21:08.960
+<v Brian Krabach>And it may be good for you to do to
+basically like work towards something</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3202-0
+00:21:06.158 --> 00:21:06.318
+<v Alex Lopez>Mm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-1
+00:21:08.960 --> 00:21:11.519
+<v Brian Krabach>like that.
+Just figure out like what are the parts,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3215-0
+00:21:11.038 --> 00:21:11.278
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-2
+00:21:11.519 --> 00:21:14.620
+<v Brian Krabach>like you've got a lot of parts,
+a lot of tools in the toolbox.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-3
+00:21:14.620 --> 00:21:18.508
+<v Brian Krabach>What's the right way to like throw them
+at something like this might serve you</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3229-0
+00:21:15.758 --> 00:21:16.158
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-4
+00:21:18.508 --> 00:21:21.855
+<v Brian Krabach>well then because then you can just
+iterate on it and run it again,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3258-5
+00:21:21.855 --> 00:21:24.118
+<v Brian Krabach>iterate on it and run it again and refine
+it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3250-0
+00:21:23.918 --> 00:21:24.398
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-0
+00:21:24.558 --> 00:21:28.057
+<v Brian Krabach>versus like trying to in a single
+conversation, like get it there.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-1
+00:21:28.057 --> 00:21:31.974
+<v Brian Krabach>And that's the benefit I ran into with
+the taking this approach to the doc</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-2
+00:21:31.974 --> 00:21:35.316
+<v Brian Krabach>graphs or the docs repo,
+was that I'm not trying to get it done</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-3
+00:21:35.316 --> 00:21:38.501
+<v Brian Krabach>with the agent directly.
+I'm having it run it and then we're</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-4
+00:21:38.501 --> 00:21:40.799
+<v Brian Krabach>evaluating the result of it and then
+going,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3314-5
+00:21:40.799 --> 00:21:44.558
+<v Brian Krabach>what do we need to fix to get us to the
+kind of result I'm looking for?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3323-0
+00:21:44.958 --> 00:21:48.508
+<v Brian Krabach>Because at that point, when it's done,
+it's basically a recipe-driven thing,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3307-0
+00:21:45.398 --> 00:21:45.638
+<v Alex Lopez>ED.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3323-1
+00:21:48.508 --> 00:21:50.398
+<v Brian Krabach>and then we can just use it all day long.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3325-0
+00:21:51.118 --> 00:21:52.398
+<v Alex Lopez>Right, right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3328-0
+00:21:54.078 --> 00:21:54.558
+<v Alex Lopez>OK.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-0
+00:21:54.878 --> 00:21:57.543
+<v Brian Krabach>That might be helpful.
+I'm doing it because I needed,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3332-0
+00:21:55.758 --> 00:21:55.918
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-1
+00:21:57.543 --> 00:22:00.405
+<v Brian Krabach>I knew I needed to apply it to all the
+repos off the bat.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-2
+00:22:00.405 --> 00:22:04.156
+<v Brian Krabach>I think it might be helpful for you just
+because of the fact that you just,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3351-0
+00:22:01.278 --> 00:22:01.678
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-3
+00:22:04.156 --> 00:22:07.363
+<v Brian Krabach>even though that's not necessarily,
+this may be a one-off thing,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-4
+00:22:07.363 --> 00:22:10.521
+<v Brian Krabach>but even as a, I think there's a,
+from a technique perspective,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-5
+00:22:10.521 --> 00:22:14.272
+<v Brian Krabach>like by doing it that way, you, you,
+there's a metacognitive element to it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3395-6
+00:22:14.272 --> 00:22:14.518
+<v Brian Krabach>like.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3402-0
+00:22:14.638 --> 00:22:19.118
+<v Brian Krabach>you're working on how to solve the
+problem with the assistant, not actually.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3437-0
+00:22:20.158 --> 00:22:24.324
+<v Brian Krabach>like doing the thing and like leveraging
+it that way doesn't complete the two.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3405-0
+00:22:21.838 --> 00:22:22.318
+<v Alex Lopez>Right.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3437-1
+00:22:24.324 --> 00:22:27.382
+<v Brian Krabach>Whereas I think if we're doing it the way
+we're doing it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3437-2
+00:22:27.382 --> 00:22:30.282
+<v Brian Krabach>which is the way that I would have done
+it before too.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3437-3
+00:22:30.282 --> 00:22:34.500
+<v Brian Krabach>I think what we're doing is we're like,
+we're trying to like do too much at too</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3437-4
+00:22:34.500 --> 00:22:36.398
+<v Brian Krabach>many different levels at once, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3434-0
+00:22:36.718 --> 00:22:37.118
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3448-0
+00:22:38.158 --> 00:22:42.518
+<v Alex Lopez>That sounds like me. Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3457-0
+00:22:40.878 --> 00:22:43.332
+<v Brian Krabach>But me too. I mean,
+I'm the only thing that I'm having this</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3457-1
+00:22:43.332 --> 00:22:46.398
+<v Brian Krabach>aha moment myself right now. I'm like,
+this is actually interesting. Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3455-0
+00:22:45.038 --> 00:22:45.518
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3459-0
+00:22:47.118 --> 00:22:48.398
+<v Alex Lopez>Yeah, so.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3461-0
+00:22:49.038 --> 00:22:49.358
+<v Brian Krabach>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3475-0
+00:22:49.478 --> 00:22:53.118
+<v Alex Lopez>So anyway, so that's where that is. Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3490-0
+00:22:51.598 --> 00:22:53.465
+<v Brian Krabach>Okay,
+so do you need me to look at anything</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3490-1
+00:22:53.465 --> 00:22:56.732
+<v Brian Krabach>right now then or are you still like,
+you're taking another run before it at</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3534-0
+00:22:55.598 --> 00:22:59.712
+<v Alex Lopez>Well, yeah, I'm taking another run at it.
+I mean, I think this,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3490-2
+00:22:56.732 --> 00:22:57.198
+<v Brian Krabach>that point?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3492-0
+00:22:58.238 --> 00:22:58.638
+<v Brian Krabach>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3534-1
+00:22:59.712 --> 00:23:03.569
+<v Alex Lopez>like the silhouette looks similar,
+but it's like not, yeah,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3534-2
+00:23:03.569 --> 00:23:07.040
+<v Alex Lopez>so the next one I'll send over to you.
+I'll let this,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3534-3
+00:23:07.040 --> 00:23:12.183
+<v Alex Lopez>like this connection for some reason,
+this was probably like Saturday afternoon</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3534-4
+00:23:12.183 --> 00:23:13.918
+<v Alex Lopez>where it's like, wee, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3532-0
+00:23:12.718 --> 00:23:16.398
+<v Brian Krabach>Ohh,
+I know the other thing I was gonna say.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3536-0
+00:23:15.358 --> 00:23:15.518
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3541-0
+00:23:17.798 --> 00:23:19.638
+<v Brian Krabach>Are you too young to remember Family
+Circus?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3565-0
+00:23:20.478 --> 00:23:26.590
+<v Alex Lopez>No, I love it. Yeah, that's exactly.
+It grabbed some cookies and then it</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3595-0
+00:23:21.958 --> 00:23:28.824
+<v Brian Krabach>Yeah, there you go, there's the family.
+Like, supposed to go from A to B, like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3565-1
+00:23:26.590 --> 00:23:27.678
+<v Alex Lopez>needed a toy.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3595-1
+00:23:28.824 --> 00:23:35.003
+<v Brian Krabach>there's the path. That's awesome.
+The other thing I would ask to you on</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3568-0
+00:23:30.238 --> 00:23:30.798
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3571-0
+00:23:32.878 --> 00:23:33.278
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3595-2
+00:23:35.003 --> 00:23:39.294
+<v Brian Krabach>this one, like,
+what was the context you gave it?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3595-3
+00:23:39.294 --> 00:23:40.238
+<v Brian Krabach>Did like...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3619-0
+00:23:40.558 --> 00:23:44.071
+<v Brian Krabach>Is it was it instructed to go look at
+only the code and figure it out,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3619-1
+00:23:44.071 --> 00:23:47.238
+<v Brian Krabach>or is it also trying to like reconcile
+the documentation? Like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3619-2
+00:23:47.238 --> 00:23:49.118
+<v Brian Krabach>these are just pointed more generally.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3635-0
+00:23:47.678 --> 00:23:53.253
+<v Alex Lopez>I think it, yeah, it would, no,
+I reckon I pointed it to the two dot</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3635-1
+00:23:53.253 --> 00:23:55.838
+<v Alex Lopez>graphs, so, and that probably...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3652-0
+00:23:56.798 --> 00:23:58.250
+<v Brian Krabach>Well,
+and then what about like the</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3652-1
+00:23:58.250 --> 00:24:01.649
+<v Brian Krabach>documentation stuff that's in the repos?
+Is it looking at those or ignoring those</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3652-2
+00:24:01.649 --> 00:24:02.478
+<v Brian Krabach>kinds of things too?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3662-0
+00:24:02.478 --> 00:24:05.118
+<v Alex Lopez>Not in that turn, so the...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-0
+00:24:04.238 --> 00:24:07.496
+<v Brian Krabach>So, what's interesting is like,
+that's another technique we can use for</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-1
+00:24:07.496 --> 00:24:10.346
+<v Brian Krabach>detecting context poisoning,
+but then also, if you, and again,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3672-0
+00:24:09.038 --> 00:24:09.438
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-2
+00:24:10.346 --> 00:24:13.060
+<v Brian Krabach>this goes back to like,
+what's your intent? If you're like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-3
+00:24:13.060 --> 00:24:16.770
+<v Brian Krabach>not my thing I'm trying to do right now,
+I had to do this in one of my other ones</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3687-0
+00:24:15.118 --> 00:24:15.518
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-4
+00:24:16.770 --> 00:24:19.575
+<v Brian Krabach>because it was like,
+I kept finding all the bugs, I was like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-5
+00:24:19.575 --> 00:24:21.701
+<v Brian Krabach>don't care right now,
+like I need you to like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3704-0
+00:24:20.878 --> 00:24:21.278
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3723-6
+00:24:21.701 --> 00:24:24.958
+<v Brian Krabach>like go through this lens and when you
+see bugs, like basically like...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-0
+00:24:25.118 --> 00:24:28.298
+<v Brian Krabach>not our problem today.
+And that way it didn't show up on my</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3718-0
+00:24:26.878 --> 00:24:27.198
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-1
+00:24:28.298 --> 00:24:32.644
+<v Brian Krabach>stuff. Or I gave it an outlet. I was like,
+put those on a markdown file over here</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-2
+00:24:32.644 --> 00:24:35.081
+<v Brian Krabach>that I'll maybe do something with.
+We'll see.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3740-0
+00:24:33.878 --> 00:24:34.358
+<v Alex Lopez>Mhm.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-3
+00:24:35.081 --> 00:24:38.314
+<v Brian Krabach>Because then it gave it a place to like
+go, stop being like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-4
+00:24:38.314 --> 00:24:41.494
+<v Brian Krabach>I gotta tell you though.
+But the thing that might be really</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3766-5
+00:24:41.494 --> 00:24:43.878
+<v Brian Krabach>valuable for this particular one is tell
+it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3789-0
+00:24:43.958 --> 00:24:47.390
+<v Brian Krabach>only look at the code.
+Because really what you're trying to do</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3789-1
+00:24:47.390 --> 00:24:50.550
+<v Brian Krabach>is you're trying to figure out how's it
+actually working,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3816-0
+00:24:49.278 --> 00:24:54.078
+<v Alex Lopez>Actually, sorry, for this one,
+for this one you're looking at was that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3789-2
+00:24:50.550 --> 00:24:52.238
+<v Brian Krabach>not how is it claimed or, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3816-1
+00:24:54.078 --> 00:24:58.878
+<v Alex Lopez>And it was looking at the new code.
+It was looking at as of March 2026.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3795-0
+00:24:54.318 --> 00:24:54.958
+<v Brian Krabach>Okay, perfect.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3822-0
+00:24:56.478 --> 00:24:58.744
+<v Brian Krabach>So if that's the case,
+like this one would be, okay,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3822-1
+00:24:58.744 --> 00:25:01.865
+<v Brian Krabach>this one would be useful for me.
+It's too down in the weeds for what you</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3822-2
+00:25:01.865 --> 00:25:02.078
+<v Brian Krabach>want.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3820-0
+00:25:02.638 --> 00:25:02.958
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3836-0
+00:25:03.278 --> 00:25:06.459
+<v Brian Krabach>But if you want to share this,
+since you've already done it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3832-0
+00:25:05.838 --> 00:25:06.478
+<v Alex Lopez>Yeah, sure.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3836-1
+00:25:06.459 --> 00:25:07.918
+<v Brian Krabach>I would take a look at this.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3838-0
+00:25:08.638 --> 00:25:09.038
+<v Alex Lopez>Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3856-0
+00:25:08.838 --> 00:25:11.641
+<v Brian Krabach>Because it's not a high enough priority
+for me to go do it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3856-1
+00:25:11.641 --> 00:25:15.238
+<v Brian Krabach>but now that you've done the graph,
+like that's a thing to like look at over</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3851-0
+00:25:12.958 --> 00:25:13.358
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3856-2
+00:25:15.238 --> 00:25:15.518
+<v Brian Krabach>lunch.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3871-0
+00:25:17.198 --> 00:25:20.300
+<v Brian Krabach>I might see something and then be like,
+oh, wait,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3863-0
+00:25:17.808 --> 00:25:18.288
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3871-1
+00:25:20.300 --> 00:25:23.278
+<v Brian Krabach>like that's wrong or it does that?
+That's cool.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3872-0
+00:25:23.918 --> 00:25:24.238
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3893-0
+00:25:26.078 --> 00:25:30.291
+<v Brian Krabach>Because the systems are so complex that
+it's hard to wrap your head around</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3876-0
+00:25:26.318 --> 00:25:26.558
+<v Alex Lopez>Good.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3884-0
+00:25:28.558 --> 00:25:28.958
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3893-1
+00:25:30.291 --> 00:25:31.358
+<v Brian Krabach>sometimes, so yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3904-0
+00:25:30.718 --> 00:25:34.999
+<v Alex Lopez>Yep, whatever.
+I cannot team Z for some reason. OK,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3904-1
+00:25:34.999 --> 00:25:36.398
+<v Alex Lopez>I'll figure that.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3903-0
+00:25:35.838 --> 00:25:36.318
+<v Brian Krabach>That's fine.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3907-0
+00:25:38.958 --> 00:25:39.558
+<v Alex Lopez>Well, there we go.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3908-0
+00:25:41.838 --> 00:25:42.318
+<v Brian Krabach>Thanks.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3928-0
+00:25:41.998 --> 00:25:47.838
+<v Alex Lopez>Cool. Yeah. Actually, can you quickly,
+can you open that up and does it,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3920-0
+00:25:46.878 --> 00:25:47.358
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3928-1
+00:25:47.838 --> 00:25:50.798
+<v Alex Lopez>you should be able to access it, but.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3927-0
+00:25:49.638 --> 00:25:50.878
+<v Brian Krabach>Does the downloader show me?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3930-0
+00:25:51.918 --> 00:25:52.318
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3962-0
+00:25:52.878 --> 00:25:55.722
+<v Brian Krabach>It shows me and I can zoom.
+It shows me and I can zoom.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3932-0
+00:25:53.278 --> 00:25:53.678
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3943-0
+00:25:54.918 --> 00:25:56.558
+<v Alex Lopez>Say what? You can?</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3962-1
+00:25:55.722 --> 00:25:58.311
+<v Brian Krabach>It's very nice.
+It's a very smooth user interface.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3950-0
+00:25:57.758 --> 00:25:58.318
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3962-2
+00:25:58.311 --> 00:26:00.798
+<v Brian Krabach>I really like it, actually.
+I wish Teams had it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3966-0
+00:26:00.438 --> 00:26:03.918
+<v Alex Lopez>And then you can you can click all the
+different nodes and it works.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3983-0
+00:26:05.358 --> 00:26:09.715
+<v Brian Krabach>I can click on, what does clicking do? Oh,
+it allows you to see the connected</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3983-1
+00:26:09.715 --> 00:26:11.278
+<v Brian Krabach>elements. That's nice, okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3979-0
+00:26:09.758 --> 00:26:10.158
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3984-0
+00:26:11.838 --> 00:26:12.638
+<v Alex Lopez>That works for you.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3986-0
+00:26:12.878 --> 00:26:13.198
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3990-0
+00:26:13.918 --> 00:26:16.398
+<v Alex Lopez>Cool. Okay. Sweet.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/3992-0
+00:26:17.918 --> 00:26:18.038
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4008-0
+00:26:20.958 --> 00:26:24.849
+<v Alex Lopez>Great, yeah, and there's a little, yeah,
+it's like an AMP browser header and stuff</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4008-1
+00:26:24.849 --> 00:26:25.598
+<v Alex Lopez>in there, and...</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4006-0
+00:26:25.518 --> 00:26:25.838
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4010-0
+00:26:26.758 --> 00:26:26.958
+<v Alex Lopez>Coll.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4033-0
+00:26:27.038 --> 00:26:30.536
+<v Brian Krabach>I can download, yep, yeah, very nice.
+I mean, it's got the double scroll bars,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4023-0
+00:26:28.398 --> 00:26:29.358
+<v Alex Lopez>Made my own little.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4033-1
+00:26:30.536 --> 00:26:33.103
+<v Brian Krabach>that's you know,
+because you're using an engineer system,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4033-2
+00:26:33.103 --> 00:26:33.678
+<v Brian Krabach>but you know.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4037-0
+00:26:33.598 --> 00:26:35.958
+<v Alex Lopez>Yeah, yeah, it's not a design fault.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4034-0
+00:26:34.638 --> 00:26:34.718
+<v Brian Krabach>The.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4035-0
+00:26:36.518 --> 00:26:36.638
+<v Brian Krabach>And.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4041-0
+00:26:38.638 --> 00:26:40.398
+<v Alex Lopez>Ohh, man, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4042-0
+00:26:39.838 --> 00:26:40.638
+<v Brian Krabach>That was funny, he.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4043-0
+00:26:41.678 --> 00:26:41.798
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4049-0
+00:26:42.958 --> 00:26:43.678
+<v Alex Lopez>I just, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4051-0
+00:26:43.118 --> 00:26:45.798
+<v Brian Krabach>I do love it. I do love those moments.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4052-0
+00:26:45.918 --> 00:26:46.318
+<v Alex Lopez>Yep.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4068-0
+00:26:46.598 --> 00:26:48.735
+<v Brian Krabach>But I'm like, wait,
+the designer sent me the devil's spot,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4059-0
+00:26:47.518 --> 00:26:47.838
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4068-1
+00:26:48.735 --> 00:26:49.278
+<v Brian Krabach>that's awesome.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4111-0
+00:26:49.598 --> 00:26:53.096
+<v Alex Lopez>Yeah, yeah, yeah, yeah, yep. Well,
+and I think, yeah,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4111-1
+00:26:53.096 --> 00:26:58.018
+<v Alex Lopez>I have tested it on my phone, not on,
+because that's the thing I can easily</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4082-0
+00:26:57.318 --> 00:26:57.678
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4111-2
+00:26:58.018 --> 00:27:02.617
+<v Alex Lopez>turn off, or just switch VPN,
+and I don't want to break any processes.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4111-3
+00:27:02.617 --> 00:27:06.438
+<v Alex Lopez>So I need another machine that I can
+quickly do that with.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4098-0
+00:27:03.518 --> 00:27:03.838
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4105-0
+00:27:06.838 --> 00:27:07.198
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4109-0
+00:27:08.318 --> 00:27:08.638
+<v Brian Krabach>I see.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4159-0
+00:27:08.318 --> 00:27:11.920
+<v Alex Lopez>Anyway, all right, cool. Yeah, so I mean,
+my goal is like,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4112-0
+00:27:09.878 --> 00:27:10.238
+<v Brian Krabach>Michael.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4159-1
+00:27:11.920 --> 00:27:16.010
+<v Alex Lopez>once this new one generates,
+I'll send it to you. I'm checking it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4159-2
+00:27:16.010 --> 00:27:20.772
+<v Alex Lopez>And then I still want to do that thing
+that I had mentioned on Friday is walk</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4159-3
+00:27:20.772 --> 00:27:24.740
+<v Alex Lopez>through it, record it,
+generate a deck and some materials out of</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4139-0
+00:27:21.198 --> 00:27:21.438
+<v Brian Krabach>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4159-4
+00:27:24.740 --> 00:27:26.998
+<v Alex Lopez>it, verify that, and then we'll have.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4184-0
+00:27:27.438 --> 00:27:30.868
+<v Alex Lopez>That to work from, and then Salil,
+maybe Brian, you said this to you,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4184-1
+00:27:30.868 --> 00:27:34.836
+<v Alex Lopez>but like the having this dot graph would
+be really great for the system to check</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4184-2
+00:27:34.836 --> 00:27:36.158
+<v Alex Lopez>against itself as well, so.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-0
+00:27:36.638 --> 00:27:39.281
+<v Brian Krabach>Yeah,
+and now that I'm thinking about it more,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-1
+00:27:39.281 --> 00:27:43.667
+<v Brian Krabach>what I suggested to you of like getting
+it to like build a repeatable process</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-2
+00:27:43.667 --> 00:27:47.490
+<v Brian Krabach>that we can just throw in,
+actually I think is going to have a very</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4203-0
+00:27:43.998 --> 00:27:44.398
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-3
+00:27:47.490 --> 00:27:51.539
+<v Brian Krabach>big utility value across a lot of the
+things that we're doing. So yeah,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-4
+00:27:51.539 --> 00:27:55.081
+<v Brian Krabach>actually I think, yeah,
+definitely do that in Azure because if</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4236-5
+00:27:55.081 --> 00:27:58.398
+<v Brian Krabach>you can get it to the level where as an
+educational piece.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4224-0
+00:27:55.478 --> 00:27:55.998
+<v Alex Lopez>Okay.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4278-0
+00:27:59.438 --> 00:28:03.660
+<v Brian Krabach>That means you've made it accessible
+enough that we can use it as a tool then</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4243-0
+00:28:02.238 --> 00:28:02.638
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4278-1
+00:28:03.660 --> 00:28:07.070
+<v Brian Krabach>for more for facing users.
+Like we'll have to work on the like</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4278-2
+00:28:07.070 --> 00:28:11.238
+<v Brian Krabach>layout and all the other crap so that
+it's not a spaghetti and family circus</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4259-0
+00:28:08.318 --> 00:28:08.718
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4265-0
+00:28:11.198 --> 00:28:11.678
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4278-3
+00:28:11.238 --> 00:28:13.998
+<v Brian Krabach>mess, but like that's actually easier,
+ironically.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4295-0
+00:28:14.078 --> 00:28:17.543
+<v Alex Lopez>Yeah,
+or you can have a family circus mode and</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4295-1
+00:28:17.543 --> 00:28:22.998
+<v Alex Lopez>we'll just add little cartoon characters
+to it. That's your flavor. Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4331-0
+00:28:20.638 --> 00:28:25.607
+<v Brian Krabach>That are somewhat inspired by,
+but that doesn't actually break any</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4296-0
+00:28:24.318 --> 00:28:24.798
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4331-1
+00:28:25.607 --> 00:28:30.056
+<v Brian Krabach>coffee. Yeah. Nice.
+And it'll be the family festival. Yeah,</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4304-0
+00:28:26.878 --> 00:28:28.718
+<v Alex Lopez>Yep, yeah, cool.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4331-2
+00:28:30.056 --> 00:28:36.063
+<v Brian Krabach>yeah, exactly. We got to watch that too.
+Yeah. And the people who get it get it.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4308-0
+00:28:30.998 --> 00:28:31.438
+<v Alex Lopez>Fair.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4313-0
+00:28:32.398 --> 00:28:32.718
+<v Alex Lopez>Yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4324-0
+00:28:35.358 --> 00:28:37.918
+<v Alex Lopez>Fanfare. Fanfare. There you go.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4331-3
+00:28:36.063 --> 00:28:36.878
+<v Brian Krabach>Yeah, yeah.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4337-0
+00:28:38.758 --> 00:28:41.438
+<v Brian Krabach>All right, cool. Thanks guys.
+Appreciate it. See ya.</v>
+
+4cc16a2a-78ff-4301-a1ab-c91c067941de/4339-0
+00:28:39.998 --> 00:28:41.758
+<v Alex Lopez>All right, yeah, see you.</v>
