@@ -2,7 +2,7 @@ If modules are the building blocks, bundles are the packaging. A bundle is a tex
 
 Think of bundles like npm packages for AI capabilities. A bundle packages modules, tools, hooks, instructions, and context files together. The simplest bundle is a single file: a few lines of configuration and a paragraph of instructions. That is enough to create an AI agent.
 
-Most users will never write a module. They'll write a bundle — a text file. This is the payoff of all the architecture: the kernel, the module system, the mount contract, all exist so that this file can be this simple.
+Most users will never write a module. They'll write a bundle — a text file. No code required. This is the payoff of all the architecture: the kernel, the module system, the mount contract all exist so that this file can be this simple.
 
 There are two formats. The more common one is Markdown with YAML frontmatter: structured configuration at the top between triple-dash markers, and a Markdown body below that becomes the AI's system instruction — its personality, its rules, its sense of purpose. The second format is pure YAML, used when a bundle provides configuration but doesn't need to tell the AI anything directly.
 
@@ -10,4 +10,4 @@ Bundles compose through an includes mechanism. A bundle can include other bundle
 
 Inside a bundle's instruction body, you can reference external files using at-mentions — at-namespace-colon-path-to-file. The system resolves the reference, reads the file, and includes its content in the system prompt. Resolution is recursive up to three levels, and content is deduplicated by hash.
 
-And here's a powerful detail: at-mention files are re-read on every single turn of conversation. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required. The cost of a stale instruction is higher than a disk read.
+At-mention files are re-read on every single turn of conversation through the System Prompt Factory. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required. The cost of a stale instruction is higher than a disk read.

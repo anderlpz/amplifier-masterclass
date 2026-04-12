@@ -1,4 +1,4 @@
-Now we can see the whole system. Six layers, stacked. Each depends only on the one below it.
+Six layers, stacked. Each depends only on the one below it.
 
 Layer one is the Kernel — amplifier-core. Contracts, module loading, event dispatch, session lifecycle. The unchanging center, about twenty-six hundred lines of code. Everything above depends on it. Nothing here depends on anything above.
 
@@ -12,9 +12,9 @@ Layer five is Applications. The CLI, web interfaces, IDE integrations, voice ass
 
 Layer six is the Community and Ecosystem. Third-party modules, bundles, recipes, integrations. Open at every level. Anyone can build here.
 
-The pattern across all six layers is the same: replace anything at one layer without affecting the others. A new Foundation implementation could be written without changing the kernel. A new module could be published without any existing module knowing it exists.
+The pattern across all six layers is the same: each layer depends only on the one below. Replace anything at one layer without affecting the others. A new Foundation implementation could be written without changing the kernel. A new module could be published without any existing module knowing it exists.
 
-The architecture tells you where things belong. A new AI model? Layer two — a provider module. Want to block file modifications in production? Layer two — a hook module that registers for tool-pre and returns deny. A standard agent configuration for your organization? Layer three — a bundle. A chat interface or IDE plugin? Layer five — an application.
+The architecture tells you where things belong. A new AI model — say one that processes video — goes at Layer two, a provider module. Same interface, kernel unchanged. A team wants to block file modifications in production? Layer two — a hook module that registers for tool-pre and returns deny. The AI never knows. A standard agent configuration for your organization? Layer three — a bundle. A chat interface or IDE plugin? Layer five — an application. New capabilities: modules. New rules: hooks. New configurations: bundles. New interfaces: applications. The kernel doesn't change.
 
 That's why the kernel contains five things and not fifty. Why modules follow a universal mount contract. Why Foundation is optional. Why bundles are text files. Why hooks are invisible to the AI. Every decision traces to the same idea: keep the center simple and stable, push everything that changes to the outside.
 

@@ -1045,6 +1045,60 @@
       .section-diagram { margin: 20px -16px 24px; width: calc(100% + 32px); }
     }
 
+    /* ── Illustrated diagrams (Round 2) ────────────────────────── */
+    .illustration {
+      position: relative;
+      width: calc(100% + 160px);
+      margin: 40px -80px;
+      background: var(--bg-card, #FFFFFF);
+      border: 1px dotted rgba(0, 0, 0, 0.12);
+      padding: 32px;
+      overflow: hidden;
+    }
+
+    .illustration--grid {
+      background-image: radial-gradient(
+        circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px
+      );
+      background-size: 20px 20px;
+    }
+
+    .illustration__fig-num {
+      font-family: 'Space Grotesk', 'SF Mono', 'Fira Code', monospace;
+      font-size: 11px;
+      color: rgba(0, 0, 0, 0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .illustration__canvas {
+      position: relative;
+    }
+
+    .illustration__canvas svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .illustration__caption {
+      font-family: 'Space Grotesk', 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.04em;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .illustration {
+        width: calc(100% + 32px);
+        margin: 20px -16px 24px;
+        padding: 16px;
+      }
+    }
+
     /* ── Dotgraph viewer (§2) ─────────────────────────────────────────── */
     .graph-compact {
       background: #080f1e;
