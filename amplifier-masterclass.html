@@ -3016,12 +3016,6 @@ async def on_tool(event):
   </div>
 </div>
 
-      <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
-        <p class="dd-verdict"><strong>Use hooks for guaranteed outcomes; tools for intentional AI actions.</strong></p>
-        <p class="dd-reason">A tool instruction is probabilistic — the AI might forget or be distracted. A hook fires automatically on every matching event. Tools extend what the model can do; hooks govern what it may do.</p>
-      </div>
-
       <div class="callout" data-layer="boundary">
         <p><strong>The distinction in one sentence:</strong> Tools are capabilities you hand to the AI. Hooks are policies you enforce around it. Use tools when you want the AI to decide. Use hooks when you need the outcome to be guaranteed.</p>
       </div>
@@ -3754,10 +3748,6 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Think of Foundation as a convenience layer. The <span class="lt" data-l="kernel">kernel</span> accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.</p>
 
-      <div class="feature-quote" data-layer="foundation">
-        <p>The kernel doesn't need Foundation. The kernel works with a raw configuration dictionary and a set of module paths. Foundation is a user-experience layer. It makes the system approachable by translating text files into running sessions.</p>
-      </div>
-
       <div class="design-decision">
         <div class="dd-label">Design Decision</div>
         <p class="dd-verdict"><strong>Foundation is optional — the kernel works without it.</strong></p>
@@ -3805,15 +3795,9 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Foundation doesn't just set up a session. It sustains it. The kernel calls into Foundation on every turn (system prompt) and during loading (module resolution). Neither side has a code dependency on the other. The kernel calls functions without knowing who provided them. This is the center-stays-still principle from <a href="#s3-2" class="xref">§3.2</a> applied to Foundation itself. Foundation calls the kernel's API without accessing kernel internals.</p>
 
-      <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
-        <p class="dd-verdict"><strong>Foundation connects via runtime callbacks — zero compile-time coupling.</strong></p>
-        <p class="dd-reason">A completely different preparation layer could inject different callbacks, and the kernel would not know or care. Connected at runtime through interfaces; independent at build time through boundaries.</p>
-      </div>
-
       <div class="callout" data-layer="boundary">
         <p><strong>Connected at runtime through callbacks. Independent at compile time through interfaces.</strong></p>
-        <p>Foundation depends on the kernel in code. The kernel calls Foundation at runtime only — through callbacks. Even the preparation layer follows mechanism, not policy.</p>
+        <p>Foundation depends on the kernel in code. The kernel calls Foundation at runtime only — through callbacks. A completely different preparation layer could inject different callbacks, and the kernel would not know or care. Even the preparation layer follows mechanism, not policy (<a href="#s3-1" class="xref">&#167;3.1</a>).</p>
       </div>
 
       <hr>
