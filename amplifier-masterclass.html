@@ -3030,31 +3030,31 @@ async def on_tool(event):
           </thead>
           <tbody>
             <tr>
-              <td><strong>1 — Deny</strong></td>
+              <td><strong>1</strong></td>
               <td><code>deny</code></td>
               <td>Highest priority. One deny blocks the entire operation. No further hooks execute. Fail-closed security posture.</td>
               <td>Safety policy, compliance enforcement</td>
             </tr>
             <tr>
-              <td><strong>2 — Ask User</strong></td>
+              <td><strong>2</strong></td>
               <td><code>ask_user</code></td>
               <td>Pauses execution for a human decision. First one wins. You can't merge approval requests.</td>
               <td>Operations that aren't clearly dangerous but aren't clearly safe</td>
             </tr>
             <tr>
-              <td><strong>3 — Inject Context</strong></td>
+              <td><strong>3</strong></td>
               <td><code>inject_context</code></td>
               <td>Accumulates. Multiple hooks can all inject messages into the same turn. All messages are merged and added to conversation history.</td>
               <td>Code quality feedback, style guidance, awareness injection</td>
             </tr>
             <tr>
-              <td><strong>4 — Modify</strong></td>
+              <td><strong>4</strong></td>
               <td><code>modify</code></td>
               <td>Transforms data flowing through the event. Multiple modify hooks chain. Each sees the output of the previous.</td>
               <td>Data transformation, redaction, reformatting</td>
             </tr>
             <tr>
-              <td><strong>5 — Continue</strong></td>
+              <td><strong>5</strong></td>
               <td><code>continue</code></td>
               <td>The default. No-op. "I've seen this event and I have nothing to add." The event passes through unmodified.</td>
               <td>Observation-only hooks, logging</td>
