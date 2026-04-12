@@ -277,7 +277,7 @@
       z-index: 190;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 220ms ease;
+      transition: opacity 250ms ease;
     }
 
     .toc-drawer {
@@ -481,6 +481,13 @@
 
     .callout p + p { margin-top: 10px; }
 
+    .callout code,
+    .design-decision code,
+    .dd-reason code,
+    .dd-verdict code {
+      font-size: 14px;
+    }
+
     /* ── Abstract block ─────────────────────────────── */
 
     .abstract-block {
@@ -489,16 +496,7 @@
       border-radius: 4px;
       padding: 32px;
       margin: 40px 0 56px;
-    }
-
-    .abstract-label {
-      font-family: var(--font-heading);
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-tertiary);
-      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
     }
 
     .abstract-block p { font-size: 16px; }
@@ -506,10 +504,11 @@
     .abstract-block .realization {
       font-size: 26px;
       color: var(--text-primary);
-      margin-top: 12px;
+      margin-top: 0;
       font-family: var(--font-heading);
       font-weight: 600;
       line-height: 1.25;
+      letter-spacing: -0.01em;
     }
 
     /* ── Typography ─────────────────────────────────── */
@@ -553,6 +552,11 @@
 
     p { margin-bottom: 1.2em; }
     p:last-child { margin-bottom: 0; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     strong { color: var(--text-primary); font-weight: 600; }
     em { font-style: italic; }
@@ -618,7 +622,7 @@
       padding: 24px 24px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      margin: 24px 0;
+      margin: 28px 0;
       box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
     }
 
@@ -796,37 +800,6 @@
       margin-bottom: 0;
     }
 
-    .pull-quote {
-      text-align: center;
-      padding: 40px 24px 36px;
-      margin: 0 0 32px;
-      background: none;
-      border: none;
-      box-shadow: none;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
-    }
-
-    .pull-quote .realization {
-      font-family: var(--font-body);
-      font-size: 22px;
-      font-weight: 400;
-      line-height: 1.55;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-    }
-
-    .pull-quote .resolution {
-      font-family: var(--font-body);
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 1.6;
-      color: var(--accent);
-      margin-bottom: 0;
-    }
-
     /* ── Tables ──────────────────────────────────────── */
 
     .table-wrapper {
@@ -870,6 +843,9 @@
 
     td + td { border-left: 1px solid var(--border-light); }
     tr:last-child td { border-bottom: none; }
+    tbody tr:hover td {
+      background: var(--surface-recessed);
+    }
 
     /* ── Appendices ─────────────────────────────────── */
 
@@ -881,7 +857,7 @@
       letter-spacing: 0.08em;
       color: var(--text-tertiary);
       margin-top: 64px;
-      margin-bottom: 6px;
+      margin-bottom: 12px;
     }
 
     /* ── Document footer ──────────────────────────────── */
@@ -939,15 +915,6 @@
         border-left: none;
         border-top: 1px solid var(--border);
       }
-      .pull-quote .realization {
-        font-size: 19px;
-      }
-      .pull-quote .resolution {
-        font-size: 16px;
-      }
-      .pull-quote {
-        padding: 28px 20px 24px;
-      }
       .abstract-block .realization {
         font-size: 21px;
       }
@@ -999,13 +966,13 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin: 32px -80px 40px;
+      margin: 32px -80px 32px;
       width: calc(100% + 160px);
     }
     .philosophy-card {
       background: var(--surface);
       border: 1px solid var(--border-light);
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 24px 20px;
       text-align: center;
       aspect-ratio: 1;
@@ -1063,6 +1030,7 @@
       margin: 24px -80px 32px;
       width: calc(100% + 160px);
       text-align: center;
+      padding: 32px 24px;
     }
     .section-diagram svg {
       width: 100%;
@@ -1082,11 +1050,15 @@
       aspect-ratio: 16/9;
       cursor: pointer;
       position: relative;
-      margin: 24px -80px 24px;
+      margin: 24px -80px 32px;
       min-height: 200px;
       width: calc(100% + 160px);
     }
     .graph-compact svg { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
+    .graph-compact:hover {
+      border-color: var(--border);
+      transition: border-color 200ms ease;
+    }
     .graph-expand-hint {
       position: absolute;
       bottom: 16px;
@@ -1268,6 +1240,7 @@
     .arch-diagram[data-layer="modules"] { border-top: 3px solid var(--layer-modules); }
     .arch-diagram[data-layer="kernel"]  { border-top: 3px solid var(--layer-kernel); }
     .diff-compare[data-layer="modules"] { border-top: 3px solid var(--layer-modules); }
+    .arch-diagram[data-layer] > .arch-top { border-top: none; }
 
     /* ── Diff-style comparison ────────────────────────────────────────────── */
 
@@ -1277,6 +1250,7 @@
       border-radius: 4px;
       margin: 28px 0;
       overflow: hidden;
+      box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
     }
 
     .diff-shared {
@@ -1355,13 +1329,13 @@
     }
 
     .diff-badge-tools {
-      background: #E4F0E8;
-      color: #3D6B4A;
+      background: var(--layer-foundation-soft);
+      color: var(--positive);
     }
 
     .diff-badge-hooks {
-      background: #F2E6E4;
-      color: #8A4A3E;
+      background: var(--layer-boundary-soft);
+      color: var(--layer-boundary);
     }
 
     .diff-side ul {
@@ -1378,7 +1352,7 @@
     }
 
     .diff-add {
-      color: #3D6B4A;
+      color: var(--positive);
       font-weight: 700;
       font-family: var(--font-code);
       font-size: 13px;
@@ -1386,7 +1360,7 @@
     }
 
     .diff-remove {
-      color: #8A4A3E;
+      color: var(--layer-boundary);
       font-weight: 700;
       font-family: var(--font-code);
       font-size: 13px;
@@ -1402,11 +1376,11 @@
     }
 
     .diff-left .diff-key {
-      color: #3D6B4A;
+      color: var(--positive);
     }
 
     .diff-right .diff-key {
-      color: #8A4A3E;
+      color: var(--layer-boundary);
     }
 
     /* ── Semantic table-wrapper accents ────────────────────────────────── */
@@ -1450,6 +1424,7 @@
       padding: 24px 16px;
       margin: 28px 0;
       text-align: center;
+      box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
     }
 
     .flow-diagram .flow-title {
@@ -1472,6 +1447,8 @@
     .annotated-code {
       margin: 28px 0;
       position: relative;
+      box-shadow: 0 1px 2px rgba(28, 30, 43, 0.04);
+      border-radius: 4px;
     }
 
     .annotated-code pre {
@@ -1480,6 +1457,7 @@
       border-bottom-right-radius: 0;
       border-bottom: none;
       padding-left: 32px;
+      box-shadow: none;
     }
 
     /* Wide side-by-side variant: code left, annotations right */
@@ -1620,7 +1598,7 @@
       font-weight: 600;
       color: white;
       box-shadow: 0 1px 3px rgba(28,30,43,0.12);
-      pointer-events: auto;
+      pointer-events: none;
     }
 
     /* ── Term tooltip cards ──────────────────────────────────────────────── */
@@ -1904,8 +1882,6 @@
 
         <h2 class="realization">Amplifier is a framework for building your AI harness.</h2>
 
-        <p></p>
-
         <p>That sentence is deliberately simple, because the idea it describes is not. A harness, in the traditional sense, takes raw power and gives it direction. A climbing harness lets you use gravity safely. An electrical harness routes power to the right places. An AI harness does the same for a model: it wraps around the model and provides a controlled way to interact with the world.</p>
 
         <p>AI models are powerful, but raw power without structure is unpredictable. The model itself handles reasoning. Everything around the model — what tools it can use, what it remembers, what rules it follows, how it talks to the outside world — needs structure. Amplifier provides that structure. Think of it as a construction kit: it gives you the pieces, and you assemble the harness that fits your use case.</p>
@@ -2132,6 +2108,18 @@
       <!-- Section opener ─ §4 The Kernel ─────────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s4" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s4)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="202" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
@@ -2139,58 +2127,58 @@
     <!-- ── TOP ROW: 3 blocks ─────────────────────────────────────────────── -->
 
     <!-- B1: SESSION LIFECYCLE  cx=120 -->
-    <rect x="20" y="18" width="200" height="78" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="20" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- icon: circular arrow -->
     <g transform="translate(120,44)">
-      <path d="M 0,-11 A 11,11 0 1,1 -11,0" fill="none" stroke="#A47C40" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 0,-11 A 11,11 0 1,1 -11,0" fill="none" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
       <polygon points="0,-14 5,-9 -5,-9" fill="#A47C40"/>
     </g>
     <text x="120" y="74" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#000000" letter-spacing="0.5">SESSION LIFECYCLE</text>
 
     <!-- B2: CONTRACTS  cx=360 -->
-    <rect x="260" y="18" width="200" height="78" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="260" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- icon: two plugs -->
     <g transform="translate(360,44)">
-      <rect x="-14" y="-7" width="11" height="14" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-      <rect x="3"   y="-7" width="11" height="14" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-      <line x1="-3" y1="0" x2="3" y2="0" stroke="#A47C40" stroke-width="2"/>
-      <line x1="-9" y1="-3" x2="-9" y2="3" stroke="#A47C40" stroke-width="1.5"/>
-      <line x1="9"  y1="-3" x2="9"  y2="3" stroke="#A47C40" stroke-width="1.5"/>
+      <rect x="-14" y="-7" width="11" height="14" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+      <rect x="3"   y="-7" width="11" height="14" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+      <line x1="-3" y1="0" x2="3" y2="0" stroke="#BFA16C" stroke-width="1"/>
+      <line x1="-9" y1="-3" x2="-9" y2="3" stroke="#BFA16C" stroke-width="1"/>
+      <line x1="9"  y1="-3" x2="9"  y2="3" stroke="#BFA16C" stroke-width="1"/>
     </g>
     <text x="360" y="74" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#000000" letter-spacing="0.5">CONTRACTS</text>
 
     <!-- B3: MODULE LOADER  cx=600 -->
-    <rect x="500" y="18" width="200" height="78" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="500" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- icon: download arrow -->
     <g transform="translate(600,44)">
-      <line x1="0" y1="-10" x2="0" y2="1" stroke="#A47C40" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="-10" x2="0" y2="1" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
       <polygon points="0,8 -6,1 6,1" fill="#A47C40"/>
-      <line x1="-8" y1="11" x2="8" y2="11" stroke="#A47C40" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="-8" y1="11" x2="8" y2="11" stroke="#BFA16C" stroke-width="1" stroke-linecap="square"/>
     </g>
     <text x="600" y="74" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#000000" letter-spacing="0.5">MODULE LOADER</text>
 
     <!-- ── Connector lines: top blocks → event bus (y=114) ──────────────── -->
-    <line x1="120" y1="96" x2="120" y2="114" stroke="#A47C40" stroke-width="2"/>
-    <line x1="360" y1="96" x2="360" y2="114" stroke="#A47C40" stroke-width="2"/>
-    <line x1="600" y1="96" x2="600" y2="114" stroke="#A47C40" stroke-width="2"/>
+    <line x1="120" y1="96" x2="120" y2="114" stroke="#BFA16C" stroke-width="1"/>
+    <line x1="360" y1="96" x2="360" y2="114" stroke="#BFA16C" stroke-width="1"/>
+    <line x1="600" y1="96" x2="600" y2="114" stroke="#BFA16C" stroke-width="1"/>
 
     <!-- ── EVENT BUS line ──────────────────────────────────────────────────  -->
     <line x1="20" y1="114" x2="700" y2="114" stroke="#4A838D" stroke-width="3"/>
     <!-- label masked on the bus, placed right of last dot (cx=600) — no connector overlap -->
     <rect x="617" y="106" width="82" height="13" fill="#FFFFFF"/>
     <text x="658" y="116" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9.5" fill="#4A838D" letter-spacing="1.5">EVENT BUS</text>
 
     <!-- ── Connector lines: bottom blocks → event bus ───────────────────── -->
-    <line x1="213" y1="130" x2="213" y2="114" stroke="#A47C40" stroke-width="2"/>
-    <line x1="506" y1="130" x2="506" y2="114" stroke="#A47C40" stroke-width="2"/>
+    <line x1="213" y1="130" x2="213" y2="114" stroke="#BFA16C" stroke-width="1"/>
+    <line x1="506" y1="130" x2="506" y2="114" stroke="#BFA16C" stroke-width="1"/>
 
     <!-- ── All 5 connection dots (drawn on top of lines) ─────────────────── -->
     <circle cx="120" cy="114" r="6" fill="#A47C40"/>
@@ -2202,25 +2190,25 @@
     <!-- ── BOTTOM ROW: 2 blocks, centered ───────────────────────────────── -->
 
     <!-- B4: COORDINATOR  cx=213 -->
-    <rect x="113" y="130" width="200" height="70" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="113" y="130" width="200" height="70" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- icon: 3-shelf rack -->
     <g transform="translate(213,152)">
-      <rect x="-13" y="-10" width="26" height="5" fill="none" stroke="#A47C40" stroke-width="1.5"/>
-      <rect x="-13" y="-3"  width="26" height="5" fill="none" stroke="#A47C40" stroke-width="1.5"/>
-      <rect x="-13" y="4"   width="26" height="5" fill="none" stroke="#A47C40" stroke-width="1.5"/>
+      <rect x="-13" y="-10" width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
+      <rect x="-13" y="-3"  width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
+      <rect x="-13" y="4"   width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
     </g>
     <text x="213" y="186" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#000000" letter-spacing="0.5">COORDINATOR</text>
 
     <!-- B5: HOOKS  cx=506 -->
-    <rect x="406" y="130" width="200" height="70" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="406" y="130" width="200" height="70" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- icon: lightning bolt -->
     <g transform="translate(506,152)">
       <polygon points="4,-12 -4,0 2,0 -4,12 9,-1 2,-1" fill="#A47C40"/>
     </g>
     <text x="506" y="186" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#000000" letter-spacing="0.5">HOOKS</text>
 
     <!-- Outer border redrawn on top so content never bleeds over it -->
@@ -2228,8 +2216,9 @@
 
     <!-- Caption -->
     <text x="360" y="228" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">Rust + Python · ~2,600 lines · Zero file I/O</text>
+  </g>
   </svg>
 </div>
 
@@ -2338,6 +2327,18 @@
       <!-- Section opener ─ §5 The Module System ──────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s5" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s5)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="210" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
@@ -2349,77 +2350,77 @@
 
     <!-- C1: ORCHESTRATOR (teal, Required, tallest) cx=64 -->
     <text x="64" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#2C6470">REQUIRED</text>
     <rect x="20" y="22" width="88" height="138" fill="#4A838D" stroke="#2C6470" stroke-width="2"/>
     <text x="64" y="108" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#FFFFFF" letter-spacing="0.5">ORCHESTRATOR</text>
 
     <!-- C2: PROVIDER (cream, Optional) cx=182 -->
     <text x="182" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="138" y="38" width="88" height="122" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="138" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="182" y="107" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#000000" letter-spacing="0.5">PROVIDER</text>
 
     <!-- C3: TOOL (cream, Optional) cx=300 -->
     <text x="300" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="256" y="38" width="88" height="122" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="256" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="300" y="107" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#000000" letter-spacing="0.5">TOOL</text>
 
     <!-- C4: CONTEXT MANAGER (cream, Required, second-tallest) cx=418 -->
     <text x="418" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#2C6470">REQUIRED</text>
-    <rect x="374" y="30" width="88" height="130" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="374" y="30" width="88" height="130" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="418" y="99" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#000000" letter-spacing="0.5">CONTEXT</text>
     <text x="418" y="112" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#000000" letter-spacing="0.5">MANAGER</text>
 
     <!-- C5: HOOK HANDLER (cream, Optional) cx=536 -->
     <text x="536" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="492" y="38" width="88" height="122" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="492" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="536" y="101" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#000000" letter-spacing="0.5">HOOK</text>
     <text x="536" y="114" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#000000" letter-spacing="0.5">HANDLER</text>
 
     <!-- C6: RESOLVER (cream, Optional) cx=654 -->
     <text x="654" y="16" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="610" y="38" width="88" height="122" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="610" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="654" y="107" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#000000" letter-spacing="0.5">RESOLVER</text>
 
     <!-- ── MOUNT RAIL (drawn before tabs so tabs appear on top) ─────────── -->
     <rect x="20" y="160" width="680" height="26" fill="#F2E8D4" stroke="#BFA16C" stroke-width="2"/>
     <text x="360" y="176" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9.5" fill="#6F4E1A" letter-spacing="0.5">mount(coordinator, config)</text>
 
     <!-- ── CONNECTOR TABS (drawn AFTER rail so they appear as plugs inside) -->
     <rect x="54"  y="160" width="20" height="16" fill="#4A838D" stroke="#2C6470" stroke-width="1.5"/>
-    <rect x="172" y="160" width="20" height="16" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <rect x="290" y="160" width="20" height="16" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <rect x="408" y="160" width="20" height="16" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <rect x="526" y="160" width="20" height="16" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <rect x="644" y="160" width="20" height="16" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
+    <rect x="172" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <rect x="290" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <rect x="408" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <rect x="526" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <rect x="644" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
 
     <!-- ── BELOW RAIL: orchestrator runtime line, others severed ────────── -->
     <!-- ORCHESTRATOR: thick teal runtime line (cx=64) -->
@@ -2427,37 +2428,38 @@
     <polygon points="64,206 60,200 68,200" fill="#4A838D"/>
 
     <!-- PROVIDER: severed line + × (cx=182) -->
-    <line x1="182" y1="186" x2="182" y2="196" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="182" y1="186" x2="182" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="182" y="200" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#A47C40">×</text>
 
     <!-- TOOL: severed (cx=300) -->
-    <line x1="300" y1="186" x2="300" y2="196" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="300" y1="186" x2="300" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="300" y="200" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#A47C40">×</text>
 
     <!-- CONTEXT MGR: severed (cx=418) -->
-    <line x1="418" y1="186" x2="418" y2="196" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="418" y1="186" x2="418" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="418" y="200" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#A47C40">×</text>
 
     <!-- HOOK HANDLER: severed (cx=536) -->
-    <line x1="536" y1="186" x2="536" y2="196" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="536" y1="186" x2="536" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="536" y="200" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#A47C40">×</text>
 
     <!-- RESOLVER: severed (cx=654) -->
-    <line x1="654" y1="186" x2="654" y2="196" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="654" y1="186" x2="654" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
     <text x="654" y="200" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#A47C40">×</text>
 
     <!-- Outer border on top -->
     <rect x="4" y="4" width="712" height="210" fill="none" stroke="#BFA16C" stroke-width="6"/>
+  </g>
   </svg>
 </div>
 
@@ -2643,6 +2645,18 @@
       <!-- Section opener ─ §6 The Orchestrator ───────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s6" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s6)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="202" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
@@ -2651,63 +2665,63 @@
          x=14, w=126, h=26, gap=10  →  total=5×26+4×10=170
          center_y=(7+203)/2=105, y_start=105-85=20
     ──────────────────────────────────────────────────────────────────────── -->
-    <rect x="14" y="20"  width="126" height="26" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="77" y="36"  text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#000000" letter-spacing="0.5">PROVIDER</text>
+    <rect x="14" y="20"  width="126" height="26" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="77" y="36"  text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#000000" letter-spacing="0.5">PROVIDER</text>
 
-    <rect x="14" y="56"  width="126" height="26" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="77" y="72"  text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#000000" letter-spacing="0.5">TOOL</text>
+    <rect x="14" y="56"  width="126" height="26" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="77" y="72"  text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#000000" letter-spacing="0.5">TOOL</text>
 
-    <rect x="14" y="92"  width="126" height="26" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="77" y="108" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#000000" letter-spacing="0.5">CONTEXT MGR</text>
+    <rect x="14" y="92"  width="126" height="26" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="77" y="108" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#000000" letter-spacing="0.5">CONTEXT MGR</text>
 
-    <rect x="14" y="128" width="126" height="26" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="77" y="144" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#000000" letter-spacing="0.5">HOOK HANDLER</text>
+    <rect x="14" y="128" width="126" height="26" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="77" y="144" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#000000" letter-spacing="0.5">HOOK HANDLER</text>
 
-    <rect x="14" y="164" width="126" height="26" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="77" y="180" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#000000" letter-spacing="0.5">RESOLVER</text>
+    <rect x="14" y="164" width="126" height="26" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="77" y="180" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#000000" letter-spacing="0.5">RESOLVER</text>
 
     <!-- ── DASHED lines + × marks (right edge of modules x=140 → x=190) ── -->
     <!-- Each module center y: 33, 69, 105, 141, 177 -->
-    <line x1="140" y1="33"  x2="190" y2="33"  stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <text x="165" y="37" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="13" fill="#A47C40">×</text>
+    <line x1="140" y1="33"  x2="190" y2="33"  stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="165" y="37" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#A47C40">×</text>
 
-    <line x1="140" y1="69"  x2="190" y2="69"  stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <text x="165" y="73" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="13" fill="#A47C40">×</text>
+    <line x1="140" y1="69"  x2="190" y2="69"  stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="165" y="73" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#A47C40">×</text>
 
-    <line x1="140" y1="105" x2="190" y2="105" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <text x="165" y="109" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="13" fill="#A47C40">×</text>
+    <line x1="140" y1="105" x2="190" y2="105" stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="165" y="109" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#A47C40">×</text>
 
-    <line x1="140" y1="141" x2="190" y2="141" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <text x="165" y="145" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="13" fill="#A47C40">×</text>
+    <line x1="140" y1="141" x2="190" y2="141" stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="165" y="145" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#A47C40">×</text>
 
-    <line x1="140" y1="177" x2="190" y2="177" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4"/>
-    <text x="165" y="181" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="13" fill="#A47C40">×</text>
+    <line x1="140" y1="177" x2="190" y2="177" stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="165" y="181" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#A47C40">×</text>
 
     <!-- "mount-time only" annotation -->
     <text x="165" y="198" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F7782">MOUNT-TIME ONLY</text>
 
     <!-- ── CENTER: COORDINATOR REGISTRY ──────────────────────────────────── -->
-    <rect x="190" y="14" width="250" height="175" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="190" y="14" width="250" height="175" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="315" y="36" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="11" fill="#000000" letter-spacing="1">COORDINATOR</text>
     <text x="315" y="50" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#6F7782" letter-spacing="1">REGISTRY</text>
     <!-- Inner slot rows -->
-    <rect x="202" y="60"  width="226" height="20" fill="#F2E2BE" stroke="#A47C40" stroke-width="1"/>
-    <rect x="202" y="84"  width="226" height="20" fill="#F2E2BE" stroke="#A47C40" stroke-width="1"/>
-    <rect x="202" y="108" width="226" height="20" fill="#F2E2BE" stroke="#A47C40" stroke-width="1"/>
-    <rect x="202" y="132" width="226" height="20" fill="#F2E2BE" stroke="#A47C40" stroke-width="1"/>
-    <rect x="202" y="156" width="226" height="20" fill="#F2E2BE" stroke="#A47C40" stroke-width="1"/>
+    <rect x="202" y="60"  width="226" height="20" fill="#F2E2BE" stroke="#BFA16C" stroke-width="0.75"/>
+    <rect x="202" y="84"  width="226" height="20" fill="#F2E2BE" stroke="#BFA16C" stroke-width="0.75"/>
+    <rect x="202" y="108" width="226" height="20" fill="#F2E2BE" stroke="#BFA16C" stroke-width="0.75"/>
+    <rect x="202" y="132" width="226" height="20" fill="#F2E2BE" stroke="#BFA16C" stroke-width="0.75"/>
+    <rect x="202" y="156" width="226" height="20" fill="#F2E2BE" stroke="#BFA16C" stroke-width="0.75"/>
     <!-- Slot labels -->
-    <text x="315" y="74"  text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">provider</text>
-    <text x="315" y="98"  text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">tool</text>
-    <text x="315" y="122" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">context_manager</text>
-    <text x="315" y="146" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">hook_handler</text>
-    <text x="315" y="170" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">resolver</text>
+    <text x="315" y="74"  text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">provider</text>
+    <text x="315" y="98"  text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">tool</text>
+    <text x="315" y="122" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">context_manager</text>
+    <text x="315" y="146" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">hook_handler</text>
+    <text x="315" y="170" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">resolver</text>
 
     <!-- ── TEAL: ORCHESTRATOR bidirectional runtime line ─────────────────── -->
     <!-- Arrow left ← (tip at x=440, base at x=446) -->
@@ -2719,12 +2733,12 @@
     <!-- ── RIGHT: ORCHESTRATOR block ──────────────────────────────────────── -->
     <rect x="490" y="78" width="212" height="48" fill="#4A838D" stroke="#2C6470" stroke-width="2"/>
     <text x="596" y="106" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10.5" fill="#FFFFFF" letter-spacing="0.5">ORCHESTRATOR</text>
 
     <!-- "mount + runtime" annotation -->
     <text x="545" y="198" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#4A838D">MOUNT + RUNTIME</text>
 
     <!-- Outer border on top -->
@@ -2732,8 +2746,9 @@
 
     <!-- Caption -->
     <text x="360" y="228" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">Every module connects once at mount. The Orchestrator stays connected at runtime.</text>
+  </g>
   </svg>
 </div>
 
@@ -2861,21 +2876,33 @@
       <!-- Section opener ─ §7 Tools vs Hooks ─────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s7" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s7)">
+
 
     <!-- Two colored halves (drawn before border) -->
     <rect x="7"   y="7" width="353" height="196" fill="#E8F5E9"/>
     <rect x="360" y="7" width="353" height="196" fill="#FBE9E7"/>
 
     <!-- Vertical divider -->
-    <line x1="360" y1="4" x2="360" y2="206" stroke="#A47C40" stroke-width="2"/>
+    <line x1="360" y1="4" x2="360" y2="206" stroke="#BFA16C" stroke-width="1"/>
 
     <!-- ── LEFT: TOOLS ─────────────────────────────────────────────────── -->
     <!-- Header -->
     <text x="183" y="40" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="22" font-weight="600" fill="#1B7A3D" letter-spacing="2">TOOLS</text>
     <text x="183" y="56" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10" fill="#1B7A3D" letter-spacing="1">AI DECIDES</text>
 
     <!-- Open eye icon -->
@@ -2887,26 +2914,26 @@
     </g>
 
     <!-- Bullet list: TOOLS -->
-    <text x="42" y="120" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• VISIBLE IN SYSTEM PROMPT</text>
-    <text x="42" y="137" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• MODEL CHOOSES WHEN TO CALL</text>
-    <text x="42" y="154" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• CALLS APPEAR IN HISTORY</text>
-    <text x="42" y="171" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• EXTEND WHAT MODEL CAN DO</text>
+    <text x="42" y="120" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• VISIBLE IN SYSTEM PROMPT</text>
+    <text x="42" y="137" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• MODEL CHOOSES WHEN TO CALL</text>
+    <text x="42" y="154" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• CALLS APPEAR IN HISTORY</text>
+    <text x="42" y="171" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• EXTEND WHAT MODEL CAN DO</text>
 
     <!-- Example mini-blocks -->
     <rect x="26"  y="182" width="66" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="59"  y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#1B7A3D">read_file</text>
+    <text x="59"  y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">read_file</text>
     <rect x="101" y="182" width="72" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="137" y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#1B7A3D">search_web</text>
+    <text x="137" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">search_web</text>
     <rect x="182" y="182" width="80" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="222" y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#1B7A3D">run_command</text>
+    <text x="222" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">run_command</text>
 
     <!-- ── RIGHT: HOOKS ────────────────────────────────────────────────── -->
     <!-- Header -->
     <text x="541" y="40" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="22" font-weight="600" fill="#B91C1C" letter-spacing="2">HOOKS</text>
     <text x="541" y="56" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="10" fill="#B91C1C" letter-spacing="1">CODE DECIDES</text>
 
     <!-- Crossed-out eye icon -->
@@ -2921,21 +2948,22 @@
     </g>
 
     <!-- Bullet list: HOOKS -->
-    <text x="378" y="120" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• INVISIBLE TO MODEL</text>
-    <text x="378" y="137" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• FIRES AUTOMATICALLY ON EVENTS</text>
-    <text x="378" y="154" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• OBSERVE, BLOCK, INJECT, MODIFY</text>
-    <text x="378" y="171" font-family="'Space Grotesk','Courier New',monospace" font-size="9.5" fill="#000000">• GOVERN WHAT MODEL MAY DO</text>
+    <text x="378" y="120" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• INVISIBLE TO MODEL</text>
+    <text x="378" y="137" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• FIRES AUTOMATICALLY ON EVENTS</text>
+    <text x="378" y="154" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• OBSERVE, BLOCK, INJECT, MODIFY</text>
+    <text x="378" y="171" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• GOVERN WHAT MODEL MAY DO</text>
 
     <!-- Example mini-blocks -->
     <rect x="370" y="182" width="56" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="398"  y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#B91C1C">tool:pre</text>
+    <text x="398"  y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">tool:pre</text>
     <rect x="435" y="182" width="66" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="468" y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#B91C1C">tool:post</text>
+    <text x="468" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">tool:post</text>
     <rect x="510" y="182" width="90" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="555" y="193" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#B91C1C">session:start</text>
+    <text x="555" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">session:start</text>
 
     <!-- Outer border on top (covers fill seam at center) -->
     <rect x="4" y="4" width="712" height="202" fill="none" stroke="#BFA16C" stroke-width="6"/>
+  </g>
   </svg>
 </div>
 
@@ -3186,68 +3214,80 @@ async def on_tool(event):
       <!-- Section opener ─ §8 Sessions ───────────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s8" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s8)">
+
 
     <!-- PARENT SESSION container -->
     <rect x="4" y="4" width="712" height="164" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
-    <text x="16" y="17" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782" letter-spacing="1">SESSION</text>
+    <text x="16" y="17" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782" letter-spacing="1">SESSION</text>
 
     <!-- ── 4 PHASE BLOCKS (y=22 h=90, centers at y=67) ───────────────────
          width=152, gap=24:  4×152+3×24=680  x: 20, 196, 372, 548
     ──────────────────────────────────────────────────────────────────────── -->
 
     <!-- CREATE -->
-    <rect x="20" y="22" width="152" height="90" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="20" y="22" width="152" height="90" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="96" y="52" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="13" font-weight="600" fill="#000000" letter-spacing="1">CREATE</text>
     <text x="96" y="70" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">CONFIG IN.</text>
     <text x="96" y="83" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">COORDINATOR CREATED.</text>
 
     <!-- INITIALIZE -->
-    <rect x="196" y="22" width="152" height="90" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="196" y="22" width="152" height="90" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="272" y="52" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" font-weight="600" fill="#000000" letter-spacing="0.5">INITIALIZE</text>
     <text x="272" y="70" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">MODULES LOAD IN ORDER.</text>
     <text x="272" y="83" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">ORCHESTRATOR + CTX MGR.</text>
 
     <!-- EXECUTE (with loop-back arc above) -->
-    <rect x="372" y="22" width="152" height="90" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="372" y="22" width="152" height="90" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <!-- Loop arc: from top-right to top-left, curving up -->
     <path d="M 524,22 C 524,10 372,10 372,22"
-          fill="none" stroke="#A47C40" stroke-width="2"/>
+          fill="none" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="376,15 372,22 380,19" fill="#A47C40"/>
     <text x="448" y="10" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#A47C40" letter-spacing="0.5">REPEATABLE</text>
     <text x="448" y="52" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="13" font-weight="600" fill="#000000" letter-spacing="1">EXECUTE</text>
     <text x="448" y="70" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">PROMPT IN → RESPONSE OUT.</text>
     <text x="448" y="83" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">REPEATABLE.</text>
 
     <!-- CLEANUP -->
-    <rect x="548" y="22" width="152" height="90" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="548" y="22" width="152" height="90" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="624" y="52" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="13" font-weight="600" fill="#000000" letter-spacing="1">CLEANUP</text>
     <text x="624" y="70" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#6F4E1A" letter-spacing="0.5">finally { }</text>
     <text x="624" y="85" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8.5" fill="#6F4E1A">ALWAYS RUNS.</text>
 
     <!-- ── ARROWS BETWEEN PHASES (y=67) ──────────────────────────────────── -->
@@ -3265,26 +3305,26 @@ async def on_tool(event):
     <rect x="4" y="4" width="712" height="164" fill="none" stroke="#BFA16C" stroke-width="6"/>
 
     <!-- ── Dashed parent_id link ──────────────────────────────────────────── -->
-    <line x1="272" y1="168" x2="272" y2="190" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="5 4"/>
-    <text x="282" y="183" font-family="'Space Grotesk','Courier New',monospace" font-size="8.5" fill="#6F7782">parent_id</text>
+    <line x1="272" y1="168" x2="272" y2="190" stroke="#BFA16C" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="282" y="183" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#6F7782">parent_id</text>
 
     <!-- CHILD SESSION container -->
     <rect x="4" y="190" width="712" height="72" fill="#FAFAFA" stroke="#BFA16C" stroke-width="3" stroke-dasharray="6 4"/>
-    <text x="16" y="203" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782" letter-spacing="1">CHILD SESSION</text>
+    <text x="16" y="203" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782" letter-spacing="1">CHILD SESSION</text>
 
     <!-- Child phase blocks (y=198 h=50, smaller, muted) -->
     <!-- Child CREATE -->
     <rect x="20"  y="200" width="138" height="50" fill="#FBF0D9" stroke="#C4A060" stroke-width="1.5" opacity="0.75"/>
-    <text x="89"  y="229" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#8A7040">CREATE</text>
+    <text x="89"  y="229" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#8A7040">CREATE</text>
     <!-- Child INITIALIZE -->
     <rect x="166" y="200" width="138" height="50" fill="#FBF0D9" stroke="#C4A060" stroke-width="1.5" opacity="0.75"/>
-    <text x="235" y="229" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#8A7040">INITIALIZE</text>
+    <text x="235" y="229" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#8A7040">INITIALIZE</text>
     <!-- Child EXECUTE -->
     <rect x="312" y="200" width="138" height="50" fill="#FBF0D9" stroke="#C4A060" stroke-width="1.5" opacity="0.75"/>
-    <text x="381" y="229" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#8A7040">EXECUTE</text>
+    <text x="381" y="229" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#8A7040">EXECUTE</text>
     <!-- Child CLEANUP -->
     <rect x="458" y="200" width="138" height="50" fill="#FBF0D9" stroke="#C4A060" stroke-width="1.5" opacity="0.75"/>
-    <text x="527" y="229" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#8A7040">CLEANUP</text>
+    <text x="527" y="229" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#8A7040">CLEANUP</text>
 
     <!-- Child arrows -->
     <line x1="158" y1="225" x2="162" y2="225" stroke="#C4A060" stroke-width="1.5"/>
@@ -3296,8 +3336,9 @@ async def on_tool(event):
 
     <!-- Caption -->
     <text x="360" y="275" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">No shared modules. No shared memory. Each session is self-contained.</text>
+  </g>
   </svg>
 </div>
 
@@ -3443,6 +3484,18 @@ async def on_tool(event):
       <!-- Section opener ─ §9 Bundles and Configuration ─────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s9" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s9)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="202" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
@@ -3454,7 +3507,7 @@ async def on_tool(event):
 
     <!-- Sheet 1: BASE BUNDLE (back, #F0F0F0) -->
     <rect x="16" y="22" width="218" height="152" fill="#F0F0F0" stroke="#999999" stroke-width="1.5"/>
-    <text x="26" y="40" font-family="'Space Grotesk','Courier New',monospace" font-size="9" font-weight="600" fill="#555555">BASE BUNDLE</text>
+    <text x="26" y="40" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" fill="#555555">BASE BUNDLE</text>
     <text x="26" y="56" font-family="'Courier New',Courier,monospace" font-size="8" fill="#777777">tools:</text>
     <text x="26" y="68" font-family="'Courier New',Courier,monospace" font-size="8" fill="#777777">  - name: web_search</text>
     <text x="26" y="80" font-family="'Courier New',Courier,monospace" font-size="8" fill="#777777">hooks:</text>
@@ -3465,7 +3518,7 @@ async def on_tool(event):
 
     <!-- Sheet 2: TEAM BUNDLE (middle, #E8EEF8) -->
     <rect x="40" y="44" width="218" height="152" fill="#E8EEF8" stroke="#6B8FAD" stroke-width="1.5"/>
-    <text x="50" y="62" font-family="'Space Grotesk','Courier New',monospace" font-size="9" font-weight="600" fill="#3A5A80">TEAM BUNDLE</text>
+    <text x="50" y="62" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" fill="#3A5A80">TEAM BUNDLE</text>
     <text x="50" y="78" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A6A90">includes: base</text>
     <text x="50" y="90" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A6A90"> </text>
     <text x="50" y="102" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A6A90">overrides:</text>
@@ -3475,8 +3528,8 @@ async def on_tool(event):
     <text x="50" y="150" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A6A90">    - on: session:end</text>
 
     <!-- Sheet 3: PROJECT BUNDLE (front, white with gold border) -->
-    <rect x="64" y="66" width="218" height="152" fill="#FFFFFF" stroke="#A47C40" stroke-width="2"/>
-    <text x="74" y="84" font-family="'Space Grotesk','Courier New',monospace" font-size="9" font-weight="600" fill="#6F4E1A">PROJECT BUNDLE</text>
+    <rect x="64" y="66" width="218" height="152" fill="#FFFFFF" stroke="#BFA16C" stroke-width="1"/>
+    <text x="74" y="84" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" fill="#6F4E1A">PROJECT BUNDLE</text>
     <text x="74" y="100" font-family="'Courier New',Courier,monospace" font-size="8" fill="#8B6020">includes: team</text>
     <text x="74" y="112" font-family="'Courier New',Courier,monospace" font-size="8" fill="#8B6020"> </text>
     <text x="74" y="124" font-family="'Courier New',Courier,monospace" font-size="8" fill="#8B6020">tools:</text>
@@ -3488,20 +3541,20 @@ async def on_tool(event):
     <text x="74" y="196" font-family="'Courier New',Courier,monospace" font-size="8" fill="#8B6020">  - ARCHITECTURE.md</text>
 
     <!-- ── ARROW → ASSEMBLED CONFIG ─────────────────────────────────────── -->
-    <line x1="288" y1="132" x2="316" y2="132" stroke="#A47C40" stroke-width="2.5"/>
+    <line x1="288" y1="132" x2="316" y2="132" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="312,127 320,132 312,137" fill="#A47C40"/>
     <!-- "Last wins" label -->
     <text x="302" y="126" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F7782">LAST WINS</text>
 
     <!-- ── ASSEMBLED CONFIGURATION block ────────────────────────────────── -->
-    <rect x="320" y="22" width="388" height="168" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="320" y="22" width="388" height="168" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="514" y="43" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="11" font-weight="600" fill="#000000" letter-spacing="0.5">ASSEMBLED CONFIGURATION</text>
     <!-- Divider line -->
-    <line x1="320" y1="52" x2="708" y2="52" stroke="#A47C40" stroke-width="1"/>
+    <line x1="320" y1="52" x2="708" y2="52" stroke="#BFA16C" stroke-width="0.75"/>
     <!-- Assembled content text -->
     <text x="332" y="68" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A3010">tools:      [web_search, run_tests]</text>
     <text x="332" y="82" font-family="'Courier New',Courier,monospace" font-size="8" fill="#4A3010">hooks:      [tool:pre, session:end]</text>
@@ -3518,8 +3571,9 @@ async def on_tool(event):
 
     <!-- Caption -->
     <text x="360" y="228" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">bundle.md or bundle.yaml · Text files. No code required.</text>
+  </g>
   </svg>
 </div>
 
@@ -3626,6 +3680,18 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §10 The Foundation Bridge ─────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s10" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s10)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="228" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
@@ -3633,97 +3699,97 @@ standards (see @project:standards.md).</code></pre>
     <!-- ── LEFT: BUNDLE TEXT FILE icon ───────────────────────────────────── -->
     <!-- Document shape with dog-ear fold -->
     <path d="M 22,28 L 22,192 L 98,192 L 98,52 L 74,28 Z"
-          fill="#F5F0E4" stroke="#A47C40" stroke-width="2"/>
-    <path d="M 74,28 L 74,52 L 98,52" fill="none" stroke="#A47C40" stroke-width="2"/>
+          fill="#F5F0E4" stroke="#BFA16C" stroke-width="1"/>
+    <path d="M 74,28 L 74,52 L 98,52" fill="none" stroke="#BFA16C" stroke-width="1"/>
     <!-- YAML lines inside document -->
-    <line x1="30" y1="70" x2="90" y2="70" stroke="#A47C40" stroke-width="1.5" opacity="0.6"/>
-    <line x1="30" y1="82" x2="82" y2="82" stroke="#A47C40" stroke-width="1.5" opacity="0.5"/>
-    <line x1="30" y1="94" x2="78" y2="94" stroke="#A47C40" stroke-width="1.5" opacity="0.4"/>
-    <line x1="30" y1="106" x2="86" y2="106" stroke="#A47C40" stroke-width="1.5" opacity="0.5"/>
-    <line x1="30" y1="118" x2="75" y2="118" stroke="#A47C40" stroke-width="1.5" opacity="0.4"/>
-    <line x1="30" y1="130" x2="88" y2="130" stroke="#A47C40" stroke-width="1.5" opacity="0.5"/>
+    <line x1="30" y1="70" x2="90" y2="70" stroke="#BFA16C" stroke-width="1" opacity="0.6"/>
+    <line x1="30" y1="82" x2="82" y2="82" stroke="#BFA16C" stroke-width="1" opacity="0.5"/>
+    <line x1="30" y1="94" x2="78" y2="94" stroke="#BFA16C" stroke-width="1" opacity="0.4"/>
+    <line x1="30" y1="106" x2="86" y2="106" stroke="#BFA16C" stroke-width="1" opacity="0.5"/>
+    <line x1="30" y1="118" x2="75" y2="118" stroke="#BFA16C" stroke-width="1" opacity="0.4"/>
+    <line x1="30" y1="130" x2="88" y2="130" stroke="#BFA16C" stroke-width="1" opacity="0.5"/>
     <text x="60" y="160" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F4E1A" letter-spacing="0.5">BUNDLE</text>
     <text x="60" y="172" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F4E1A" letter-spacing="0.5">TEXT FILE</text>
 
     <!-- Arrow doc → foundation -->
-    <line x1="100" y1="112" x2="118" y2="112" stroke="#A47C40" stroke-width="2"/>
+    <line x1="100" y1="112" x2="118" y2="112" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="114,108 122,112 114,116" fill="#A47C40"/>
 
     <!-- ── CENTER: FOUNDATION block with 8 steps ─────────────────────────── -->
-    <rect x="122" y="16" width="440" height="200" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="122" y="16" width="440" height="200" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="342" y="38" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="13" font-weight="600" fill="#000000" letter-spacing="2">FOUNDATION</text>
-    <line x1="122" y1="46" x2="562" y2="46" stroke="#A47C40" stroke-width="1"/>
+    <line x1="122" y1="46" x2="562" y2="46" stroke="#BFA16C" stroke-width="0.75"/>
 
     <!-- Row 1 of 4 steps (y=52, h=44) -->
     <!-- Compute step block x positions: inner x=128, available=428, 4 blocks of 96, gaps=(428-384)/3=14.67≈15 -->
     <!-- x: 128, 239, 350, 461  -->
-    <rect x="130" y="54" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="178" y="71" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">1.</text>
-    <text x="178" y="82" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">COMPILE MOUNT</text>
-    <text x="178" y="92" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">PLAN</text>
+    <rect x="130" y="54" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="178" y="71" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">1.</text>
+    <text x="178" y="82" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">COMPILE MOUNT</text>
+    <text x="178" y="92" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">PLAN</text>
 
-    <line x1="226" y1="76" x2="232" y2="76" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="226" y1="76" x2="232" y2="76" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="232,72 238,76 232,80" fill="#A47C40"/>
 
-    <rect x="238" y="54" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="286" y="71" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">2.</text>
-    <text x="286" y="82" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">SETUP</text>
-    <text x="286" y="92" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">ENVIRONMENT</text>
+    <rect x="238" y="54" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="286" y="71" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">2.</text>
+    <text x="286" y="82" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">SETUP</text>
+    <text x="286" y="92" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">ENVIRONMENT</text>
 
-    <line x1="334" y1="76" x2="340" y2="76" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="334" y1="76" x2="340" y2="76" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="340,72 346,76 340,80" fill="#A47C40"/>
 
-    <rect x="346" y="54" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="394" y="71" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">3.</text>
-    <text x="394" y="82" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">INSTALL</text>
-    <text x="394" y="92" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">PACKAGES</text>
+    <rect x="346" y="54" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="394" y="71" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">3.</text>
+    <text x="394" y="82" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">INSTALL</text>
+    <text x="394" y="92" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">PACKAGES</text>
 
-    <line x1="442" y1="76" x2="448" y2="76" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="442" y1="76" x2="448" y2="76" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="448,72 454,76 448,80" fill="#A47C40"/>
 
-    <rect x="454" y="54" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="502" y="71" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">4.</text>
-    <text x="502" y="82" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">COLLECT</text>
-    <text x="502" y="92" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">MODULE SPECS</text>
+    <rect x="454" y="54" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="502" y="71" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">4.</text>
+    <text x="502" y="82" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">COLLECT</text>
+    <text x="502" y="92" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">MODULE SPECS</text>
 
     <!-- Row 2 of 4 steps (y=112, h=44) -->
-    <rect x="130" y="116" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="178" y="133" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">5.</text>
-    <text x="178" y="144" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">DOWNLOAD</text>
-    <text x="178" y="154" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">MODULES</text>
+    <rect x="130" y="116" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="178" y="133" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">5.</text>
+    <text x="178" y="144" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">DOWNLOAD</text>
+    <text x="178" y="154" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">MODULES</text>
 
-    <line x1="226" y1="138" x2="232" y2="138" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="226" y1="138" x2="232" y2="138" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="232,134 238,138 232,142" fill="#A47C40"/>
 
-    <rect x="238" y="116" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="286" y="133" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">6.</text>
-    <text x="286" y="144" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">PERSIST</text>
-    <text x="286" y="154" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">STATE</text>
+    <rect x="238" y="116" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="286" y="133" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">6.</text>
+    <text x="286" y="144" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">PERSIST</text>
+    <text x="286" y="154" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">STATE</text>
 
-    <line x1="334" y1="138" x2="340" y2="138" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="334" y1="138" x2="340" y2="138" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="340,134 346,138 340,142" fill="#A47C40"/>
 
-    <rect x="346" y="116" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="394" y="133" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">7.</text>
-    <text x="394" y="144" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">CREATE</text>
-    <text x="394" y="154" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">RESOLVER</text>
+    <rect x="346" y="116" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="394" y="133" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">7.</text>
+    <text x="394" y="144" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">CREATE</text>
+    <text x="394" y="154" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">RESOLVER</text>
 
-    <line x1="442" y1="138" x2="448" y2="138" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="442" y1="138" x2="448" y2="138" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="448,134 454,138 448,142" fill="#A47C40"/>
 
-    <rect x="454" y="116" width="96" height="44" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="502" y="133" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">8.</text>
-    <text x="502" y="144" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">PACKAGE</text>
-    <text x="502" y="154" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#4A3010">BUNDLE</text>
+    <rect x="454" y="116" width="96" height="44" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="502" y="133" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">8.</text>
+    <text x="502" y="144" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">PACKAGE</text>
+    <text x="502" y="154" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#4A3010">BUNDLE</text>
 
     <!-- Arrow foundation → session -->
-    <line x1="562" y1="112" x2="580" y2="112" stroke="#A47C40" stroke-width="2"/>
+    <line x1="562" y1="112" x2="580" y2="112" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="576,108 584,112 576,116" fill="#A47C40"/>
 
     <!-- ── RIGHT: RUNNING SESSION icon (gear) ─────────────────────────────── -->
@@ -3731,19 +3797,19 @@ standards (see @project:standards.md).</code></pre>
     <g transform="translate(628, 112)">
       <!-- Outer gear teeth (simplified as octagon + center) -->
       <polygon points="0,-36 10,-32 18,-22 22,-10 22,10 18,22 10,32 0,36 -10,32 -18,22 -22,10 -22,-10 -18,-22 -10,-32"
-               fill="#F5F0E4" stroke="#A47C40" stroke-width="2"/>
-      <circle r="14" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+               fill="#F5F0E4" stroke="#BFA16C" stroke-width="1"/>
+      <circle r="14" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
       <!-- Gear inner detail: two rotation arrows -->
-      <path d="M 0,-10 A 10,10 0 0,1 10,0" fill="none" stroke="#A47C40" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M 0,-10 A 10,10 0 0,1 10,0" fill="none" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
       <polygon points="10,0 14,-5 14,5" fill="#A47C40" transform="rotate(-20,10,0)"/>
-      <path d="M 0,10 A 10,10 0 0,1 -10,0" fill="none" stroke="#A47C40" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M 0,10 A 10,10 0 0,1 -10,0" fill="none" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
       <polygon points="-10,0 -14,5 -14,-5" fill="#A47C40" transform="rotate(-20,-10,0)"/>
     </g>
     <text x="628" y="168" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F4E1A" letter-spacing="0.5">RUNNING</text>
     <text x="628" y="180" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F4E1A" letter-spacing="0.5">SESSION</text>
 
     <!-- ── TWO TEAL LINES from Foundation to KERNEL below ──────────────────
@@ -3757,22 +3823,22 @@ standards (see @project:standards.md).</code></pre>
 
     <!-- Annotations for teal lines -->
     <text x="278" y="225" text-anchor="end"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="7.5" fill="#4A838D">SYSTEM PROMPT FACTORY</text>
     <text x="278" y="234" text-anchor="end"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="7.5" fill="#6F7782">(every turn)</text>
     <text x="402" y="225"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="7.5" fill="#4A838D">MODULE RESOLVER</text>
     <text x="402" y="234"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="7.5" fill="#6F7782">(on demand)</text>
 
     <!-- KERNEL block below -->
     <rect x="252" y="232" width="180" height="34" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="2"/>
     <text x="342" y="253" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="11" fill="#000000" letter-spacing="1">KERNEL</text>
 
     <!-- Outer border on top -->
@@ -3780,8 +3846,9 @@ standards (see @project:standards.md).</code></pre>
 
     <!-- Caption -->
     <text x="360" y="272" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="11.5" fill="#6F7782">Connected at runtime through callbacks. Independent at compile time.</text>
+  </g>
   </svg>
 </div>
 
@@ -3859,133 +3926,145 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §11 Agents, Skills & Recipes ─────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s11" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s11)">
+
 
     <!-- Outer frame -->
     <rect x="4" y="4" width="712" height="238" fill="#FFFFFF" stroke="#BFA16C" stroke-width="6"/>
 
     <!-- Column dividers -->
-    <line x1="244" y1="4" x2="244" y2="242" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
-    <line x1="482" y1="4" x2="482" y2="242" stroke="#A47C40" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
+    <line x1="244" y1="4" x2="244" y2="242" stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+    <line x1="482" y1="4" x2="482" y2="242" stroke="#BFA16C" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
 
     <!-- ── COLUMN 1: AGENT ─────────────────────────────────────────────── -->
     <!-- Column header label -->
     <text x="124" y="20" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#6F7782" letter-spacing="1">AGENT</text>
 
     <!-- Main AGENT block -->
-    <rect x="18" y="26" width="208" height="48" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="18" y="26" width="208" height="48" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="122" y="55" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="15" font-weight="600" fill="#000000" letter-spacing="1">AGENT</text>
 
     <!-- Assembly arrows from sub-blocks to main block -->
-    <line x1="80" y1="106" x2="80" y2="78" stroke="#A47C40" stroke-width="1.5"/>
-    <line x1="80" y1="78" x2="122" y2="78" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="80" y1="106" x2="80" y2="78" stroke="#BFA16C" stroke-width="1"/>
+    <line x1="80" y1="78" x2="122" y2="78" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="118,74 126,78 118,82" fill="#A47C40"/>
 
-    <line x1="166" y1="106" x2="166" y2="78" stroke="#A47C40" stroke-width="1.5"/>
-    <line x1="166" y1="78" x2="122" y2="78" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="166" y1="106" x2="166" y2="78" stroke="#BFA16C" stroke-width="1"/>
+    <line x1="166" y1="78" x2="122" y2="78" stroke="#BFA16C" stroke-width="1"/>
 
     <!-- BUNDLE sub-block -->
-    <rect x="18" y="106" width="92" height="38" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
+    <rect x="18" y="106" width="92" height="38" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="64" y="129" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9.5" fill="#000000">BUNDLE</text>
 
     <!-- SESSION sub-block -->
-    <rect x="134" y="106" width="92" height="38" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
+    <rect x="134" y="106" width="92" height="38" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="180" y="129" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9.5" fill="#000000">SESSION</text>
 
     <!-- Annotation -->
-    <text x="18" y="162" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782">meta:  ← instead of</text>
-    <text x="18" y="174" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782">bundle:</text>
-    <text x="18" y="186" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782">That's the only</text>
-    <text x="18" y="198" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F7782">difference.</text>
+    <text x="18" y="162" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782">meta:  ← instead of</text>
+    <text x="18" y="174" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782">bundle:</text>
+    <text x="18" y="186" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782">That's the only</text>
+    <text x="18" y="198" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F7782">difference.</text>
 
     <!-- ── COLUMN 2: SKILL ────────────────────────────────────────────── -->
     <text x="363" y="20" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#6F7782" letter-spacing="1">SKILL</text>
 
     <!-- Main SKILL block -->
-    <rect x="256" y="26" width="208" height="48" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="256" y="26" width="208" height="48" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="360" y="55" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="15" font-weight="600" fill="#000000" letter-spacing="1">SKILL</text>
 
     <!-- 3-level progressive disclosure stack -->
     <!-- Level 1 -->
-    <rect x="256" y="86" width="208" height="40" fill="#F2E2BE" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="270" y="104" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 1</text>
-    <text x="270" y="116" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">METADATA · ~100 TOKENS</text>
-    <text x="456" y="104" text-anchor="end" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#6F7782">always visible</text>
+    <rect x="256" y="86" width="208" height="40" fill="#F2E2BE" stroke="#BFA16C" stroke-width="1"/>
+    <text x="270" y="104" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 1</text>
+    <text x="270" y="116" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">METADATA · ~100 TOKENS</text>
+    <text x="456" y="104" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#6F7782">always visible</text>
 
     <!-- Level 2 -->
-    <rect x="256" y="130" width="208" height="40" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="270" y="148" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 2</text>
-    <text x="270" y="160" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">FULL CONTENT · ~1–5K TOKENS</text>
-    <text x="456" y="148" text-anchor="end" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#6F7782">on demand</text>
+    <rect x="256" y="130" width="208" height="40" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="270" y="148" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 2</text>
+    <text x="270" y="160" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">FULL CONTENT · ~1–5K TOKENS</text>
+    <text x="456" y="148" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#6F7782">on demand</text>
 
     <!-- Level 3 -->
-    <rect x="256" y="174" width="208" height="40" fill="#FFFFFF" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="270" y="192" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 3</text>
-    <text x="270" y="204" font-family="'Space Grotesk','Courier New',monospace" font-size="8" fill="#6F4E1A">COMPANION FILES · 0 TOKENS</text>
-    <text x="456" y="192" text-anchor="end" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#6F7782">until read</text>
+    <rect x="256" y="174" width="208" height="40" fill="#FFFFFF" stroke="#BFA16C" stroke-width="1"/>
+    <text x="270" y="192" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A" font-weight="600">LEVEL 3</text>
+    <text x="270" y="204" font-family="Inter, system-ui, sans-serif" font-size="8" fill="#6F4E1A">COMPANION FILES · 0 TOKENS</text>
+    <text x="456" y="192" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#6F7782">until read</text>
 
     <!-- Annotation -->
     <text x="360" y="226" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F7782">Progressive disclosure — pay only for what you need.</text>
 
     <!-- ── COLUMN 3: RECIPE ────────────────────────────────────────────── -->
     <text x="601" y="20" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="9" fill="#6F7782" letter-spacing="1">RECIPE</text>
 
     <!-- Main RECIPE block -->
-    <rect x="494" y="26" width="210" height="48" fill="#FBF0D9" stroke="#A47C40" stroke-width="2"/>
+    <rect x="494" y="26" width="210" height="48" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
     <text x="599" y="55" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="15" font-weight="600" fill="#000000" letter-spacing="1">RECIPE</text>
 
     <!-- Chained session boxes: SESSION 1 → ◆ APPROVAL → SESSION 2 → SESSION 3 -->
     <!-- Session 1 -->
-    <rect x="494" y="90" width="68" height="36" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="528" y="107" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">SESSION</text>
-    <text x="528" y="118" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">1</text>
+    <rect x="494" y="90" width="68" height="36" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="528" y="107" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">SESSION</text>
+    <text x="528" y="118" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">1</text>
 
     <!-- Arrow + approval gate diamond -->
-    <line x1="562" y1="108" x2="576" y2="108" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="562" y1="108" x2="576" y2="108" stroke="#BFA16C" stroke-width="1"/>
     <!-- Diamond approval gate -->
     <polygon points="588,100 598,108 588,116 578,108" fill="#FBF0D9" stroke="#4A838D" stroke-width="1.5"/>
-    <line x1="598" y1="108" x2="610" y2="108" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="598" y1="108" x2="610" y2="108" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="606,104 614,108 606,112" fill="#A47C40"/>
     <!-- Approval gate label -->
     <text x="588" y="128" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="6.5" fill="#4A838D">APPROVAL</text>
 
     <!-- Session 2 -->
-    <rect x="614" y="90" width="68" height="36" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="648" y="107" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">SESSION</text>
-    <text x="648" y="118" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">2</text>
+    <rect x="614" y="90" width="68" height="36" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="648" y="107" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">SESSION</text>
+    <text x="648" y="118" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">2</text>
 
     <!-- Session 3 (below, centered) -->
-    <line x1="648" y1="126" x2="648" y2="146" stroke="#A47C40" stroke-width="1.5"/>
+    <line x1="648" y1="126" x2="648" y2="146" stroke="#BFA16C" stroke-width="1"/>
     <polygon points="644,142 648,150 652,142" fill="#A47C40"/>
-    <rect x="614" y="150" width="68" height="36" fill="#FBF0D9" stroke="#A47C40" stroke-width="1.5"/>
-    <text x="648" y="167" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">SESSION</text>
-    <text x="648" y="178" text-anchor="middle" font-family="'Space Grotesk','Courier New',monospace" font-size="7.5" fill="#000000">3</text>
+    <rect x="614" y="150" width="68" height="36" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
+    <text x="648" y="167" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">SESSION</text>
+    <text x="648" y="178" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="7.5" fill="#000000">3</text>
 
     <!-- Annotation -->
     <text x="599" y="207" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F7782">Chained sessions</text>
     <text x="599" y="219" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="8" fill="#6F7782">with approval gates.</text>
 
     <!-- Outer border on top -->
@@ -3993,8 +4072,9 @@ standards (see @project:standards.md).</code></pre>
 
     <!-- Caption -->
     <text x="360" y="272" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="11.5" fill="#6F7782">No new kernel support. Built entirely from sessions, bundles, and modules.</text>
+  </g>
   </svg>
 </div>
 
@@ -4099,6 +4179,18 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §12 The Complete Picture ───────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <filter id="grain-s12" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="0.97"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <g filter="url(#grain-s12)">
+
 
     <!-- Six stacked horizontal bars
          Bars: x=4, w=560 (leaving room for right annotation)
@@ -4109,54 +4201,54 @@ standards (see @project:standards.md).</code></pre>
 
     <!-- BAR 1: COMMUNITY (top, widest conceptually) -->
     <rect x="4" y="8"   width="560" height="30" fill="#F2EEF2" stroke="#8A7B8A" stroke-width="1.5"/>
-    <text x="16" y="27" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#8A7B8A" letter-spacing="0.5">COMMUNITY</text>
-    <text x="120" y="27" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#8A7B8A">Third-party modules, bundles, recipes</text>
+    <text x="16" y="27" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#8A7B8A" letter-spacing="0.5">COMMUNITY</text>
+    <text x="120" y="27" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#8A7B8A">Third-party modules, bundles, recipes</text>
 
     <!-- Down arrow 1→2 -->
     <polygon points="284,38 280,44 288,44" fill="#8A7B8A" opacity="0.6"/>
 
     <!-- BAR 2: APPLICATIONS -->
     <rect x="4" y="44"  width="560" height="30" fill="#F0ECF2" stroke="#7B6B8A" stroke-width="1.5"/>
-    <text x="16" y="63" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#7B6B8A" letter-spacing="0.5">APPLICATIONS</text>
-    <text x="140" y="63" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#7B6B8A">CLI · Web · IDE · Voice · API</text>
+    <text x="16" y="63" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#7B6B8A" letter-spacing="0.5">APPLICATIONS</text>
+    <text x="140" y="63" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#7B6B8A">CLI · Web · IDE · Voice · API</text>
 
     <!-- Down arrow 2→3 -->
     <polygon points="284,74 280,80 288,80" fill="#7B6B8A" opacity="0.6"/>
 
     <!-- BAR 3: FOUNDATION -->
     <rect x="4" y="80"  width="560" height="30" fill="#E8F0E8" stroke="#5A7D5A" stroke-width="1.5"/>
-    <text x="16" y="99" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#5A7D5A" letter-spacing="0.5">FOUNDATION</text>
-    <text x="128" y="99" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#5A7D5A">Turns bundles into running sessions</text>
+    <text x="16" y="99" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#5A7D5A" letter-spacing="0.5">FOUNDATION</text>
+    <text x="128" y="99" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#5A7D5A">Turns bundles into running sessions</text>
 
     <!-- Down arrow 3→4 -->
     <polygon points="284,110 280,116 288,116" fill="#5A7D5A" opacity="0.6"/>
 
     <!-- BAR 4: BUNDLES -->
     <rect x="4" y="116" width="560" height="30" fill="#ECEEF5" stroke="#5C6B9E" stroke-width="1.5"/>
-    <text x="16" y="135" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#5C6B9E" letter-spacing="0.5">BUNDLES</text>
-    <text x="100" y="135" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#5C6B9E">Text files · Tools · Hooks · Prompts · Context</text>
+    <text x="16" y="135" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#5C6B9E" letter-spacing="0.5">BUNDLES</text>
+    <text x="100" y="135" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#5C6B9E">Text files · Tools · Hooks · Prompts · Context</text>
 
     <!-- Down arrow 4→5 -->
     <polygon points="284,146 280,152 288,152" fill="#5C6B9E" opacity="0.6"/>
 
     <!-- BAR 5: MODULES -->
     <rect x="4" y="152" width="560" height="30" fill="#E4F0F2" stroke="#3E7D8A" stroke-width="1.5"/>
-    <text x="16" y="171" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#3E7D8A" letter-spacing="0.5">MODULES</text>
-    <text x="106" y="171" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#3E7D8A">Orchestrator · Providers · Tools · Context · Hooks</text>
+    <text x="16" y="171" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#3E7D8A" letter-spacing="0.5">MODULES</text>
+    <text x="106" y="171" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#3E7D8A">Orchestrator · Providers · Tools · Context · Hooks</text>
 
     <!-- Down arrow 5→6 -->
     <polygon points="284,182 280,188 288,188" fill="#3E7D8A" opacity="0.6"/>
 
     <!-- BAR 6: KERNEL (bottom, emphasis 3px border) -->
     <rect x="4" y="188" width="560" height="30" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="3"/>
-    <text x="16" y="207" font-family="'Space Grotesk','Courier New',monospace" font-size="10" font-weight="600" fill="#9B7B3E" letter-spacing="0.5">KERNEL</text>
-    <text x="95" y="207" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#9B7B3E">amplifier-core · The unchanging center · ~2,600 lines</text>
+    <text x="16" y="207" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" letter-spacing="0.5">KERNEL</text>
+    <text x="95" y="207" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B7B3E">amplifier-core · The unchanging center · ~2,600 lines</text>
 
     <!-- ── Right-side annotation ──────────────────────────────────────────── -->
-    <text x="578" y="80" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#6F7782">Each layer</text>
-    <text x="578" y="95" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#6F7782">depends only</text>
-    <text x="578" y="110" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#6F7782">on the one</text>
-    <text x="578" y="125" font-family="'Space Grotesk','Courier New',monospace" font-size="10" fill="#6F7782">below it.</text>
+    <text x="578" y="80" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6F7782">Each layer</text>
+    <text x="578" y="95" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6F7782">depends only</text>
+    <text x="578" y="110" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6F7782">on the one</text>
+    <text x="578" y="125" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6F7782">below it.</text>
     <!-- Vertical bracket linking annotation to bars -->
     <line x1="572" y1="68" x2="572" y2="220" stroke="#BFA16C" stroke-width="1.5"/>
     <line x1="568" y1="68"  x2="576" y2="68"  stroke="#BFA16C" stroke-width="1.5"/>
@@ -4165,14 +4257,15 @@ standards (see @project:standards.md).</code></pre>
     <polygon points="568,140 562,136 562,144" fill="#BFA16C"/>
 
     <!-- ── Replace anything without affecting the rest ───────────────────── -->
-    <text x="578" y="160" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#9B9BA8">Replace anything</text>
-    <text x="578" y="172" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#9B9BA8">without affecting</text>
-    <text x="578" y="184" font-family="'Space Grotesk','Courier New',monospace" font-size="9" fill="#9B9BA8">the rest.</text>
+    <text x="578" y="160" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B9BA8">Replace anything</text>
+    <text x="578" y="172" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B9BA8">without affecting</text>
+    <text x="578" y="184" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B9BA8">the rest.</text>
 
     <!-- Caption -->
     <text x="360" y="240" text-anchor="middle"
-          font-family="'Space Grotesk','Courier New',monospace"
+          font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">The kernel provides mechanism. Modules provide policy.</text>
+  </g>
   </svg>
 </div>
 
@@ -5434,12 +5527,21 @@ digraph amplifier_ecosystem {
 
   // Click handler on all .lt elements
   document.querySelectorAll('.lt').forEach(el => {
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       if (activeTermEl === el) {
         hideTermCard();
       } else {
         showTermCard(el);
+      }
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.stopPropagation();
+        e.preventDefault();
+        if (activeTermEl === el) { hideTermCard(); } else { showTermCard(el); }
       }
     });
   });
