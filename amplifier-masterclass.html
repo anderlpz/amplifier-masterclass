@@ -755,6 +755,17 @@
         margin-left: 0;
         margin-right: 0;
       }
+      /* Elements inside wide containers don't break out individually —
+         the container handles the breakout instead */
+      .flow-table-unit > .flow-diagram,
+      .flow-table-unit > .table-wrapper,
+      .annotated-code > pre {
+        width: auto;
+        max-width: none;
+        position: static;
+        left: auto;
+        transform: none;
+      }
       .abstract-block { margin-top: 40px; margin-bottom: 56px; }
     }
 
@@ -1482,13 +1493,6 @@
         left: 50%;
         transform: translateX(-50%);
       }
-      /* Override the pre breakout — the grid container handles the breakout, not the pre */
-      .annotated-code.wide pre {
-        width: auto;
-        max-width: none;
-        left: auto;
-        transform: none;
-      }
     }
     .annotated-code.wide .code-markers {
       grid-column: 1;
@@ -1534,17 +1538,7 @@
         left: 50%;
         transform: translateX(-50%);
       }
-      /* Override individual breakouts inside the unit */
-      .flow-table-unit .flow-diagram,
-      .flow-table-unit .table-wrapper {
-        width: auto !important;
-        max-width: none !important;
-        position: static !important;
-        left: auto !important;
-        transform: none !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
+
     }
     .flow-table-unit .flow-diagram {
       margin: 0;
