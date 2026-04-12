@@ -5053,7 +5053,7 @@ digraph amplifier_ecosystem {
   function playChapter(chapterId) {
     const src = AUDIO_FILES[chapterId];
     if (!src) return;
-    if (currentAudioChapter !== chapterId) {
+    if (currentAudioChapter !== chapterId || !chapterAudio.src) {
       chapterAudio.src = src;
       currentAudioChapter = chapterId;
     }
