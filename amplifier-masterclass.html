@@ -1099,6 +1099,117 @@
       }
     }
 
+    /* ── Split comparison layout (§7 Tools vs Hooks) ──────────── */
+    .split-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .split-comparison__side {
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .split-comparison__side--tools {
+      border-right: 1.5px solid rgba(0, 0, 0, 0.1);
+      background: rgba(34, 163, 74, 0.04);
+    }
+
+    .split-comparison__side--hooks {
+      background: rgba(185, 28, 28, 0.04);
+    }
+
+    .split-comparison__header {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .split-comparison__subheader {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+
+    .split-comparison__icon {
+      margin-bottom: 20px;
+    }
+
+    .split-comparison__icon svg {
+      display: block;
+    }
+
+    .split-comparison__list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .split-comparison__list li {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #1A1815;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .split-comparison__list li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      font-weight: 700;
+    }
+
+    .split-comparison__examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .split-comparison__tag {
+      font-family: 'Space Grotesk', 'SF Mono', monospace;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .split-comparison__tag--tool {
+      color: #1B7A3D;
+      background: rgba(34, 163, 74, 0.1);
+      border: 1px solid rgba(27, 122, 61, 0.25);
+    }
+
+    .split-comparison__tag--hook {
+      color: #B91C1C;
+      background: rgba(185, 28, 28, 0.08);
+      border: 1px solid rgba(185, 28, 28, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .split-comparison {
+        grid-template-columns: 1fr;
+      }
+      .split-comparison__side--tools {
+        border-right: none;
+        border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+      }
+    }
+
     /* ── Dotgraph viewer (§2) ─────────────────────────────────────────── */
     .graph-compact {
       background: #080f1e;
@@ -2156,105 +2267,104 @@
       <!-- ── Section 4 ── -->
       <h2 id="s4"><span class="section-num">4</span> The Kernel</h2>
       <!-- Section opener ─ §4 The Kernel ─────────────────────────────── -->
-      <div class="section-diagram">
-  <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <div class="illustration illustration--grid" role="img" aria-label="The kernel floor plan: five rooms — Session Lifecycle, Contracts, Module Loader, Coordinator, and Hooks — connected by a central Event Bus corridor.">
+        <div class="illustration__fig-num">FIG. 04a</div>
+        <div class="illustration__canvas">
+          <svg viewBox="0 0 900 310" xmlns="http://www.w3.org/2000/svg" role="presentation">
 
+            <!-- ── BUILDING BASE ─────────────────────────────────────────────── -->
+            <!-- White fill for building interior -->
+            <rect x="60" y="25" width="700" height="230" fill="#FFFFFF"/>
+            <!-- EVENT BUS corridor tint (drawn before walls so walls render on top) -->
+            <rect x="60" y="105" width="700" height="35" fill="rgba(0,130,235,0.12)"/>
 
-    <!-- ── TOP ROW: 3 blocks ─────────────────────────────────────────────── -->
+            <!-- ── INTERNAL VERTICAL WALLS ────────────────────────────────── -->
+            <!-- Top row: SESSION LIFECYCLE | CONTRACTS | MODULE LOADER -->
+            <line x1="293" y1="25"  x2="293" y2="105" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="527" y1="25"  x2="527" y2="105" stroke="#1A1815" stroke-width="1.5"/>
+            <!-- Bottom row: COORDINATOR | HOOKS -->
+            <line x1="410" y1="140" x2="410" y2="255" stroke="#1A1815" stroke-width="1.5"/>
 
-    <!-- B1: SESSION LIFECYCLE  cx=120 -->
-    <rect x="20" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <!-- icon: circular arrow -->
-    <g transform="translate(120,44)">
-      <path d="M 0,-11 A 11,11 0 1,1 -11,0" fill="none" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
-      <polygon points="0,-14 5,-9 -5,-9" fill="#A47C40"/>
-    </g>
-    <text x="120" y="74" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10.5" fill="#000000" letter-spacing="0.5">SESSION LIFECYCLE</text>
+            <!-- ── TOP WALL (y=105) with door gaps ────────────────────────────── -->
+            <!-- Gaps: SESSION LIFECYCLE cx=177 → [165,189], CONTRACTS cx=410 → [398,422], MODULE LOADER cx=644 → [632,656] -->
+            <line x1="60"  y1="105" x2="165" y2="105" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="189" y1="105" x2="398" y2="105" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="422" y1="105" x2="632" y2="105" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="656" y1="105" x2="760" y2="105" stroke="#1A1815" stroke-width="1.5"/>
 
-    <!-- B2: CONTRACTS  cx=360 -->
-    <rect x="260" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <!-- icon: two plugs -->
-    <g transform="translate(360,44)">
-      <rect x="-14" y="-7" width="11" height="14" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-      <rect x="3"   y="-7" width="11" height="14" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-      <line x1="-3" y1="0" x2="3" y2="0" stroke="#BFA16C" stroke-width="1"/>
-      <line x1="-9" y1="-3" x2="-9" y2="3" stroke="#BFA16C" stroke-width="1"/>
-      <line x1="9"  y1="-3" x2="9"  y2="3" stroke="#BFA16C" stroke-width="1"/>
-    </g>
-    <text x="360" y="74" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10.5" fill="#000000" letter-spacing="0.5">CONTRACTS</text>
+            <!-- ── BOTTOM WALL (y=140) with door gaps ──────────────────────────── -->
+            <!-- Gaps: COORDINATOR cx=235 → [223,247], HOOKS cx=585 → [573,597] -->
+            <line x1="60"  y1="140" x2="223" y2="140" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="247" y1="140" x2="573" y2="140" stroke="#1A1815" stroke-width="1.5"/>
+            <line x1="597" y1="140" x2="760" y2="140" stroke="#1A1815" stroke-width="1.5"/>
 
-    <!-- B3: MODULE LOADER  cx=600 -->
-    <rect x="500" y="18" width="200" height="78" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <!-- icon: download arrow -->
-    <g transform="translate(600,44)">
-      <line x1="0" y1="-10" x2="0" y2="1" stroke="#BFA16C" stroke-width="1" stroke-linecap="round"/>
-      <polygon points="0,8 -6,1 6,1" fill="#A47C40"/>
-      <line x1="-8" y1="11" x2="8" y2="11" stroke="#BFA16C" stroke-width="1" stroke-linecap="square"/>
-    </g>
-    <text x="600" y="74" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10.5" fill="#000000" letter-spacing="0.5">MODULE LOADER</text>
+            <!-- ── ICONS: TOP ROW ───────────────────────────────────────────────── -->
+            <!-- SESSION LIFECYCLE: circular refresh arrow (cx=177, room y=25–105) -->
+            <g transform="translate(177,52)">
+              <path d="M 0,-12 A 12,12 0 1,1 -12,0" fill="none" stroke="#1A1815" stroke-width="1.2" stroke-linecap="round"/>
+              <polygon points="0,-15 5,-9 -5,-9" fill="#1A1815"/>
+            </g>
+            <!-- CONTRACTS: angle brackets ⟨⟩ with connection line (cx=410) -->
+            <g transform="translate(410,52)">
+              <path d="M -6,-12 L -18,0 L -6,12" fill="none" stroke="#1A1815" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M  6,-12 L  18,0 L  6,12" fill="none" stroke="#1A1815" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="-6" y1="0" x2="6" y2="0" stroke="#1A1815" stroke-width="1.2"/>
+            </g>
+            <!-- MODULE LOADER: downward arrow into tray (cx=644) -->
+            <g transform="translate(644,50)">
+              <line x1="0" y1="-12" x2="0"   y2="0"  stroke="#1A1815" stroke-width="1.2" stroke-linecap="round"/>
+              <polygon points="0,8 -6,0 6,0" fill="#1A1815"/>
+              <line x1="-10" y1="12" x2="10" y2="12" stroke="#1A1815" stroke-width="1.5" stroke-linecap="square"/>
+              <line x1="-10" y1="8"  x2="-10" y2="12" stroke="#1A1815" stroke-width="1.5"/>
+              <line x1="10"  y1="8"  x2="10"  y2="12" stroke="#1A1815" stroke-width="1.5"/>
+            </g>
 
-    <!-- ── Connector lines: top blocks → event bus (y=114) ──────────────── -->
-    <line x1="120" y1="96" x2="120" y2="114" stroke="#BFA16C" stroke-width="1"/>
-    <line x1="360" y1="96" x2="360" y2="114" stroke="#BFA16C" stroke-width="1"/>
-    <line x1="600" y1="96" x2="600" y2="114" stroke="#BFA16C" stroke-width="1"/>
+            <!-- ── LABELS: TOP ROW ─────────────────────────────────────────────── -->
+            <text x="177" y="87" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#1A1815" letter-spacing="0.66">SESSION LIFECYCLE</text>
+            <text x="410" y="87" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#1A1815" letter-spacing="0.66">CONTRACTS</text>
+            <text x="644" y="87" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#1A1815" letter-spacing="0.66">MODULE LOADER</text>
 
-    <!-- ── EVENT BUS line ──────────────────────────────────────────────────  -->
-    <line x1="20" y1="114" x2="700" y2="114" stroke="#4A838D" stroke-width="3"/>
-    <!-- label masked on the bus, placed right of last dot (cx=600) — no connector overlap -->
-    <rect x="617" y="106" width="82" height="13" fill="#FFFFFF"/>
-    <text x="658" y="116" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="9.5" fill="#4A838D" letter-spacing="1.5">EVENT BUS</text>
+            <!-- ── EVENT BUS CORRIDOR LABEL ──────────────────────────────────── -->
+            <text x="410" y="127" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#0082EB" letter-spacing="1.65" font-weight="600">EVENT BUS</text>
 
-    <!-- ── Connector lines: bottom blocks → event bus ───────────────────── -->
-    <line x1="213" y1="130" x2="213" y2="114" stroke="#BFA16C" stroke-width="1"/>
-    <line x1="506" y1="130" x2="506" y2="114" stroke="#BFA16C" stroke-width="1"/>
+            <!-- ── ICONS: BOTTOM ROW ────────────────────────────────────────────── -->
+            <!-- COORDINATOR: three horizontal shelf lines (cx=235, room y=140–255) -->
+            <g transform="translate(235,175)">
+              <line x1="-18" y1="-10" x2="18" y2="-10" stroke="#1A1815" stroke-width="1.5"/>
+              <line x1="-18" y1="0"   x2="18" y2="0"   stroke="#1A1815" stroke-width="1.5"/>
+              <line x1="-18" y1="10"  x2="18" y2="10"  stroke="#1A1815" stroke-width="1.5"/>
+            </g>
+            <!-- HOOKS: lightning bolt (cx=585) -->
+            <g transform="translate(585,175)">
+              <polygon points="5,-14 -4,1 3,1 -5,14 11,-1 4,-1" fill="#1A1815"/>
+            </g>
 
-    <!-- ── All 5 connection dots (drawn on top of lines) ─────────────────── -->
-    <circle cx="120" cy="114" r="6" fill="#A47C40"/>
-    <circle cx="213" cy="114" r="6" fill="#A47C40"/>
-    <circle cx="360" cy="114" r="6" fill="#A47C40"/>
-    <circle cx="506" cy="114" r="6" fill="#A47C40"/>
-    <circle cx="600" cy="114" r="6" fill="#A47C40"/>
+            <!-- ── LABELS: BOTTOM ROW ────────────────────────────────────────────── -->
+            <text x="235" y="230" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#1A1815" letter-spacing="0.66">COORDINATOR</text>
+            <text x="585" y="230" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" fill="#1A1815" letter-spacing="0.66">HOOKS</text>
 
-    <!-- ── BOTTOM ROW: 2 blocks, centered ───────────────────────────────── -->
+            <!-- ── DOOR CIRCLES (azure dots on corridor side of each doorway) ────────── -->
+            <circle cx="177" cy="105" r="3" fill="#0082EB"/>
+            <circle cx="410" cy="105" r="3" fill="#0082EB"/>
+            <circle cx="644" cy="105" r="3" fill="#0082EB"/>
+            <circle cx="235" cy="140" r="3" fill="#0082EB"/>
+            <circle cx="585" cy="140" r="3" fill="#0082EB"/>
 
-    <!-- B4: COORDINATOR  cx=213 -->
-    <rect x="113" y="130" width="200" height="70" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <!-- icon: 3-shelf rack -->
-    <g transform="translate(213,152)">
-      <rect x="-13" y="-10" width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
-      <rect x="-13" y="-3"  width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
-      <rect x="-13" y="4"   width="26" height="5" fill="none" stroke="#BFA16C" stroke-width="1"/>
-    </g>
-    <text x="213" y="186" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10.5" fill="#000000" letter-spacing="0.5">COORDINATOR</text>
+            <!-- ── BUILDING PERIMETER REDRAW (on top — keeps edges crisp) ────────────── -->
+            <rect x="60" y="25" width="700" height="230" fill="none" stroke="#1A1815" stroke-width="2"/>
 
-    <!-- B5: HOOKS  cx=506 -->
-    <rect x="406" y="130" width="200" height="70" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <!-- icon: lightning bolt -->
-    <g transform="translate(506,152)">
-      <polygon points="4,-12 -4,0 2,0 -4,12 9,-1 2,-1" fill="#A47C40"/>
-    </g>
-    <text x="506" y="186" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10.5" fill="#000000" letter-spacing="0.5">HOOKS</text>
+            <!-- ── FILE I/O: ZERO SIGNPOST ──────────────────────────────────────── -->
+            <!-- Sign rectangle, vertically centred on the EVENT BUS corridor (y=101–145) -->
+            <rect x="790" y="101" width="90" height="44" fill="#FFFFFF" stroke="#1A1815" stroke-width="1"/>
+            <line x1="815" y1="145" x2="815" y2="170" stroke="#1A1815" stroke-width="1"/>
+            <line x1="855" y1="145" x2="855" y2="170" stroke="#1A1815" stroke-width="1"/>
+            <text x="835" y="119" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="10" fill="#1A1815">FILE I/O:</text>
+            <text x="835" y="133" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="10" fill="#1A1815" font-weight="600">ZERO</text>
 
-    <!-- Outer border redrawn on top so content never bleeds over it -->
-
-    <!-- Caption -->
-    <text x="360" y="228" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#6F7782">Rust + Python · ~2,600 lines · Zero file I/O</text>
-  </svg>
-</div>
+          </svg>
+        </div>
+        <p class="illustration__caption">amplifier-core · Rust + Python · ~2,600 lines</p>
+      </div>
 
 
       <p>The kernel (<code>amplifier-core</code>) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.</p>
@@ -2870,85 +2980,61 @@
       <!-- ── Section 7 ── -->
       <h2 id="s7"><span class="section-num">7</span> Tools vs Hooks</h2>
       <!-- Section opener ─ §7 Tools vs Hooks ─────────────────────────── -->
-      <div class="section-diagram">
-  <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-
-
-    <!-- Two colored halves (drawn before border) -->
-    <rect x="7"   y="7" width="353" height="196" fill="#E8F5E9"/>
-    <rect x="360" y="7" width="353" height="196" fill="#FBE9E7"/>
-
-    <!-- Vertical divider -->
-    <line x1="360" y1="4" x2="360" y2="206" stroke="#BFA16C" stroke-width="1"/>
-
-    <!-- ── LEFT: TOOLS ─────────────────────────────────────────────────── -->
-    <!-- Header -->
-    <text x="183" y="40" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="22" font-weight="600" fill="#1B7A3D" letter-spacing="2">TOOLS</text>
-    <text x="183" y="56" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10" fill="#1B7A3D" letter-spacing="1">AI DECIDES</text>
-
-    <!-- Open eye icon -->
-    <g transform="translate(183,88)">
-      <path d="M -24,0 C -18,-14 18,-14 24,0 C 18,14 -18,14 -24,0 Z"
-            fill="none" stroke="#1B7A3D" stroke-width="2"/>
-      <circle r="8" fill="none" stroke="#1B7A3D" stroke-width="2"/>
-      <circle r="3.5" fill="#1B7A3D"/>
-    </g>
-
-    <!-- Bullet list: TOOLS -->
-    <text x="42" y="120" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• VISIBLE IN SYSTEM PROMPT</text>
-    <text x="42" y="137" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• MODEL CHOOSES WHEN TO CALL</text>
-    <text x="42" y="154" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• CALLS APPEAR IN HISTORY</text>
-    <text x="42" y="171" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• EXTEND WHAT MODEL CAN DO</text>
-
-    <!-- Example mini-blocks -->
-    <rect x="26"  y="182" width="66" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="59"  y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">read_file</text>
-    <rect x="101" y="182" width="72" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="137" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">search_web</text>
-    <rect x="182" y="182" width="80" height="16" fill="#C8E6C9" stroke="#1B7A3D" stroke-width="1.5"/>
-    <text x="222" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#1B7A3D">run_command</text>
-
-    <!-- ── RIGHT: HOOKS ────────────────────────────────────────────────── -->
-    <!-- Header -->
-    <text x="541" y="40" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="22" font-weight="600" fill="#B91C1C" letter-spacing="2">HOOKS</text>
-    <text x="541" y="56" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="10" fill="#B91C1C" letter-spacing="1">CODE DECIDES</text>
-
-    <!-- Crossed-out eye icon -->
-    <g transform="translate(541,88)">
-      <path d="M -24,0 C -18,-14 18,-14 24,0 C 18,14 -18,14 -24,0 Z"
-            fill="none" stroke="#B91C1C" stroke-width="2"/>
-      <circle r="8" fill="none" stroke="#B91C1C" stroke-width="2"/>
-      <circle r="3.5" fill="#B91C1C"/>
-      <!-- cross bars -->
-      <line x1="-22" y1="-12" x2="22" y2="12" stroke="#B91C1C" stroke-width="2.5"/>
-      <line x1="22"  y1="-12" x2="-22" y2="12" stroke="#B91C1C" stroke-width="2.5"/>
-    </g>
-
-    <!-- Bullet list: HOOKS -->
-    <text x="378" y="120" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• INVISIBLE TO MODEL</text>
-    <text x="378" y="137" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• FIRES AUTOMATICALLY ON EVENTS</text>
-    <text x="378" y="154" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• OBSERVE, BLOCK, INJECT, MODIFY</text>
-    <text x="378" y="171" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#000000">• GOVERN WHAT MODEL MAY DO</text>
-
-    <!-- Example mini-blocks -->
-    <rect x="370" y="182" width="56" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="398"  y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">tool:pre</text>
-    <rect x="435" y="182" width="66" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="468" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">tool:post</text>
-    <rect x="510" y="182" width="90" height="16" fill="#FFCDD2" stroke="#B91C1C" stroke-width="1.5"/>
-    <text x="555" y="193" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="8.5" fill="#B91C1C">session:start</text>
-
-    <!-- Outer border on top (covers fill seam at center) -->
-  </svg>
-</div>
+      <div class="illustration" role="img" aria-label="Tools vs Hooks: Tools are visible capabilities the AI chooses to call. Hooks are invisible policies code enforces automatically.">
+        <div class="illustration__fig-num">FIG. 07a</div>
+        <div class="split-comparison">
+          <!-- LEFT: TOOLS -->
+          <div class="split-comparison__side split-comparison__side--tools">
+            <div class="split-comparison__header" style="color: #1B7A3D;">Tools</div>
+            <div class="split-comparison__subheader" style="color: #1B7A3D;">AI Decides</div>
+            <div class="split-comparison__icon">
+              <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Open eye icon -->
+                <path d="M 4,18 C 10,4 46,4 52,18 C 46,32 10,32 4,18 Z" stroke="#1B7A3D" stroke-width="2" fill="none"/>
+                <circle cx="28" cy="18" r="9" stroke="#1B7A3D" stroke-width="2" fill="none"/>
+                <circle cx="28" cy="18" r="4" fill="#1B7A3D"/>
+              </svg>
+            </div>
+            <ul class="split-comparison__list">
+              <li>Visible in system prompt</li>
+              <li>Model chooses when to call</li>
+              <li>Calls appear in history</li>
+              <li>Extend what model can do</li>
+            </ul>
+            <div class="split-comparison__examples">
+              <span class="split-comparison__tag split-comparison__tag--tool">read_file</span>
+              <span class="split-comparison__tag split-comparison__tag--tool">search_web</span>
+              <span class="split-comparison__tag split-comparison__tag--tool">run_command</span>
+            </div>
+          </div>
+          <!-- RIGHT: HOOKS -->
+          <div class="split-comparison__side split-comparison__side--hooks">
+            <div class="split-comparison__header" style="color: #B91C1C;">Hooks</div>
+            <div class="split-comparison__subheader" style="color: #B91C1C;">Code Decides</div>
+            <div class="split-comparison__icon">
+              <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Crossed-out eye icon -->
+                <path d="M 4,18 C 10,4 46,4 52,18 C 46,32 10,32 4,18 Z" stroke="#B91C1C" stroke-width="2" fill="none"/>
+                <circle cx="28" cy="18" r="9" stroke="#B91C1C" stroke-width="2" fill="none"/>
+                <circle cx="28" cy="18" r="4" fill="#B91C1C"/>
+                <line x1="6" y1="4" x2="50" y2="32" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <ul class="split-comparison__list">
+              <li>Invisible to model</li>
+              <li>Fires automatically on events</li>
+              <li>Observe, block, inject, modify</li>
+              <li>Govern what model may do</li>
+            </ul>
+            <div class="split-comparison__examples">
+              <span class="split-comparison__tag split-comparison__tag--hook">tool:pre</span>
+              <span class="split-comparison__tag split-comparison__tag--hook">tool:post</span>
+              <span class="split-comparison__tag split-comparison__tag--hook">session:start</span>
+            </div>
+          </div>
+        </div>
+        <p class="illustration__caption">The distinction in one sentence: Tools are capabilities you hand to the AI. Hooks are policies you enforce around it.</p>
+      </div>
 
 
       <p>Both are modules. Both plug in the same way. But they operate in fundamentally different realms, and using the wrong one for a task produces unreliable behavior.</p>
