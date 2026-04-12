@@ -1027,10 +1027,10 @@
 
     /* ── Section diagrams (§4–§12) ─────────────────────────────────────────────── */
     .section-diagram {
-      margin: 24px -80px 32px;
+      margin: 40px 0;
       width: calc(100% + 160px);
       text-align: center;
-      padding: 32px 24px;
+      padding: 40px 32px;
     }
     .section-diagram svg {
       width: 100%;
@@ -1050,7 +1050,7 @@
       aspect-ratio: 16/9;
       cursor: pointer;
       position: relative;
-      margin: 24px -80px 32px;
+      margin: 40px 0;
       min-height: 200px;
       width: calc(100% + 160px);
     }
@@ -2108,17 +2108,6 @@
       <!-- Section opener ─ §4 The Kernel ─────────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s4" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s4)">
 
 
     <!-- Outer frame -->
@@ -2218,7 +2207,6 @@
     <text x="360" y="228" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">Rust + Python · ~2,600 lines · Zero file I/O</text>
-  </g>
   </svg>
 </div>
 
@@ -2327,17 +2315,6 @@
       <!-- Section opener ─ §5 The Module System ──────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s5" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s5)">
 
 
     <!-- Outer frame -->
@@ -2459,7 +2436,6 @@
 
     <!-- Outer border on top -->
     <rect x="4" y="4" width="712" height="210" fill="none" stroke="#BFA16C" stroke-width="6"/>
-  </g>
   </svg>
 </div>
 
@@ -2645,17 +2621,6 @@
       <!-- Section opener ─ §6 The Orchestrator ───────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s6" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s6)">
 
 
     <!-- Outer frame -->
@@ -2748,7 +2713,6 @@
     <text x="360" y="228" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">Every module connects once at mount. The Orchestrator stays connected at runtime.</text>
-  </g>
   </svg>
 </div>
 
@@ -2876,17 +2840,6 @@
       <!-- Section opener ─ §7 Tools vs Hooks ─────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s7" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s7)">
 
 
     <!-- Two colored halves (drawn before border) -->
@@ -2963,7 +2916,6 @@
 
     <!-- Outer border on top (covers fill seam at center) -->
     <rect x="4" y="4" width="712" height="202" fill="none" stroke="#BFA16C" stroke-width="6"/>
-  </g>
   </svg>
 </div>
 
@@ -3214,17 +3166,6 @@ async def on_tool(event):
       <!-- Section opener ─ §8 Sessions ───────────────────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s8" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s8)">
 
 
     <!-- PARENT SESSION container -->
@@ -3338,7 +3279,6 @@ async def on_tool(event):
     <text x="360" y="275" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">No shared modules. No shared memory. Each session is self-contained.</text>
-  </g>
   </svg>
 </div>
 
@@ -3484,17 +3424,6 @@ async def on_tool(event):
       <!-- Section opener ─ §9 Bundles and Configuration ─────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s9" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s9)">
 
 
     <!-- Outer frame -->
@@ -3573,7 +3502,6 @@ async def on_tool(event):
     <text x="360" y="228" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">bundle.md or bundle.yaml · Text files. No code required.</text>
-  </g>
   </svg>
 </div>
 
@@ -3680,17 +3608,6 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §10 The Foundation Bridge ─────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s10" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s10)">
 
 
     <!-- Outer frame -->
@@ -3848,7 +3765,6 @@ standards (see @project:standards.md).</code></pre>
     <text x="360" y="272" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="11.5" fill="#6F7782">Connected at runtime through callbacks. Independent at compile time.</text>
-  </g>
   </svg>
 </div>
 
@@ -3926,17 +3842,6 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §11 Agents, Skills & Recipes ─────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s11" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s11)">
 
 
     <!-- Outer frame -->
@@ -4074,7 +3979,6 @@ standards (see @project:standards.md).</code></pre>
     <text x="360" y="272" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="11.5" fill="#6F7782">No new kernel support. Built entirely from sessions, bundles, and modules.</text>
-  </g>
   </svg>
 </div>
 
@@ -4179,17 +4083,6 @@ standards (see @project:standards.md).</code></pre>
       <!-- Section opener ─ §12 The Complete Picture ───────────────────── -->
       <div class="section-diagram">
   <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <filter id="grain-s12" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="0.97"/>
-      </feComponentTransfer>
-    </filter>
-  </defs>
-  <g filter="url(#grain-s12)">
 
 
     <!-- Six stacked horizontal bars
@@ -4265,7 +4158,6 @@ standards (see @project:standards.md).</code></pre>
     <text x="360" y="240" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
           font-size="12" fill="#6F7782">The kernel provides mechanism. Modules provide policy.</text>
-  </g>
   </svg>
 </div>
 
