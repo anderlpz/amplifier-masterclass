@@ -1474,6 +1474,22 @@
       grid-template-columns: 1fr 1fr;
       gap: 0;
     }
+    @media (min-width: 840px) {
+      .annotated-code.wide {
+        width: 840px;
+        max-width: calc(100vw - 48px);
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      /* Override the pre breakout — the grid container handles the breakout, not the pre */
+      .annotated-code.wide pre {
+        width: auto;
+        max-width: none;
+        left: auto;
+        transform: none;
+      }
+    }
     .annotated-code.wide .code-markers {
       grid-column: 1;
       grid-row: 1;
