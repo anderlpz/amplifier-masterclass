@@ -1125,7 +1125,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 0;
       border: none;
-      border-top: 3px solid var(--layer-modules);
     }
 
     .split-comparison__side {
@@ -1192,6 +1191,7 @@
       margin: 0 0 24px 0;
       width: 100%;
       max-width: 260px;
+      text-align: left;
     }
 
     .split-comparison__list li {
@@ -1199,16 +1199,7 @@
       font-size: 13px;
       line-height: 1.6;
       color: var(--text-secondary);
-      padding: 2px 0 2px 18px;
-      position: relative;
-    }
-
-    .split-comparison__list li::before {
-      content: '\00b7';
-      position: absolute;
-      left: 4px;
-      font-weight: 700;
-      color: var(--text-tertiary);
+      padding: 2px 0;
     }
 
     .split-comparison__examples {
