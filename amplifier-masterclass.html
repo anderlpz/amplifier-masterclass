@@ -1119,50 +1119,67 @@
       }
     }
 
-    /* ── Split comparison layout (§7 Tools vs Hooks) ──────────── */
+    /* Split comparison (section 7 opener) */
     .split-comparison {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
-      border: 1px solid rgba(0, 0, 0, 0.08);
+      border: none;
+      border-top: 3px solid var(--layer-modules);
     }
 
     .split-comparison__side {
-      padding: 28px 24px 24px;
+      padding: 32px 28px 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .split-comparison__side--tools {
-      border-right: 1.5px solid rgba(0, 0, 0, 0.1);
-      background: rgba(34, 163, 74, 0.04);
+      border-right: 1px solid var(--border-light);
+      background: var(--layer-foundation-soft);
     }
 
     .split-comparison__side--hooks {
-      background: rgba(185, 28, 28, 0.04);
+      background: var(--layer-boundary-soft);
     }
 
     .split-comparison__header {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 12px;
+      font-family: var(--font-heading);
+      font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 4px;
+      color: var(--text-tertiary);
+      margin-bottom: 2px;
     }
 
     .split-comparison__subheader {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 20px;
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .split-comparison__side--tools .split-comparison__subheader {
+      color: var(--positive);
+    }
+
+    .split-comparison__side--hooks .split-comparison__subheader {
+      color: var(--layer-boundary);
     }
 
     .split-comparison__icon {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .split-comparison__side--tools .split-comparison__icon {
+      color: var(--positive);
+    }
+
+    .split-comparison__side--hooks .split-comparison__icon {
+      color: var(--layer-boundary);
     }
 
     .split-comparison__icon svg {
@@ -1172,25 +1189,26 @@
     .split-comparison__list {
       list-style: none;
       padding: 0;
-      margin: 0 0 20px 0;
+      margin: 0 0 24px 0;
       width: 100%;
-      max-width: 280px;
+      max-width: 260px;
     }
 
     .split-comparison__list li {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: var(--font-heading);
       font-size: 13px;
       line-height: 1.6;
-      color: #1A1815;
-      padding-left: 16px;
+      color: var(--text-secondary);
+      padding: 2px 0 2px 18px;
       position: relative;
     }
 
     .split-comparison__list li::before {
-      content: '·';
+      content: '\00b7';
       position: absolute;
       left: 4px;
       font-weight: 700;
+      color: var(--text-tertiary);
     }
 
     .split-comparison__examples {
@@ -1198,26 +1216,27 @@
       flex-wrap: wrap;
       gap: 6px;
       justify-content: center;
+      margin-top: auto;
     }
 
     .split-comparison__tag {
-      font-family: 'Space Grotesk', 'SF Mono', monospace;
+      font-family: var(--font-code);
       font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 2px;
+      padding: 2px 8px;
+      border-radius: 3px;
       letter-spacing: 0.02em;
     }
 
     .split-comparison__tag--tool {
-      color: #1B7A3D;
-      background: rgba(34, 163, 74, 0.1);
-      border: 1px solid rgba(27, 122, 61, 0.25);
+      color: var(--positive);
+      background: var(--layer-foundation-soft);
+      border: 1px solid rgba(61, 122, 74, 0.2);
     }
 
     .split-comparison__tag--hook {
-      color: #B91C1C;
-      background: rgba(185, 28, 28, 0.08);
-      border: 1px solid rgba(185, 28, 28, 0.2);
+      color: var(--layer-boundary);
+      background: var(--layer-boundary-soft);
+      border: 1px solid rgba(138, 90, 74, 0.2);
     }
 
     @media (max-width: 768px) {
@@ -1226,7 +1245,7 @@
       }
       .split-comparison__side--tools {
         border-right: none;
-        border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid var(--border-light);
       }
     }
 
@@ -3102,14 +3121,14 @@
         <div class="split-comparison">
           <!-- LEFT: TOOLS -->
           <div class="split-comparison__side split-comparison__side--tools">
-            <div class="split-comparison__header" style="color: #1B7A3D;">Tools</div>
-            <div class="split-comparison__subheader" style="color: #1B7A3D;">AI Decides</div>
+            <div class="split-comparison__header">Tools</div>
+            <div class="split-comparison__subheader">AI Decides</div>
             <div class="split-comparison__icon">
-              <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Open eye icon -->
-                <path d="M 4,18 C 10,4 46,4 52,18 C 46,32 10,32 4,18 Z" stroke="#1B7A3D" stroke-width="2" fill="none"/>
-                <circle cx="28" cy="18" r="9" stroke="#1B7A3D" stroke-width="2" fill="none"/>
-                <circle cx="28" cy="18" r="4" fill="#1B7A3D"/>
+              <svg width="64" height="44" viewBox="0 0 64 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 4,22 C 12,6 52,6 60,22 C 52,36 12,36 4,22 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <circle cx="32" cy="22" r="8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <circle cx="32" cy="22" r="3.5" fill="currentColor"/>
+                <circle cx="34.5" cy="19.5" r="1.5" fill="white" opacity="0.9"/>
               </svg>
             </div>
             <ul class="split-comparison__list">
@@ -3126,15 +3145,14 @@
           </div>
           <!-- RIGHT: HOOKS -->
           <div class="split-comparison__side split-comparison__side--hooks">
-            <div class="split-comparison__header" style="color: #B91C1C;">Hooks</div>
-            <div class="split-comparison__subheader" style="color: #B91C1C;">Code Decides</div>
+            <div class="split-comparison__header">Hooks</div>
+            <div class="split-comparison__subheader">Code Decides</div>
             <div class="split-comparison__icon">
-              <svg width="56" height="36" viewBox="0 0 56 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Crossed-out eye icon -->
-                <path d="M 4,18 C 10,4 46,4 52,18 C 46,32 10,32 4,18 Z" stroke="#B91C1C" stroke-width="2" fill="none"/>
-                <circle cx="28" cy="18" r="9" stroke="#B91C1C" stroke-width="2" fill="none"/>
-                <circle cx="28" cy="18" r="4" fill="#B91C1C"/>
-                <line x1="6" y1="4" x2="50" y2="32" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round"/>
+              <svg width="64" height="44" viewBox="0 0 64 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 4,22 C 12,6 52,6 60,22 C 52,36 12,36 4,22 Z" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+                <circle cx="32" cy="22" r="8" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.3"/>
+                <circle cx="32" cy="22" r="3.5" fill="currentColor" opacity="0.3"/>
+                <line x1="10" y1="8" x2="54" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
             <ul class="split-comparison__list">
