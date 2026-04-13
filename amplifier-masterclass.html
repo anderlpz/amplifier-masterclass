@@ -2363,11 +2363,11 @@
 
           </svg>
         </div>
-        <p class="illustration__caption">amplifier-core · Rust + Python · ~2,600 lines</p>
+        <p class="illustration__caption">Deliberately small · Zero file I/O</p>
       </div>
 
 
-      <p>The kernel (<code>amplifier-core</code>) is a Rust and Python package. Inside it are five components. Each exists because every module in the system depends on it.</p>
+      <p>The kernel (<code>amplifier-core</code>) is deliberately small. Inside it are five components. Each exists because every module in the system depends on it.</p>
 
       <div class="callout" data-layer="kernel">
         <p><strong>Five things live in the kernel. Nothing else.</strong> Session Lifecycle · Contracts · Module Loader · Coordinator · Hooks</p>
@@ -2389,7 +2389,7 @@
 
       <p>Discovers available modules, loads them, and gives each one a chance to set itself up. The loader does not need to know what type of module it is loading. It calls <code>mount()</code>, and the module takes care of the rest.</p>
 
-      <p>Discovery uses two primary channels: Python entry points (installed packages advertising they contain Amplifier modules) and filesystem scanning (directories following the <code>amplifier-module-*</code> naming convention).</p>
+      <p>Discovery uses two primary channels: package entry points (installed packages advertising they contain Amplifier modules) and filesystem scanning (directories following the <code>amplifier-module-*</code> naming convention).</p>
 
       <h3 id="s4-4">4.4 The Coordinator</h3>
 
@@ -2405,12 +2405,12 @@
 
       <p><span class="lt" data-l="kernel">Hooks</span> let you interact with the system's lifecycle programmatically. They are injection points for deterministic, non-AI-driven actions. When something happens — a tool is called, a session starts, a file is written — hooks fire automatically. The AI model has no idea they exist. Hooks can observe, block, inject information into the model's context, or transform data flowing through the system.</p>
 
-      <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. <a href="#s7-5" class="xref">§7.5</a> catalogs their names and firing conditions. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. The implementation is in Rust, because event dispatch is the hottest path in the system. It runs on every tool call, every message, every session transition.</p>
+      <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. <a href="#s7-5" class="xref">§7.5</a> catalogs their names and firing conditions. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. It runs on every tool call, every message, every session transition.</p>
 
       <div class="design-decision">
         <div class="dd-label">Design Decision</div>
         <p class="dd-verdict"><strong>Events and hooks are one system — a single dispatch mechanism.</strong></p>
-        <p class="dd-reason">Two systems would mean two surfaces to maintain and debug. One <code>HookRegistry.emit()</code> handles both, implemented in Rust because event dispatch is the hottest path in the system.</p>
+        <p class="dd-reason">One <code>HookRegistry.emit()</code> handles both. Two systems would mean two surfaces to maintain, two places to debug, and potential for divergence.</p>
       </div>
 
       <p>The universal mount contract — the function every module type follows — looks like this:</p>
@@ -2973,7 +2973,7 @@
         <p class="dd-reason">The "think → act → observe → repeat" cycle is policy. A different Orchestrator could implement parallel provider calls, multi-step planning, or a debate between models — without the kernel changing.</p>
       </div>
 
-      <p>The Orchestrator returns a plain string as its public response. Rich data — token usage, tool history, thinking blocks — exits through hook events. This keeps the Orchestrator loosely coupled to every consumer. New instrumentation means new hooks, not a changed Orchestrator interface.</p>
+      <p>The Orchestrator returns its response. Rich data — token usage, tool history, thinking blocks — exits through hook events. This keeps the Orchestrator loosely coupled to every consumer. New instrumentation means new hooks, not a changed Orchestrator interface.</p>
 
       <hr>
 
@@ -3887,7 +3887,7 @@ standards (see @project:standards.md).</code></pre>
       <ol>
         <li>Compile mount plan from configuration</li>
         <li>Set up environment (virtualenv creation and related setup)</li>
-        <li>Install required Python packages</li>
+        <li>Install required packages</li>
         <li>Collect module specifications</li>
         <li>Download and install missing modules</li>
         <li>Persist installation state (avoid re-downloading)</li>
@@ -4218,7 +4218,7 @@ standards (see @project:standards.md).</code></pre>
     <!-- BAR 6: KERNEL (bottom, emphasis 3px border) -->
     <rect x="4" y="188" width="560" height="30" fill="#F5F0E4" stroke="#9B7B3E" stroke-width="3"/>
     <text x="16" y="207" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#9B7B3E" letter-spacing="0.5">KERNEL</text>
-    <text x="95" y="207" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B7B3E">amplifier-core · The unchanging center · ~2,600 lines</text>
+    <text x="95" y="207" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#9B7B3E">amplifier-core · The unchanging center · Deliberately small</text>
 
     <!-- ── Right-side annotation ──────────────────────────────────────────── -->
     <text x="578" y="80" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6F7782">Each layer</text>
@@ -5253,7 +5253,7 @@ digraph amplifier_ecosystem {
     'kernel': {
       title: 'Kernel',
       layer: 'kernel',
-      def: 'The unchanging center of Amplifier. ~2,600 lines of Rust and Python providing session lifecycle, module loading, event dispatch, contracts, and the Coordinator. Depends on nothing; everything depends on it.',
+      def: 'The unchanging center of Amplifier. A deliberately small core providing session lifecycle, module loading, event dispatch, contracts, and the Coordinator. Depends on nothing; everything depends on it.',
       section: 's4',
       sectionLabel: 'The Kernel'
     },
@@ -5281,7 +5281,7 @@ digraph amplifier_ecosystem {
     'hooks': {
       title: 'Hooks',
       layer: 'kernel',
-      def: 'The kernel\'s event dispatch system. One mechanism \u2014 HookRegistry.emit() \u2014 fires events and collects responses from registered Hook Handlers. Implemented in Rust for performance. 41 canonical events.',
+      def: 'The kernel\'s event dispatch system. One mechanism \u2014 HookRegistry.emit() \u2014 fires events and collects responses from registered Hook Handlers. 41 canonical events.',
       section: 's4-5',
       sectionLabel: 'Hooks'
     },
