@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build site directory
+        run: |
+          mkdir -p _site
+          cp amplifier-masterclass.html _site/index.html
+          cp amplifier-masterclass-deck.html _site/deck.html
+          cp -r audio _site/audio
+          # Remove .txt script files, keep only .mp3
+          find _site/audio -name '*.txt' -delete
+
+      - name: Fix deck link in index.html
+        run: |
+          sed -i 's/amplifier-masterclass-deck.html/deck.html/g' _site/index.html
+          
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
