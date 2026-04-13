@@ -1494,14 +1494,17 @@
     /* ── Design Decision callout — the WHY layer ──────────────────────────── */
 
     .design-decision {
-      border-left: 3px solid var(--layer-boundary);
       background: var(--layer-boundary-soft);
-      border-radius: 0 4px 4px 0;
+      border: 1px solid rgba(138, 90, 74, 0.15);
+      border-radius: 4px;
       padding: 16px 20px;
       margin: 28px 0;
     }
 
     .dd-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       font-family: var(--font-heading);
       font-size: 10px;
       font-weight: 600;
@@ -1509,6 +1512,10 @@
       letter-spacing: 0.1em;
       color: var(--layer-boundary);
       margin-bottom: 8px;
+    }
+
+    .dd-label svg {
+      flex-shrink: 0;
     }
 
     .dd-verdict {
@@ -2354,7 +2361,7 @@
       <p>This principle comes from operating system design. The Linux kernel provides process scheduling and memory management without deciding how programs use those mechanisms. Amplifier does the same: the <span class="lt" data-l="kernel">kernel</span> provides module loading, event dispatch, and session lifecycle. It never decides which modules matter, which events to act on, or what should happen during a session.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>The kernel provides mechanism only — never policy.</strong></p>
         <p class="dd-reason">When rules change — new safety requirements, new compliance needs — you change modules. The kernel stays the same. Weaving policy into mechanism means every policy change risks breaking the mechanism.</p>
       </div>
@@ -2372,7 +2379,7 @@
       <p>Search the entire <code>amplifier-core</code> codebase for file-writing operations: zero matches. If something can live in a module, it must. <a href="#s4-6" class="xref">&#167;4.6</a> explains why.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>The kernel writes zero bytes to disk.</strong></p>
         <p class="dd-reason">Every kernel line constrains every module's future. Logging, persistence, and configuration are policy — they live in modules, where they can be independently replaced.</p>
       </div>
@@ -2384,7 +2391,7 @@
       <p>In Amplifier, the kernel fires a <code>tool:pre</code> event before every tool call. A hook module registers for that event. When it sees a tool call that requires approval, it returns <code>ask_user</code> — one of five hook actions ranked by authority, defined in full in <a href="#s7-4" class="xref">§7.4</a>. The kernel pauses execution and waits for a human decision. The tool itself has no knowledge that approval was required. The hook module can be swapped, updated, or removed without touching any tool code. The policy lives in a module; the mechanism lives in the kernel.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Tool approval is a hook, not an if-statement in the tool.</strong></p>
         <p class="dd-reason">If approval is inside the tool, every future tool must remember to include the check. Miss one, and the policy has a hole. As a hook, the policy is centralized — swap, update, or remove it without touching tool code.</p>
       </div>
@@ -2536,7 +2543,7 @@
       <p>There are 41 canonical events, organized by category: session, tool, provider, prompt, context. <a href="#s7-5" class="xref">§7.5</a> catalogs their names and firing conditions. Events and hooks are the same system: one dispatch mechanism (<code>HookRegistry.emit()</code>), not two separate pieces. An event fires, hooks respond, results are collected. It runs on every tool call, every message, every session transition.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Events and hooks are one system — a single dispatch mechanism.</strong></p>
         <p class="dd-reason">One <code>HookRegistry.emit()</code> handles both. Two systems would mean two surfaces to maintain, two places to debug, and potential for divergence.</p>
       </div>
@@ -2795,7 +2802,7 @@
       <p>Amplifier uses structural subtyping. If your class has the right methods with the right signatures, it qualifies as that module type. You don't need to inherit from a base class. You don't need to declare "I am a Tool." The structure of your code determines its type.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Structural subtyping — no base class required.</strong></p>
         <p class="dd-reason">If your class has the right methods with the right signatures, it qualifies. No inheritance, no "I am a Tool" declaration. Contracts are small and stable; base classes accumulate baggage.</p>
       </div>
@@ -2807,7 +2814,7 @@
       <p>The loading order is fixed, and the sequence matters. Orchestrator first, because it's the conductor: everything else needs it in place. Context Manager second, because the Orchestrator needs memory to work with. Hooks load last — because hooks observe everything else. <a href="#s7" class="xref">§7</a> explains why this separation is the most consequential design decision in the module system. They need the full system set up before they start watching.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Hooks load last in the module loading order.</strong></p>
         <p class="dd-reason">Hooks observe everything else — they need the full system mounted before they start watching. Loading hooks before tools would mean registering for events from modules that haven't mounted yet.</p>
       </div>
@@ -3007,7 +3014,7 @@
       <p>No other module can do this. A <span class="lt" data-l="modules">Provider</span> can't look up which <span class="lt" data-l="modules">Tools</span> are available. A Tool can't check which Provider is being used. Only the Orchestrator has a live connection to the full system at runtime. This is by design, not by accident.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Only the Orchestrator receives the Coordinator at runtime.</strong></p>
         <p class="dd-reason">Every other module gets the Coordinator once, at mount time. Arbitrary inter-module discovery would create invisible coupling. Constraining live system access to one replaceable module makes every cross-module interaction explicit.</p>
       </div>
@@ -3105,7 +3112,7 @@
       <p>The agent loop — the "think, act, observe, repeat" cycle — is not in the <span class="lt" data-l="kernel">kernel</span>. It lives in an Orchestrator module. This is mechanism, not policy (<a href="#s3-1" class="xref">§3.1</a>) at its most literal: the kernel provides the execution contract; the loop itself is policy. A different Orchestrator module could implement a completely different strategy: parallel provider calls, multi-step planning, debate between models. The kernel would not change.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>The agent loop lives in a module, not the kernel.</strong></p>
         <p class="dd-reason">The "think → act → observe → repeat" cycle is policy. A different Orchestrator could implement parallel provider calls, multi-step planning, or a debate between models — without the kernel changing.</p>
       </div>
@@ -3392,7 +3399,7 @@ async def on_tool(event):
       <p><strong>Deny is first for a reason.</strong> It doesn't matter if ten hooks say allow. One deny stops it. Circuit breaker. <strong>InjectContext is where hooks collaborate rather than compete.</strong> A code checker hook can inject "3 syntax errors" while a style hook simultaneously injects "naming conventions violated." The AI sees both. <strong>Modify is a pipeline</strong>: each transformation feeds the next.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>One <code>deny</code> blocks everything — fail-closed security.</strong></p>
         <p class="dd-reason">It doesn't matter if ten hooks say allow. One policy violation is enough. A vote-based alternative would let permissive hooks override safety — the opposite of what a security posture requires.</p>
       </div>
@@ -3594,7 +3601,7 @@ async def on_tool(event):
       <p>The core provides a <code>parent_id</code> field that links one session to another. That is the extent of what the <span class="lt" data-l="kernel">kernel</span> does. How parent-child relationships are used — delegation, sub-agents, task decomposition — is decided by <span class="lt" data-l="foundation">Foundation</span> and applications built on top of it.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Parent-child sessions share only an ID — no automatic inheritance.</strong></p>
         <p class="dd-reason">Automatic inheritance creates hidden dependencies — changes to the parent's conversation would affect the child unpredictably. Explicit is better: pass what you need, share nothing by default.</p>
       </div>
@@ -3788,7 +3795,7 @@ standards (see @project:standards.md).</code></pre>
       <p>@mention files are re-read on every single turn of conversation through the System Prompt Factory — <a href="#s10-4" class="xref">§10.4</a> shows the mechanism behind this. Edit a context file while an agent is running, and the agent sees the change on its very next turn. No restart required.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Context files are re-read on every turn — never cached.</strong></p>
         <p class="dd-reason">Edit a coding standards file while the agent runs; it sees the change on its next turn without a restart. The cost of a stale instruction is higher than a disk read.</p>
       </div>
@@ -3962,7 +3969,7 @@ standards (see @project:standards.md).</code></pre>
       <p>Think of Foundation as a convenience layer. The <span class="lt" data-l="kernel">kernel</span> accepts a raw configuration dictionary and a set of module paths. Foundation saves you from writing that dictionary yourself. It reads your bundle files, resolves your module references, installs packages, and assembles the configuration the kernel needs.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Foundation is optional — the kernel works without it.</strong></p>
         <p class="dd-reason">The kernel needs only a configuration dictionary and module paths. Baking Foundation into the kernel would couple it to one opinionated way of doing configuration — contradicting the center-stays-still principle.</p>
       </div>
@@ -4224,7 +4231,7 @@ standards (see @project:standards.md).</code></pre>
       <p>The result is efficient token budget management: the agent sees what expertise is available without paying the context cost until it actually needs the knowledge.</p>
 
       <div class="design-decision">
-        <div class="dd-label">Design Decision</div>
+        <div class="dd-label"><svg width="12" height="12" viewBox="0 0 256 256" fill="none"><path d="M40 224V48a8 8 0 0 1 8-8h152a8 8 0 0 1 5.66 13.66L160 100l45.66 46.34A8 8 0 0 1 200 160H48" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Design Decision</div>
         <p class="dd-verdict"><strong>Skills use three-level progressive disclosure for token budget.</strong></p>
         <p class="dd-reason">The agent sees what expertise is available (~100 tokens) without paying the full context cost (~5k tokens) until it needs the knowledge. Dumping all skill content on every turn would exhaust the token budget.</p>
       </div>
