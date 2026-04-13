@@ -1044,6 +1044,18 @@
     @media (max-width: 600px) {
       .section-diagram { margin: 20px -16px 24px; width: calc(100% + 32px); }
     }
+    .figure-caption {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin: 12px 0 0;
+      padding: 0 24px;
+    }
+    .figure-caption code {
+      font-size: 12px;
+    }
 
     /* ── Illustrated diagrams (Round 2) ────────────────────────── */
     .illustration {
@@ -1212,9 +1224,9 @@
 
     /* ── Dotgraph viewer (§2) ─────────────────────────────────────────── */
     .graph-compact {
-      background: #080f1e;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
+      background: #FFFFFF;
+      border: 1.5px solid #BFA16C;
+      border-radius: 4px;
       overflow: hidden;
       aspect-ratio: 16/9;
       cursor: pointer;
@@ -1222,8 +1234,11 @@
       margin: 40px -80px;
       min-height: 200px;
       width: calc(100% + 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .graph-compact svg { width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
+    .graph-compact svg { width: 100%; height: 100%; max-height: 100%; object-fit: contain; margin: auto; }
     .graph-compact:hover {
       border-color: var(--border);
       transition: border-color 200ms ease;
@@ -1234,19 +1249,19 @@
       right: 16px;
       font-family: var(--font-heading);
       font-size: 12px;
-      color: rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.04);
+      color: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.04);
       padding: 10px 14px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       gap: 6px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(0,0,0,0.08);
       cursor: pointer;
       transition: background 250ms ease, color 250ms ease;
       user-select: none;
     }
-    .graph-expand-hint:hover { background: rgba(255,255,255,0.09); color: #4aade0; }
+    .graph-expand-hint:hover { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.65); }
     .graph-loading {
       position: absolute;
       inset: 0;
@@ -1256,11 +1271,11 @@
       justify-content: center;
       gap: 16px;
     }
-    .graph-loading p { font-family: var(--font-heading); font-size: 13px; color: rgba(255,255,255,0.4); margin: 0; }
-    .graph-spin { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.08); border-top-color: #4aade0; border-radius: 50%; animation: graph-spin 1s linear infinite; }
+    .graph-loading p { font-family: var(--font-heading); font-size: 13px; color: rgba(0,0,0,0.4); margin: 0; }
+    .graph-spin { width: 28px; height: 28px; border: 2px solid rgba(0,0,0,0.1); border-top-color: #3E7D8A; border-radius: 50%; animation: graph-spin 1s linear infinite; }
     @keyframes graph-spin { to { transform: rotate(360deg); } }
 
-    #graph-overlay { position: fixed; inset: 0; z-index: 9000; background: #080f1e; display: none; }
+    #graph-overlay { position: fixed; inset: 0; z-index: 9000; background: #FAFAFA; display: none; }
     #graph-overlay.active { display: flex; flex-direction: column; }
     #graph-overlay-inner { flex: 1; position: relative; overflow: hidden; }
     #graph-overlay-inner svg { width: 100%; height: 100%; }
@@ -1275,15 +1290,15 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.1);
+      color: rgba(0,0,0,0.5);
       cursor: pointer;
       font-size: 22px;
       line-height: 1;
       transition: background 200ms ease;
     }
-    .graph-close-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .graph-close-btn:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.8); }
     .graph-overlay-header {
       position: absolute;
       top: 26px;
@@ -1292,7 +1307,7 @@
       font-family: var(--font-heading);
       font-size: 11px;
       font-weight: 600;
-      color: rgba(255,255,255,0.35);
+      color: rgba(0,0,0,0.3);
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
@@ -1303,16 +1318,99 @@
       transform: translateX(-50%);
       font-family: var(--font-heading);
       font-size: 11px;
-      color: rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.04);
+      color: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.04);
       padding: 5px 16px;
       border-radius: 9999px;
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid rgba(0,0,0,0.08);
       white-space: nowrap;
       z-index: 9001;
     }
     @media (max-width: 600px) {
       .graph-compact { margin: 20px -16px 20px; width: calc(100% + 32px); }
+    }
+    .graph-zoom-toolbar {
+      position: absolute;
+      top: 20px;
+      right: 80px;
+      z-index: 9001;
+      display: flex;
+      gap: 4px;
+    }
+    .graph-zoom-toolbar button {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      color: rgba(0,0,0,0.6);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 150ms ease, color 150ms ease;
+    }
+    .graph-zoom-toolbar button:hover {
+      background: rgba(0,0,0,0.08);
+      color: rgba(0,0,0,0.85);
+    }
+    .graph-legend {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 9001;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: 'Inter', system-ui, sans-serif;
+      pointer-events: none;
+      max-width: 180px;
+    }
+    .graph-legend-header {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(0,0,0,0.35);
+      margin-bottom: 10px;
+    }
+    .graph-legend-section {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .graph-legend-section:last-of-type {
+      margin-bottom: 6px;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .graph-legend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: rgba(0,0,0,0.6);
+      line-height: 1.8;
+    }
+    .graph-legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      border: 1.5px solid;
+      flex-shrink: 0;
+    }
+    .graph-legend-hint {
+      font-size: 10px;
+      color: rgba(0,0,0,0.3);
+      font-style: italic;
+    }
+    @media (max-width: 600px) {
+      .graph-legend { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       .graph-spin { animation: none; }
@@ -2464,125 +2562,134 @@
       <h2 id="s5"><span class="section-num">5</span> The Module System</h2>
       <!-- Section opener ─ §5 The Module System ──────────────────────── -->
       <div class="section-diagram">
-  <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 
+    <!-- mount() contract label above the rail -->
+    <text x="360" y="18" text-anchor="middle"
+          font-family="Inter, system-ui, sans-serif"
+          font-size="10" fill="#8B8D9C" letter-spacing="0.5">Every module uses the same contract</text>
+    <text x="360" y="34" text-anchor="middle"
+          font-family="Inter, system-ui, sans-serif"
+          font-size="11" font-weight="600" fill="#5C5E6E" letter-spacing="0.3">mount(coordinator, config)</text>
 
-    <!-- ── 6 CARTRIDGE BLOCKS ─────────────────────────────────────────────
-         x positions: 20, 138, 256, 374, 492, 610  (width=88, gap=30)
-         all bottoms at y=160
-    ──────────────────────────────────────────────────────────────────────── -->
+    <!-- MOUNT RAIL -->
+    <rect x="20" y="144" width="680" height="3" rx="1.5" fill="#D8D9E3"/>
 
-    <!-- C1: ORCHESTRATOR (teal, Required, tallest) cx=64 -->
-    <text x="64" y="16" text-anchor="middle"
+    <!-- Required / Optional zone labels -->
+    <text x="132" y="60" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#2C6470">REQUIRED</text>
-    <rect x="20" y="22" width="88" height="138" fill="#4A838D" stroke="#2C6470" stroke-width="2"/>
-    <text x="64" y="108" text-anchor="middle"
+          font-size="8" font-weight="600" fill="#3E7D8A" letter-spacing="1">REQUIRED</text>
+    <text x="460" y="60" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="9" fill="#FFFFFF" letter-spacing="0.5">ORCHESTRATOR</text>
+          font-size="8" font-weight="600" fill="#8B8D9C" letter-spacing="1">OPTIONAL</text>
 
-    <!-- C2: PROVIDER (cream, Optional) cx=182 -->
-    <text x="182" y="16" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="138" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <text x="182" y="107" text-anchor="middle"
-          font-family="Inter, system-ui, sans-serif"
-          font-size="9" fill="#000000" letter-spacing="0.5">PROVIDER</text>
+    <!-- Dashed separator between required and optional -->
+    <line x1="264" y1="55" x2="264" y2="170" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="4 3"/>
 
-    <!-- C3: TOOL (cream, Optional) cx=300 -->
-    <text x="300" y="16" text-anchor="middle"
+    <!-- C1: ORCHESTRATOR (teal, Required, tallest -- the special one) -->
+    <rect x="30" y="68" width="104" height="72" rx="3" fill="#3E7D8A" stroke="#2C6470" stroke-width="1"/>
+    <text x="82" y="100" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="256" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <text x="300" y="107" text-anchor="middle"
+          font-size="10" font-weight="600" fill="#FFFFFF" letter-spacing="0.3">Orchestrator</text>
+    <text x="82" y="115" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="9" fill="#000000" letter-spacing="0.5">TOOL</text>
+          font-size="8" fill="rgba(255,255,255,0.7)">Drives the conversation</text>
+    <!-- Connector tab -->
+    <rect x="72" y="140" width="20" height="8" rx="1" fill="#3E7D8A" stroke="#2C6470" stroke-width="0.75"/>
+    <!-- Solid arrow below rail -- runtime access -->
+    <line x1="82" y1="151" x2="82" y2="175" stroke="#3E7D8A" stroke-width="2"/>
+    <polygon points="82,180 77,172 87,172" fill="#3E7D8A"/>
+    <text x="82" y="195" text-anchor="middle"
+          font-family="Inter, system-ui, sans-serif"
+          font-size="7.5" font-weight="500" fill="#3E7D8A" letter-spacing="0.3">RUNTIME ACCESS</text>
 
-    <!-- C4: CONTEXT MANAGER (cream, Required, second-tallest) cx=418 -->
-    <text x="418" y="16" text-anchor="middle"
+    <!-- C2: CONTEXT MANAGER (cream, Required) -->
+    <rect x="160" y="72" width="104" height="68" rx="3" fill="#FBF0D9" stroke="#3E7D8A" stroke-width="1"/>
+    <text x="212" y="102" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#2C6470">REQUIRED</text>
-    <rect x="374" y="30" width="88" height="130" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <text x="418" y="99" text-anchor="middle"
+          font-size="10" font-weight="600" fill="#1C1E2B" letter-spacing="0.3">Context Manager</text>
+    <text x="212" y="117" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#000000" letter-spacing="0.5">CONTEXT</text>
-    <text x="418" y="112" text-anchor="middle"
+          font-size="8" fill="#5C5E6E">Manages memory</text>
+    <!-- Connector tab -->
+    <rect x="202" y="140" width="20" height="8" rx="1" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <!-- Severed below rail -->
+    <line x1="212" y1="151" x2="212" y2="164" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="212" y="175" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#000000" letter-spacing="0.5">MANAGER</text>
+          font-size="9" fill="#D8D9E3">x</text>
 
-    <!-- C5: HOOK HANDLER (cream, Optional) cx=536 -->
-    <text x="536" y="16" text-anchor="middle"
+    <!-- C3: PROVIDER (cream, Optional) -->
+    <rect x="290" y="76" width="88" height="64" rx="3" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <text x="334" y="104" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="492" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <text x="536" y="101" text-anchor="middle"
+          font-size="10" font-weight="500" fill="#1C1E2B" letter-spacing="0.3">Provider</text>
+    <text x="334" y="117" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#000000" letter-spacing="0.5">HOOK</text>
-    <text x="536" y="114" text-anchor="middle"
+          font-size="8" fill="#8B8D9C">AI model backend</text>
+    <!-- Connector tab -->
+    <rect x="324" y="140" width="20" height="8" rx="1" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <!-- Severed below rail -->
+    <line x1="334" y1="151" x2="334" y2="164" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="334" y="175" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#000000" letter-spacing="0.5">HANDLER</text>
+          font-size="9" fill="#D8D9E3">x</text>
 
-    <!-- C6: RESOLVER (cream, Optional) cx=654 -->
-    <text x="654" y="16" text-anchor="middle"
+    <!-- C4: TOOL (cream, Optional) -->
+    <rect x="394" y="76" width="88" height="64" rx="3" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <text x="438" y="104" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="8.5" fill="#6F7782">OPTIONAL</text>
-    <rect x="610" y="38" width="88" height="122" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <text x="654" y="107" text-anchor="middle"
+          font-size="10" font-weight="500" fill="#1C1E2B" letter-spacing="0.3">Tool</text>
+    <text x="438" y="117" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="9" fill="#000000" letter-spacing="0.5">RESOLVER</text>
-
-    <!-- ── MOUNT RAIL (drawn before tabs so tabs appear on top) ─────────── -->
-    <rect x="20" y="160" width="680" height="26" fill="#F2E8D4" stroke="#BFA16C" stroke-width="1"/>
-    <text x="360" y="176" text-anchor="middle"
+          font-size="8" fill="#8B8D9C">AI-chosen actions</text>
+    <!-- Connector tab -->
+    <rect x="428" y="140" width="20" height="8" rx="1" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <!-- Severed below rail -->
+    <line x1="438" y1="151" x2="438" y2="164" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="438" y="175" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="9.5" fill="#6F4E1A" letter-spacing="0.5">mount(coordinator, config)</text>
+          font-size="9" fill="#D8D9E3">x</text>
 
-    <!-- ── CONNECTOR TABS (drawn AFTER rail so they appear as plugs inside) -->
-    <rect x="54"  y="160" width="20" height="16" fill="#4A838D" stroke="#2C6470" stroke-width="1.5"/>
-    <rect x="172" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <rect x="290" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <rect x="408" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <rect x="526" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-    <rect x="644" y="160" width="20" height="16" fill="#FBF0D9" stroke="#BFA16C" stroke-width="1"/>
-
-    <!-- ── BELOW RAIL: orchestrator runtime line, others severed ────────── -->
-    <!-- ORCHESTRATOR: thick teal runtime line (cx=64) -->
-    <line x1="64" y1="186" x2="64" y2="202" stroke="#4A838D" stroke-width="3"/>
-    <polygon points="64,206 60,200 68,200" fill="#4A838D"/>
-
-    <!-- PROVIDER: severed line + × (cx=182) -->
-    <line x1="182" y1="186" x2="182" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="182" y="200" text-anchor="middle"
+    <!-- C5: HOOK HANDLER (cream, Optional) -->
+    <rect x="498" y="76" width="88" height="64" rx="3" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <text x="542" y="104" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#A47C40">×</text>
-
-    <!-- TOOL: severed (cx=300) -->
-    <line x1="300" y1="186" x2="300" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="300" y="200" text-anchor="middle"
+          font-size="10" font-weight="500" fill="#1C1E2B" letter-spacing="0.3">Hook Handler</text>
+    <text x="542" y="117" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#A47C40">×</text>
-
-    <!-- CONTEXT MGR: severed (cx=418) -->
-    <line x1="418" y1="186" x2="418" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="418" y="200" text-anchor="middle"
+          font-size="8" fill="#8B8D9C">Invisible to AI</text>
+    <!-- Connector tab -->
+    <rect x="532" y="140" width="20" height="8" rx="1" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <!-- Severed below rail -->
+    <line x1="542" y1="151" x2="542" y2="164" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="542" y="175" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#A47C40">×</text>
+          font-size="9" fill="#D8D9E3">x</text>
 
-    <!-- HOOK HANDLER: severed (cx=536) -->
-    <line x1="536" y1="186" x2="536" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="536" y="200" text-anchor="middle"
+    <!-- C6: RESOLVER (cream, Optional) -->
+    <rect x="602" y="76" width="88" height="64" rx="3" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <text x="646" y="104" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#A47C40">×</text>
-
-    <!-- RESOLVER: severed (cx=654) -->
-    <line x1="654" y1="186" x2="654" y2="196" stroke="#BFA16C" stroke-width="1" stroke-dasharray="3 3"/>
-    <text x="654" y="200" text-anchor="middle"
+          font-size="10" font-weight="500" fill="#1C1E2B" letter-spacing="0.3">Resolver</text>
+    <text x="646" y="117" text-anchor="middle"
           font-family="Inter, system-ui, sans-serif"
-          font-size="12" fill="#A47C40">×</text>
+          font-size="8" fill="#8B8D9C">Name-to-path mapping</text>
+    <!-- Connector tab -->
+    <rect x="636" y="140" width="20" height="8" rx="1" fill="#FBF0D9" stroke="#BFA16C" stroke-width="0.75"/>
+    <!-- Severed below rail -->
+    <line x1="646" y1="151" x2="646" y2="164" stroke="#D8D9E3" stroke-width="1" stroke-dasharray="3 2"/>
+    <text x="646" y="175" text-anchor="middle"
+          font-family="Inter, system-ui, sans-serif"
+          font-size="9" fill="#D8D9E3">x</text>
 
-    <!-- Outer border on top -->
+    <!-- Bottom annotation -->
+    <text x="360" y="220" text-anchor="middle"
+          font-family="Inter, system-ui, sans-serif"
+          font-size="8.5" fill="#8B8D9C">Only the Orchestrator maintains a live connection after mount. All others connect once, then disconnect.</text>
+
   </svg>
+  <p class="figure-caption">Six module types plug into the kernel through the same <code>mount()</code> contract. The Orchestrator (teal) is the only module with runtime access to the full system. Orchestrator and Context Manager are required; the rest are optional.</p>
 </div>
 
 
@@ -4369,14 +4476,36 @@ standards (see @project:standards.md).</code></pre>
 <div id="graph-overlay">
   <div class="graph-overlay-header">Amplifier Architecture Map</div>
   <div id="graph-overlay-inner">
-    <div id="graph-full-loading" class="graph-loading" style="position:absolute;inset:0;background:#080f1e;z-index:2;">
+    <div id="graph-full-loading" class="graph-loading" style="position:absolute;inset:0;background:#FAFAFA;z-index:2;">
       <div class="graph-spin"></div>
       <p>Rendering full diagram&hellip;</p>
     </div>
     <div id="graph-full-inner" style="width:100%;height:100%;"></div>
   </div>
   <button class="graph-close-btn" onclick="closeGraphFullscreen()" title="Close (Esc)">&#215;</button>
+  <div class="graph-zoom-toolbar">
+    <button onclick="graphZoomIn()" title="Zoom in" aria-label="Zoom in">+</button>
+    <button onclick="graphZoomOut()" title="Zoom out" aria-label="Zoom out">&minus;</button>
+    <button onclick="graphFitView()" title="Fit to view" aria-label="Fit to view">&#x26F6;</button>
+  </div>
   <div class="graph-hint-bar">Scroll to zoom &middot; Drag to pan &middot; Click node to highlight connections &middot; Click background to reset &middot; Esc to close</div>
+  <div class="graph-legend" id="graph-legend">
+    <div class="graph-legend-header">Architecture Map</div>
+    <div class="graph-legend-section">
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F5F0E4;border-color:#9B7B3E"></span> Kernel</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#E4F0F2;border-color:#3E7D8A"></span> Modules</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#ECEEF5;border-color:#5C6B9E"></span> Bundles</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#E8F0E8;border-color:#5A7D5A"></span> Foundation</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F0ECF2;border-color:#7B6B8A"></span> Applications</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F2EEF2;border-color:#8A7B8A"></span> Ecosystem</div>
+    </div>
+    <div class="graph-legend-section graph-legend-interactions">
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#0082EB;border-color:#0082EB"></span> Selected</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:rgba(0,130,235,0.15);border-color:#0082EB"></span> Connected</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.12)"></span> Dimmed</div>
+    </div>
+    <div class="graph-legend-hint">Click a node to explore</div>
+  </div>
 </div>
 
 <script type="text/x-dot" id="dot-src">
@@ -4759,7 +4888,7 @@ digraph amplifier_ecosystem {
         node [shape=box fillcolor="#E8F0E8" color="#5A7D5A" fontcolor="#1A1815"]
 
         fb_prepared [label="PreparedBundle\n\nThe bridge between configuration\nand a running session. Takes a bundle,\nfinds all the pieces it needs,\nand assembles them into something that runs."
-                     fillcolor="#80DEEA" penwidth=2]
+                     fillcolor="#E8F0E8" penwidth=2]
 
         fb_pipeline [label="The Pipeline:\n\nBundle → Find the modules\n→ Merge the config → Start the session\n\nFoundation handles this\nwhole sequence for you."]
 
@@ -4767,15 +4896,15 @@ digraph amplifier_ecosystem {
 
         // ADDITION 1: System Prompt Factory — the big new finding
         fb_prompt_factory [label="The System Prompt Factory\n\nAn async closure created during\nsession setup, registered on the\nkernel's context manager.\n\nCalled EVERY LLM turn:\n• Re-reads all @mention files fresh\n• Rebuilds the system prompt\n• Returns instruction + context blocks\n\nFiles are live. Edits picked up\non the very next turn."
-                           shape=component fillcolor="#4DD0E1" fontcolor="#FFFFFF"
-                           penwidth=2.5 color="#006064"]
+                           shape=component fillcolor="#E8F0E8" fontcolor="#1A1815"
+                           penwidth=2.5 color="#5A7D5A"]
 
         // ADDITION 2: Persistent callbacks note
         fb_callback_note [label="KEY INSIGHT: The Foundation-to-Kernel\nrelationship is NOT one-shot.\n\nFoundation maintains two persistent\ncallback channels:\n① System Prompt Factory\n   (content, every turn)\n② BundleModuleResolver\n   (module paths, on demand)\n\nThe kernel calls BACK into\nfoundation code at runtime."
-                          shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#006064" fontsize=9]
+                          shape=note fillcolor="#E8F0E8" color="#5A7D5A" fontcolor="#1A1815" fontsize=9]
 
         fb_note [label="Note: Sessions CAN be created\nwithout bundles.\nThe kernel has zero dependency\non Foundation."
-                 shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#006064"]
+                 shape=note fillcolor="#E8F0E8" color="#5A7D5A" fontcolor="#1A1815"]
 
         fb_prepared -> fb_pipeline       [label="uses"]
         fb_prepared -> fb_resolver       [label="needs"]
@@ -4791,27 +4920,27 @@ digraph amplifier_ecosystem {
     subgraph cluster_agents {
         label="⑨ Agents: Specialist Workers"
         style="filled,rounded"
-        fillcolor="#FBE9E7"
-        color="#BF360C"
+        fillcolor="#F0ECF2"
+        color="#7B6B8A"
         penwidth=2
         fontname="Helvetica-Bold"
         fontsize=14
 
-        node [shape=box fillcolor="#FFCCBC" color="#BF360C" fontcolor="#BF360C"]
+        node [shape=box fillcolor="#F0ECF2" color="#7B6B8A" fontcolor="#1A1815"]
 
         ag_same [label="Agents ARE Bundles\n\nSame file format. Same YAML frontmatter.\nThe only difference? One small key:\nAgents say meta: at the top.\nBundles say bundle: at the top.\n\n(Same mechanism, different frontmatter key.)"
-                 fillcolor="#FF8A65" fontcolor="#FFFFFF" penwidth=2]
+                 fillcolor="#F0ECF2" fontcolor="#1A1815" penwidth=2]
 
         ag_parts [label="Every Agent Has:\n\n• Personality: who am I?\n• Instructions: how do I work?\n• Model: which AI brain?\n• Tools: what can I do?\n• Context: what do I know?"]
 
         ag_task [label="The Task Tool\nSpawns Child Sessions\n\nAny agent can use the 'task' tool\nto delegate work to a specialist.\nThe specialist runs in its own session\nand returns a result."]
 
         ag_sink [label="The Context Sink Pattern\n\nChild agents absorb token cost.\nLong, expensive analysis happens\nin the child session.\nParent stays lean and focused.\n\n(Like delegating to an intern\nso you can stay strategic.)"
-                 shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#BF360C"]
+                 shape=note fillcolor="#F0ECF2" color="#7B6B8A" fontcolor="#1A1815"]
 
         // CHANGE: Note about kernel ignorance of agents
         ag_kernel_note [label="This distinction exists ONLY\nin the foundation layer.\nThe kernel has no concept of 'agents.'"
-                        shape=note fillcolor="#FFF9C4" color="#F9A825" fontcolor="#BF360C" fontsize=9]
+                        shape=note fillcolor="#F0ECF2" color="#7B6B8A" fontcolor="#1A1815" fontsize=9]
 
         ag_same  -> ag_parts [label="defines"]
         ag_task  -> ag_sink  [label="enables" style=dashed]
@@ -4825,13 +4954,13 @@ digraph amplifier_ecosystem {
     subgraph cluster_context {
         label="⑩ Context Files: The AI's Briefing Documents"
         style="filled,rounded"
-        fillcolor="#FFFDE7"
-        color="#F9A825"
+        fillcolor="#ECEEF5"
+        color="#5C6B9E"
         penwidth=2
         fontname="Helvetica-Bold"
         fontsize=14
 
-        node [shape=box fillcolor="#FFF9C4" color="#F57F17" fontcolor="#E65100"]
+        node [shape=box fillcolor="#ECEEF5" color="#5C6B9E" fontcolor="#1A1815"]
 
         ctx_what [label="Context Files ARE:\n\nMarkdown documents loaded into\nthe AI's memory before it starts.\n\nThink: a briefing packet.\n'Here's everything you need to know.'"]
 
@@ -4839,7 +4968,7 @@ digraph amplifier_ecosystem {
         ctx_syntax [label="@namespace:path Syntax\n\ne.g.  @myproject:docs/api-guide.md\n\nRegex-based parser (strips code blocks first).\nThree patterns:\n• @namespace:path (bundle context lookup)\n• @~/path (home directory)\n• @relative/path (relative to bundle)\n\nRecursive up to 3 levels deep.\nContent deduplication via SHA-256."]
 
         ctx_sink [label="The Context Sink Pattern\n\nOne file = one source of truth.\nUpdate the file → every agent\nthat references it gets the update\nautomatically next time it runs.\n\n(No copy-paste drift. Ever.)"
-                  shape=note fillcolor="#FFF9C4" color="#F9A825"]
+                  shape=note fillcolor="#ECEEF5" color="#5C6B9E"]
 
         ctx_flow [label="How Context Files Load:\n\nBundle declares @mentions\n→ System resolves each path\n→ Reads the file\n→ Embeds content inline\n→ AI sees it as part of its context"]
 
@@ -4855,13 +4984,13 @@ digraph amplifier_ecosystem {
     subgraph cluster_events {
         label="⑪ The Hook/Event System: They Are The SAME System"
         style="filled,rounded"
-        fillcolor="#FFEBEE"
-        color="#B71C1C"
+        fillcolor="#E4F0F2"
+        color="#3E7D8A"
         penwidth=2
         fontname="Helvetica-Bold"
         fontsize=14
 
-        node [fillcolor="#FFCDD2" color="#C62828" fontcolor="#B71C1C"]
+        node [fillcolor="#E4F0F2" color="#3E7D8A" fontcolor="#1A1815"]
 
         // CHANGE 1: Updated events — namespace:action format, 41 events, kernel vs orchestrator
         ev_what [label="Events ARE:\nNamed Announcements\n\nFormat: namespace:action\n41 canonical events defined in the kernel.\nExamples:\n  session:start · tool:pre · tool:post\n  provider:request · context:injected\n\nThe kernel emits ONLY lifecycle events:\nsession:start/end/fork, cancel:completed.\nALL operational events come from\nthe orchestrator module."
@@ -4869,25 +4998,25 @@ digraph amplifier_ecosystem {
 
         // CHANGE 2: Updated JSONL logging
         ev_log [label="JSONL Logging\nSingle Source of Truth\n\nThe kernel writes NOTHING to disk.\nEvents are saved to events.jsonl\nby hook modules (like hooks-logging).\n\nEvery event auto-gets:\n• session_id and parent_id\n• UTC timestamp (infrastructure-stamped)"
-                shape=cylinder fillcolor="#EF9A9A" penwidth=2]
+                shape=cylinder fillcolor="#E4F0F2" penwidth=2]
 
         ev_priority [label="Hook Priority Resolution\nWhen multiple hooks respond to one event,\ntheir responses are resolved in this order:"
-                     shape=box fillcolor="#FFCDD2"]
+                     shape=box fillcolor="#E4F0F2"]
 
         subgraph cluster_priority {
             label="Highest → Lowest Priority"
             style="filled,rounded"
-            fillcolor="#FFEBEE"
-            color="#E53935"
+            fillcolor="#E4F0F2"
+            color="#3E7D8A"
             penwidth=1.5
 
-            node [shape=box fontsize=10 fontcolor="#B71C1C"]
+            node [shape=box fontsize=10 fontcolor="#1A1815"]
 
-            pr1 [label="① deny\nBlock everything. Nothing proceeds."        fillcolor="#EF9A9A" color="#C62828"]
-            pr2 [label="② ask_user\nPause and ask a human to decide."        fillcolor="#FFAB91" color="#E64A19"]
-            pr3 [label="③ inject_context\nTeach the AI something mid-turn."   fillcolor="#FFE0B2" color="#F57F17"]
-            pr4 [label="④ modify\nChange the data before it passes through." fillcolor="#FFF9C4" color="#F9A825"]
-            pr5 [label="⑤ continue\nDo nothing. Let it pass through."        fillcolor="#F1F8E9" color="#558B2F"]
+            pr1 [label="① deny\nBlock everything. Nothing proceeds."        fillcolor="#E4F0F2" color="#3E7D8A"]
+            pr2 [label="② ask_user\nPause and ask a human to decide."        fillcolor="#E4F0F2" color="#3E7D8A"]
+            pr3 [label="③ inject_context\nTeach the AI something mid-turn."   fillcolor="#E4F0F2" color="#3E7D8A"]
+            pr4 [label="④ modify\nChange the data before it passes through." fillcolor="#E4F0F2" color="#3E7D8A"]
+            pr5 [label="⑤ continue\nDo nothing. Let it pass through."        fillcolor="#E4F0F2" color="#3E7D8A"]
 
             pr1 -> pr2 -> pr3 -> pr4 -> pr5 [style=invis]
         }
@@ -4903,25 +5032,25 @@ digraph amplifier_ecosystem {
     subgraph cluster_recipes {
         label="⑫ Recipes: Multi-Step Automated Workflows"
         style="filled,rounded"
-        fillcolor="#F3E5F5"
-        color="#6A1B9A"
+        fillcolor="#F0ECF2"
+        color="#7B6B8A"
         penwidth=2
         fontname="Helvetica-Bold"
         fontsize=14
 
-        node [shape=box fillcolor="#E1BEE7" color="#6A1B9A" fontcolor="#4A148C"]
+        node [shape=box fillcolor="#F0ECF2" color="#7B6B8A" fontcolor="#1A1815"]
 
         rc_what [label="Recipes ARE:\n\nYAML playbooks that run\nmultiple agent sessions in order.\nEach step passes results to the next.\n\n(Provided by the recipes bundle.\nNot built into the kernel.)"]
 
         rc_sequential [label="Sequential Execution\n\nSteps run one after another.\nOutput from step N becomes\navailable to step N+1 via\n{{variable}} syntax."]
 
         rc_approval [label="Approval Gates\n\nA human can be required to review\nthe output before the next step runs.\n\n'The AI drafted a PR. Approve to merge?'\n\nHuman-in-the-loop, built in."
-                     fillcolor="#CE93D8" penwidth=2]
+                     fillcolor="#F0ECF2" penwidth=2]
 
         rc_resume [label="Resumability\n\nCheckpoint is saved after each step.\nIf the workflow fails or is cancelled,\nit can resume from the last checkpoint.\nNo work is lost."]
 
         rc_features [label="Also Supports:\n• foreach loops  (repeat for each item)\n• Conditions  (branch on results)\n• Error handling  (retry or skip on failure)\n• Parallel steps  (run multiple at once)"
-                     shape=note fillcolor="#EDE7F6" color="#7B1FA2"]
+                     shape=note fillcolor="#F0ECF2" color="#7B6B8A"]
 
         rc_what       -> rc_sequential [label="runs"]
         rc_sequential -> rc_approval   [label="can pause at\nan approval gate"]
@@ -4936,31 +5065,31 @@ digraph amplifier_ecosystem {
     subgraph cluster_ecosystem {
         label="⑬ The Ecosystem: How All the Layers Stack"
         style="filled,rounded"
-        fillcolor="#E8EAF6"
-        color="#283593"
+        fillcolor="#F2EEF2"
+        color="#8A7B8A"
         penwidth=2
         fontname="Helvetica-Bold"
         fontsize=14
 
-        node [shape=box fontname="Helvetica-Bold"]
+        node [shape=box fontname="Helvetica-Bold" fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco1 [label="LAYER 1: Kernel  (amplifier-core)\nThe unchanging center. Intentionally tiny.\nProvides: contracts, loading, events, lifecycle.\n→ Detailed in Cluster ②"
-              fillcolor="#BBDEFB" color="#0D47A1" fontcolor="#0D47A1" penwidth=3]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815" penwidth=3]
 
         eco2 [label="LAYER 2: Foundation  (amplifier-foundation)\nTurns bundles into running sessions.\nFinds modules, assembles config,\nand hands everything to the kernel.\n→ Detailed in Cluster ⑧"
-              fillcolor="#B3E5FC" color="#01579B" fontcolor="#01579B"]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco3 [label="LAYER 3: Modules\nProviders · Tools · Hooks\nOrchestrators · Context Managers · Resolvers\nThe actual capabilities.\n→ Detailed in Cluster ③"
-              fillcolor="#C8E6C9" color="#2E7D32" fontcolor="#1B5E20"]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco4 [label="LAYER 4: Bundles\nConfiguration packages.\nCombine modules into deployable agents.\nNo code required.\n→ Detailed in Cluster ⑦"
-              fillcolor="#FFE0B2" color="#E65100" fontcolor="#BF360C"]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco5 [label="LAYER 5: Apps\nCLI · Web Interface · Voice · Community Apps\nEnd-user surfaces built on bundles."
-              fillcolor="#E1BEE7" color="#6A1B9A" fontcolor="#4A148C"]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco6 [label="LAYER 6: Community\nThird-party modules, bundles, and apps.\nAnyone can extend the ecosystem.\nThe modular principle at scale."
-              fillcolor="#CFD8DC" color="#37474F" fontcolor="#263238"]
+              fillcolor="#F2EEF2" color="#8A7B8A" fontcolor="#1A1815"]
 
         eco1 -> eco2 [label="powers"]
         eco2 -> eco3 [label="used by"]
@@ -5802,6 +5931,7 @@ digraph amplifier_ecosystem {
   var graphDotSrc = '';
   var graphRenderedCompact = false;
   var graphRenderedFull = false;
+  var graphvizFull = null; // Fullscreen graphviz instance for zoom control
 
   (function initGraph() {
     var srcEl = document.getElementById('dot-src');
@@ -5849,7 +5979,7 @@ digraph amplifier_ecosystem {
       graphRenderedFull = true;
       setTimeout(function() {
         try {
-          d3.select('#graph-full-inner').graphviz({ useWorker: false })
+          graphvizFull = d3.select('#graph-full-inner').graphviz({ useWorker: false })
             .fit(true).zoom(true).zoomScaleExtent([0.05, 20])
             .attributer(function(d) {
               if (d.tag === 'svg') { d3.select(this).attr('width','100%').attr('height','100%'); }
@@ -5871,49 +6001,188 @@ digraph amplifier_ecosystem {
     document.body.style.overflow = '';
   }
 
-  function setupGraphHighlight(containerId) {
-    var container = document.querySelector(containerId + ' svg');
-    if (!container) return;
-    var highlighted = false;
-    var allNodes = container.querySelectorAll('.node');
-    var allEdges = container.querySelectorAll('.edge');
-
-    function resetHighlight() {
-      allNodes.forEach(function(n) {
-        n.style.opacity = '1';
-        n.querySelectorAll('*').forEach(function(c) { if (c.style.stroke) c.style.stroke = ''; });
-      });
-      allEdges.forEach(function(e) { e.style.opacity = '1'; });
-      highlighted = false;
+  function graphZoomIn() {
+    var svg = document.querySelector('#graph-full-inner svg');
+    if (svg && graphvizFull) {
+      var zoomBehavior = graphvizFull.zoomBehavior();
+      if (zoomBehavior) {
+        d3.select(svg).transition().duration(200).call(zoomBehavior.scaleBy, 1.4);
+      }
     }
+  }
 
-    allNodes.forEach(function(node) {
-      node.style.cursor = 'pointer';
-      node.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (highlighted && node.classList.contains('highlighted-node')) { resetHighlight(); return; }
-        var nodeId = node.id;
-        allNodes.forEach(function(n) { n.style.opacity = '0.15'; n.classList.remove('highlighted-node'); });
-        allEdges.forEach(function(e) { e.style.opacity = '0.08'; });
-        node.style.opacity = '1'; node.classList.add('highlighted-node');
-        allEdges.forEach(function(edge) {
-          var title = edge.querySelector('title');
-          if (title && title.textContent.includes(nodeId)) {
-            edge.style.opacity = '1';
-            var parts = title.textContent.split('->');
-            var src = parts[0] ? parts[0].trim() : null;
-            var tgt = parts[1] ? parts[1].trim().split('[')[0].trim() : null;
-            [src, tgt].forEach(function(id) {
-              if (!id) return;
-              var n = container.querySelector('#' + CSS.escape(id));
-              if (n) n.style.opacity = '1';
-            });
-          }
-        });
-        highlighted = true;
+  function graphZoomOut() {
+    var svg = document.querySelector('#graph-full-inner svg');
+    if (svg && graphvizFull) {
+      var zoomBehavior = graphvizFull.zoomBehavior();
+      if (zoomBehavior) {
+        d3.select(svg).transition().duration(200).call(zoomBehavior.scaleBy, 0.7);
+      }
+    }
+  }
+
+  function graphFitView() {
+    if (graphvizFull) {
+      graphvizFull.resetZoom(d3.transition().duration(300));
+    }
+  }
+
+  function setupGraphHighlight(containerId) {
+    var container = document.querySelector(containerId);
+    if (!container) return;
+    var svg = container.querySelector('svg');
+    if (!svg) return;
+
+    var HIGHLIGHT = '#0082EB';
+    var DIM_NODE = 0.12;
+    var DIM_EDGE = 0.06;
+    var DIM_CLUSTER = 0.06;
+    var selectedNodeId = null;
+
+    // Save original fills/strokes
+    svg.querySelectorAll('.node, .edge, .cluster').forEach(function(el) {
+      el.querySelectorAll('polygon, ellipse, path, text').forEach(function(shape) {
+        if (shape.getAttribute('fill')) shape.dataset.origFill = shape.getAttribute('fill');
+        if (shape.getAttribute('stroke')) shape.dataset.origStroke = shape.getAttribute('stroke');
       });
     });
-    container.addEventListener('click', function() { if (highlighted) resetHighlight(); });
+
+    function getNodeId(nodeEl) {
+      var title = nodeEl.querySelector('title');
+      return title ? title.textContent.trim() : '';
+    }
+
+    function getEdgeEndpoints(edgeEl) {
+      var title = edgeEl.querySelector('title');
+      if (!title) return null;
+      var parts = title.textContent.split('->');
+      if (parts.length !== 2) return null;
+      return { from: parts[0].trim(), to: parts[1].trim() };
+    }
+
+    function resetHighlight() {
+      selectedNodeId = null;
+      svg.querySelectorAll('.node, .edge, .cluster').forEach(function(el) {
+        el.style.opacity = '';
+        el.querySelectorAll('polygon, ellipse, path, text').forEach(function(shape) {
+          if (shape.dataset.origFill) shape.setAttribute('fill', shape.dataset.origFill);
+          if (shape.dataset.origStroke) shape.setAttribute('stroke', shape.dataset.origStroke);
+        });
+      });
+    }
+
+    function highlightNode(nodeEl) {
+      var nodeId = getNodeId(nodeEl);
+      if (!nodeId) return;
+      selectedNodeId = nodeId;
+
+      // Find connected nodes via edges
+      var connectedIds = new Set();
+      connectedIds.add(nodeId);
+      var activeEdges = new Set();
+
+      svg.querySelectorAll('.edge').forEach(function(edge) {
+        var ep = getEdgeEndpoints(edge);
+        if (!ep) return;
+        if (ep.from === nodeId || ep.to === nodeId) {
+          connectedIds.add(ep.from);
+          connectedIds.add(ep.to);
+          activeEdges.add(edge);
+        }
+      });
+
+      // Dim all nodes
+      svg.querySelectorAll('.node').forEach(function(n) {
+        var nId = getNodeId(n);
+        if (connectedIds.has(nId)) {
+          n.style.opacity = '';
+          if (nId === nodeId) {
+            // Highlight selected node
+            n.querySelectorAll('polygon, ellipse').forEach(function(s) {
+              s.setAttribute('fill', HIGHLIGHT);
+              s.setAttribute('stroke', HIGHLIGHT);
+            });
+            n.querySelectorAll('text').forEach(function(t) {
+              t.setAttribute('fill', '#FFFFFF');
+            });
+          } else {
+            // Tint connected nodes
+            n.querySelectorAll('polygon, ellipse').forEach(function(s) {
+              s.setAttribute('stroke', HIGHLIGHT);
+            });
+            n.querySelectorAll('text').forEach(function(t) {
+              t.setAttribute('fill', HIGHLIGHT);
+            });
+          }
+        } else {
+          n.style.opacity = DIM_NODE;
+        }
+      });
+
+      // Dim/highlight edges
+      svg.querySelectorAll('.edge').forEach(function(e) {
+        if (activeEdges.has(e)) {
+          e.style.opacity = '';
+          e.querySelectorAll('path').forEach(function(p) {
+            p.setAttribute('stroke', HIGHLIGHT);
+          });
+          e.querySelectorAll('polygon').forEach(function(p) {
+            p.setAttribute('fill', HIGHLIGHT);
+            p.setAttribute('stroke', HIGHLIGHT);
+          });
+        } else {
+          e.style.opacity = DIM_EDGE;
+        }
+      });
+
+      // Dim unrelated cluster backgrounds
+      svg.querySelectorAll('.cluster').forEach(function(cluster) {
+        var hasConnected = false;
+        cluster.querySelectorAll('.node').forEach(function(n) {
+          if (connectedIds.has(getNodeId(n))) hasConnected = true;
+        });
+        if (!hasConnected) {
+          // Dim the cluster background polygon (first polygon is typically the bg)
+          var bg = cluster.querySelector(':scope > polygon, :scope > path');
+          if (bg) bg.style.opacity = DIM_CLUSTER;
+          // Dim cluster label
+          var label = cluster.querySelector(':scope > text');
+          if (label) label.style.opacity = DIM_NODE;
+        }
+      });
+    }
+
+    // Wire up click handlers
+    svg.querySelectorAll('.node').forEach(function(n) {
+      n.style.cursor = 'pointer';
+      n.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var nodeId = getNodeId(n);
+        if (nodeId === selectedNodeId) {
+          resetHighlight();
+        } else {
+          resetHighlight();
+          highlightNode(n);
+        }
+      });
+    });
+
+    // Click background to reset
+    svg.addEventListener('click', function(e) {
+      if (e.target === svg || e.target.tagName === 'svg') {
+        resetHighlight();
+      }
+    });
+
+    // Also reset if clicking on the graph background polygon (often the first polygon in the SVG)
+    var bgRect = svg.querySelector(':scope > g > polygon');
+    if (bgRect) {
+      bgRect.style.cursor = 'default';
+      bgRect.addEventListener('click', function(e) {
+        e.stopPropagation();
+        resetHighlight();
+      });
+    }
   }
 
   // Esc key closes graph overlay
