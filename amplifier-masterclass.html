@@ -445,6 +445,7 @@
       height: 36px;
       border-radius: 6px;
       flex-shrink: 0;
+      align-self: center;
     }
 
     .drawer-wordmark {
@@ -453,6 +454,7 @@
       font-weight: 600;
       color: var(--text-primary);
       letter-spacing: -0.01em;
+      line-height: 1.2;
     }
 
     .drawer-subtitle {
@@ -485,16 +487,8 @@
     }
 
     /* ── Styled CSS-only tooltip ────────────────────────────────────────────── */
-    [data-tooltip] {
-      position: relative;
-    }
-
-    [data-tooltip]::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      top: 50%;
-      left: calc(100% + 8px);
-      transform: translateY(-50%);
+    .styled-tooltip {
+      position: fixed;
       font-family: var(--font-heading);
       font-size: 11px;
       font-weight: 500;
@@ -508,10 +502,10 @@
       opacity: 0;
       transition: opacity 100ms ease;
       box-shadow: 0 2px 8px rgba(28,30,43,0.08);
-      z-index: 50;
+      z-index: 9999;
     }
 
-    [data-tooltip]:hover::after {
+    .styled-tooltip.visible {
       opacity: 1;
     }
 
@@ -6155,6 +6149,27 @@ digraph amplifier_ecosystem {
   };
 
   const CHAPTER_IDS = Object.keys(CHAPTER_TITLES);
+
+  // ── Styled Tooltip (for [data-tooltip] elements) ─────────────────────
+  (function() {
+    const tip = document.createElement('div');
+    tip.className = 'styled-tooltip';
+    document.body.appendChild(tip);
+
+    document.querySelectorAll('[data-tooltip]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        const rect = el.getBoundingClientRect();
+        tip.textContent = el.getAttribute('data-tooltip');
+        tip.style.top = (rect.bottom + 6) + 'px';
+        tip.style.left = (rect.left + rect.width / 2) + 'px';
+        tip.style.transform = 'translateX(-50%)';
+        tip.classList.add('visible');
+      });
+      el.addEventListener('mouseleave', () => {
+        tip.classList.remove('visible');
+      });
+    });
+  })();
 
   // ── Term Definitions for Tooltip Cards ──────────────────────────────────
   const TERM_DEFS = {
