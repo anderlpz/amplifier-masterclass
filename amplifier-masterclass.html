@@ -2250,8 +2250,49 @@
 
     .audio-controls-row {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 8px;
+    }
+
+    .audio-transport {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .audio-transport-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
       justify-content: center;
+      padding: 0;
+      transition: color 150ms, background 150ms;
+      touch-action: manipulation;
+    }
+
+    .audio-transport-btn:hover {
+      color: var(--text-primary);
+      background: var(--surface-recessed);
+    }
+
+    .audio-transport-play {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      color: white;
+      margin: 0 2px;
+    }
+
+    .audio-transport-play:hover {
+      background: var(--text-primary);
+      color: white;
     }
 
     .audio-cycle-btn {
@@ -2494,8 +2535,20 @@
     <!-- Audio controls: speed + voice selectors (desktop sidebar bottom / mobile sheet scroll) -->
     <div class="drawer-audio-controls" id="drawerAudioControls">
       <div class="audio-controls-row">
-        <button class="audio-cycle-btn" id="speedCycleBtn" aria-label="Playback speed: 1x. Tap to change.">1x</button>
         <button class="audio-cycle-btn" id="voiceCycleBtnDrawer" aria-label="Voice: Fable. Tap to change.">Fable</button>
+        <div class="audio-transport">
+          <button class="audio-transport-btn" id="skipBackBtn" aria-label="Back 15 seconds">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V1L5 4l4 3V5a5 5 0 110 10A5 5 0 014 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="9" y="10.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" font-weight="600" fill="currentColor">15</text></svg>
+          </button>
+          <button class="audio-transport-btn audio-transport-play" id="drawerPlayBtn" aria-label="Play">
+            <svg class="transport-icon-play" width="20" height="20" viewBox="0 0 20 20"><polygon points="6.5,3 17,10 6.5,17" fill="currentColor"/></svg>
+            <svg class="transport-icon-pause" width="20" height="20" viewBox="0 0 20 20" style="display:none"><rect x="4" y="3" width="4" height="14" rx="1" fill="currentColor"/><rect x="12" y="3" width="4" height="14" rx="1" fill="currentColor"/></svg>
+          </button>
+          <button class="audio-transport-btn" id="skipForwardBtn" aria-label="Forward 15 seconds">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V1l4 3-4 3V5a5 5 0 100 10A5 5 0 0014 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="9" y="10.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" font-weight="600" fill="currentColor">15</text></svg>
+          </button>
+        </div>
+        <button class="audio-cycle-btn" id="speedCycleBtn" aria-label="Playback speed: 1x. Tap to change.">1x</button>
       </div>
     </div>
   </div>
@@ -6376,6 +6429,52 @@ digraph amplifier_ecosystem {
       speedCycleBtn.setAttribute('aria-label', 'Playback speed: ' + speed + 'x. Tap to change.');
     });
   }
+
+  // ── Transport Controls (drawer play/pause, skip back/forward) ──────
+  const drawerPlayBtn = document.getElementById('drawerPlayBtn');
+  const skipBackBtn = document.getElementById('skipBackBtn');
+  const skipForwardBtn = document.getElementById('skipForwardBtn');
+  const transportIconPlay = drawerPlayBtn ? drawerPlayBtn.querySelector('.transport-icon-play') : null;
+  const transportIconPause = drawerPlayBtn ? drawerPlayBtn.querySelector('.transport-icon-pause') : null;
+
+  function updateTransportUI() {
+    if (!transportIconPlay || !transportIconPause) return;
+    if (isPlaying) {
+      transportIconPlay.style.display = 'none';
+      transportIconPause.style.display = 'block';
+      drawerPlayBtn.setAttribute('aria-label', 'Pause');
+    } else {
+      transportIconPlay.style.display = 'block';
+      transportIconPause.style.display = 'none';
+      drawerPlayBtn.setAttribute('aria-label', 'Play');
+    }
+  }
+
+  if (drawerPlayBtn) {
+    drawerPlayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleAudio();
+      updateTransportUI();
+    });
+  }
+
+  if (skipBackBtn) {
+    skipBackBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chapterAudio.currentTime = Math.max(0, chapterAudio.currentTime - 15);
+    });
+  }
+
+  if (skipForwardBtn) {
+    skipForwardBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chapterAudio.currentTime = Math.min(chapterAudio.duration || 0, chapterAudio.currentTime + 15);
+    });
+  }
+
+  // Keep transport UI in sync when audio state changes elsewhere
+  chapterAudio.addEventListener('play', updateTransportUI);
+  chapterAudio.addEventListener('pause', updateTransportUI);
 
   // ── Voice Selector ──────────────────────────────────────────────────────
   // Voice cycle button (drawer)
