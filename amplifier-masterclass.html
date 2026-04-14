@@ -6975,60 +6975,43 @@ digraph amplifier_ecosystem {
     updateScrubber();
   });
 
-  // ── Position code markers by measuring actual line positions ────────
-  document.querySelectorAll('.code-markers').forEach(container => {
-    const pre = container.nextElementSibling;
-    if (!pre || pre.tagName !== 'PRE') return;
+  // ── Position code markers based on line numbers ────────────────────
+  function positionMarkers() {
+    document.querySelectorAll('.code-markers').forEach(container => {
+      const pre = container.nextElementSibling;
+      if (!pre || pre.tagName !== 'PRE') return;
 
-    const code = pre.querySelector('code');
-    if (!code) return;
+      const code = pre.querySelector('code');
+      if (!code) return;
 
-    const lineStr = container.getAttribute('data-lines');
-    if (!lineStr) return;
+      const lineStr = container.getAttribute('data-lines');
+      if (!lineStr) return;
 
-    const lineNums = lineStr.split(',').map(Number);
-    const markers = container.querySelectorAll('.code-marker');
-    const text = code.textContent;
-    const lines = text.split('\n');
+      const lineNums = lineStr.split(',').map(Number);
+      const markers = container.querySelectorAll('.code-marker');
 
-    // Measure each target line's vertical center using a Range
-    const preRect = pre.getBoundingClientRect();
+      // Get the computed line-height and padding of the code element
+      const codeStyle = getComputedStyle(code);
+      const preStyle = getComputedStyle(pre);
+      const lineHeight = parseFloat(codeStyle.lineHeight) || (parseFloat(codeStyle.fontSize) * 1.5);
+      const paddingTop = parseFloat(preStyle.paddingTop) || 16;
 
-    markers.forEach((marker, i) => {
-      if (i >= lineNums.length) return;
-      const lineIdx = lineNums[i];
-
-      // Find the character offset of the start of this line
-      let charOffset = 0;
-      for (let j = 0; j < lineIdx && j < lines.length; j++) {
-        charOffset += lines[j].length + 1; // +1 for the newline
-      }
-
-      // Walk the text nodes to find the right one and offset
-      const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
-      let node, accum = 0, targetNode = null, targetOffset = 0;
-      while (node = walker.nextNode()) {
-        if (accum + node.length > charOffset) {
-          targetNode = node;
-          targetOffset = charOffset - accum;
-          break;
-        }
-        accum += node.length;
-      }
-
-      if (targetNode) {
-        // Range across the full line content for a stable bounding rect
-        const lineLen = (lines[lineIdx] || '').length || 1;
-        const endOffset = Math.min(charOffset + lineLen, targetNode.length);
-        const range = document.createRange();
-        range.setStart(targetNode, targetOffset);
-        range.setEnd(targetNode, Math.max(targetOffset + 1, endOffset));
-        const lineRect = range.getBoundingClientRect();
-        const top = Math.round(lineRect.top - preRect.top + (lineRect.height / 2) - 14);
-        marker.style.top = top + 'px';
-        range.detach();
-      }
+      markers.forEach((marker, i) => {
+        if (i >= lineNums.length) return;
+        const lineIdx = lineNums[i];
+        // Center the marker on the target line
+        const top = paddingTop + (lineIdx * lineHeight) + (lineHeight / 2) - 11; // 11 = half marker height (22px)
+        marker.style.top = Math.round(top) + 'px';
+      });
     });
+  }
+
+  // Run on load and on resize (debounced)
+  positionMarkers();
+  let markerResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(markerResizeTimer);
+    markerResizeTimer = setTimeout(positionMarkers, 200);
   });
 
   // ── Dotgraph viewer ──────────────────────────────────────────────────────────
