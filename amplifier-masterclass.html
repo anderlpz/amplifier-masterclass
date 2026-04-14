@@ -2305,6 +2305,24 @@
       inset: -8px;
     }
 
+    /* Skip-15 buttons: icon + "15" text overlay */
+    .skip-btn {
+      position: relative;
+    }
+
+    .skip-label {
+      position: absolute;
+      font-family: var(--font-heading);
+      font-size: 9px;
+      font-weight: 700;
+      color: currentColor;
+      line-height: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 2px;
+    }
+
     /* Play/pause: 44×44 filled circle */
     .audio-transport-play {
       width: 44px;
@@ -2402,25 +2420,29 @@
     .audio-cycle-btn {
       font-family: var(--font-heading);
       font-size: 12px;
-      font-weight: 500;
-      color: var(--accent);
-      background: var(--accent-soft);
-      border: 1px solid var(--accent);
-      border-radius: 14px;
-      padding: 0 14px;
-      height: 32px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 150ms, color 150ms;
+      padding: 0;
+      transition: color 150ms, background 150ms;
       touch-action: manipulation;
-      min-width: 44px;
     }
 
     .audio-cycle-btn:hover {
-      background: var(--accent);
-      color: white;
+      background: var(--surface-recessed);
+      color: var(--text-primary);
+    }
+
+    .audio-cycle-btn:active {
+      background: var(--border-light);
     }
 
     /* ── Voice overflow menu ──────────────────────────────────────────────── */
@@ -2709,28 +2731,30 @@
         <div class="audio-transport" role="group" aria-label="Playback controls">
           <!-- Prev chapter -->
           <button class="audio-transport-btn audio-transport-btn--chapter" id="prevChapterBtn" aria-label="Previous chapter">
-            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M56,40V216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M200,40,96,128l104,88Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M197.81,34.4a12,12,0,0,0-12.4.55L68,113.73V40a12,12,0,0,0-24,0V216a12,12,0,0,0,24,0V142.27l117.41,78.78A12,12,0,0,0,204,212V44A12,12,0,0,0,197.81,34.4Z" fill="currentColor"/></svg>
           </button>
 
-          <!-- Skip back 15s — Phosphor ArrowCounterClockwise + "15" text -->
-          <button class="audio-transport-btn" id="skipBackBtn" aria-label="Back 15 seconds">
-            <svg width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M195.88,60.12A96,96,0,1,0,128,224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><polyline points="128 24 128 88 64 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><text x="148" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" fill="currentColor">15</text></svg>
+          <!-- Skip back 15s — Phosphor ClockCounterClockwise fill + "15" HTML text -->
+          <button class="audio-transport-btn skip-btn" id="skipBackBtn" aria-label="Back 15 seconds">
+            <svg width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><path d="M24,56v48a8,8,0,0,0,8,8H80a8,8,0,0,0,0-16H51.31A87.66,87.66,0,0,1,128,56a88,88,0,1,1-88,88,8,8,0,0,0-16,0A104,104,0,1,0,44.66,80H32A8,8,0,0,0,24,56Z" fill="currentColor"/></svg>
+            <span class="skip-label">15</span>
           </button>
 
           <!-- Play / Pause -->
           <button class="audio-transport-btn audio-transport-play" id="drawerPlayBtn" aria-label="Play">
-            <svg class="transport-icon-play" width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,40.87V215.13a15.94,15.94,0,0,0,8.12,13.81,16,16,0,0,0,16.2-.3L232.4,141.51a15.81,15.81,0,0,0,0-27Z" fill="currentColor"/></svg>
-            <svg class="transport-icon-pause" width="20" height="20" viewBox="0 0 256 256" style="display:none" aria-hidden="true"><rect x="152" y="40" width="56" height="176" rx="8" fill="currentColor"/><rect x="48" y="40" width="56" height="176" rx="8" fill="currentColor"/></svg>
+            <svg class="transport-icon-play" width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,215.13V40.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z" fill="currentColor"/></svg>
+            <svg class="transport-icon-pause" width="20" height="20" viewBox="0 0 256 256" style="display:none" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z" fill="currentColor"/></svg>
           </button>
 
-          <!-- Skip forward 15s — Phosphor ArrowClockwise + "15" text -->
-          <button class="audio-transport-btn" id="skipForwardBtn" aria-label="Forward 15 seconds">
-            <svg width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M60.12,60.12A96,96,0,1,1,128,224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><polyline points="128 24 128 88 192 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><text x="108" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" fill="currentColor">15</text></svg>
+          <!-- Skip forward 15s — Phosphor ClockClockwise fill + "15" HTML text -->
+          <button class="audio-transport-btn skip-btn" id="skipForwardBtn" aria-label="Forward 15 seconds">
+            <svg width="22" height="22" viewBox="0 0 256 256" aria-hidden="true"><path d="M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16h28.69A87.66,87.66,0,0,0,128,56a88,88,0,1,0,88,88,8,8,0,0,1,16,0A104,104,0,1,1,219.34,80H232A8,8,0,0,1,240,56Z" fill="currentColor"/></svg>
+            <span class="skip-label">15</span>
           </button>
 
           <!-- Next chapter -->
           <button class="audio-transport-btn audio-transport-btn--chapter" id="nextChapterBtn" aria-label="Next chapter">
-            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M200,40V216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M56,40l104,88L56,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M58.19,34.4a12,12,0,0,1,12.4.55L188,113.73V40a12,12,0,0,1,24,0V216a12,12,0,0,1-24,0V142.27L70.59,221.05A12,12,0,0,1,52,212V44A12,12,0,0,1,58.19,34.4Z" fill="currentColor"/></svg>
           </button>
         </div>
 
