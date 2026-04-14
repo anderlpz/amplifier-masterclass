@@ -28,7 +28,7 @@ jobs:
           cp amplifier-masterclass.html _site/index.html
           cp amplifier-masterclass-deck.html _site/deck.html
           cp -r audio _site/audio
-          cp favicon-32.png apple-touch-icon.png icon-192.png _site/
+          cp favicon-32.png apple-touch-icon.png icon-192.png icon-36@2x.png _site/
           find _site/audio -name '*.txt' -delete
 
       - name: Fix deck link in index.html
