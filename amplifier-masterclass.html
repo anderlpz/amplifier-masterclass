@@ -194,16 +194,130 @@
       white-space: nowrap;
     }
 
-    @media (max-width: 768px) {
+    /* ── Mobile bottom bar (replaces old 768px pill centering) ────────────── */
+    @media (max-width: 767px) {
       .toc-btn {
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 5px 12px 5px 5px;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: none;
+
+        width: 100%;
+        height: calc(44px + env(safe-area-inset-bottom));
+        padding-top: 0;
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid var(--border-light);
+        box-shadow: 0 -2px 8px rgba(28,30,43,0.06);
+
+        justify-content: flex-start;
+        gap: 10px;
       }
-      .toc-chapter-title { font-size: 12px; }
+
+      /* Progress line across top of bottom bar driven by --read-progress */
+      .toc-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: calc(var(--read-progress, 0) * 100%);
+        background: var(--accent);
+        border-radius: 0;
+        pointer-events: none;
+        transition: width 200ms linear;
+      }
+
+      /* Chapter title expands to fill center space */
+      .toc-chapter-title {
+        flex: 1;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Audio button pushed to right */
       .toc-audio-btn {
+        margin-left: auto;
+        flex-shrink: 0;
         width: 24px;
         height: 24px;
+      }
+
+      /* Page bottom padding clears the bottom bar */
+      .page-wrapper {
+        padding-bottom: calc(56px + env(safe-area-inset-bottom));
+      }
+
+      /* ── Bottom sheet (replaces left-slide drawer) ── */
+      .toc-drawer {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+
+        height: 65vh;
+        min-height: 320px;
+        max-height: calc(100vh - 80px);
+
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 -4px 24px rgba(28,30,43,0.12);
+        border-top: 1px solid var(--border);
+
+        transform: translateY(100%);
+        transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+
+        padding-top: 28px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Drag handle decoration */
+      .toc-drawer::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        pointer-events: none;
+      }
+
+      /* Open state — slides up */
+      .toc-overlay.open .toc-drawer {
+        transform: translateY(0);
+      }
+
+      /* Sheet nav fills available space */
+      .toc-drawer > nav {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+      }
+
+      /* Sheet handle tap target */
+      .sheet-handle-tap {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 32px;
+        cursor: pointer;
       }
     }
 
@@ -2000,6 +2114,275 @@
       }
     }
 
+    /* ── Desktop permanent sidebar (≥1200px) ─────────────────────────────── */
+    @media (min-width: 1200px) {
+
+      /* Shift body content right to make room for 280px sidebar */
+      body:not(.sidebar-collapsed) {
+        padding-left: 280px;
+        transition: padding-left 250ms ease;
+      }
+
+      /* Sidebar always visible — remove modal behavior */
+      body:not(.sidebar-collapsed) .toc-overlay {
+        background: transparent;
+        pointer-events: none;
+        opacity: 1;
+      }
+
+      body:not(.sidebar-collapsed) .toc-overlay .toc-drawer {
+        pointer-events: auto;
+      }
+
+      body:not(.sidebar-collapsed) .toc-drawer {
+        width: 280px;
+        transform: translateX(0);
+        box-shadow: 1px 0 0 var(--border-light);
+        transition: transform 250ms ease;
+        padding: 20px 20px 24px;
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      /* Sidebar nav fills available height and scrolls independently */
+      body:not(.sidebar-collapsed) .toc-drawer > nav {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+      }
+
+      /* Pill is hidden when sidebar is open */
+      body:not(.sidebar-collapsed) .toc-btn {
+        display: none;
+      }
+
+      /* .open class has no visual effect at desktop when sidebar is permanent */
+      body:not(.sidebar-collapsed) .toc-overlay.open {
+        opacity: 1;
+      }
+
+      /* ── Collapsed state ── */
+      body.sidebar-collapsed {
+        padding-left: 0;
+        transition: padding-left 250ms ease;
+      }
+
+      body.sidebar-collapsed .toc-drawer {
+        transform: translateX(-100%);
+      }
+
+      body.sidebar-collapsed .toc-btn {
+        display: flex;
+      }
+
+      /* Collapse button shown at desktop */
+      .sidebar-collapse-btn {
+        display: flex;
+      }
+
+      /* drawer-header needs position: relative for the absolute collapse btn */
+      .drawer-header {
+        position: relative;
+      }
+    }
+
+    /* ── Sidebar collapse button ─────────────────────────────────────────── */
+    .sidebar-collapse-btn {
+      display: none; /* Mobile: hidden */
+      position: absolute;
+      top: 20px;
+      right: -12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 5;
+      padding: 0;
+      transition: border-color 150ms, color 150ms, box-shadow 150ms;
+    }
+
+    .sidebar-collapse-btn:hover {
+      border-color: var(--border);
+      color: var(--text-secondary);
+      box-shadow: 0 1px 4px rgba(28,30,43,0.1);
+    }
+
+    /* Flip chevron direction when collapsed */
+    .sidebar-collapse-btn[aria-expanded="false"] svg {
+      transform: scaleX(-1);
+    }
+
+    /* ── Sheet handle tap target (mobile, default hidden) ───────────────── */
+    .sheet-handle-tap {
+      display: none;
+    }
+
+    /* ── Drawer nav scrollable on desktop (applied globally, overridden per breakpoint) */
+    .toc-drawer > nav {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    /* ── Drawer audio controls section ──────────────────────────────────── */
+    .drawer-audio-controls {
+      flex-shrink: 0;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-light);
+      margin-top: 16px;
+    }
+
+    .drawer-audio-controls .sidebar-label {
+      margin-bottom: 10px;
+    }
+
+    /* ── Speed selector ─────────────────────────────────────────────────── */
+    .speed-selector {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .speed-option {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+
+      min-width: 44px;
+      height: 28px;
+      padding: 0 8px;
+
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+
+      cursor: pointer;
+      line-height: 1;
+      position: relative;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+
+    /* Expand tap area without changing layout */
+    .speed-option::after {
+      content: '';
+      position: absolute;
+      inset: -8px -4px;
+    }
+
+    .speed-option:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .speed-option.selected,
+    .speed-option[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--surface);
+    }
+
+    .speed-option.selected:hover,
+    .speed-option[aria-pressed="true"]:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    /* ── Voice selector ─────────────────────────────────────────────────── */
+    .voice-selector {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .voice-option {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+
+      height: 28px;
+      padding: 0 12px;
+
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      cursor: pointer;
+      line-height: 1;
+      white-space: nowrap;
+      position: relative;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+
+    .voice-option::after {
+      content: '';
+      position: absolute;
+      inset: -8px -4px;
+    }
+
+    .voice-option:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .voice-option.selected,
+    .voice-option[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--surface);
+    }
+
+    .voice-option.selected:hover,
+    .voice-option[aria-pressed="true"]:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    /* ── Section playing highlight ──────────────────────────────────────── */
+    .section-playing {
+      position: relative;
+    }
+
+    .section-playing::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ── Reduced motion ─────────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .toc-drawer,
+      .toc-btn::before,
+      .speed-option,
+      .voice-option {
+        transition-duration: 0.01ms !important;
+      }
+
+      body,
+      body.sidebar-collapsed {
+        transition: none !important;
+      }
+    }
+
   </style>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/d3-graphviz@5/build/d3-graphviz.min.js"></script>
@@ -2027,6 +2410,15 @@
 <!-- TOC overlay + drawer -->
 <div class="toc-overlay" id="tocOverlay">
   <div class="toc-drawer" id="tocDrawer">
+    <!-- Drag handle tap target: mobile only, closes the bottom sheet -->
+    <div
+      class="sheet-handle-tap"
+      id="sheetHandleTap"
+      role="button"
+      aria-label="Close panel"
+      tabindex="0"
+    ></div>
+
     <div class="drawer-header">
       <div class="drawer-brand">
         <span class="drawer-wordmark">Amplifier</span>
@@ -2038,6 +2430,24 @@
           Present
         </a>
       </div>
+
+      <!-- Collapse toggle: desktop only, straddles the sidebar right edge -->
+      <button
+        class="sidebar-collapse-btn"
+        id="sidebarCollapseBtn"
+        aria-label="Collapse sidebar"
+        aria-expanded="true"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <polyline
+            points="8,2 4,6 8,10"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
     <p class="sidebar-label">Contents</p>
     <nav>
@@ -2158,6 +2568,23 @@
         </li>
       </ul>
     </nav>
+
+    <!-- Audio controls: speed + voice selectors (desktop sidebar bottom / mobile sheet scroll) -->
+    <div class="drawer-audio-controls" id="drawerAudioControls">
+      <p class="sidebar-label">Playback</p>
+
+      <!-- Speed Selector -->
+      <div class="speed-selector" role="group" aria-label="Playback speed">
+        <button class="speed-option" data-speed="0.75" aria-pressed="false">0.75×</button>
+        <button class="speed-option selected" data-speed="1" aria-pressed="true">1×</button>
+        <button class="speed-option" data-speed="1.25" aria-pressed="false">1.25×</button>
+        <button class="speed-option" data-speed="1.5" aria-pressed="false">1.5×</button>
+        <button class="speed-option" data-speed="2" aria-pressed="false">2×</button>
+      </div>
+
+      <!-- Voice Selector (buttons populated by JS from AVAILABLE_VOICES) -->
+      <div class="voice-selector" id="voiceSelector" role="group" aria-label="Audio voice"></div>
+    </div>
   </div>
 </div>
 
@@ -5279,15 +5706,101 @@ digraph amplifier_ecosystem {
     tocBtn.style.opacity = '';
     tocBtn.style.pointerEvents = '';
     document.body.style.overflow = '';
+    // Clear any inline transform set during drag-to-dismiss so CSS can animate the sheet away
+    const drawer = document.getElementById('tocDrawer');
+    if (drawer) drawer.style.transform = '';
   }
 
   tocBtn.addEventListener('click', (e) => {
     // Don't open drawer if audio button was clicked
     if (e.target.closest('.toc-audio-btn')) return;
+
+    // Desktop (≥1200px): toggle sidebar collapsed state
+    if (window.innerWidth >= 1200) {
+      document.body.classList.toggle('sidebar-collapsed');
+      const collapseBtn = document.getElementById('sidebarCollapseBtn');
+      if (collapseBtn) {
+        collapseBtn.setAttribute(
+          'aria-expanded',
+          document.body.classList.contains('sidebar-collapsed') ? 'false' : 'true'
+        );
+      }
+      return;
+    }
+
+    // Mobile: open bottom sheet
     tocOverlay.classList.add('open');
     tocBtn.style.opacity = '0';
     tocBtn.style.pointerEvents = 'none';
     document.body.style.overflow = 'hidden';
+  });
+
+  // Sidebar collapse button (desktop only)
+  const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
+  if (sidebarCollapseBtn) {
+    sidebarCollapseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.body.classList.toggle('sidebar-collapsed');
+      sidebarCollapseBtn.setAttribute(
+        'aria-expanded',
+        document.body.classList.contains('sidebar-collapsed') ? 'false' : 'true'
+      );
+      // Return focus to tocBtn when sidebar collapses
+      if (document.body.classList.contains('sidebar-collapsed')) {
+        tocBtn.focus();
+      }
+    });
+  }
+
+  // Sheet handle tap — closes bottom sheet (mobile)
+  const sheetHandleTap = document.getElementById('sheetHandleTap');
+  if (sheetHandleTap) {
+    sheetHandleTap.addEventListener('click', closeToc);
+    sheetHandleTap.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        closeToc();
+      }
+    });
+  }
+
+  // Drag-to-dismiss for mobile bottom sheet
+  const tocDrawerEl = document.getElementById('tocDrawer');
+  let sheetDragStart = null;
+  let sheetDragY = 0;
+
+  tocDrawerEl.addEventListener('touchstart', (e) => {
+    // Only initiate drag from near the top of the sheet (handle zone, first 60px)
+    const touch = e.touches[0];
+    const rect = tocDrawerEl.getBoundingClientRect();
+    if (touch.clientY - rect.top > 60) return;
+    sheetDragStart = touch.clientY;
+    tocDrawerEl.style.transition = 'none';
+  }, { passive: true });
+
+  tocDrawerEl.addEventListener('touchmove', (e) => {
+    if (sheetDragStart === null) return;
+    const dy = e.touches[0].clientY - sheetDragStart;
+    if (dy > 0) {
+      sheetDragY = dy;
+      tocDrawerEl.style.transform = `translateY(${dy}px)`;
+    }
+  }, { passive: true });
+
+  tocDrawerEl.addEventListener('touchend', () => {
+    if (sheetDragStart === null) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    tocDrawerEl.style.transition = prefersReducedMotion
+      ? 'none'
+      : 'transform 300ms cubic-bezier(0.32, 0.72, 0, 1)';
+
+    if (sheetDragY > 80) {
+      closeToc();
+    } else {
+      tocDrawerEl.style.transform = 'translateY(0)'; // Snap back
+    }
+    sheetDragStart = null;
+    sheetDragY = 0;
   });
 
   // Close on backdrop click
@@ -5672,6 +6185,9 @@ digraph amplifier_ecosystem {
     const offset = CIRCUMFERENCE * (1 - scrollPercent);
     tocRingFill.style.strokeDashoffset = offset;
 
+    // Drive the mobile bottom bar progress line via CSS custom property
+    tocBtn.style.setProperty('--read-progress', scrollPercent);
+
     // Find active chapter (reuse CHAPTER_IDS + CHAPTER_TITLES)
     let activeChapterId = CHAPTER_IDS[0];
     const threshold = scrollY + 120;
@@ -5708,6 +6224,67 @@ digraph amplifier_ecosystem {
     'appendix-a': 'audio/ch13-appendix.mp3'
   };
 
+  // Voice audio — file paths per voice per chapter.
+  // The fable path matches the base AUDIO_FILES paths (audio/ directory).
+  const VOICE_AUDIO_FILES = {
+    fable: {
+      's1':         'audio/fable/ch01-introduction.mp3',
+      's2':         'audio/fable/ch02-architecture.mp3',
+      's3':         'audio/fable/ch03-philosophy.mp3',
+      's4':         'audio/fable/ch04-kernel.mp3',
+      's5':         'audio/fable/ch05-modules.mp3',
+      's6':         'audio/fable/ch06-orchestrator.mp3',
+      's7':         'audio/fable/ch07-tools-hooks.mp3',
+      's8':         'audio/fable/ch08-sessions.mp3',
+      's9':         'audio/fable/ch09-bundles.mp3',
+      's10':        'audio/fable/ch10-foundation.mp3',
+      's11':        'audio/fable/ch11-agents-skills.mp3',
+      's12':        'audio/fable/ch12-complete-picture.mp3',
+      'appendix-a': 'audio/fable/ch13-appendix.mp3'
+    },
+    nova: {
+      's1':         'audio/nova/ch01-introduction.mp3',
+      's2':         'audio/nova/ch02-architecture.mp3',
+      's3':         'audio/nova/ch03-philosophy.mp3',
+      's4':         'audio/nova/ch04-kernel.mp3',
+      's5':         'audio/nova/ch05-modules.mp3',
+      's6':         'audio/nova/ch06-orchestrator.mp3',
+      's7':         'audio/nova/ch07-tools-hooks.mp3',
+      's8':         'audio/nova/ch08-sessions.mp3',
+      's9':         'audio/nova/ch09-bundles.mp3',
+      's10':        'audio/nova/ch10-foundation.mp3',
+      's11':        'audio/nova/ch11-agents-skills.mp3',
+      's12':        'audio/nova/ch12-complete-picture.mp3',
+      'appendix-a': 'audio/nova/ch13-appendix.mp3'
+    },
+    alloy: {
+      's1':         'audio/alloy/ch01-introduction.mp3',
+      's2':         'audio/alloy/ch02-architecture.mp3',
+      's3':         'audio/alloy/ch03-philosophy.mp3',
+      's4':         'audio/alloy/ch04-kernel.mp3',
+      's5':         'audio/alloy/ch05-modules.mp3',
+      's6':         'audio/alloy/ch06-orchestrator.mp3',
+      's7':         'audio/alloy/ch07-tools-hooks.mp3',
+      's8':         'audio/alloy/ch08-sessions.mp3',
+      's9':         'audio/alloy/ch09-bundles.mp3',
+      's10':        'audio/alloy/ch10-foundation.mp3',
+      's11':        'audio/alloy/ch11-agents-skills.mp3',
+      's12':        'audio/alloy/ch12-complete-picture.mp3',
+      'appendix-a': 'audio/alloy/ch13-appendix.mp3'
+    }
+  };
+
+  // Available voices for the voice selector
+  const AVAILABLE_VOICES = ['fable', 'nova', 'alloy'];
+  let activeVoice = 'fable';
+
+  // Resolve the audio src for a chapter using the active voice.
+  // Falls back to the base AUDIO_FILES path if a voice variant isn't present.
+  function getAudioSrc(chapterId) {
+    const voiceFiles = VOICE_AUDIO_FILES[activeVoice];
+    return (voiceFiles && voiceFiles[chapterId]) || AUDIO_FILES[chapterId];
+  }
+
   const chapterAudio = document.getElementById('chapterAudio');
   const tocAudioBtn  = document.getElementById('tocAudioBtn');
   const iconPlay     = tocAudioBtn.querySelector('.audio-icon-play');
@@ -5728,10 +6305,10 @@ digraph amplifier_ecosystem {
     return activeId;
   }
 
-  // Load and play a chapter's audio
+  // Load and play a chapter's audio (voice-aware)
   function playChapter(chapterId) {
-    const src = AUDIO_FILES[chapterId];
-    if (!src) return;
+    if (!AUDIO_FILES[chapterId]) return;
+    const src = getAudioSrc(chapterId);
     if (currentAudioChapter !== chapterId || !chapterAudio.src) {
       chapterAudio.src = src;
       currentAudioChapter = chapterId;
@@ -5739,6 +6316,7 @@ digraph amplifier_ecosystem {
     chapterAudio.play();
     isPlaying = true;
     updateAudioUI();
+    highlightPlayingSection();
   }
 
   // Pause audio
@@ -5758,6 +6336,15 @@ digraph amplifier_ecosystem {
         currentAudioChapter = getActiveChapterId();
       }
       playChapter(currentAudioChapter);
+    }
+  }
+
+  // Highlight the currently-playing section heading in the document
+  function highlightPlayingSection() {
+    document.querySelectorAll('.section-playing').forEach(el => el.classList.remove('section-playing'));
+    if (isPlaying && currentAudioChapter) {
+      const heading = document.getElementById(currentAudioChapter);
+      if (heading) heading.classList.add('section-playing');
     }
   }
 
@@ -5783,6 +6370,8 @@ digraph amplifier_ecosystem {
         btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="3,1 9,5 3,9" fill="currentColor"/></svg>';
       }
     });
+
+    highlightPlayingSection();
   }
 
   // When a chapter ends, auto-advance to the next one
@@ -5855,6 +6444,70 @@ digraph amplifier_ecosystem {
     });
 
     link.appendChild(btn);
+  });
+
+  // ── Speed Selector ──────────────────────────────────────────────────────
+  document.querySelectorAll('.speed-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const speed = parseFloat(btn.dataset.speed);
+      chapterAudio.playbackRate = speed;
+
+      document.querySelectorAll('.speed-option').forEach(b => {
+        b.classList.remove('selected');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('selected');
+      btn.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  // ── Voice Selector ──────────────────────────────────────────────────────
+  // Populate voice buttons dynamically from AVAILABLE_VOICES
+  const voiceSelector = document.getElementById('voiceSelector');
+  if (voiceSelector) {
+    AVAILABLE_VOICES.forEach((voice, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'voice-option' + (i === 0 ? ' selected' : '');
+      btn.dataset.voice = voice;
+      btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      btn.textContent = voice.charAt(0).toUpperCase() + voice.slice(1);
+
+      btn.addEventListener('click', () => {
+        if (voice === activeVoice) return;
+
+        const wasPlaying = isPlaying;
+        const savedTime = chapterAudio.currentTime;
+
+        activeVoice = voice;
+        document.querySelectorAll('.voice-option').forEach(b => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-pressed', 'true');
+
+        // Swap to the new voice file for the current chapter
+        if (currentAudioChapter) {
+          const src = getAudioSrc(currentAudioChapter);
+          if (src) {
+            chapterAudio.src = src;
+            chapterAudio.currentTime = savedTime;
+            if (wasPlaying) chapterAudio.play();
+          }
+        }
+      });
+
+      voiceSelector.appendChild(btn);
+    });
+  }
+
+  // ── Audio progress on mobile bottom bar ─────────────────────────────────
+  // Sets --audio-progress CSS custom property from audio element timeupdate
+  chapterAudio.addEventListener('timeupdate', () => {
+    if (chapterAudio.duration) {
+      const progress = (chapterAudio.currentTime / chapterAudio.duration) * 100;
+      tocBtn.style.setProperty('--audio-progress', progress + '%');
+    }
   });
 
   // ── Position code markers by measuring actual line positions ────────
