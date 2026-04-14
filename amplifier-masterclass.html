@@ -484,6 +484,37 @@
       background: var(--accent-soft);
     }
 
+    /* ── Styled CSS-only tooltip ────────────────────────────────────────────── */
+    [data-tooltip] {
+      position: relative;
+    }
+
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 100ms ease;
+      box-shadow: 0 2px 8px rgba(28,30,43,0.08);
+      z-index: 50;
+    }
+
+    [data-tooltip]:hover::after {
+      opacity: 1;
+    }
+
     .toc-overlay.open {
       opacity: 1;
       pointer-events: auto;
@@ -2167,7 +2198,8 @@
         padding-bottom: max(24px, env(safe-area-inset-bottom));
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
+        height: 100%;
+        overflow: hidden;
       }
 
       /* Sidebar nav fills available height and scrolls independently */
@@ -2587,7 +2619,7 @@
           <span class="drawer-wordmark">Amplifier</span>
           <span class="drawer-subtitle">Masterclass</span>
         </div>
-        <a href="amplifier-masterclass-deck.html" class="drawer-format-btn" title="Open presentation view" aria-label="Present">
+        <a href="amplifier-masterclass-deck.html" class="drawer-format-btn" data-tooltip="Present" aria-label="Present">
           <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         </a>
       </div>
@@ -2710,7 +2742,8 @@
             <li><a href="javascript:void(0)" data-target="s11-2">11.2 Context files</a></li>
             <li><a href="javascript:void(0)" data-target="s11-3">11.3 Recipes</a></li>
             <li><a href="javascript:void(0)" data-target="s11-4">11.4 Skills</a></li>
-            <li><a href="javascript:void(0)" data-target="s11-5">11.5 Modes and model routing</a></li>
+            <li><a href="javascript:void(0)" data-target="s11-5">11.5 One kernel capability</a></li>
+            <li><a href="javascript:void(0)" data-target="s11-6">11.6 Modes and model routing</a></li>
           </ul>
         </li>
 
@@ -4818,7 +4851,7 @@ standards (see @project:standards.md).</code></pre>
 
       <p>Sometimes a task is too complex for a single agent conversation. It involves multiple steps, each requiring different capabilities, where the output of one step feeds into the next. Recipes handle this.</p>
 
-      <p>A <span class="lt" data-l="bundles">recipe</span> is a YAML file that defines a sequence of steps. Each step runs its own agent session (<a href="#s8" class="xref">§8</a>) with its own bundle (<a href="#s9" class="xref">§9</a>), tools, and instructions. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
+      <p>A <span class="lt" data-l="bundles">recipe</span> is a YAML file that defines a sequence of steps. Each agent step runs its own session with its own bundle (<a href="#s9" class="xref">§9</a>), tools, and instructions. Bash steps run direct subprocesses without spawning a session. Output from step N becomes input to step N+1. Review code → Write docs → Create pull request.</p>
 
       <p><strong>Approval gates</strong> pause execution for human review. Between steps, a person can review the current output before the system continues. Automated work with human judgment at the critical junctions.</p>
 
@@ -4883,7 +4916,17 @@ standards (see @project:standards.md).</code></pre>
         </table>
       </div>
 
-      <h3 id="s11-5">11.5 Modes and model routing</h3>
+      <h3 id="s11-5">11.5 One kernel capability</h3>
+
+      <p>Agents, recipes, and skills look different from the outside. An agent is a bundle with a persona. A recipe is a multi-step workflow. A skill can fork into its own session. But underneath, all three converge on the same kernel mechanism: <code>session.spawn</code>. Each creates a new session with its own configuration, its own modules, and its own lifecycle. The parent session continues independently. The child returns a result.</p>
+
+      <p>This is not a coincidence. The kernel provides one mechanism for running isolated work. The three higher-order primitives are different <em>packaging</em> of that mechanism: agents package a persona, recipes package sequencing and approval gates, skills package domain knowledge. The kernel doesn't distinguish between them. It spawns a session.</p>
+
+      <div class="callout" data-layer="kernel">
+        <p><strong>Recipes own ordering. Skills own expertise. Agents own reasoning.</strong> All three use session.spawn. Don't smear one into another.</p>
+      </div>
+
+      <h3 id="s11-6">11.6 Modes and model routing</h3>
 
       <p><strong>Modes</strong> are runtime behavior overlays: a Markdown file that, when activated, injects guidance into the AI's system prompt and enforces tool-level policies. Each tool in the session can be set to <code>safe</code>, <code>warn</code>, <code>confirm</code>, or <code>block</code>. Modes compose into workflow pipelines — brainstorm, then plan, then execute, then verify — where each phase constrains the agent to the tools and mindset appropriate for that stage. The kernel has no concept of modes. They are built from hooks (<a href="#s4-5" class="xref">§4.5</a>) and the <code>inject_context</code> action (<a href="#s7-4" class="xref">§7.4</a>).</p>
 
