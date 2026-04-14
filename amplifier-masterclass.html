@@ -2252,18 +2252,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
     }
 
     .audio-transport {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
+      flex-shrink: 0;
     }
 
+    /* Base: 32×32 skip-15 buttons */
     .audio-transport-btn {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: none;
       background: transparent;
@@ -2275,6 +2276,15 @@
       padding: 0;
       transition: color 150ms, background 150ms;
       touch-action: manipulation;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* 44px tap target for 32px button */
+    .audio-transport-btn::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
     }
 
     .audio-transport-btn:hover {
@@ -2282,17 +2292,109 @@
       background: var(--surface-recessed);
     }
 
+    /* Smaller 28×28 chapter-skip buttons */
+    .audio-transport-btn--chapter {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Expand tap target to 44px for 28px button */
+    .audio-transport-btn--chapter::after {
+      inset: -8px;
+    }
+
+    /* Play/pause: 44×44 filled circle */
     .audio-transport-play {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       background: var(--accent);
       color: white;
-      margin: 0 2px;
+    }
+
+    /* Play button is already large enough — no tap-target expansion needed */
+    .audio-transport-play::after {
+      display: none;
     }
 
     .audio-transport-play:hover {
-      background: var(--text-primary);
+      background: var(--accent-hover);
       color: white;
+    }
+
+    /* ── Audio scrubber ──────────────────────────────────────────── */
+    .audio-scrubber-row {
+      margin-top: 10px;
+    }
+
+    .audio-scrubber {
+      padding: 8px 0;
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+    }
+
+    .audio-scrubber-track {
+      position: relative;
+      width: 100%;
+      height: 3px;
+      background: var(--border-light);
+      border-radius: 2px;
+      overflow: visible;
+    }
+
+    .audio-scrubber-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 2px;
+      pointer-events: none;
+      transition: width 200ms linear;
+    }
+
+    .audio-scrubber.dragging .audio-scrubber-fill {
+      transition: none;
+    }
+
+    .audio-scrubber-thumb {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border: 2px solid var(--surface);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 1px 4px rgba(28,30,43,0.28);
+      pointer-events: none;
+      transition: transform 100ms ease;
+      will-change: transform, left;
+    }
+
+    .audio-scrubber.dragging .audio-scrubber-thumb,
+    .audio-scrubber:active .audio-scrubber-thumb {
+      transform: translate(-50%, -50%) scale(1.35);
+    }
+
+    .audio-scrubber-times {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .audio-time-current,
+    .audio-time-total {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      letter-spacing: 0.01em;
     }
 
     .audio-cycle-btn {
@@ -2345,6 +2447,11 @@
       body,
       body.sidebar-collapsed {
         transition: none !important;
+      }
+
+      .audio-scrubber-fill,
+      .audio-scrubber-thumb {
+        transition-duration: 0.01ms !important;
       }
     }
 
@@ -2532,24 +2639,84 @@
       </ul>
     </nav>
 
-    <!-- Audio controls: speed + voice selectors (desktop sidebar bottom / mobile sheet scroll) -->
+    <!-- Audio controls: transport + scrubber (desktop sidebar bottom / mobile sheet scroll) -->
     <div class="drawer-audio-controls" id="drawerAudioControls">
+
+      <!-- Transport row: voice | ⏮ ↩15 ▶ 15↪ ⏭ | speed -->
       <div class="audio-controls-row">
         <button class="audio-cycle-btn" id="voiceCycleBtnDrawer" aria-label="Voice: Fable. Tap to change.">Fable</button>
-        <div class="audio-transport">
+
+        <div class="audio-transport" role="group" aria-label="Playback controls">
+          <!-- Prev chapter -->
+          <button class="audio-transport-btn audio-transport-btn--chapter" id="prevChapterBtn" aria-label="Previous chapter">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2.5" y="3" width="1.75" height="10" rx="0.875" fill="currentColor"/>
+              <path d="M13.5 4L7 8l6.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Skip back 15s — 24×24 viewBox, 20px rendered, "15" at 9px font = 7.5px on screen -->
           <button class="audio-transport-btn" id="skipBackBtn" aria-label="Back 15 seconds">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V1L5 4l4 3V5a5 5 0 110 10A5 5 0 014 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="9" y="10.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" font-weight="600" fill="currentColor">15</text></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 6.5V3.5L8 5L12 8V6.5a6.5 6.5 0 110 13A6.5 6.5 0 015.5 13"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="12" y="15.5" text-anchor="middle"
+                    font-family="'Inter', system-ui, sans-serif"
+                    font-size="9" font-weight="700"
+                    fill="currentColor" letter-spacing="-0.3">15</text>
+            </svg>
           </button>
+
+          <!-- Play / Pause -->
           <button class="audio-transport-btn audio-transport-play" id="drawerPlayBtn" aria-label="Play">
-            <svg class="transport-icon-play" width="20" height="20" viewBox="0 0 20 20"><polygon points="6.5,3 17,10 6.5,17" fill="currentColor"/></svg>
-            <svg class="transport-icon-pause" width="20" height="20" viewBox="0 0 20 20" style="display:none"><rect x="4" y="3" width="4" height="14" rx="1" fill="currentColor"/><rect x="12" y="3" width="4" height="14" rx="1" fill="currentColor"/></svg>
+            <svg class="transport-icon-play" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+              <polygon points="6.5,3 17,10 6.5,17" fill="currentColor"/>
+            </svg>
+            <svg class="transport-icon-pause" width="18" height="18" viewBox="0 0 20 20" style="display:none" aria-hidden="true">
+              <rect x="4" y="3" width="4" height="14" rx="1" fill="currentColor"/>
+              <rect x="12" y="3" width="4" height="14" rx="1" fill="currentColor"/>
+            </svg>
           </button>
+
+          <!-- Skip forward 15s — mirror of skip back -->
           <button class="audio-transport-btn" id="skipForwardBtn" aria-label="Forward 15 seconds">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V1l4 3-4 3V5a5 5 0 100 10A5 5 0 0014 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="9" y="10.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" font-weight="600" fill="currentColor">15</text></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 6.5V3.5L16 5L12 8V6.5a6.5 6.5 0 100 13A6.5 6.5 0 0118.5 13"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="12" y="15.5" text-anchor="middle"
+                    font-family="'Inter', system-ui, sans-serif"
+                    font-size="9" font-weight="700"
+                    fill="currentColor" letter-spacing="-0.3">15</text>
+            </svg>
+          </button>
+
+          <!-- Next chapter -->
+          <button class="audio-transport-btn audio-transport-btn--chapter" id="nextChapterBtn" aria-label="Next chapter">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="11.75" y="3" width="1.75" height="10" rx="0.875" fill="currentColor"/>
+              <path d="M2.5 4L9 8l-6.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
+
         <button class="audio-cycle-btn" id="speedCycleBtn" aria-label="Playback speed: 1x. Tap to change.">1x</button>
       </div>
+
+      <!-- Progress scrubber + time display -->
+      <div class="audio-scrubber-row">
+        <div class="audio-scrubber" id="audioScrubber" role="slider"
+             aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="audio-scrubber-track" id="audioScrubberTrack">
+            <div class="audio-scrubber-fill"  id="audioScrubberFill"></div>
+            <div class="audio-scrubber-thumb" id="audioScrubberThumb"></div>
+          </div>
+        </div>
+        <div class="audio-scrubber-times">
+          <span class="audio-time-current" id="audioTimeCurrent">0:00</span>
+          <span class="audio-time-total"   id="audioTimeTotal">0:00</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -6431,20 +6598,22 @@ digraph amplifier_ecosystem {
   }
 
   // ── Transport Controls (drawer play/pause, skip back/forward) ──────
-  const drawerPlayBtn = document.getElementById('drawerPlayBtn');
-  const skipBackBtn = document.getElementById('skipBackBtn');
-  const skipForwardBtn = document.getElementById('skipForwardBtn');
-  const transportIconPlay = drawerPlayBtn ? drawerPlayBtn.querySelector('.transport-icon-play') : null;
+  const drawerPlayBtn   = document.getElementById('drawerPlayBtn');
+  const skipBackBtn     = document.getElementById('skipBackBtn');
+  const skipForwardBtn  = document.getElementById('skipForwardBtn');
+  const prevChapterBtn  = document.getElementById('prevChapterBtn');
+  const nextChapterBtn  = document.getElementById('nextChapterBtn');
+  const transportIconPlay  = drawerPlayBtn ? drawerPlayBtn.querySelector('.transport-icon-play')  : null;
   const transportIconPause = drawerPlayBtn ? drawerPlayBtn.querySelector('.transport-icon-pause') : null;
 
   function updateTransportUI() {
     if (!transportIconPlay || !transportIconPause) return;
     if (isPlaying) {
-      transportIconPlay.style.display = 'none';
+      transportIconPlay.style.display  = 'none';
       transportIconPause.style.display = 'block';
       drawerPlayBtn.setAttribute('aria-label', 'Pause');
     } else {
-      transportIconPlay.style.display = 'block';
+      transportIconPlay.style.display  = 'block';
       transportIconPause.style.display = 'none';
       drawerPlayBtn.setAttribute('aria-label', 'Play');
     }
@@ -6472,9 +6641,105 @@ digraph amplifier_ecosystem {
     });
   }
 
+  // Prev chapter: go to start of previous chapter (or restart current if on first)
+  if (prevChapterBtn) {
+    prevChapterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const chapter = currentAudioChapter || getActiveChapterId();
+      const idx = CHAPTER_IDS.indexOf(chapter);
+      if (idx > 0) {
+        playChapter(CHAPTER_IDS[idx - 1]);
+      } else {
+        chapterAudio.currentTime = 0;
+        updateScrubber();
+      }
+    });
+  }
+
+  // Next chapter: advance to the following chapter
+  if (nextChapterBtn) {
+    nextChapterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const chapter = currentAudioChapter || getActiveChapterId();
+      const idx = CHAPTER_IDS.indexOf(chapter);
+      if (idx >= 0 && idx < CHAPTER_IDS.length - 1) {
+        playChapter(CHAPTER_IDS[idx + 1]);
+      }
+    });
+  }
+
   // Keep transport UI in sync when audio state changes elsewhere
-  chapterAudio.addEventListener('play', updateTransportUI);
+  chapterAudio.addEventListener('play',  updateTransportUI);
   chapterAudio.addEventListener('pause', updateTransportUI);
+
+  // ── Audio Scrubber ──────────────────────────────────────────────────────────
+  const audioScrubber      = document.getElementById('audioScrubber');
+  const audioScrubberTrack = document.getElementById('audioScrubberTrack');
+  const audioScrubberFill  = document.getElementById('audioScrubberFill');
+  const audioScrubberThumb = document.getElementById('audioScrubberThumb');
+  const audioTimeCurrent   = document.getElementById('audioTimeCurrent');
+  const audioTimeTotal     = document.getElementById('audioTimeTotal');
+
+  function formatTime(seconds) {
+    if (!isFinite(seconds) || seconds < 0) return '0:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m + ':' + String(s).padStart(2, '0');
+  }
+
+  function updateScrubber() {
+    const duration = chapterAudio.duration || 0;
+    const current  = chapterAudio.currentTime || 0;
+    const pct      = duration > 0 ? (current / duration) * 100 : 0;
+    if (audioScrubberFill)  audioScrubberFill.style.width  = pct + '%';
+    if (audioScrubberThumb) audioScrubberThumb.style.left  = pct + '%';
+    if (audioTimeCurrent)   audioTimeCurrent.textContent   = formatTime(current);
+    if (audioTimeTotal)     audioTimeTotal.textContent     = duration > 0 ? formatTime(duration) : '--:--';
+    if (audioScrubber)      audioScrubber.setAttribute('aria-valuenow', Math.round(pct));
+  }
+
+  if (audioScrubber && audioScrubberTrack) {
+    let scrubActive = false;
+
+    // Use audioScrubberTrack rect for position math (track = the visual line)
+    // but listen on audioScrubber (full padded area) for a larger tap target
+    function scrubTo(clientX) {
+      const rect     = audioScrubberTrack.getBoundingClientRect();
+      const ratio    = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const duration = chapterAudio.duration;
+      if (duration && isFinite(duration)) {
+        chapterAudio.currentTime = ratio * duration;
+        updateScrubber();
+      }
+    }
+
+    audioScrubber.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      scrubActive = true;
+      audioScrubber.classList.add('dragging');
+      audioScrubber.setPointerCapture(e.pointerId);
+      scrubTo(e.clientX);
+    });
+
+    audioScrubber.addEventListener('pointermove', (e) => {
+      if (!scrubActive) return;
+      scrubTo(e.clientX);
+    });
+
+    audioScrubber.addEventListener('pointerup', () => {
+      scrubActive = false;
+      audioScrubber.classList.remove('dragging');
+    });
+
+    audioScrubber.addEventListener('pointercancel', () => {
+      scrubActive = false;
+      audioScrubber.classList.remove('dragging');
+    });
+  }
+
+  // Update total time when metadata or duration becomes available
+  chapterAudio.addEventListener('loadedmetadata', updateScrubber);
+  chapterAudio.addEventListener('durationchange',  updateScrubber);
 
   // ── Voice Selector ──────────────────────────────────────────────────────
   // Voice cycle button (drawer)
@@ -6515,6 +6780,7 @@ digraph amplifier_ecosystem {
       const progress = (chapterAudio.currentTime / chapterAudio.duration) * 100;
       tocBtn.style.setProperty('--audio-progress', progress + '%');
     }
+    updateScrubber();
   });
 
   // ── Position code markers by measuring actual line positions ────────
