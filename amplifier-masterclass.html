@@ -194,43 +194,33 @@
       white-space: nowrap;
     }
 
-    /* ── Mobile bottom bar (replaces old 768px pill centering) ────────────── */
+    /* ── Mobile floating pill (centered above bottom safe area) ────────────── */
     @media (max-width: 767px) {
       .toc-btn {
+        /* Reset base top-left positioning */
         top: auto;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        transform: none;
+        right: auto;
 
-        width: 100%;
-        height: calc(44px + env(safe-area-inset-bottom));
-        padding-top: 0;
-        padding-bottom: env(safe-area-inset-bottom);
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+        /* Float above the home indicator, horizontally centered */
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: max(20px, calc(env(safe-area-inset-bottom) + 16px));
 
-        border-radius: 0;
-        border: none;
-        border-top: 1px solid var(--border-light);
-        box-shadow: 0 -2px 8px rgba(28,30,43,0.06);
+        /* Pill sizing — wide enough for context, never full-width */
+        width: min(calc(100vw - 48px), 340px);
+        height: 44px;
+        padding: 0 8px 0 6px;
 
+        /* Pill shape preserved from base */
+        border-radius: 22px;
+        border: 1px solid var(--border);
+        box-shadow:
+          0 4px 16px rgba(28,30,43,0.12),
+          0 1px 4px rgba(28,30,43,0.08);
+
+        /* Internal layout */
         justify-content: flex-start;
-        gap: 10px;
-      }
-
-      /* Progress line across top of bottom bar driven by --read-progress */
-      .toc-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 2px;
-        width: calc(var(--read-progress, 0) * 100%);
-        background: var(--accent);
-        border-radius: 0;
-        pointer-events: none;
-        transition: width 200ms linear;
+        gap: 8px;
       }
 
       /* Chapter title expands to fill center space */
@@ -250,9 +240,9 @@
         height: 24px;
       }
 
-      /* Page bottom padding clears the bottom bar */
+      /* Page bottom padding clears the floating pill + its bottom offset */
       .page-wrapper {
-        padding-bottom: calc(56px + env(safe-area-inset-bottom));
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
       }
 
       /* ── Bottom sheet (replaces left-slide drawer) ── */
@@ -491,6 +481,30 @@
 
     .toc-overlay.open .toc-drawer {
       transform: translateX(0);
+    }
+
+    /* ── Mobile: bottom-sheet direction fix ──────────────────────────────────
+       Intentionally placed AFTER the base .toc-drawer rules above so this
+       block wins the cascade (identical specificity, later source order).
+       The early @media block at top handles layout/shape; this owns the
+       transform axis on mobile.                                              */
+    @media (max-width: 767px) {
+      .toc-drawer {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 70vh;
+        border-radius: 12px 12px 0 0;
+        box-shadow: 0 -4px 24px rgba(28,30,43,0.12);
+        transform: translateY(100%);
+        transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      .toc-overlay.open .toc-drawer {
+        transform: translateY(0);
+      }
     }
 
     /* ── Content column ─────────────────────────────── */
@@ -2352,6 +2366,65 @@
       border-color: var(--accent-hover);
     }
 
+    /* ── Voice cycle button (mobile only) ─────────────────────────────────── */
+    /* Desktop: hide. Mobile block below shows it and hides individual pills.  */
+    .voice-cycle-btn {
+      display: none;
+    }
+
+    /* ── Mobile audio controls sizing ─────────────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Speed pills: taller for comfortable touch */
+      .speed-option {
+        height: 36px;
+        min-width: 48px;
+        font-size: 13px;
+      }
+
+      /* Hide individual voice pills — replaced by cycle button */
+      .voice-option {
+        display: none;
+      }
+
+      /* Voice cycle button: single tappable pill */
+      .voice-cycle-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--accent);
+        height: 36px;
+        padding: 0 16px;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        border-radius: 18px;
+        cursor: pointer;
+        white-space: nowrap;
+        position: relative;
+        transition: background 150ms, border-color 150ms, opacity 150ms;
+      }
+
+      /* Expand tap area to 44px minimum */
+      .voice-cycle-btn::after {
+        content: '';
+        position: absolute;
+        inset: -4px -8px;
+      }
+
+      .voice-cycle-btn:hover {
+        background: var(--accent);
+        color: var(--surface);
+        border-color: var(--accent);
+      }
+
+      /* Center the voice selector container */
+      .voice-selector {
+        justify-content: center;
+      }
+    }
+
     /* ── Section playing highlight ──────────────────────────────────────── */
     .section-playing {
       position: relative;
@@ -2371,9 +2444,9 @@
     /* ── Reduced motion ─────────────────────────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       .toc-drawer,
-      .toc-btn::before,
       .speed-option,
-      .voice-option {
+      .voice-option,
+      .voice-cycle-btn {
         transition-duration: 0.01ms !important;
       }
 
@@ -6486,6 +6559,13 @@ digraph amplifier_ecosystem {
         btn.classList.add('selected');
         btn.setAttribute('aria-pressed', 'true');
 
+        // Sync mobile cycle button text
+        const cycleBtn = document.getElementById('voiceCycleBtn');
+        if (cycleBtn) {
+          cycleBtn.textContent = voice.charAt(0).toUpperCase() + voice.slice(1);
+          cycleBtn.setAttribute('aria-label', 'Voice: ' + voice + '. Tap to cycle.');
+        }
+
         // Swap to the new voice file for the current chapter
         if (currentAudioChapter) {
           const src = getAudioSrc(currentAudioChapter);
@@ -6499,6 +6579,46 @@ digraph amplifier_ecosystem {
 
       voiceSelector.appendChild(btn);
     });
+
+    // ── Mobile voice cycle button ──────────────────────────────────────────
+    // Shown only on mobile (CSS hides it at desktop). Tap to cycle voices.
+    const voiceCycleBtn = document.createElement('button');
+    voiceCycleBtn.className = 'voice-cycle-btn';
+    voiceCycleBtn.id = 'voiceCycleBtn';
+    voiceCycleBtn.setAttribute('aria-label', 'Voice: ' + activeVoice + '. Tap to cycle.');
+    voiceCycleBtn.textContent = activeVoice.charAt(0).toUpperCase() + activeVoice.slice(1);
+
+    voiceCycleBtn.addEventListener('click', () => {
+      const idx = AVAILABLE_VOICES.indexOf(activeVoice);
+      const nextVoice = AVAILABLE_VOICES[(idx + 1) % AVAILABLE_VOICES.length];
+
+      const wasPlaying = isPlaying;
+      const savedTime = chapterAudio.currentTime;
+
+      activeVoice = nextVoice;
+
+      // Update cycle button
+      voiceCycleBtn.textContent = nextVoice.charAt(0).toUpperCase() + nextVoice.slice(1);
+      voiceCycleBtn.setAttribute('aria-label', 'Voice: ' + nextVoice + '. Tap to cycle.');
+
+      // Sync desktop pills
+      document.querySelectorAll('.voice-option').forEach(b => {
+        b.classList.toggle('selected', b.dataset.voice === activeVoice);
+        b.setAttribute('aria-pressed', b.dataset.voice === activeVoice ? 'true' : 'false');
+      });
+
+      // Swap audio src for new voice
+      if (currentAudioChapter) {
+        const src = getAudioSrc(currentAudioChapter);
+        if (src) {
+          chapterAudio.src = src;
+          chapterAudio.currentTime = savedTime;
+          if (wasPlaying) chapterAudio.play();
+        }
+      }
+    });
+
+    voiceSelector.appendChild(voiceCycleBtn);
   }
 
   // ── Audio progress on mobile bottom bar ─────────────────────────────────
