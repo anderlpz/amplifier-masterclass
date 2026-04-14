@@ -6594,6 +6594,36 @@ digraph amplifier_ecosystem {
       });
     });
 
+    // Build a node→cluster ownership map by geometric containment.
+    // In graphviz SVG output, .node elements are siblings of .cluster elements under
+    // the same root <g> — they are NOT DOM children of their cluster.  So the naive
+    // cluster.querySelectorAll('.node') always returns an empty NodeList.
+    // Instead we use SVG bounding-box containment: a node belongs to the smallest
+    // cluster whose bounding box contains the node's centre point.
+    var nodeToCluster = new Map(); // cluster <g> element → Set of node title strings
+    var allClusters = Array.from(svg.querySelectorAll('.cluster'));
+    allClusters.forEach(function(c) { nodeToCluster.set(c, new Set()); });
+
+    svg.querySelectorAll('.node').forEach(function(nodeEl) {
+      var nBox = nodeEl.getBBox();
+      var nCx  = nBox.x + nBox.width  / 2;
+      var nCy  = nBox.y + nBox.height / 2;
+      // Pick the smallest (most-specific) enclosing cluster for this node.
+      var bestCluster = null, bestArea = Infinity;
+      allClusters.forEach(function(cluster) {
+        var cBox = cluster.getBBox();
+        if (nCx >= cBox.x && nCx <= cBox.x + cBox.width &&
+            nCy >= cBox.y && nCy <= cBox.y + cBox.height) {
+          var area = cBox.width * cBox.height;
+          if (area < bestArea) { bestArea = area; bestCluster = cluster; }
+        }
+      });
+      if (bestCluster) {
+        var titleEl = nodeEl.querySelector('title');
+        if (titleEl) nodeToCluster.get(bestCluster).add(titleEl.textContent.trim());
+      }
+    });
+
     function getNodeId(nodeEl) {
       var title = nodeEl.querySelector('title');
       return title ? title.textContent.trim() : '';
@@ -6644,13 +6674,10 @@ digraph amplifier_ecosystem {
         if (connectedIds.has(nId)) {
           n.style.opacity = '';
           if (nId === nodeId) {
-            // Highlight selected node
+            // Highlight selected node — shape changes colour, text keeps its original fill
             n.querySelectorAll('polygon, ellipse').forEach(function(s) {
               s.setAttribute('fill', HIGHLIGHT);
               s.setAttribute('stroke', HIGHLIGHT);
-            });
-            n.querySelectorAll('text').forEach(function(t) {
-              t.setAttribute('fill', '#FFFFFF');
             });
           } else {
             // Tint connected nodes
@@ -6682,19 +6709,18 @@ digraph amplifier_ecosystem {
         }
       });
 
-      // Dim unrelated cluster backgrounds
+      // Dim clusters that contain no selected or connected nodes.
+      // Use nodeToCluster (built from getBBox containment at setup time) because
+      // graphviz SVG places .node elements as siblings of .cluster elements, not
+      // as DOM children — so cluster.querySelectorAll('.node') always returns empty.
       svg.querySelectorAll('.cluster').forEach(function(cluster) {
+        var clusterNodes = nodeToCluster.get(cluster) || new Set();
         var hasConnected = false;
-        cluster.querySelectorAll('.node').forEach(function(n) {
-          if (connectedIds.has(getNodeId(n))) hasConnected = true;
+        clusterNodes.forEach(function(nId) {
+          if (connectedIds.has(nId)) hasConnected = true;
         });
         if (!hasConnected) {
-          // Dim the cluster background polygon (first polygon is typically the bg)
-          var bg = cluster.querySelector(':scope > polygon, :scope > path');
-          if (bg) bg.style.opacity = DIM_CLUSTER;
-          // Dim cluster label
-          var label = cluster.querySelector(':scope > text');
-          if (label) label.style.opacity = DIM_NODE;
+          cluster.style.opacity = DIM_CLUSTER;
         }
       });
     }
