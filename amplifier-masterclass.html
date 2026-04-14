@@ -6218,6 +6218,10 @@ digraph amplifier_ecosystem {
     return activeId;
   }
 
+  // Speed + voice state (declared before playChapter so it can reference them)
+  const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 2];
+  let currentSpeedIndex = 1; // starts at 1x
+
   // Load and play a chapter's audio (voice-aware)
   function playChapter(chapterId) {
     if (!AUDIO_FILES[chapterId]) return;
@@ -6226,6 +6230,7 @@ digraph amplifier_ecosystem {
       chapterAudio.src = src;
       currentAudioChapter = chapterId;
     }
+    chapterAudio.playbackRate = SPEED_OPTIONS[currentSpeedIndex];
     chapterAudio.play();
     isPlaying = true;
     updateAudioUI();
@@ -6361,8 +6366,6 @@ digraph amplifier_ecosystem {
 
   // ── Speed Selector ──────────────────────────────────────────────────────
   // Speed cycle button
-  const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 2];
-  let currentSpeedIndex = 1; // starts at 1x
   const speedCycleBtn = document.getElementById('speedCycleBtn');
   if (speedCycleBtn) {
     speedCycleBtn.addEventListener('click', () => {
