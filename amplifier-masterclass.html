@@ -430,8 +430,14 @@
     .drawer-brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .drawer-brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
     }
 
     .drawer-logo {
@@ -451,10 +457,11 @@
 
     .drawer-subtitle {
       font-family: var(--font-heading);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       color: var(--text-tertiary);
       text-transform: uppercase;
+      line-height: 1;
       letter-spacing: 0.06em;
     }
 
@@ -2576,10 +2583,12 @@
     <div class="drawer-header">
       <div class="drawer-brand">
         <img src="icon-192.png" alt="" class="drawer-logo" aria-hidden="true">
-        <span class="drawer-wordmark">Amplifier</span>
-        <span class="drawer-subtitle">Masterclass</span>
-        <a href="amplifier-masterclass-deck.html" class="drawer-format-btn" style="margin-left: auto;" title="Open presentation view" aria-label="Present">
-          <svg width="16" height="16" viewBox="0 0 256 256"><path d="M232,64H152V48h24a8,8,0,0,0,0-16H80a8,8,0,0,0,0,16h24V64H24A16,16,0,0,0,8,80V192a16,16,0,0,0,16,16H104l-8.8,17.6a8,8,0,1,0,14.4,7.2L128,200l18.4,32.8a8,8,0,1,0,14.4-7.2L152,208H232a16,16,0,0,0,16-16V80A16,16,0,0,0,232,64Z" fill="currentColor"/></svg>
+        <div class="drawer-brand-text">
+          <span class="drawer-wordmark">Amplifier</span>
+          <span class="drawer-subtitle">Masterclass</span>
+        </div>
+        <a href="amplifier-masterclass-deck.html" class="drawer-format-btn" title="Open presentation view" aria-label="Present">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         </a>
       </div>
 
