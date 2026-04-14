@@ -371,6 +371,12 @@
       border-color: var(--accent);
     }
 
+    /* Keep the circle border visible when the chapter link is active */
+    .sidebar-nav a.active .drawer-play-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     .sidebar-nav .nav-section > a {
       justify-content: flex-start;
       gap: 0;
@@ -2595,6 +2601,32 @@
       }
     }
 
+    .doc-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+      text-align: center;
+    }
+
+    .doc-footer p {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+
+    .doc-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--accent-soft);
+      transition: border-color 150ms, color 150ms;
+    }
+
+    .doc-footer a:hover {
+      border-bottom-color: var(--accent);
+    }
+
   </style>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/d3-graphviz@5/build/d3-graphviz.min.js"></script>
@@ -2640,6 +2672,9 @@
         </div>
         <a href="amplifier-masterclass-deck.html" class="drawer-format-btn" data-tooltip="Present" aria-label="Present">
           <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </a>
+        <a href="https://github.com/anderlpz/amplifier-masterclass/issues/new?labels=feedback&title=Feedback%3A+&body=%23%23+Section%0A%0A%23%23+What+I+noticed%0A%0A" target="_blank" rel="noopener" class="drawer-format-btn" data-tooltip="Send feedback" aria-label="Send feedback">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2h9A1.5 1.5 0 0113 3.5v5A1.5 1.5 0 0111.5 10H6l-2.5 2.5V10h-1A1.5 1.5 0 011 8.5v-5A1.5 1.5 0 012.5 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         </a>
       </div>
 
@@ -5139,7 +5174,9 @@ standards (see @project:standards.md).</code></pre>
       </div>
 
       <!-- Footer -->
-
+      <div class="doc-footer">
+        <p>Found something off, or have thoughts on this document? <a href="https://github.com/anderlpz/amplifier-masterclass/issues/new?labels=feedback&title=Feedback%3A+&body=%23%23+Section%0A%0A%23%23+What+I+noticed%0A%0A" target="_blank" rel="noopener">Send feedback on GitHub</a></p>
+      </div>
 
     </main>
 </div>
@@ -6615,17 +6652,17 @@ digraph amplifier_ecosystem {
       chapterAudio.src = src;
       currentAudioChapter = chapterId;
     }
+    isPlaying = true;
     chapterAudio.playbackRate = SPEED_OPTIONS[currentSpeedIndex];
     chapterAudio.play();
-    isPlaying = true;
     updateAudioUI();
     highlightPlayingSection();
   }
 
   // Pause audio
   function pauseAudio() {
-    chapterAudio.pause();
     isPlaying = false;
+    chapterAudio.pause();
     updateAudioUI();
   }
 
@@ -6945,10 +6982,11 @@ digraph amplifier_ecosystem {
           mobileCycleBtn.setAttribute('aria-label', 'Voice: ' + label + '. Tap to cycle.');
         }
 
-        // Reload audio with new voice, preserving position
+        // Reload audio with new voice, preserving position and speed
         if (currentAudioChapter) {
           chapterAudio.src = getAudioSrc(currentAudioChapter);
           chapterAudio.currentTime = currentTime;
+          chapterAudio.playbackRate = SPEED_OPTIONS[currentSpeedIndex];
           if (wasPlaying) chapterAudio.play();
         }
       });
