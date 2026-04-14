@@ -1450,25 +1450,44 @@
       border-color: var(--border);
       transition: border-color 200ms ease;
     }
+    /* Fix 6: Dark overlay on hover */
+    .graph-compact::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 15, 30, 0.5);
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 250ms ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .graph-compact:hover::after {
+      opacity: 1;
+    }
     .graph-expand-hint {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 250ms ease;
+      background: rgba(255,255,255,0.95);
+      color: var(--text-primary);
       font-family: var(--font-heading);
-      font-size: 12px;
-      color: rgba(0,0,0,0.45);
-      background: rgba(0,0,0,0.04);
-      padding: 10px 14px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: background 250ms ease, color 250ms ease;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      pointer-events: none;
+      white-space: nowrap;
       user-select: none;
     }
-    .graph-expand-hint:hover { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.65); }
+    .graph-compact:hover .graph-expand-hint {
+      opacity: 1;
+    }
     .graph-loading {
       position: absolute;
       inset: 0;
@@ -1486,38 +1505,33 @@
     #graph-overlay.active { display: flex; flex-direction: column; }
     #graph-overlay-inner { flex: 1; position: relative; overflow: hidden; }
     #graph-overlay-inner svg { width: 100%; height: 100%; }
-    .graph-close-btn {
+    /* Fix 1+2: Toolbar wrapper groups zoom buttons + close in top-right row */
+    .graph-toolbar {
       position: absolute;
       top: 20px;
       right: 20px;
       z-index: 9001;
-      width: 44px;
-      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .graph-close-btn {
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      background: rgba(0,0,0,0.06);
-      border: 1px solid rgba(0,0,0,0.1);
-      color: rgba(0,0,0,0.5);
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border: 1px solid var(--border-light);
+      color: rgba(0,0,0,0.6);
       cursor: pointer;
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
-      transition: background 200ms ease;
+      transition: background 200ms ease, color 200ms ease;
     }
-    .graph-close-btn:hover { background: rgba(0,0,0,0.1); color: rgba(0,0,0,0.8); }
-    .graph-overlay-header {
-      position: absolute;
-      top: 26px;
-      left: 24px;
-      z-index: 9001;
-      font-family: var(--font-heading);
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(0,0,0,0.3);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+    .graph-close-btn:hover { background: rgba(255,255,255,1); color: rgba(0,0,0,0.85); }
     .graph-hint-bar {
       position: absolute;
       bottom: 16px;
@@ -1536,11 +1550,11 @@
     @media (max-width: 600px) {
       .graph-compact { margin: 20px -16px 20px; width: calc(100% + 32px); left: auto; transform: none; }
     }
+    /* Fix 4: Hide hint bar on mobile — too wide and buggy at small sizes */
+    @media (max-width: 767px) {
+      .graph-hint-bar { display: none; }
+    }
     .graph-zoom-toolbar {
-      position: absolute;
-      top: 20px;
-      right: 80px;
-      z-index: 9001;
       display: flex;
       gap: 4px;
     }
@@ -5152,7 +5166,6 @@ standards (see @project:standards.md).</code></pre>
      Activated by openGraphFullscreen() · Dismissed by Esc or ×
   ═══════════════════════════════════════════════════════════════ -->
 <div id="graph-overlay">
-  <div class="graph-overlay-header">Amplifier Architecture Map</div>
   <div id="graph-overlay-inner">
     <div id="graph-full-loading" class="graph-loading" style="position:absolute;inset:0;background:#FAFAFA;z-index:2;">
       <div class="graph-spin"></div>
@@ -5160,22 +5173,25 @@ standards (see @project:standards.md).</code></pre>
     </div>
     <div id="graph-full-inner" style="width:100%;height:100%;"></div>
   </div>
-  <button class="graph-close-btn" onclick="closeGraphFullscreen()" title="Close (Esc)">&#215;</button>
-  <div class="graph-zoom-toolbar">
-    <button onclick="graphZoomIn()" title="Zoom in" aria-label="Zoom in">+</button>
-    <button onclick="graphZoomOut()" title="Zoom out" aria-label="Zoom out">&minus;</button>
-    <button onclick="graphFitView()" title="Fit to view" aria-label="Fit to view">&#x26F6;</button>
+  <!-- Fix 1+2: Unified top-right toolbar row -->
+  <div class="graph-toolbar">
+    <div class="graph-zoom-toolbar">
+      <button onclick="graphZoomIn()" title="Zoom in" aria-label="Zoom in">+</button>
+      <button onclick="graphZoomOut()" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      <button onclick="graphFitView()" title="Fit to view" aria-label="Fit to view">&#x26F6;</button>
+    </div>
+    <button class="graph-close-btn" onclick="closeGraphFullscreen()" title="Close (Esc)">&#215;</button>
   </div>
   <div class="graph-hint-bar">Scroll to zoom &middot; Drag to pan &middot; Click node to highlight connections &middot; Click background to reset &middot; Esc to close</div>
   <div class="graph-legend" id="graph-legend">
     <div class="graph-legend-header">Architecture Map</div>
     <div class="graph-legend-section">
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F5F0E4;border-color:#9B7B3E"></span> Kernel</div>
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#E4F0F2;border-color:#3E7D8A"></span> Modules</div>
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#ECEEF5;border-color:#5C6B9E"></span> Bundles</div>
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#E8F0E8;border-color:#5A7D5A"></span> Foundation</div>
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F0ECF2;border-color:#7B6B8A"></span> Applications</div>
-      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#F2EEF2;border-color:#8A7B8A"></span> Ecosystem</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#9B7B3E;border-color:#9B7B3E"></span> Kernel</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#3E7D8A;border-color:#3E7D8A"></span> Modules</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#5C6B9E;border-color:#5C6B9E"></span> Bundles</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#5A7D5A;border-color:#5A7D5A"></span> Foundation</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#7B6B8A;border-color:#7B6B8A"></span> Applications</div>
+      <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#8A7B8A;border-color:#8A7B8A"></span> Ecosystem</div>
     </div>
     <div class="graph-legend-section graph-legend-interactions">
       <div class="graph-legend-row"><span class="graph-legend-swatch" style="background:#0082EB;border-color:#0082EB"></span> Selected</div>
@@ -7061,6 +7077,13 @@ digraph amplifier_ecosystem {
             .renderDot(graphDotSrc)
             .on('end', function() {
               setupGraphHighlight('#graph-full-inner');
+              // Fix 5: Make the graphviz background polygon transparent
+              // so the overlay's own background (#FAFAFA) shows through
+              var svgEl = document.querySelector('#graph-full-inner svg');
+              if (svgEl) {
+                var bgPoly = svgEl.querySelector('.graph > polygon');
+                if (bgPoly) bgPoly.setAttribute('fill-opacity', '0');
+              }
               var loader = document.getElementById('graph-full-loading');
               if (loader) loader.remove();
             });
