@@ -104,7 +104,7 @@
       line-height: 1.4;
       color: var(--text-tertiary);
       text-decoration: none;
-      padding: 0 8px;
+      padding: 0 12px 0 8px;
       border-left: 2px solid transparent;
       border-radius: 0 3px 3px 0;
       transition: color 150ms, border-color 150ms, background 150ms;
@@ -123,10 +123,10 @@
       font-size: 15px;
       font-weight: 500;
       color: var(--text-secondary);
-      padding: 0 8px;
+      padding: 0 12px 0 8px;
     }
 
-    .sidebar-nav .nav-sub a { font-size: 14px; padding: 0 8px 0 14px; min-height: 44px; }
+    .sidebar-nav .nav-sub a { font-size: 14px; padding: 0 12px 0 14px; min-height: 44px; }
 
     /* ── Mobile toggle ────────────────────────────────── */
 
@@ -2125,9 +2125,9 @@
     /* ── Desktop permanent sidebar (≥1200px) ─────────────────────────────── */
     @media (min-width: 1200px) {
 
-      /* Shift body content right to make room for 280px sidebar */
+      /* Shift body content right to make room for 320px sidebar */
       body:not(.sidebar-collapsed) {
-        padding-left: 280px;
+        padding-left: 320px;
         transition: padding-left 250ms ease;
       }
 
@@ -2143,7 +2143,7 @@
       }
 
       body:not(.sidebar-collapsed) .toc-drawer {
-        width: 280px;
+        width: 320px;
         transform: translateX(0);
         box-shadow: 1px 0 0 var(--border-light);
         transition: transform 250ms ease;
@@ -2155,10 +2155,12 @@
       }
 
       /* Sidebar nav fills available height and scrolls independently */
+      /* margin-right: -20px extends nav to drawer edge so scrollbar sits flush */
       body:not(.sidebar-collapsed) .toc-drawer > nav {
         flex: 1;
         overflow-y: auto;
         min-height: 0;
+        margin-right: -20px;
       }
 
       /* Pill is hidden when sidebar is open */
@@ -2421,6 +2423,55 @@
       color: white;
     }
 
+    /* ── Voice overflow menu ──────────────────────────────────────────────── */
+    .voice-menu-wrap {
+      position: relative;
+    }
+
+    .voice-menu {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 4px 16px rgba(28,30,43,0.1);
+      padding: 4px;
+      z-index: 60;
+      min-width: 100px;
+    }
+
+    .voice-menu.open {
+      display: block;
+    }
+
+    .voice-menu-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 150ms, color 150ms;
+    }
+
+    .voice-menu-item:hover {
+      background: var(--surface-recessed);
+      color: var(--text-primary);
+    }
+
+    .voice-menu-item.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
 
     /* ── Section playing highlight ──────────────────────────────────────── */
     .section-playing {
@@ -2644,58 +2695,42 @@
 
       <!-- Transport row: voice | ⏮ ↩15 ▶ 15↪ ⏭ | speed -->
       <div class="audio-controls-row">
-        <button class="audio-cycle-btn" id="voiceCycleBtnDrawer" aria-label="Voice: Fable. Tap to change.">Fable</button>
+        <div class="voice-menu-wrap">
+          <button class="audio-transport-btn" id="voiceMenuBtn" aria-label="Voice options" aria-expanded="false">
+            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r="16" fill="currentColor"/><circle cx="64" cy="128" r="16" fill="currentColor"/><circle cx="192" cy="128" r="16" fill="currentColor"/></svg>
+          </button>
+          <div class="voice-menu" id="voiceMenu">
+            <button class="voice-menu-item active" data-voice="fable">Fable</button>
+            <button class="voice-menu-item" data-voice="nova">Nova</button>
+            <button class="voice-menu-item" data-voice="alloy">Alloy</button>
+          </div>
+        </div>
 
         <div class="audio-transport" role="group" aria-label="Playback controls">
           <!-- Prev chapter -->
           <button class="audio-transport-btn audio-transport-btn--chapter" id="prevChapterBtn" aria-label="Previous chapter">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="2.5" y="3" width="1.75" height="10" rx="0.875" fill="currentColor"/>
-              <path d="M13.5 4L7 8l6.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M56,40V216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M200,40,96,128l104,88Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
           </button>
 
-          <!-- Skip back 15s — 24×24 viewBox, 20px rendered, "15" at 9px font = 7.5px on screen -->
+          <!-- Skip back 15s — Phosphor ArrowCounterClockwise + "15" text -->
           <button class="audio-transport-btn" id="skipBackBtn" aria-label="Back 15 seconds">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 6.5V3.5L8 5L12 8V6.5a6.5 6.5 0 110 13A6.5 6.5 0 015.5 13"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <text x="12" y="15.5" text-anchor="middle"
-                    font-family="'Inter', system-ui, sans-serif"
-                    font-size="9" font-weight="700"
-                    fill="currentColor" letter-spacing="-0.3">15</text>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M195.88,60.12A96,96,0,1,0,128,224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><polyline points="128 24 128 88 64 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><text x="148" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" fill="currentColor">15</text></svg>
           </button>
 
           <!-- Play / Pause -->
           <button class="audio-transport-btn audio-transport-play" id="drawerPlayBtn" aria-label="Play">
-            <svg class="transport-icon-play" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
-              <polygon points="6.5,3 17,10 6.5,17" fill="currentColor"/>
-            </svg>
-            <svg class="transport-icon-pause" width="18" height="18" viewBox="0 0 20 20" style="display:none" aria-hidden="true">
-              <rect x="4" y="3" width="4" height="14" rx="1" fill="currentColor"/>
-              <rect x="12" y="3" width="4" height="14" rx="1" fill="currentColor"/>
-            </svg>
+            <svg class="transport-icon-play" width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,40.87V215.13a15.94,15.94,0,0,0,8.12,13.81,16,16,0,0,0,16.2-.3L232.4,141.51a15.81,15.81,0,0,0,0-27Z" fill="currentColor"/></svg>
+            <svg class="transport-icon-pause" width="20" height="20" viewBox="0 0 256 256" style="display:none" aria-hidden="true"><rect x="152" y="40" width="56" height="176" rx="8" fill="currentColor"/><rect x="48" y="40" width="56" height="176" rx="8" fill="currentColor"/></svg>
           </button>
 
-          <!-- Skip forward 15s — mirror of skip back -->
+          <!-- Skip forward 15s — Phosphor ArrowClockwise + "15" text -->
           <button class="audio-transport-btn" id="skipForwardBtn" aria-label="Forward 15 seconds">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 6.5V3.5L16 5L12 8V6.5a6.5 6.5 0 100 13A6.5 6.5 0 0118.5 13"
-                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <text x="12" y="15.5" text-anchor="middle"
-                    font-family="'Inter', system-ui, sans-serif"
-                    font-size="9" font-weight="700"
-                    fill="currentColor" letter-spacing="-0.3">15</text>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 256 256" aria-hidden="true"><path d="M60.12,60.12A96,96,0,1,1,128,224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><polyline points="128 24 128 88 192 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><text x="108" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" fill="currentColor">15</text></svg>
           </button>
 
           <!-- Next chapter -->
           <button class="audio-transport-btn audio-transport-btn--chapter" id="nextChapterBtn" aria-label="Next chapter">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="11.75" y="3" width="1.75" height="10" rx="0.875" fill="currentColor"/>
-              <path d="M2.5 4L9 8l-6.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><path d="M200,40V216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/><path d="M56,40l104,88L56,216Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"/></svg>
           </button>
         </div>
 
@@ -6742,34 +6777,51 @@ digraph amplifier_ecosystem {
   chapterAudio.addEventListener('durationchange',  updateScrubber);
 
   // ── Voice Selector ──────────────────────────────────────────────────────
-  // Voice cycle button (drawer)
-  const voiceCycleBtnDrawer = document.getElementById('voiceCycleBtnDrawer');
-  if (voiceCycleBtnDrawer) {
-    voiceCycleBtnDrawer.addEventListener('click', () => {
-      const idx = AVAILABLE_VOICES.indexOf(activeVoice);
-      const nextVoice = AVAILABLE_VOICES[(idx + 1) % AVAILABLE_VOICES.length];
+  // Voice menu (overflow popover)
+  const voiceMenuBtn = document.getElementById('voiceMenuBtn');
+  const voiceMenu = document.getElementById('voiceMenu');
 
-      const wasPlaying = isPlaying;
-      const currentTime = chapterAudio.currentTime;
+  if (voiceMenuBtn && voiceMenu) {
+    voiceMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = voiceMenu.classList.toggle('open');
+      voiceMenuBtn.setAttribute('aria-expanded', isOpen);
+    });
 
-      activeVoice = nextVoice;
-      const label = nextVoice.charAt(0).toUpperCase() + nextVoice.slice(1);
-      voiceCycleBtnDrawer.textContent = label;
-      voiceCycleBtnDrawer.setAttribute('aria-label', 'Voice: ' + label + '. Tap to change.');
+    document.addEventListener('click', () => {
+      voiceMenu.classList.remove('open');
+      voiceMenuBtn.setAttribute('aria-expanded', 'false');
+    });
 
-      // Also update the mobile cycle button if it exists
-      const mobileCycleBtn = document.getElementById('voiceCycleBtn');
-      if (mobileCycleBtn) {
-        mobileCycleBtn.textContent = label;
-        mobileCycleBtn.setAttribute('aria-label', 'Voice: ' + label + '. Tap to cycle.');
-      }
+    voiceMenu.querySelectorAll('.voice-menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const voice = item.dataset.voice;
+        if (voice === activeVoice) { voiceMenu.classList.remove('open'); return; }
 
-      // Reload audio with new voice, preserving position
-      if (currentAudioChapter) {
-        chapterAudio.src = getAudioSrc(currentAudioChapter);
-        chapterAudio.currentTime = currentTime;
-        if (wasPlaying) chapterAudio.play();
-      }
+        const wasPlaying = isPlaying;
+        const currentTime = chapterAudio.currentTime;
+
+        activeVoice = voice;
+        voiceMenu.querySelectorAll('.voice-menu-item').forEach(i => i.classList.toggle('active', i.dataset.voice === voice));
+        voiceMenu.classList.remove('open');
+        voiceMenuBtn.setAttribute('aria-expanded', 'false');
+
+        // Also update the mobile cycle button if it exists
+        const mobileCycleBtn = document.getElementById('voiceCycleBtn');
+        if (mobileCycleBtn) {
+          const label = voice.charAt(0).toUpperCase() + voice.slice(1);
+          mobileCycleBtn.textContent = label;
+          mobileCycleBtn.setAttribute('aria-label', 'Voice: ' + label + '. Tap to cycle.');
+        }
+
+        // Reload audio with new voice, preserving position
+        if (currentAudioChapter) {
+          chapterAudio.src = getAudioSrc(currentAudioChapter);
+          chapterAudio.currentTime = currentTime;
+          if (wasPlaying) chapterAudio.play();
+        }
+      });
     });
   }
 
