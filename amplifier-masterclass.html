@@ -6990,23 +6990,41 @@ digraph amplifier_ecosystem {
       const lineNums = lineStr.split(',').map(Number);
       const markers = container.querySelectorAll('.code-marker');
 
-      // Get the computed line-height and padding of the code element
-      const codeStyle = getComputedStyle(code);
-      const preStyle = getComputedStyle(pre);
-      const lineHeight = parseFloat(codeStyle.lineHeight) || (parseFloat(codeStyle.fontSize) * 1.5);
-      const paddingTop = parseFloat(preStyle.paddingTop) || 16;
+      // Split code content into lines and rebuild with spans for measurement
+      const text = code.textContent;
+      const lines = text.split('\n');
 
+      // Save original HTML, insert line wrapper spans
+      const originalHTML = code.innerHTML;
+      let html = '';
+      lines.forEach((line, idx) => {
+        html += '<span data-line="' + idx + '">' + escapeHTML(line) + '</span>';
+        if (idx < lines.length - 1) html += '\n';
+      });
+      code.innerHTML = html;
+
+      // Measure the position of each target line
+      const preRect = pre.getBoundingClientRect();
       markers.forEach((marker, i) => {
         if (i >= lineNums.length) return;
         const lineIdx = lineNums[i];
-        // Center the marker on the target line
-        const top = paddingTop + (lineIdx * lineHeight) + (lineHeight / 2) - 11; // 11 = half marker height (22px)
-        marker.style.top = Math.round(top) + 'px';
+        const lineSpan = code.querySelector('[data-line="' + lineIdx + '"]');
+        if (lineSpan) {
+          const lineRect = lineSpan.getBoundingClientRect();
+          const top = Math.round(lineRect.top - preRect.top + (lineRect.height / 2) - 11);
+          marker.style.top = top + 'px';
+        }
       });
+
+      // Restore original HTML (preserves any syntax highlighting)
+      code.innerHTML = originalHTML;
     });
   }
 
-  // Run on load and on resize (debounced)
+  function escapeHTML(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   positionMarkers();
   let markerResizeTimer;
   window.addEventListener('resize', () => {
