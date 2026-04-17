@@ -7951,6 +7951,7 @@ digraph amplifier_ecosystem {
   var graphDotSources = {};
   var currentGraphView = 'overview';
   var graphTransitioning = false;
+  var graphTransitionTimeout = null; // tracks pending navigation setTimeout so close() can cancel it
   var graphDotSrc = '';      // backward-compat alias kept live
   var graphRenderedCompact = false;
   var graphRenderedFull = false;
@@ -8015,12 +8016,22 @@ digraph amplifier_ecosystem {
     if (!overlay) return;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    if (!graphRenderedFull) {
+    var inner = document.getElementById('graph-full-inner');
+    var hasSvg = inner && inner.querySelector('svg');
+    // Re-trigger render if: first open ever, OR the overlay was closed before the
+    // first render had a chance to complete (hasSvg check), OR we drifted off overview.
+    if (!graphRenderedFull || !hasSvg) {
       graphRenderedFull = true;
-      setTimeout(function() { navigateGraphView('overview'); }, 100);
+      // Small delay lets the overlay CSS transition settle before we block on layoutSync
+      graphTransitionTimeout = setTimeout(function() {
+        graphTransitionTimeout = null;
+        navigateGraphView('overview');
+      }, 100);
     } else if (currentGraphView !== 'overview') {
+      // Coming back from a detail/full view — reset to overview
       navigateGraphView('overview');
     }
+    // If already on overview with a valid SVG: the existing SVG + handlers are fine as-is.
   }
 
   // Navigate to a named graph view (fade-out → render → fade-in)
@@ -8036,14 +8047,29 @@ digraph amplifier_ecosystem {
     if (!inner) { graphTransitioning = false; return; }
 
     inner.style.opacity = '0';
-    setTimeout(function() {
+    graphTransitionTimeout = setTimeout(function() {
+      graphTransitionTimeout = null;
       try {
+        // IMPORTANT: register .on('end') BEFORE calling .renderDot().
+        //
+        // d3-graphviz v5 reuses the same Graphviz instance across calls to
+        // d3.select(el).graphviz(opts) on the same element.  After the WASM
+        // engine has initialised (all renders after the very first), the
+        // entire dot() → layoutSync() → render() → _render() pipeline runs
+        // SYNCHRONOUSLY.  That means the 'end' event fires *inside* the
+        // .renderDot() call — before a subsequent .on('end', fn) can register
+        // the new handler.  The result is that the fn from render N–1 fires
+        // for render N, carrying the wrong `viewId` closure and therefore
+        // calling setupGraphInteraction() with the wrong level (e.g. 'overview'
+        // handlers wired onto the detail SVG, and vice versa).
+        //
+        // By registering the handler first we guarantee it is in place before
+        // any synchronous 'end' dispatch occurs.
         graphvizFull = d3.select('#graph-full-inner').graphviz({ useWorker: false })
           .fit(true).zoom(true).zoomScaleExtent([0.05, 20])
           .attributer(function(d) {
             if (d.tag === 'svg') { d3.select(this).attr('width','100%').attr('height','100%'); }
           })
-          .renderDot(dotSrc)
           .on('end', function() {
             makeGraphBgTransparent();
             var loader = document.getElementById('graph-full-loading');
@@ -8052,7 +8078,8 @@ digraph amplifier_ecosystem {
             setupGraphInteraction('#graph-full-inner', level);
             inner.style.opacity = '1';
             graphTransitioning = false;
-          });
+          })
+          .renderDot(dotSrc);
       } catch(e) {
         console.error('Graph render error:', e);
         inner.style.opacity = '1';
@@ -8133,6 +8160,18 @@ digraph amplifier_ecosystem {
   }
 
   function closeGraphFullscreen() {
+    // Cancel any in-flight navigation timeout so it can't fire while the overlay
+    // is hidden (which would leave graphTransitioning stuck at true).
+    if (graphTransitionTimeout !== null) {
+      clearTimeout(graphTransitionTimeout);
+      graphTransitionTimeout = null;
+    }
+    // Always reset the transition lock and restore visibility — the user may have
+    // closed mid-transition (opacity was 0, graphTransitioning was still true).
+    graphTransitioning = false;
+    var inner = document.getElementById('graph-full-inner');
+    if (inner) inner.style.opacity = '1';
+
     var overlay = document.getElementById('graph-overlay');
     if (overlay) overlay.classList.remove('active');
     document.body.style.overflow = '';
