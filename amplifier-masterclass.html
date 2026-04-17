@@ -3839,61 +3839,66 @@
             <marker id="arrow-s6" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
               <path d="M0,0 L6,3 L0,6 Z" fill="#D8D9E3"/>
             </marker>
+            <marker id="arrow-s6-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#9B7B3E"/>
+            </marker>
           </defs>
 
-          <!-- Loop dashed path: step 7 → step 1 (left side, rectangular) -->
-          <path d="M 59,145 L 35,145 L 35,50 L 59,50" fill="none" stroke="#D8D9E3" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-s6)"/>
-          <text transform="rotate(-90 20 97)" x="20" y="97" font-family="Inter, sans-serif" font-size="9" fill="#8B8D9C" text-anchor="middle">if tool called, loop</text>
-
-          <!-- Top row arrows (left → right) -->
+          <!-- OUTER PATH (kernel/gold): Step 1 top-left → Step 7 bottom-left via outer edges -->
+          <!-- Step 1 → Step 2: top row -->
           <line x1="93" y1="50" x2="207" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <!-- Step 2 → Step 3: inner top -->
           <line x1="243" y1="50" x2="357" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <!-- Step 3 → Step 4: inner top right -->
           <line x1="393" y1="50" x2="507" y2="50" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
-
-          <!-- Wrap arrow: step 4 (top-right) → step 5 (bottom-right) -->
+          <!-- Step 4 → Step 5: down the right side -->
           <line x1="525" y1="68" x2="525" y2="127" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
-
-          <!-- Bottom row arrows (right → left) -->
+          <!-- Step 5 → Step 6: bottom row right to left -->
           <line x1="507" y1="145" x2="318" y2="145" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
+          <!-- Step 6 → Step 7: bottom row to kernel -->
           <line x1="282" y1="145" x2="93" y2="145" stroke="#D8D9E3" stroke-width="1.5" marker-end="url(#arrow-s6)"/>
 
-          <!-- Step 1: Message in (kernel) -->
+          <!-- Loop-back path: Step 7 → Step 1 (OUTER left side, kernel-colored) -->
+          <path d="M 59,145 L 25,145 L 25,50 L 59,50" fill="none" stroke="#9B7B3E" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-s6-gold)"/>
+          <text transform="rotate(-90 12 97)" x="12" y="97" font-family="Inter, sans-serif" font-size="9" fill="#9B7B3E" text-anchor="middle">if tool called, loop</text>
+
+          <!-- Step 1: Message in (kernel) — top-left -->
           <circle cx="75" cy="50" r="16" fill="#9B7B3E"/>
           <text x="75" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">1</text>
           <text x="75" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Message in</text>
           <text x="75" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Session receives</text>
 
-          <!-- Step 2: Hooks fire (modules) -->
+          <!-- Step 2: Hooks fire (modules) — top row -->
           <circle cx="225" cy="50" r="16" fill="#3E7D8A"/>
           <text x="225" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">2</text>
           <text x="225" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Hooks fire</text>
           <text x="225" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Context injected</text>
 
-          <!-- Step 3: Fetch context (modules) -->
+          <!-- Step 3: Fetch context (modules) — top row -->
           <circle cx="375" cy="50" r="16" fill="#3E7D8A"/>
           <text x="375" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">3</text>
           <text x="375" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Fetch context</text>
           <text x="375" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">History assembled</text>
 
-          <!-- Step 4: Call LLM (modules) -->
+          <!-- Step 4: Call LLM (modules) — top-right -->
           <circle cx="525" cy="50" r="16" fill="#3E7D8A"/>
           <text x="525" y="50" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">4</text>
           <text x="525" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Call LLM</text>
           <text x="525" y="92" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Provider → model</text>
 
-          <!-- Step 5: Tool check (modules) -->
+          <!-- Step 5: Tool check (modules) — bottom-right -->
           <circle cx="525" cy="145" r="16" fill="#3E7D8A"/>
           <text x="525" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">5</text>
           <text x="525" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Tool check</text>
           <text x="525" y="187" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Hooks gate first</text>
 
-          <!-- Step 6: Tool runs (modules) -->
+          <!-- Step 6: Tool runs (modules) — bottom row -->
           <circle cx="300" cy="145" r="16" fill="#3E7D8A"/>
           <text x="300" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">6</text>
           <text x="300" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#3E7D8A" text-anchor="middle">Tool runs</text>
           <text x="300" y="187" font-family="Inter, sans-serif" font-size="11" fill="#5C5E6E" text-anchor="middle">Hooks inject after</text>
 
-          <!-- Step 7: Response out (kernel) -->
+          <!-- Step 7: Response out (kernel) — bottom-left -->
           <circle cx="75" cy="145" r="16" fill="#9B7B3E"/>
           <text x="75" y="145" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="middle" dominant-baseline="central">7</text>
           <text x="75" y="173" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#9B7B3E" text-anchor="middle">Response out</text>
